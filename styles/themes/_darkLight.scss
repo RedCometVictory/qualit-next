@@ -1,0 +1,205 @@
+:root.light {
+// .theme-light {
+  // General Purpose
+  // body html tag colors & other props
+  --body-icon: rgb(67, 67, 67);
+  --body-text: rgb(67, 67, 67);
+  --body-text-hover: rgb(67, 67, 67);
+  --body-link: rgb(80, 102, 144);
+  --body-navbar: rgb(197, 197, 214);
+  --body-navbar-a: rgba(211, 214, 222, 1);
+  --body-navbar-text: rgb(67, 67, 67);
+
+  // Navbar, links
+  --navbar-color: rgb(221, 221, 221);
+  --navbar-color-a: rgba(51, 51, 51, 0.6);
+  --navbar-color-a-02: rgba(27, 40, 233, 0.45);
+  --navbar-text: rgb(221, 221, 221);
+  --navbar-text-hover: rgb(221, 171, 8);
+  --navbar-title: rgb(221, 221, 221);
+  --navbar-logo: rgb(245, 238, 238);
+
+  // Buttons
+  --btn: rgb(77, 86, 253);
+  --btn-primary: rgb(193, 195, 219);
+  --btn-secondary: rgb(151, 150, 150);
+  --btn-hover-primary: rgb(216, 216, 216);
+  --btn-hover-secondary: rgb(151, 150, 150);
+  --btn-border: rgb(44, 53, 233);
+  --btn-border-danger: rgb(250, 53, 53);
+  --btn-text: rgb(51, 51, 51);
+  --btn-text-hover: rgb(124, 116, 116);
+  --primary-btn-bg: rgb(22, 28, 45);
+  --secondary-btn-bg: #c56a2d;
+  --tetiary-btn-bg: #2b50c7;
+
+  // Heros & Overlays & SVGs & icons
+  --hero-color-a: rgba(51, 51, 51, 0.6);
+  --hero-text: rgb(221, 221, 221);
+  --overlay-text: rgb(252, 252, 252);
+  --svg-link: rgb(222, 225, 238);
+  --svg-link-hover: rgb(255, 255, 255);
+  --icon-name-a: rgba(255, 48, 0, 0.12);
+
+  // Backgrounds
+  --primary-color: rgb(227, 248, 255);
+  --secondary-color: rgb(234, 176, 51);
+  --primary-color-a: rgba(234, 51, 51, 0.8);
+  --primary-color-a-6: rgba(234, 51, 51, 0.6);
+  --primary-color-a-4: rgba(234, 51, 51, 0.4);
+  --primary-color-a-2: rgba(234, 51, 51, 0.2);
+  --secondary-color-a: rgba(234, 176, 51, 0.8);
+  --secondary-color-a-6: rgba(234, 176, 51, 0.6);
+  --secondary-color-a-4: rgba(234, 176, 51, 0.4);
+  --sedcondary-color-a-2: rgba(234, 176, 51, 0.2);
+
+  // Panels
+  --bg-primary: rgb(222, 225, 238);
+  --bg-primary-a-8: rgb(222, 225, 238, 0.8);
+  --bg-primary-a-6: rgb(222, 225, 238, 0.6);
+  --bg-primary-a-4: rgb(222, 225, 238, 0.4);
+  --bg-primary-a-2: rgb(222, 225, 238, 0.2);
+  --bg-panel: rgb(197, 197, 214);
+  --bg-panel-secondary: rgb(67, 67, 67);
+  --bg-panel-hover: rgb(200, 185, 255);
+  --bg-panel-02: rgb(102, 102, 102);
+  --bg-primary: rgba(231, 231, 231, 0.259);
+  --bg-secondary: rgba(231, 231, 231, 0.259);
+  --bg-quatenary: rgb(255, 255, 255);
+  --bg-auth-panel: rgb(222, 225, 238);
+
+  // ScrollBar - chrome
+  --scrollbar-line: rgb(233, 234, 236);
+  // --scrollbar-line: rgb(223, 229, 240);
+  --scrollbar-bg: rgb(71, 64, 64);
+
+  // Divs (cards and other elems)
+  --div-child-item: rgb(211, 211, 211);
+  --div-header: rgb(0, 119, 255);
+  --div-header-bar: rgb(56, 54, 54);
+  --div-form-label: rgb(10, 9, 9);
+  --div-description: rgba(51, 51, 51, 0.7);
+  --div-link: rgb(252, 53, 53);
+  --div-tagbox: rgb(51, 51, 51);
+  --skill-icon-box: rgb(234, 51, 51);
+  --skill-icon-box-a: rgba(234, 51, 51, 0.12);
+  --skill-icon-box-border-a: rgba(234, 51, 51, 0.12);
+  --footer-bg-color-a: rgb(134, 134, 134);
+
+  // inputs & forms
+  --input-border-neutral: rgb(19, 202, 226);
+  --input-border-hover: rgb(101, 101, 101);
+  --input-border-focused: rgb(101, 101, 101);
+
+  // Warnings & Alerts
+  --alert-neutral: #f4f4f4;
+  --alert-danger: #dc3545;
+  --alert-success: #28a745;
+  --danger-color: rgb(202, 0, 0);
+  --light-disabled-color: #6c757d;
+  --dark-disabled-color: #242121;
+}
+
+:root.dark {
+// .theme-dark {
+  // General Purpose
+  // body html tag colors & other props
+  --body-icon: rgb(181, 181, 181);
+  --body-text: rgb(197, 193, 193);
+  --body-text-hover: rgb(181, 181, 181);
+  --body-link: rgb(80, 102, 144);
+  --body-navbar: rgb(67, 67, 67);
+  --body-navbar-a: rgba(2, 29, 53, 1);
+  --body-navbar-text: rgb(181, 181, 181);
+
+  // Navbar, links
+  --navbar-color: rgba(51, 51, 51, 1);
+  --navbar-color-a: rgba(51, 51, 51, 0.6);
+  --navbar-color-a-02: rgba(233, 9, 9, 0.75);
+  --navbar-text: rgb(221, 221, 221);
+  --navbar-text-hover: rgb(243, 247, 16);
+  --navbar-title: rgb(221, 221, 221);
+  --navbar-logo: rgb(245, 238, 238);
+
+  // Buttons
+  --btn: rgb(44, 55, 233);
+  --btn-primary: rgb(44, 55, 233);
+  --btn-secondary: rgb(141, 141, 141);
+  --btn-hover-primary: rgb(141, 141, 141);
+  --btn-hover-secondary: rgb(141, 141, 141);
+  --btn-border: rgb(44, 53, 233);
+  --btn-border-danger: rgb(250, 53, 53);
+  --btn-text: rgb(245, 238, 238);
+  --btn-text-hover: rgb(51, 51, 51);
+  --primary-btn-bg: rgb(22, 28, 45);
+  --secondary-btn-bg: #c56a2d;
+  --tetiary-btn-bg: #2b50c7;
+
+  // Heros & Overlays & SVGs & icons
+  --hero-color-a: rgba(51, 51, 51, 0.6);
+  --hero-text: rgb(221, 221, 221);
+  --overlay-text: rgb(252, 221, 221);
+  --svg-link: rgb(3, 39, 70);
+  --svg-link-hover: rgb(238, 226, 226);
+  --icon-name-a: rgba(161, 51, 234, 0.24);
+
+  // Backgrounds
+  // --primary-color: rgb(161, 51, 234);
+  --primary-color: rgb(57, 54, 58);
+  --secondary-color: rgb(51, 94, 234);
+  --primary-color-a: rgba(161, 51, 234, 0.8);
+  --primary-color-a-6: rgba(161, 51, 234, 0.6);
+  --primary-color-a-4: rgba(161, 51, 234, 0.4);
+  --primary-color-a-2: rgba(161, 51, 234, 0.2);
+  --secondary-color-a: rgba(51, 94, 234, 0.8);
+  --secondary-color-a-6: rgba(51, 94, 234, 0.6);
+  --secondary-color-a-4: rgba(51, 94, 234, 0.4);
+  --sedcondary-color-a-2: rgba(51, 94, 234, 0.2);
+
+  // Panels
+  --bg-primary: rgb(66, 61, 61);
+  --bg-primary-a-8: rgb(66, 61, 61, 0.8);
+  --bg-primary-a-6: rgb(66, 61, 61, 0.6);
+  --bg-primary-a-4: rgb(66, 61, 61, 0.4);
+  --bg-primary-a-2: rgb(66, 61, 61, 0.2);
+  --bg-panel: rgb(54, 54, 54);
+  // --bg-panel-important: rgb(54, 54, 54) !important;
+  --bg-panel-secondary: rgb(67, 67, 67);
+  --bg-panel-hover: rgb(200, 185, 255);
+  --bg-panel-02: rgb(37, 37, 37);
+  --bg-primary: rgb(3, 39, 70);
+  --bg-secondary: rgba(231, 231, 231, 0.259);
+  --bg-quatenary: rgb(255, 255, 255);
+  --bg-auth-panel: rgb(222, 225, 238);
+
+  // ScrollBar - chrome
+  // --scrollbar-line: rgb(94, 93, 93);
+  --scrollbar-line: rgb(146, 146, 146);
+  --scrollbar-bg: rgb(0, 0, 0);
+
+  // Divs (cards and other elems)
+  --color-child-item: rgb(134, 134, 134);
+  --div-header: rgb(54, 132, 255);
+  --div-header-bar: rgb(56, 54, 54);
+  --div-form-label: rgb(181, 181, 181);
+  --div-description: rgba(51, 51, 51, 0.7);
+  --div-link: rgb(252, 53, 53);
+  --div-tagbox: rgb(181, 181, 181);
+  --skill-icon-box: rgb(161, 51, 234);
+  --skill-icon-box-a: rgba(161, 51, 234, 0.22);
+  --skill-icon-box-border-a: rgba(161, 51, 234, 0.6);
+  --footer-bg-color-a: rgb(134, 134, 134);
+
+  // inputs & forms
+  --input-border-neutral: rgb(130, 234, 248);
+  --input-border-hover: rgb(202, 230, 247);
+  --input-border-focused: rgb(65, 182, 250);
+
+  // Warnings & Alerts
+  --alert-neutral: #f4f4f4;
+  --alert-danger: #dc3545;
+  --alert-success: #28a745;
+  --danger-color: #dc3545;
+  --input-disabled-color: rgb(101, 101, 101);
+  --dark-disabled-color: #4a4a4b;
+}
