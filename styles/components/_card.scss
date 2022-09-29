@@ -1,0 +1,33 @@
+.card {
+  margin: 0 0 0.75rem 0;
+  background-color: var(--bg-panel) !important;
+  color: var(--body-text) !important;
+
+  &:last-child {
+    margin: 0 0 0 0;
+  }
+
+  &__sub-header {
+    font-size: 0.475rem;
+  }
+
+  &__column-container {
+    margin: 0rem 0.425rem;
+    padding: 1rem 0.575rem;
+    max-width: 280px;
+    border-radius: 6px;
+    -webkit-box-shadow: 0px 3px 6px 1px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 0px 3px 6px 1px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 3px 6px 1px rgba(0, 0, 0, 0.25);
+  }
+
+  &__item {
+    &:hover {
+      background-color: rgba(85, 88, 240, 0.75);
+    }
+  }
+
+  // &__column-contaimer {}
+  // &__column-contaimer {}
+
+}

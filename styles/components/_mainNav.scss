@@ -1,0 +1,104 @@
+.nav {
+  // background-color: var(--color-text);
+  // background-color: rgb(123, 104, 211);
+  background-color: rgb(247, 236, 215);
+  color: black;
+  height: 100%;
+  width: 100%;
+  max-width: 12.375rem;
+  // @include flex(row, center, flex-start);
+  @include flex(column, center, flex-start);
+  padding: 0 1rem 0 1rem;
+  z-index: 400;
+  &__theme-container {
+    border-radius: 6px;
+    background-color: var(--btn-primary);
+    padding: 1rem 1rem;
+  }
+
+  &__menu {
+    margin: 5.575rem 0 0 0;
+    @include flex(column, center, center);
+    // @use flex(column, center, center);
+  }
+
+  // ########## LOGO #############
+  &__logo-container {
+    margin: 0 0 3.275rem 0;
+  }
+
+  &__logo {
+    // margin: 0 0 1rem 0;
+    font-weight: 800;
+    font-size: 21px;
+
+    a {
+      color: black;
+      text-decoration: none;
+    }
+  }
+
+  &__logo-icon {
+    text-decoration: none;
+
+    span {
+      text-transform: lowercase;
+    }
+  }
+
+  &__line {
+    // border: 2px solid rgb(123, 104, 211);
+    // border: 2px solid red;
+    border-radius: 6px;
+    width: 100%;
+    height: 6px;
+    background-color: rgb(21, 21, 22);
+    // background-color: red;
+    margin: 0.575rem 0 0 0;
+  }
+
+  // ########## LOGO #############
+  &__links {
+    width: 100%;
+    font-size: 18px;
+  }
+
+  &__link-item {
+    margin: 1.275rem 0;
+
+    &:first-child {
+      margin: 0 0 1.275rem 0;
+    }
+  }
+
+  &__link-group {
+    @include flex(row, flex-start, center);
+
+    // background-color: greenyellow;
+    transition: 500ms ease-in-out;
+
+    &:hover {
+      color: blueviolet;
+      // text-decoration: underline;
+    }
+  }
+
+  &__link-icon {
+    // background-color: orchid;
+    // border-radius: 10%;
+    margin: 0 0.75rem 0 0;
+    padding: 0.435rem;
+  }
+
+  &__link {
+    text-decoration: none;
+    font-weight: 600;
+    color: black;
+    transition: 500ms ease-in-out;
+
+    &:hover {
+      color: blueviolet;
+      // text-decoration: underline;
+    }
+  }
+}

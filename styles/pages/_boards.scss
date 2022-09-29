@@ -1,0 +1,49 @@
+.boards {
+  // @include grid(repeat(auto-fill, minmax(min-content, 625px));
+  padding: 0 1.125rem 0;
+  &__container {
+    margin: 1.125rem 0 0 0;
+  }
+  &__list {
+    @include flex(column, center, center);
+  }
+  &__item {
+    @include flex(column, flex-start, center);
+    // border: solid 1px black;
+    border-radius: 6px;
+    height: 100%;
+    max-height: 500px;
+    padding: 0.4rem;
+  }
+  &__item-header {
+    margin: 0 0 0.4rem 0;
+    padding: 0.25rem 0;
+  }
+  &__header {
+  }
+  &__image {
+    background-color: aqua;
+    padding: 0.25rem;
+    margin: 0 0 0.25rem 0;
+  }
+  &__content {}
+  &__description {}
+}
+
+@media (min-width: 260px) {
+  .boards {
+    &__list {
+      @include grid(repeat(2, 128px), 2, space-around, center);
+      column-gap: 1rem;
+      row-gap: 1rem;
+    }
+  }
+}
+
+@media (min-width: 660px) {
+  .boards {
+    &__list {
+      @include grid(repeat(3, 1fr), 2, center, center);
+    }
+  }
+}

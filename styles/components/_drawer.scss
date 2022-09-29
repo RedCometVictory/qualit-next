@@ -1,0 +1,68 @@
+.drawer {
+  @include flex(column, space-around, center);
+  min-height: 100vh;
+
+  &__open {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__close-btn {
+    cursor: pointer;
+  }
+
+  &__header {
+    @include flex(row, space-around, center);
+    padding: 0.75rem 0 0.375rem;
+
+    &.btn {
+      font-size: 1.275rem;
+      padding: 0;
+    }
+  }
+
+  &__input-group {
+    @include flex(column, center, center);
+    padding: 1rem 1rem 0rem;
+  }
+
+  &__group-btn-col {
+    padding: 1.2rem 0;
+  }
+
+  &__images-list {
+    background-color: aquamarine;
+    height: fit-content;
+    background-color: olivedrab;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      height: 0;
+      width: 0; // remove scrollbar space
+      background: transparent; // make scrollbar invisible
+    }
+  }
+
+  &__image {
+    background-color: goldenrod;
+    height: 120px;
+    width: 100%;
+    margin: 10px 0 0 0;
+
+    &:first-child {
+      margin: 0;
+    }
+  }
+
+  &__menu-footer {
+    @include flex(row, center, center);
+    width: 100%;
+    flex-shrink: 0;
+    margin-top: auto;
+    z-index: 200;
+    padding: 1rem 0;
+  }
+}
