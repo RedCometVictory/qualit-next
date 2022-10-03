@@ -1,26 +1,26 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-// import { Link, useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
 import { FaPlus } from 'react-icons/fa';
 import { AiOutlineProject } from 'react-icons/ai';
 import { ImTicket, ImExit, ImEnter } from 'react-icons/im';
 import { MdDashboard } from 'react-icons/md';
-// import { useSelector, useDispatch } from 'react-redux';
-
+import { logout } from '@/redux/features/auth/authSlice';
 import ModeButton from '@/components/ModeButton';
+import Logo from '../UI/Logo';
 // import ThemePicker from '@/components/theme/ThemePicker';
 
-import Logo from '../UI/Logo';
 // TODO:
 // Get role from redux state
 // based on role (Admin, Project Manager, Submitter, Developer) hide links.
 // swap auth links, show pending on logged in or not
 const MainNav = () => {
-  // const navigate = useNavigate();
-  // TODO: retrive the value via redux state, the theme value is derived from the meta component
-  // const [theme, setTheme]:string = useState('light');
-  const isAuthenticated = true;
-  // const isAuthenticated = false;
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const { isAuthenticated } = useSelector(state => state.auth);
+  const [hasMounted, setHasMounted] = useState(false);
   const status = {
     roleOne: 'Admin',
     roleTwo: 'Project Manager',
@@ -29,6 +29,25 @@ const MainNav = () => {
   let admin = status.roleOne;
   // let admin = status.roleThree;
   let role = "Admin";
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+  
+  if (!hasMounted) {
+    return null;
+  }
+
+  const logoutHandler = async () => {
+    try {
+      dispatch(logout());
+      toast.success("Logged out.");
+      router.push('/');
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to logout.")
+    }
+  };
 
   const adminLinks = (
     <li className="nav__link-item">
@@ -99,13 +118,14 @@ const MainNav = () => {
                 <div className="nav__link-icon">
                   <ImExit />
                 </div>
-                <Link
-                  passHref
-                  href="/logout"
+                <a
+                  // passHref
+                  // href="/logout"
                   className='nav__link'
+                  onClick={() => logoutHandler()}
                 >
                   Sign Out
-                </Link>
+                </a>
               </div>
             </li>
           ) : (
@@ -116,7 +136,7 @@ const MainNav = () => {
                 </div>
                 <Link
                   passHref
-                  href="/sign-in"
+                  href="/signin"
                   className='nav__link'
                 >
                   Sign In

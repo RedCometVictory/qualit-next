@@ -8,9 +8,9 @@ import { pool } from '@/config/db';
 
 // needed to decrypt req.body (set to true), unless using serviced data - then leave value as false
 // * may not need?
-export const config = {
-  api: { bodyParser: false }
-};
+// export const config = {
+//   api: { bodyParser: false }
+// };
 
 const handler = nc({onError, onNoMatch});
 
@@ -52,7 +52,7 @@ handler.post(async (req, res) => {
     // return res.status(400).json({ errors: [{ msg: 'Error. Last name must be less than 20 characters.' }] });
   }
   
-  let emailResult = await pool.query('SELECT user_email FROM users WHERE email = $1;', [ email ]);
+  let emailResult = await pool.query('SELECT email FROM users WHERE email = $1;', [ email ]);
   let usernameResult = await pool.query('SELECT username FROM users WHERE username = $1;', [ username ]);
   
   if (usernameResult.rowCount !== 0 || emailResult.rowCount !== 0) {

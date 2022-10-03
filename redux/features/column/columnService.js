@@ -2,7 +2,7 @@ import { getData, postData, putData, deleteData } from '@/utils/fetchData';
 
 const fetchColumns = async (boardId) => {
   const res = await getData(`/boards/${boardId}/columns`);
-  retutn res;
+  return res;
 };
 
 const addColumn = async () => {
