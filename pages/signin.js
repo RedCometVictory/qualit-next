@@ -2,7 +2,7 @@ import { useEffect, useState } from  'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from "next/router";
 import { toast } from 'react-toastify';
-import { registerUser } from '@/redux/features/auth/authSlice';
+import { loginUser } from '@/redux/features/auth/authSlice';
 import MainLayout from "@/components/layouts/MainLayout";
 import ButtonUI from '@/components/UI/ButtonUI';
 import { Card, Input, InputLabel, FormGroup, CardContent, Typography } from "@mui/material";
@@ -11,12 +11,8 @@ import { Card, Input, InputLabel, FormGroup, CardContent, Typography } from "@mu
   email, firstname, lastname, username, password, password2, role by default is set to developer
 */
 const initialState = {
-  firstName: "",
-  lastName: "",
-  username: "",
   email: "",
-  password: "",
-  password2: ""
+  password: ""
 };
   
 const SignIn = () => {
@@ -24,15 +20,15 @@ const SignIn = () => {
   const router = useRouter();
   const [hasMounted, setHasMounted] = useState(false);
   const [formData, setFormData] = useState(initialState);
-  // const { isAuthenticated } = useSelector(state => state.auth);
+  const { isAuthenticated } = useSelector(state => state.auth);
 
-  const { firstName, lastName, username, email, password, password2 } = formData;
+  const { email, password } = formData;
 
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //     router.push('/');
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push('/');
+    }
+  }, [isAuthenticated]);
 
   useEffect(() => {
     setHasMounted(true);
@@ -49,8 +45,9 @@ const SignIn = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
+     
+      dispatch(loginUser(formData));
       toast.success("Logged in successfully!");
-      // await dispatch(registerUser(formData));
     } catch (err) {
       console.error(err);
       toast.error("Failed to register. Check if email or password are valid.");

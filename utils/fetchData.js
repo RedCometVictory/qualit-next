@@ -1,43 +1,76 @@
-const baseUrl = process.env.DOMAIN;
-export const getData = async (url, header) => {
+const baseUrl = process.env.NEXT_PUBLIC_DOMAIN;
+console.log("^^^^^^^^^^")
+console.log(baseUrl)
+
+export const getData = async (url) => {
+  console.log("+++GET_URL+++")
+  console.log(url)
   const res = await fetch(`${baseUrl}/api${url}`, {
     method: 'GET',
-    headers: header
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'include',
+    // credentials: 'same-origin',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      // Authorization: header
+    }
   });
   const data = await res.json();
   return data;
 };
 
-export const postData = async (url, header) => {
-  const res = await fetch(`${baseUrl}/api${url}`, {
+export const postData = async (url, postData) => {
+  console.log("+++GET_URL+++")
+  console.log(url)
+  console.log("----------")
+  console.log(postData)
+  console.log("----------")
+  // const res = await fetch(`${baseUrl}/api${url}`, {
+  const res = await fetch(`/api${url}`, {
     method: 'POST',
-    headers: header
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'include',
+    // credentials: 'same-origin',
+    headers: {
+      // 'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(postData)
   });
-  const data = await req.json();
+  const data = await res.json();
   return data;
 };
 
-export const putData = async (url, post, token) => {
+export const putData = async (url, putData) => {
   const res = await fetch(`${baseUrl}/api/${url}`, {
     method: 'PUT',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'include',
     headers: {
-      'Content-Type': 'application/json',
-      Authorization: token,
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
     },
-    body: JSON.stringify(post),
+    body: JSON.stringify(putData)
   });
   const data = await res.json();
   return data;
 };
 
-export const patchData = async (url, post, token) => {
+export const patchData = async (url, patchData) => {
   const res = await fetch(`${baseUrl}/api/${url}`, {
     method: 'PATCH',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'include',
     headers: {
-      'Content-Type': 'application/json',
-      Authorization: token,
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
     },
-    body: JSON.stringify(post),
+    body: JSON.stringify(patchData)
   });
   const data = await res.json();
   return data;
@@ -46,7 +79,11 @@ export const patchData = async (url, post, token) => {
 export const deleteData = async (url, token) => {
   const res = await fetch(`${baseUrl}/api/${url}`, {
     method: 'DELETE',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'include',
     headers: {
+      'Accept': 'application/json',
       'Content-Type': 'application/json',
       Authorization: token,
     },

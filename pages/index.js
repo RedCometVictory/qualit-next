@@ -1,69 +1,121 @@
+import { useEffect, useRef, useState } from  'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from "next/router";
+import { toast } from 'react-toastify';
+// import { loginUser } from '@/redux/features/auth/authSlice';
 import MainLayout from "@/components/layouts/MainLayout";
-import ButtonUI from "@/components/UI/ButtonUI";
-
-const loginHandler = () => {
-  console.log("logging in");
-};
-
-const registerHandler = () => {
-  console.log("registering");
-};
-// TODO: if user is not signed in then show the view of "please sign in" if signed in then show a dash board of ticket stats
-// const isAuthenticated = true;
-const isAuthenticated = false;
+import ButtonUI from '@/components/UI/ButtonUI';
+import { Card, Input, InputLabel, FormGroup, CardContent, Typography } from "@mui/material";
+import BarChart from '@/components/dashBoard/BarChart';
+import PieChart from '@/components/dashBoard/PieChart';
+import MyProjectsList from '@/components/dashBoard/MyProjectsList';
+import MyTicketsList from '@/components/dashBoard/MyTicketsList';
 
 const Home = () => {
-  if (!isAuthenticated) {
-    return (
-      <section className="dash">
-        <div className="dash__unauth">
-          <h3>Please Sign In.</h3>
-          <div className="dash__unauth-btns">
-            <ButtonUI
-              className="dash__unauth-btn"
-              variant="contained"
-              onClick={loginHandler}
-              href="/signin"
-            >
-              Sign In  
-            </ButtonUI>
-            <ButtonUI
-              className="dash__unauth-btn"
-              variant='outlined'
-              onClick={registerHandler}
-              // href="/tasks"
-              href="/signup"
-            >
-              Sign Up
-            </ButtonUI>
-          </div>
-        </div>
-      </section>
-    )
-  };
-  // TODO: if signed in then apply this return
-  return (
+  const effectRan = useRef(false);
+  const { isAuthenticated } = useSelector(state => state.auth);
+  const [hasMounted, setHasMounted] = useState(false);
+  
+  // useEffect(() => {
+  //   if (effectRan.current === true || process.env.NEXT_PUBLIC_NODE_ENV !== 'development') {
+  //   //   console.log('effectRan-inner')
+  //   //   console.log(effectRan)
+  //   // };
+  //   // return () => {
+  //   //   console.log('unmounted')
+  //   //   effectRan.current = true;
+  //   //   console.log('effectRan-02')
+  //   //   console.log(effectRan)
+  //   // };
+  //   }
+  // }, []);
+  
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+  
+  if (!hasMounted) {
+    return null;
+  }
+
+  return !isAuthenticated ? (
     <section className="dash">
-      <div className="dash__card">
-        <div className="dash__heading-sec">
-          <div className="dash__header">
-            <h2>Title of Header</h2>
-          </div>
-        </div>
-        <div className="dash__content">
-          <ul className="dash__list">
-            <li className="dash__list-item">1</li>
-            <li className="dash__list-item">2</li>
-            <li className="dash__list-item">3</li>
-            <li className="dash__list-item">4</li>
-            <li className="dash__list-item">5</li>
-            <li className="dash__list-item">6</li>
-          </ul>
+      <div className="dash__unauth">
+        <h3>Please Sign In.</h3>
+        <div className="dash__unauth-btns">
+          <ButtonUI
+            className="dash__unauth-btn"
+            variant="contained"
+            href="/signin"
+          >
+            Sign In  
+          </ButtonUI>
+          <ButtonUI
+            className="dash__unauth-btn"
+            variant='outlined'
+            href="/signup"
+          >
+            Sign Up
+          </ButtonUI>
         </div>
       </div>
     </section>
+  ) : (
+    <section className="dash">
+      <div className="dash__content">
+        <Card className="dash__card">
+          <div className="dash__heading-sec">
+            <div className="dash__header">
+              <Typography variant='h6' component='h1'>Tickets by Priority</Typography>
+            </div>
+          </div>
+          <div className="dash__detail">
+            <PieChart />
+          </div>
+        </Card>
+        <Card className="dash__card">
+          <div className="dash__heading-sec">
+            <div className="dash__header">
+              <Typography variant='h6' component='h1'>My Tickets</Typography>
+            </div>
+          </div>
+          <div className="dash__detail">
+            <div className="dash__list">
+              {/* {ticket.tickets.map((ticket, index) => <MyTicketsList ticket={ticket} key={index} />
+              )} */}
+            </div>
+          </div>
+        </Card>
+        <Card className="dash__card">
+          <div className="dash__heading-sec">
+            <div className="dash__header">
+              <Typography variant='h6' component='h1'>My Projects</Typography>
+            </div>
+          </div>
+          <div className="dash__detail">
+            <div className="dash__list">
+              {/* {project.projects.map((project, index) => (
+                <MyProjectsList project={project} key={index} />
+              ))} */}
+            </div>
+          </div>
+        </Card>
+        <Card className="dash__card">
+          <div className="dash__heading-sec">
+            <div className="dash__header">
+              <Typography variant='h6' component='h1'>Tickets by Status</Typography>
+            </div>
+          </div>
+          <div className="dash__detail">
+            <div className="dash__list">
+              <BarChart />
+            </div>
+          </div>
+        </Card>
+      </div>
+    </section>
   )
-}
+};
 export default Home;
 Home.getLayout = function getLayout(Home) {
   return <MainLayout>{Home}</MainLayout>;

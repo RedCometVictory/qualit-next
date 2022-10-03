@@ -30,11 +30,7 @@ handler.put(async (req, res) => {
   const { name, description, backgroundImage } = req.body;
   let updatedByTimeStamp = new Date();
   let updatedBoard = pool.query('UPDATE boards SET name = $1, description = $2, background_image = $3, updated_at = $4 WHERE id = $5;', [name, description, backgroundImage, updatedByTimeStamp, slug]);
-  // Date.now() returns time in milliseconds, thus divide by 1000 to return time in seconds
-  // new Date().itISOString(); will create a timestampe not compatible to save / insert into postgres, thus use to_timestamp() function of postgress like so:
-  // `insert into times (time) values (to_timestamp(${Date.now()} / 1000.0))`
-  // new Date().getTime();
-  // new Date().valueOf()
+
   if (updatedBoard.rowCount === 0 || updatedBoard === null) {
     throw new Error('Failed to update board.');
   }
@@ -51,12 +47,12 @@ handler.delete(async (req, res) => {
   const { id } = req.user;
   const { slug } = req.query;
   
-  await pool.query('Delete FROM cards WHERE board_id = $1 AND user_id = $2;', [slug, id]);
-  await pool.query('Delete FROM columns WHERE board_id = $1 AND user_id = $2;', [slug, id]);
-  await pool.query('Delete FROM boards WHERE id = $1 AND user_id = $2;', [slug, id]);
+  await pool.query('Delete FROM cards WHERE board_id = $1;', [slug]);
+  await pool.query('Delete FROM columns WHERE board_id = $1;', [slug]);
+  await pool.query('Delete FROM boards WHERE id = $1;', [slug]);
   
-  return res.statusO(201).json({
+  return res.status(200).json({
     status: "Deleted board."
-  })
+  });
 });
 export default handler;

@@ -1,5 +1,6 @@
 // import api from "../../../utils/api";
 // import { addCardToUser, stripeReset } from "../stripe/stripeSlice";
+import { getData, postData, putData, deleteData } from '@/utils/fetchData';
 import { userReset } from "../user/userSlice";
 // import { clearCartLogout } from "../cart/cartSlice";
 // import { orderReset } from "../order/orderSlice";
@@ -44,36 +45,24 @@ const loadUser = async (thunkAPI) => {
 };
 
 const registerUser = async (formRegData, thunkAPI) => {
-  const res = await api.post('/auth/register', formRegData);
-  const result = res.data.data;
-  // return thunkAPI.dispatch(loadUserSlice())
-  localStorage.setItem("token", JSON.stringify(result.token));
-  localStorage.setItem("__userInfo", JSON.stringify(result.userInfo));
+  const res = await postData(`/auth/signup`, formRegData);
+  const result = res.data;
+  localStorage.setItem("qual__user", JSON.stringify(result.user));
   return result;
 };
 
 const loginUser = async (formData, thunkAPI) => {
-  const res = await api.post('/auth/login', formData);
-  let result = res.data.data;
-  // return thunkAPI.dispatch(loadUserSlice())
-  localStorage.setItem("token", JSON.stringify(result.token));
-  localStorage.setItem("__userInfo", JSON.stringify(result.userInfo));
+  const res = await postData('/auth/signin', formData);
+  let result = res.data;
+  localStorage.setItem("qual__user", JSON.stringify(result.user));
   return result;
 };
 
-const logout = async (navigate, history = null, thunkAPI) => {
-  thunkAPI.dispatch(clearCartLogout());
-  thunkAPI.dispatch(stripeReset());
-  thunkAPI.dispatch(userReset());
-  thunkAPI.dispatch(orderReset());
+const logout = async (_, thunkAPI) => {
+  // thunkAPI.dispatch(userReset());
   thunkAPI.dispatch(clearAuth());
-  if (localStorage.getItem('__cart')) localStorage.removeItem('__cart');
-  if (localStorage.getItem('__paymentMethod')) localStorage.removeItem('__paymentMethod');
-  if (localStorage.getItem('__shippingAddress')) localStorage.removeItem('__shippingAddress');
-  if (localStorage.getItem('__userInfo')) localStorage.removeItem('__userInfo');
-  if (navigate) navigate('/');
-  if (history && !navigate) history.push("/");
-  await api.post('/auth/logout');
+  if (localStorage.getItem('qual__user')) localStorage.removeItem('qual__user');
+  await postData('/auth/signout', _);
   return; 
 };
 
@@ -105,7 +94,7 @@ const resetPassword = async (token, email, passwords, navigate) => {
 };
 
 const refreshAccessToken = async (newAccessToken, tokenExample) => {
-  localStorage.setItem("token", newAccessToken);
+  localStorage.setItem("qual__token", newAccessToken);
   return newAccessToken;
 };
 

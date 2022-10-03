@@ -1,4 +1,4 @@
-import { useEffect, useState } from  'react';
+import { useEffect, useRef, useState } from  'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from "next/router";
 import { toast } from 'react-toastify';
@@ -20,19 +20,34 @@ const initialState = {
 };
   
 const SignUp = () => {
+  const effectRan = useRef(false);
   const dispatch = useDispatch();
   const router = useRouter();
   const [formData, setFormData] = useState(initialState);
   const [hasMounted, setHasMounted] = useState(false);
-  // const { isAuthenticated } = useSelector(state => state.auth);
+  const { isAuthenticated } = useSelector(state => state.auth);
 
   const { firstName, lastName, username, email, password, password2 } = formData;
 
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //     router.push('/');
-  //   }
-  // }, []);
+  useEffect(() => {
+    // console.log('effectRan-01')
+    // console.log(effectRan)
+    // if (effectRan.current === true || process.env.NEXT_PUBLIC_NODE_ENV !== 'development') {
+    //   console.log('effectRan-inner')
+    //   console.log(effectRan)
+      if (isAuthenticated) {
+        router.push('/');
+      }
+    // };
+    // return () => {
+    //   console.log('unmounted')
+    //   effectRan.current = true;
+    //   console.log('effectRan-02')
+    //   console.log(effectRan)
+
+    // };
+    
+  }, [isAuthenticated]);
 
   useEffect(() => {
     setHasMounted(true);
@@ -48,13 +63,13 @@ const SignUp = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    if (password !== password2) {
-      toast.error("Passwords do not match!");
-      return;
-    }
     try {
-      toast.success("Submitted new registry.")
-      // await dispatch(registerUser(formData));
+      if (password !== password2) {
+        toast.error('Passwords do not match.', {theme: 'colored', toastId: "noPasswordMatch"});
+        return;
+      }
+      // toast.success("Submitted new registry.")
+      dispatch(registerUser(formData));
     } catch (err) {
       console.error(err);
       toast.error("Failed to register. Check if email or password are valid.");

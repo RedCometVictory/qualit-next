@@ -1,15 +1,21 @@
-require('dotenv').config();
-
 // PostgreSQL -- keep line below uncommented
-const { Pool } = require('pg');
+import { Pool } from 'pg';
+// const { Pool } = require('pg');
+
+console.log("&&&&&&POOL&&&&&&&")
+console.log(process.env.NEXT_PUBLIC_PG_HOST)
+console.log(process.env.NEXT_PUBLIC_PG_PORT)
+console.log(process.env.NEXT_PUBLIC_PG_USER)
+console.log(process.env.NEXT_PUBLIC_PG_DATABASE)
+console.log(process.env.NEXT_PUBLIC_PG_PASSWORD)
 
 // for local development
 const pool = new Pool({
-  host: process.env.PG_HOST,
-  port: process.env.PG_PORT,
-  user: process.env.PG_USER,
-  database: process.env.PG_DATABASE,
-  password: process.env.PG_PASSWORD,
+  host: process.env.NEXT_PUBLIC_PG_HOST,
+  port: process.env.NEXT_PUBLIC_PG_PORT,
+  user: process.env.NEXT_PUBLIC_PG_USER,
+  database: process.env.NEXT_PUBLIC_PG_DATABASE,
+  password: process.env.NEXT_PUBLIC_PG_PASSWORD,
   max: 10,
   idleTimeoutMillis: 300000
 });
@@ -49,4 +55,4 @@ const pool = new Pool({
 // **********************************************************************
 // **********************************************************************
 
-module.exports = pool; // postgresql
+export { pool }; // postgresql

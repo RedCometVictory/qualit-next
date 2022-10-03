@@ -3,8 +3,8 @@ import { toast } from "react-toastify";
 import authService from "./authService";
 
 const initialState = {
-  token: typeof window !== "undefined" && localStorage.getItem("qual__token") ? localStorage.getItem("qual__token") : null,
-  userInfo: typeof window !== "undefined" && localStorage.getItem("qual__user") ? JSON.parse(localStorage.getItem("qual__user")) : {},
+  // token: typeof window !== "undefined" && localStorage.getItem("qual__token") ? localStorage.getItem("qual__token") : null,
+  user: typeof window !== "undefined" && localStorage.getItem("qual__user") ? JSON.parse(localStorage.getItem("qual__user")) : {},
   isAuthenticated: typeof window !== "undefined" && localStorage.getItem("qual__user") ? true : false,
   loading: false,
   error: null,
@@ -85,9 +85,9 @@ export const loginUser = createAsyncThunk(
 
 export const logout = createAsyncThunk(
   'auth/logout',
-  async ({navigate, history}, thunkAPI) => {
+  async (_, thunkAPI) => {
     try {
-      return await authService.logout(navigate, history, thunkAPI);
+      return await authService.logout(_, thunkAPI);
     } catch (err) {
       const message =
         (err.response &&
@@ -204,7 +204,7 @@ export const authSlice = createSlice({
       state.token = null
       state.isAuthenticated = false
       state.loading = false
-      state.userInfo = null
+      state.user = null
     }
   },
   extraReducers: (builder) => {
@@ -216,13 +216,13 @@ export const authSlice = createSlice({
         state.token = action.payload.token;
         state.loading = false;
         state.isAuthenticated = true;
-        state.userInfo = action.payload.userInfo;
+        state.user = action.payload.user;
         toast.success("Welcome!", {theme: "colored", toastId: "welcomeToastId"});
       })
       .addCase(demoUser.rejected, (state, action) => {
         state.loading = false;
         state.isAuthenticated = false;
-        state.userInfo = null;
+        state.user = null;
         state.error = true;
       })
       .addCase(loadUser.pending, (state) => {
@@ -231,12 +231,12 @@ export const authSlice = createSlice({
       .addCase(loadUser.fulfilled, (state, action) => {
         state.loading = false;
         state.isAuthenticated = true;
-        state.userInfo = action.payload.userInfo;
+        state.usero = action.payload.user;
       })
       .addCase(loadUser.rejected, (state, action) => {
         state.loading = false;
         state.isAuthenticated = false;
-        state.userInfo = null;
+        state.user = null;
         state.error = true;
       })
       .addCase(registerUser.pending, (state) => {
@@ -246,13 +246,13 @@ export const authSlice = createSlice({
         state.token = action.payload.token;
         state.loading = false;
         state.isAuthenticated = true;
-        state.userInfo = action.payload.userInfo;
+        state.user = action.payload.user;
         toast.success("Successfully registered. Welcome.", {theme: "colored", toastId: "registerSuccessToastId"});
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
         state.isAuthenticated = false;
-        state.userInfo = null;
+        state.user = null;
         state.error = true;
       })
       .addCase(loginUser.pending, (state) => {
@@ -262,13 +262,13 @@ export const authSlice = createSlice({
         state.token = action.payload.token;
         state.loading = false;
         state.isAuthenticated = true;
-        state.userInfo = action.payload.userInfo;
+        state.user = action.payload.user;
         toast.success("Welcome!", {theme: "colored", toastId: "welcomeToastId"});
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
         state.isAuthenticated = false;
-        state.userInfo = null;
+        state.user = null;
         state.error = true;
       })
       .addCase(logout.pending, (state) => {
@@ -278,12 +278,12 @@ export const authSlice = createSlice({
         state.token = null;
         state.loading = false;
         state.isAuthenticated = false;
-        state.userInfo = null;
+        state.user = null;
       })
       .addCase(logout.rejected, (state, action) => {
         state.loading = false;
         state.isAuthenticated = false;
-        state.userInfo = null;
+        state.user = null;
         state.error = true;
       })
       .addCase(deleteUser.pending, (state) => {
@@ -293,13 +293,13 @@ export const authSlice = createSlice({
         state.token = null;
         state.loading = false;
         state.isAuthenticated = false;
-        state.userInfo = null;
+        state.user = null;
         toast.success("Your account has been deleted.", {theme: "colored", toastId: "deleteAcctToastId"});
       })
       .addCase(deleteUser.rejected, (state, action) => {
         state.loading = false;
         state.isAuthenticated = false;
-        state.userInfo = null;
+        state.user = null;
         state.error = true;
       })
       .addCase(forgotPassword.pending, (state) => {

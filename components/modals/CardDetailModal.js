@@ -167,14 +167,18 @@ const CardDetailModal = ({ setModalOpen }) => {
               </Typography>
             </div>
             <div className="modal__text-editor">
-              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              <Typography
+                id="modal-modal-description"
+                sx={{ mt: 2 }}
+                component='div'
+              >
                 {/* <QuillEditor value={description} onChange={setDescription} /> */}
                 Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
               </Typography>
             </div>
           </div>
           <div className="modal__assignment">
-            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+            <Typography sx={{ fontSize: 14 }} color="text.secondary" component='div' gutterBottom>
               Card ID: {"card.id"} Board ID: {"card.boardID"}
             </Typography>
             {assignToMenu()}
