@@ -74,6 +74,7 @@ CREATE TABLE users(
   -- refresh_token TEXT,
   -- treat status as 'active' or 'deleted' if false
   -- status BOOLEAN DEFAULT true NOT NULL,
+  -- may not need project_id for this table as members relation between users and projects table would offer more sense in structure
   project_id UUID,
   FOREIGN KEY(project_id) REFERENCES projects(id),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
