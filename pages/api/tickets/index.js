@@ -1,0 +1,63 @@
+import nc from 'next-connect';
+import { onError, onNoMatch } from '@/utils/ncOptions';
+import { verifAuth, authRoleDev } from '@/utils/verifAuth';
+import { pool } from '@/config/db';
+
+export const config = {
+  api: { bodyParser: false }
+};
+
+const handler = nc({onError, onNoMatch});
+handler.use(verifAuth, authRoleDev);
+
+// get a list of tickets for dashboard
+handler.get(async (req, res) => {
+  const { role } = req.user;
+  // const { slug } = req.query;
+  let tickets;
+  if (role === 'Developer') {
+    // get all tickets assigned to && tickets belong to projects dev is working for
+    // = pool.query('SELECT * FROM tickets WHERE board_id = $1;', [slug]);
+    // = pool.query('SELECT P.id, P.title, P.owner, P.created_at, T.id, T.title, T.type, T.created_at FROM projects AS P JOIN tickets AS T WHERE P.id = T.id LIMIT 25;', [slug]);
+  };
+  if (role === 'Project Manager') {
+    // only gets tickets for projects they manage. They can view all tikcets assigned to any/all developers they assigned to a project they manage
+    // = pool.query('SELECT P.id, P.title, P.owner, P.created_at, T.id, T.title, T.type, T.created_at FROM projects AS P JOIN tickets AS T WHERE P.id = T.project_id AND  LIMIT 25;', [slug]);
+  };
+  if (role === 'Admin') {
+    // sleect all tickets from all projects
+    tickets = pool.query('SELECT * FROM tickets LIMIT 25;');
+    // desc order means newest on top???
+    let projects = pool.query('SELECT * FROM projects LIMIT 25 ORDER DESC;');
+  };
+  // if (columns.rowCount === 0 || columns === null) {
+  //   throw new Error("Failed to get all columns belonging to this board.");
+  // }
+
+  return res.status(200).json({
+    status: "Retrieved tickets.",
+    data: {
+      tickets: tickets.rows
+    }
+  });
+});
+
+handler.post(async (req, res) => {
+  const { id } = req.user;
+  const { slug } = req.query;
+  const { name, sequence } = req.body;
+  
+  let newColumn = pool.query('INSERT INTO columns (name, sequence, board_id, user_id) VALUES ($1, $2, $3, $4) RETURNING *;', [name, sequence, slug, id]);
+
+  if (newColumn.rowCount === 0 || newColumn === null) {
+    throw new Error('Failed to create new column.');
+  }
+
+  return res.status(201).json({
+    status: "Success! Created new column.",
+    data: {
+      column: newColumn.rows[0]
+    }
+  });
+});
+export default handler;

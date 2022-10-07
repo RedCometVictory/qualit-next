@@ -105,7 +105,6 @@ const MainNav = () => {
 
   return (
     <header className="nav">
-      {/* <ThemePicker /> */}
       <ModeButton />
       <nav className='nav__menu'>
         <Logo />
