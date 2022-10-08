@@ -12,7 +12,7 @@ handler.use(verifAuth, authRoleDev);
 
 handler.get(async (req, res) => {
   const { slug } = req.query;
-  const columns = pool.query('SELECT * FROM columns WHERE board_id = $1;', [slug]);
+  const columns = await pool.query('SELECT * FROM columns WHERE board_id = $1;', [slug]);
   if (columns.rowCount === 0 || columns === null) {
     throw new Error("Failed to get all columns belonging to this board.");
   }
@@ -30,7 +30,7 @@ handler.post(async (req, res) => {
   const { slug } = req.query;
   const { name, sequence } = req.body;
   
-  let newColumn = pool.query('INSERT INTO columns (name, sequence, board_id, user_id) VALUES ($1, $2, $3, $4) RETURNING *;', [name, sequence, slug, id]);
+  let newColumn = await pool.query('INSERT INTO columns (name, sequence, board_id, user_id) VALUES ($1, $2, $3, $4) RETURNING *;', [name, sequence, slug, id]);
 
   if (newColumn.rowCount === 0 || newColumn === null) {
     throw new Error('Failed to create new column.');

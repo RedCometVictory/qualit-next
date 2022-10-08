@@ -12,7 +12,7 @@ handler.use(verifAuth, authRoleDev);
 
 handler.get(async (req, res) => {
   const { slug } = req.query;
-  const cards = pool.query('SELECT * FROM cards WHERE id = $1;', [slug]);
+  const cards = await pool.query('SELECT * FROM cards WHERE id = $1;', [slug]);
   if (cards.rowCount === 0 || cards === null) {
     throw new Error("Failed to retrieve board information.");
   }

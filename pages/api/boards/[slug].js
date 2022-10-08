@@ -12,7 +12,7 @@ handler.use(verifAuth, authRoleDev);
 
 handler.get(async (req, res) => {
   const { slug } = req.query;
-  const board = pool.query('SELECT * FROM boards WHERE id = $1;', [slug]);
+  const board = await pool.query('SELECT * FROM boards WHERE id = $1;', [slug]);
   if (board.rowCount === 0 || board === null) {
     throw new Error("Failed to retrieve board information.");
   }
@@ -29,7 +29,7 @@ handler.put(async (req, res) => {
   const { slug } = req.query;
   const { name, description, backgroundImage } = req.body;
   let updatedByTimeStamp = new Date();
-  let updatedBoard = pool.query('UPDATE boards SET name = $1, description = $2, background_image = $3, updated_at = $4 WHERE id = $5;', [name, description, backgroundImage, updatedByTimeStamp, slug]);
+  let updatedBoard = await pool.query('UPDATE boards SET name = $1, description = $2, background_image = $3, updated_at = $4 WHERE id = $5;', [name, description, backgroundImage, updatedByTimeStamp, slug]);
 
   if (updatedBoard.rowCount === 0 || updatedBoard === null) {
     throw new Error('Failed to update board.');

@@ -121,7 +121,7 @@ CREATE TABLE tickets(
   priority VARCHAR(100) NOT NULL,
   -- ['Bug','Breaking Change','Discussion','Error','Enhancement','Feature Request','Needs Investigation','Question','Release','Regression','Security','Misc']
   type VARCHAR(100) NOT NULL,
-  -- id of submitter
+  -- user id of submitter
   submitter UUID,
   deadline TIMESTAMP DEFAULT NULL,
   -- id of user ticket is assigned to

@@ -13,7 +13,7 @@ handler.use(verifAuth, authRoleDev);
 // get details of the card
 handler.get(async (req, res) => {
   const { slug, cardId } = req.query;
-  const card = pool.query('SELECT * FROM cards WHERE id = $1;', [cardId]);
+  const card = await pool.query('SELECT * FROM cards WHERE id = $1;', [cardId]);
   if (card.rowCount === 0 || card === null) {
     throw new Error("Failed to retrieve card information.");
   }
@@ -31,7 +31,7 @@ handler.put(async (req, res) => {
   const { title, description, priority, type, sequence } = req.body;
 
   let updatedByTimeStamp = new Date();
-  let updatedCard = pool.query('UPDATE cards SET title = $1, description = $2, priority = $3, type = $4, sequence = $5, updated_at = $6 WHERE id = $7 AND board_id = $8;', [title, description, priority, type, sequence,  updatedByTimeStamp, cardId, slug]);
+  let updatedCard = await pool.query('UPDATE cards SET title = $1, description = $2, priority = $3, type = $4, sequence = $5, updated_at = $6 WHERE id = $7 AND board_id = $8;', [title, description, priority, type, sequence,  updatedByTimeStamp, cardId, slug]);
 
   if (updatedCard.rowCount === 0 || updatedCard === null) {
     throw new Error('Failed to update card.');
