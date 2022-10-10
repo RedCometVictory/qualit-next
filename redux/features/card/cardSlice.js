@@ -24,7 +24,7 @@ const initialState = {
 };
 
 export const fetchCards = createAsyncThunk(
-  'cards/fetchAll',
+  'cards/get/fetch-All-Cards',
   async (_, thunkAPI) => {
     try {
       return await cardService.fetchCards();
@@ -42,7 +42,7 @@ export const fetchCards = createAsyncThunk(
 );
 
 export const addCard = createAsyncThunk(
-  'cards/card/add',
+  'cards/post/add-card',
   async (formData, thunkAPI) => {
     try {
       return await cardService.addCard(formData, thunkAPI);
@@ -60,7 +60,7 @@ export const addCard = createAsyncThunk(
 );
 
 export const updateCard = createAsyncThunk(
-  'cards/card/update',
+  'cards/put/update-Card',
   async (formData, thunkAPI) => {
     try {
       return await cardService.updateCard(formData, thunkAPI);
@@ -78,7 +78,7 @@ export const updateCard = createAsyncThunk(
 );
 
 export const updateCardSequence = createAsyncThunk(
-  'cards/card/update/sequence',
+  'cards/put/card-update-sequence',
   async (formData, thunkAPI) => {
     try {
       return await cardService.updateCardSequence(formData, thunkAPI);
@@ -96,7 +96,7 @@ export const updateCardSequence = createAsyncThunk(
 );
 
 export const deleteCard = createAsyncThunk(
-  'cards/card/delete',
+  'cards/delete',
   async (formData, thunkAPI) => {
     try {
       return await cardService.deleteCard(formData, thunkAPI);

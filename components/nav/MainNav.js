@@ -84,7 +84,7 @@ const MainNav = () => {
         </div>
         <Link
           passHref
-          href="/my-projects"
+          href={`/project/${'projectId'}`}
           className='nav__link'
         >
           My Projects
@@ -96,7 +96,11 @@ const MainNav = () => {
         <div className="nav__link-icon">
           <ImTicket />
         </div>
-        <Link passHref href="/my-tickets" className='nav__link'>
+        <Link
+          passHref
+          href={`/tickets/${'ticketID'}`}
+          className='nav__link'
+        >
           My Tickets
         </Link>
       </div>
