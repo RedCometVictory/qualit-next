@@ -16,6 +16,7 @@ handler.get(async (req, res) => {
   // const { slug } = req.query;
   let tickets;
   if (role === 'Developer') {
+    myTickets = await pool.query('SELECT id, title, status, priority, type, created_at FROM tickets AS T WHERE P.id = T.id LIMIT 25;', [slug]);
     // get all tickets assigned to && tickets belong to projects dev is working for
     // = pool.query('SELECT * FROM tickets WHERE board_id = $1;', [slug]);
     // = pool.query('SELECT P.id, P.title, P.owner, P.created_at, T.id, T.title, T.type, T.created_at FROM projects AS P JOIN tickets AS T WHERE P.id = T.id LIMIT 25;', [slug]);

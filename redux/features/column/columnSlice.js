@@ -18,7 +18,7 @@ const initialState = {
 };
 
 export const fetchColumns = createAsyncThunk(
-  'columns/fetchAll',
+  'columns/get/fetch-All-Columns',
   async (_, thunkAPI) => {
     try {
       return await columnService.fetchColumns();
@@ -36,7 +36,7 @@ export const fetchColumns = createAsyncThunk(
 );
 
 export const addColumn = createAsyncThunk(
-  'columns/column/add',
+  'columns/post/column-add',
   async (formData, thunkAPI) => {
     try {
       return await columnService.addColumn(formData, thunkAPI);
@@ -54,7 +54,7 @@ export const addColumn = createAsyncThunk(
 );
 
 export const updateColumn = createAsyncThunk(
-  'columns/column/update',
+  'columns/put/update-column',
   async (formData, thunkAPI) => {
     try {
       return await columnService.updateColumn(formData, thunkAPI);
@@ -72,7 +72,7 @@ export const updateColumn = createAsyncThunk(
 );
 
 export const updateColumnSequence = createAsyncThunk(
-  'columns/column/update/sequence',
+  'columns/put/column-update-sequence',
   async (formData, thunkAPI) => {
     try {
       return await columnService.updateColumnSequence(formData, thunkAPI);
@@ -90,7 +90,7 @@ export const updateColumnSequence = createAsyncThunk(
 );
 
 export const deleteColumn = createAsyncThunk(
-  'columns/column/delete',
+  'columns/delete',
   async (formData, thunkAPI) => {
     try {
       return await columnService.deleteColumn(formData, thunkAPI);
@@ -198,6 +198,5 @@ const columnSlice = createSlice({
     },
   }
 });
-
 export const { resetColumns, updateColumnSequenceInLocalState } = columnSlice.actions;
 export default columnSlice.reducer;

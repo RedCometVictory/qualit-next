@@ -23,7 +23,7 @@ const initialState = {
 
 // ########## Boards ##########
 export const getAllBoards = createAsyncThunk(
-  'boards/getAllBoards',
+  'boards/get/All-Boards',
   async (userData, thunkAPI) => {
     try {
       return await boardService.getAllBoards(userData, thunkAPI);
@@ -40,7 +40,7 @@ export const getAllBoards = createAsyncThunk(
 );
 
 export const createBoard = createAsyncThunk(
-  'board/create',
+  'board/post/create-board',
   async (boardFormData, thunkAPI) => {
     try {
       return await boardService.createBoard(boardFormData, thunkAPI);
@@ -59,7 +59,7 @@ export const createBoard = createAsyncThunk(
 // ######## BoardById ########
 // create | update board by id
 export const saveBoard = createAsyncThunk(
-  'board/save',
+  'board/put/save-board',
   async (boardFormData, thunkAPI) => {
     try {
       return await boardService.saveBoard(boardFormData, thunkAPI);
@@ -76,7 +76,7 @@ export const saveBoard = createAsyncThunk(
 );
 
 export const getBoard = createAsyncThunk(
-  'board/getBoardById',
+  'board/get/Board-By-Id',
   async (boardId, thunkAPI) => {
     try {
       return await boardService.getBoard(boardId, thunkAPI);

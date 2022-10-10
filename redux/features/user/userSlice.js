@@ -18,7 +18,7 @@ const initialState = {
 };
 
 export const getUserProfile = createAsyncThunk(
-  'user/profile/get',
+  'user/get/profile',
   async (_, thunkAPI) => {
     try {
       return await userService.getUserProfile();
@@ -36,7 +36,7 @@ export const getUserProfile = createAsyncThunk(
 );
 
 export const getUserProfileAdmin = createAsyncThunk(
-  'user/profile/admin/get',
+  'user/get/profile-admin',
   async (user_id, thunkAPI) => {
     try {
       return await userService.getUserProfileAdmin(user_id);
@@ -54,7 +54,7 @@ export const getUserProfileAdmin = createAsyncThunk(
 );
 
 export const getUsersAdmin = createAsyncThunk(
-  'user/getAll/Admin',
+  'user/get/All-Admin',
   async (_, thunkAPI) => {
     try {
       return await userService.getUsersAdmin();
@@ -72,7 +72,7 @@ export const getUsersAdmin = createAsyncThunk(
 );
 
 export const updateUserInfo = createAsyncThunk(
-  'user/info/update',
+  'user/put/info-update',
   async (userForm, thunkAPI) => {
     try {
       return await userService.updateUserInfo(userForm);
@@ -90,7 +90,7 @@ export const updateUserInfo = createAsyncThunk(
 );
 
 export const createUserProfile = createAsyncThunk(
-  'user/profile/create',
+  'user/post/create-profile',
   async (profileForm, thunkAPI) => {
     try {
       return await userService.createUserProfile(profileForm);
@@ -108,7 +108,7 @@ export const createUserProfile = createAsyncThunk(
 );
 
 export const updateUserAdmin = createAsyncThunk(
-  'user/update/admin',
+  'user/put/update-user-admin',
   async ({user_id, userForm}, thunkAPI) => {
     try {
       return await userService.updateUserAdmin(user_id, userForm);

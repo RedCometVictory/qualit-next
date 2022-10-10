@@ -15,7 +15,7 @@ const getBoard = async (formData) => {
 };
 
 const createBoard = async (formData) => {
-  const res = await postData(`/boards/new`);
+  const res = await postData(`/boards/new`, formData);
 
   /*
     const { board } = getState() as { board: BoardSlice };
