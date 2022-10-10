@@ -66,7 +66,7 @@ const createTicketComment = async(ticket_id, formData) => {
 
 const createTicketUpload = async(ticket_id, formData) => {
   // TODO: extract the form data image into via multipart/form
-  let servicedData = await createUploadForm(formData);
+  let servicedData = await createUpdateUploadForm(formData);
   const res = await postData(`/tickets/${ticket_id}/upload`, servicedData);
   const result = res.data;
   // localStorage.setItem("qual__project", JSON.stringify(result.project));
@@ -78,7 +78,7 @@ const createTicketUpload = async(ticket_id, formData) => {
 };
 
 const updateProject = async(project_id, formData) => {
-  const res = await postData(`/projects/${project_id}`, formData);
+  const res = await putData(`/projects/${project_id}`, formData);
   const result = res.data;
   // localStorage.setItem("qual__project", JSON.stringify(result.project));
   // TODO: place updated project data into project {} and save new state into LS qual__project
@@ -89,7 +89,7 @@ const updateProject = async(project_id, formData) => {
 };
 
 const updateTicket = async(ticket_id, formData) => {
-  const res = await postData(`/tickets/${ticket_id}`, formData);
+  const res = await putData(`/tickets/${ticket_id}`, formData);
   const result = res.data;
   // localStorage.setItem("qual__project", JSON.stringify(result.project));
   // TODO: place updated ticket data into ticket {} and save new state into LS qual__project
@@ -99,6 +99,29 @@ const updateTicket = async(ticket_id, formData) => {
   return result;
 };
 
+const updateTicketComment = async(ticket_id, comment_id, formData) => {
+  const res = await putData(`/tickets/${ticket_id}/comment/${comment_id}`, formData);
+  const result = res.data;
+  // localStorage.setItem("qual__project", JSON.stringify(result.project));
+  // TODO: place newly created ticket upload ointo uploads [] and save new state into LS qual__project
+  console.log("***Project Service***");
+  console.log(result)
+  console.log("----- END project service -----")
+  return result;
+};
+
+const updateTicketUpload = async(ticket_id, upload_id, formData) => {
+  // TODO: extract the form data image into via multipart/form
+  let servicedData = await createUpdateUploadForm(formData);
+  const res = await putData(`/tickets/${ticket_id}/upload/${upload_id}`, servicedData);
+  const result = res.data;
+  // localStorage.setItem("qual__project", JSON.stringify(result.project));
+  // TODO: place newly created ticket upload ointo uploads [] and save new state into LS qual__project
+  console.log("***Project Service***");
+  console.log(result)
+  console.log("----- END project service -----")
+  return result;
+};
 
 const projectService = {
   getProjects,
@@ -109,6 +132,8 @@ const projectService = {
   createTicketComment,
   createTicketUpload,
   updateProject,
-  updateTicket
+  updateTicket,
+  updateTicketComment,
+  updateTicketUpload
 };
 export default projectService;

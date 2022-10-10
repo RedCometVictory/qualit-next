@@ -179,11 +179,45 @@ export const updateTicket = createAsyncThunk(
   }
 );
 
+export const updateTicketComment = createAsyncThunk(
+  'project/put/Ticket-Update',
+  async ({ticket_id, comment_id, formData}, thunkAPI) => {
+    try {
+      return await projectService.updateTicketComment(ticket_id, comment_id, formData);
+    } catch (err) {
+      const message =
+        (err.response &&
+          err.response.data &&
+          err.response.data.message) ||
+        err.message ||
+        err.toString()
+      toast.error("Failed to fetch projects list.", {theme: "colored", toastId: "ThemeError"});
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const updateTicketUpload = createAsyncThunk(
+  'project/put/Ticket-Update',
+  async ({ticket_id, upload_id, formData}, thunkAPI) => {
+    try {
+      return await projectService.updateTicket(ticket_id, upload_id, formData);
+    } catch (err) {
+      const message =
+        (err.response &&
+          err.response.data &&
+          err.response.data.message) ||
+        err.message ||
+        err.toString()
+      toast.error("Failed to fetch projects list.", {theme: "colored", toastId: "ThemeError"});
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 
 
-// ------- PUT -------
-// edit comment
-// edit upload
+
+
 // ------- DELETE, only admin can do this command for security -------
 // delete project, ticket, upload, comment, or remove user (as a member) from the project
 
