@@ -1,6 +1,16 @@
 import { getData, postData, p, deleteData } from '@/utils/fetchData';
 
-const getProjects = async() => {
+const getDashboardInfo = async () => {
+  const res = await getData(`/dashboard`);
+  const result = res.data;
+  localStorage.setItem("qual__projects", JSON.stringify(result.projects));
+  console.log("***Project Service***");
+  console.log(result)
+  console.log("----- END project service -----")
+  return result;
+};
+
+const getProjects = async () => {
   const res = await getData(`/projects`);
   const result = res.data;
   localStorage.setItem("qual__projects", JSON.stringify(result.projects));
@@ -10,7 +20,7 @@ const getProjects = async() => {
   return result;
 };
 
-const getProject = async(project_id) => {
+const getProject = async (project_id) => {
   // TODO: get project detail and all tickets belonging to this project, place into tickets [] and project into {}
   const res = await getData(`/projects/${project_id}`);
   const result = res.data;
@@ -20,7 +30,8 @@ const getProject = async(project_id) => {
   console.log("----- END project service -----")
   return result;
 };
-const getTicket = async(ticket_id) => {
+
+const getTicket = async (ticket_id) => {
   // TODO: get ticket detail (place into ticket: {}) ALSO, get all comments and uplaods belonging to this indiv ticket (place into comments [] and uploads [] respectively)
   const res = await getData(`/tickets/${ticket_id}`);
   const result = res.data;
@@ -31,7 +42,7 @@ const getTicket = async(ticket_id) => {
   return result;
 };
 
-const createProject = async(formData) => {
+const createProject = async (formData) => {
   const res = await postData(`/projects`, formData);
   const result = res.data;
   // localStorage.setItem("qual__projects", JSON.stringify(result.project));
@@ -42,7 +53,7 @@ const createProject = async(formData) => {
   return result;
 };
 
-const createTicket = async(formData) => {
+const createTicket = async (formData) => {
   const res = await postData(`/tickets`, formData);
   const result = res.data;
   // localStorage.setItem("qual__project", JSON.stringify(result.project));
@@ -53,7 +64,7 @@ const createTicket = async(formData) => {
   return result;
 };
 
-const createTicketComment = async(ticket_id, formData) => {
+const createTicketComment = async (ticket_id, formData) => {
   const res = await postData(`/tickets/${ticket_id}/comment`, formData);
   const result = res.data;
   // localStorage.setItem("qual__project", JSON.stringify(result.project));
@@ -64,7 +75,7 @@ const createTicketComment = async(ticket_id, formData) => {
   return result;
 };
 
-const createTicketUpload = async(ticket_id, formData) => {
+const createTicketUpload = async (ticket_id, formData) => {
   // TODO: extract the form data image into via multipart/form
   let servicedData = await createUpdateUploadForm(formData);
   const res = await postData(`/tickets/${ticket_id}/upload`, servicedData);
@@ -77,7 +88,7 @@ const createTicketUpload = async(ticket_id, formData) => {
   return result;
 };
 
-const updateProject = async(project_id, formData) => {
+const updateProject = async (project_id, formData) => {
   const res = await putData(`/projects/${project_id}`, formData);
   const result = res.data;
   // localStorage.setItem("qual__project", JSON.stringify(result.project));
@@ -88,7 +99,7 @@ const updateProject = async(project_id, formData) => {
   return result;
 };
 
-const updateTicket = async(ticket_id, formData) => {
+const updateTicket = async (ticket_id, formData) => {
   const res = await putData(`/tickets/${ticket_id}`, formData);
   const result = res.data;
   // localStorage.setItem("qual__project", JSON.stringify(result.project));
@@ -99,7 +110,7 @@ const updateTicket = async(ticket_id, formData) => {
   return result;
 };
 
-const updateTicketComment = async(ticket_id, comment_id, formData) => {
+const updateTicketComment = async (ticket_id, comment_id, formData) => {
   const res = await putData(`/tickets/${ticket_id}/comment/${comment_id}`, formData);
   const result = res.data;
   // localStorage.setItem("qual__project", JSON.stringify(result.project));
@@ -110,13 +121,70 @@ const updateTicketComment = async(ticket_id, comment_id, formData) => {
   return result;
 };
 
-const updateTicketUpload = async(ticket_id, upload_id, formData) => {
+const updateTicketUpload = async (ticket_id, upload_id, formData) => {
   // TODO: extract the form data image into via multipart/form
   let servicedData = await createUpdateUploadForm(formData);
   const res = await putData(`/tickets/${ticket_id}/upload/${upload_id}`, servicedData);
   const result = res.data;
   // localStorage.setItem("qual__project", JSON.stringify(result.project));
   // TODO: place newly created ticket upload ointo uploads [] and save new state into LS qual__project
+  console.log("***Project Service***");
+  console.log(result)
+  console.log("----- END project service -----")
+  return result;
+};
+
+const deleteProject = async (project_id) => {
+  const res = await deleteData(`/projects/${project_id}/delete`);
+  const result = res.data;
+  // TODO: if (localStorage.getItem("qual__project")) { if id of project matches the project id to be deleted then remove the data from LS }
+  // localStorage.setItem("qual__project", JSON.stringify(result.project));
+  console.log("***Project Service***");
+  console.log(result)
+  console.log("----- END project service -----")
+  return result;
+};
+
+const deleteTicket = async (ticket_id) => {
+  // TODO: ensure only ADMIN or PROJ MANAGER can delete a ticket
+  // TODO: if ticket is deleted then delete all comments and uploads belonging to the ticket
+  const res = await deleteData(`/projects/${ticket_id}/delete`);
+  const result = res.data;
+  // TODO: if (localStorage.getItem("qual__project")) { if id of project matches the project id to be deleted then remove the data from LS }
+  // localStorage.setItem("qual__project", JSON.stringify(result.project));
+  console.log("***Project Service***");
+  console.log(result)
+  console.log("----- END project service -----")
+  return result;
+};
+
+const deleteTicketComment = async (ticket_id, comment_id) => {
+  const res = await deleteData(`/projects/${ticket_id}/comment/${comment_id}/delete`);
+  const result = res.data;
+  // TODO: if (localStorage.getItem("qual__project")) { if id of project matches the project id to be deleted then remove the data from LS }
+  // localStorage.setItem("qual__project", JSON.stringify(result.project));
+  console.log("***Project Service***");
+  console.log(result)
+  console.log("----- END project service -----")
+  return result;
+};
+
+const deleteTicketUpload = async (ticket_id, upload_id) => {
+  const res = await deleteData(`/projects/${ticket_id}/upload/${upload_id}/delete`);
+  const result = res.data;
+  // TODO: if (localStorage.getItem("qual__project")) { if id of project matches the project id to be deleted then remove the data from LS }
+  // localStorage.setItem("qual__project", JSON.stringify(result.project));
+  console.log("***Project Service***");
+  console.log(result)
+  console.log("----- END project service -----")
+  return result;
+};
+
+const deleteUser = async (user_id) => {
+  // TODO: user can delete their own acccount, admin or projet manager can only ban account
+  const res = await deleteData(`/users/${user_id}`);
+  const result = res.data;
+  // localStorage.setItem("qual__project", JSON.stringify(result.project));
   console.log("***Project Service***");
   console.log(result)
   console.log("----- END project service -----")
@@ -134,6 +202,11 @@ const projectService = {
   updateProject,
   updateTicket,
   updateTicketComment,
-  updateTicketUpload
+  updateTicketUpload,
+  deleteProject,
+  deleteTicket,
+  deleteTicketComment,
+  deleteTicketUpload,
+  deleteUser
 };
 export default projectService;
