@@ -17,6 +17,24 @@ const initialState = {
   allowReset: false
 };
 
+export const getDashboardInfo = createAsyncThunk(
+  'project/get/dashboard',
+  async (_, thunkAPI) => {
+    try {
+      return await projectService.getDashbaordInfo();
+    } catch (err) {
+      const message =
+        (err.response &&
+          err.response.data &&
+          err.response.data.message) ||
+        err.message ||
+        err.toString()
+      toast.error("Failed to fetch projects list.", {theme: "colored", toastId: "ThemeError"});
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const getProjects = createAsyncThunk(
   'project/get/All-Projects',
   async (_, thunkAPI) => {
@@ -215,11 +233,96 @@ export const updateTicketUpload = createAsyncThunk(
   }
 );
 
+export const deleteProject = createAsyncThunk(
+  'project/delete/Project-Delete',
+  async (project_id, thunkAPI) => {
+    try {
+      return await projectService.deleteProject(project_id);
+    } catch (err) {
+      const message =
+        (err.response &&
+          err.response.data &&
+          err.response.data.message) ||
+        err.message ||
+        err.toString()
+      toast.error("Failed to fetch projects list.", {theme: "colored", toastId: "ThemeError"});
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 
+export const deleteTicket = createAsyncThunk(
+  'project/delete/Ticket-Delete',
+  async (ticket_id, thunkAPI) => {
+    try {
+      return await projectService.deleteTicket(ticket_id);
+    } catch (err) {
+      const message =
+        (err.response &&
+          err.response.data &&
+          err.response.data.message) ||
+        err.message ||
+        err.toString()
+      toast.error("Failed to fetch projects list.", {theme: "colored", toastId: "ThemeError"});
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 
+export const deleteTicketComment = createAsyncThunk(
+  'project/delete/Ticket-Comment-Delete',
+  async ({ticket_id, comment_id}, thunkAPI) => {
+    try {
+      return await projectService.deleteTicketComment(ticket_id, comment_id);
+    } catch (err) {
+      const message =
+        (err.response &&
+          err.response.data &&
+          err.response.data.message) ||
+        err.message ||
+        err.toString()
+      toast.error("Failed to fetch projects list.", {theme: "colored", toastId: "ThemeError"});
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 
-// ------- DELETE, only admin can do this command for security -------
-// delete project, ticket, upload, comment, or remove user (as a member) from the project
+export const deleteTicketUpload = createAsyncThunk(
+  'project/delete/Ticket-Upload-Delete',
+  async ({ticket_id, upload_id}, thunkAPI) => {
+    try {
+      return await projectService.deleteTicketUpload(ticket_id, upload_id);
+    } catch (err) {
+      const message =
+      (err.response &&
+          err.response.data &&
+          err.response.data.message) ||
+          err.message ||
+        err.toString()
+        toast.error("Failed to fetch projects list.", {theme: "colored", toastId: "ThemeError"});
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+  
+  
+export const deleteUser = createAsyncThunk(
+  'project/delete/User-Delete',
+  async (user_id, thunkAPI) => {
+    try {
+      return await projectService.deleteUser(user_id);
+    } catch (err) {
+      const message =
+        (err.response &&
+          err.response.data &&
+          err.response.data.message) ||
+        err.message ||
+        err.toString()
+      toast.error("Failed to fetch projects list.", {theme: "colored", toastId: "ThemeError"});
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 
 // TODO: add simple actions that clear the data of tickets array, ticket {}, comments [], and uploads {} whenever switching to approprite projects list or a new prokect or ticket details page via url, upon switching to a new page, detect if state currentlyh exosts and if so erase it via dispatching slice / reducer actions, then dispatch enw actions to retrieve the appropriate data
 const projectSlice = createSlice({
