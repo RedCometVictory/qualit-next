@@ -21,7 +21,9 @@ export const getDashboardInfo = createAsyncThunk(
   'project/get/dashboard',
   async (_, thunkAPI) => {
     try {
-      return await projectService.getDashbaordInfo();
+      console.log("$$$$$$ project SLCIE $$$$$");
+      return await projectService.getDashboardInfo();
+      console.log("failed to return data")
     } catch (err) {
       const message =
         (err.response &&
@@ -357,12 +359,26 @@ const projectSlice = createSlice({
     }
   },
   extraReducers: {
+    [getDashboardInfo.pending]: (state) => {
+      state.error = '';
+      state.loading = true;
+    },
+    [getDashboardInfo.fulfilled]: (state, { payload }) => {
+      state.tickets = payload.tickets;
+      state.projects = payload.projects;
+      state.loading = false;
+    },
+    [getDashboardInfo.rejected]: (state) => {
+      state.loading = false;
+      state.error = 'failed';
+    },
     [getProjects.pending]: (state) => {
       state.error = '';
       state.loading = true;
     },
     [getProjects.fulfilled]: (state, { payload }) => {
       state.projects = payload.projects;
+      state.loading = false;
     },
     [getProjects.rejected]: (state) => {
       state.loading = false;
@@ -375,6 +391,7 @@ const projectSlice = createSlice({
     [getProject.fulfilled]: (state, { payload }) => {
       state.project = payload.project;
       state.tickets = payload.tickets;
+      state.loading = false;
     },
     [getProject.rejected]: (state) => {
       state.loading = false;

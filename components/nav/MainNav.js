@@ -19,7 +19,7 @@ import Logo from '../UI/Logo';
 const MainNav = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { isAuthenticated } = useSelector(state => state.auth);
+  const { isAuthenticated, user, loading: authLoading } = useSelector(state => state.auth);
   const [hasMounted, setHasMounted] = useState(false);
   const status = {
     roleOne: 'Admin',
@@ -110,6 +110,17 @@ const MainNav = () => {
   return (
     <header className="nav">
       <ModeButton />
+      {user !== null && (
+        <div className="nav__user">
+          <span>Signed In: </span>
+          <span>{user?.username} | {user?.role}</span> 
+        </div>
+      )}
+
+      {authLoading && (
+        <div className="">Loading auth info...</div>
+      )}
+
       <nav className='nav__menu'>
         <Logo />
         <ul className="nav__links">

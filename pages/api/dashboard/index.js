@@ -8,11 +8,18 @@ export const config = {
 };
 
 const handler = nc({onError, onNoMatch});
-handler.use(verifAuth, authRoleDev);
+// handler.use(verifAuth, authRoleDev);
+handler.use(verifAuth);
 
 // get a list of tickets for dashboard
 handler.get(async (req, res) => {
+  console.log("########## BACKEND ##########");
+  console.log("dasboard backend");
   const { id, role } = req.user;
+  console.log("|/\/\/\/\/\/\/\/\/\/\|")
+  console.log("req.user")
+  console.log(req.user)
+  console.log("|\/\/\/\/\/\/\/\/\/\/|")
   let dashboardInfo;
   let myTickets;
   let myProjects;
@@ -35,8 +42,9 @@ handler.get(async (req, res) => {
     // get all tickets assigned to && tickets belong to projects dev is working for
     // = pool.query('SELECT P.id, P.title, P.owner, P.created_at, T.id, T.title, T.type, T.created_at FROM projects AS P JOIN tickets AS T WHERE P.id = T.id LIMIT 25;', [slug]);
     // *** consider using COUNT() to get the values of how many times a value is set (per bar and pie chart information to be formed)
-    myTickets = await pool.query('SELECT id, title, status, priority, type, created_at FROM tickets AS T WHERE P.id = T.id LIMIT 25;', [slug]);
-    myProjects = await pool.query("SELECT P.id, P.title, P.owner, P.created_at, M.status FROM projects JOIN members AS M ON P.id = M.project_id WHERE M.user_id = $1 AND M.status = 'assigned';", [id]);
+    console.log("developer bloack")
+    myTickets = await pool.query('SELECT id, title, status, priority, type, created_at FROM tickets WHERE user_id = $1 ORDER BY created_at DESC LIMIT 25;', [id]);
+    myProjects = await pool.query("SELECT P.id, P.title, P.owner, P.created_at, M.status FROM projects AS P JOIN members AS M ON P.id = M.project_id WHERE M.user_id = $1 AND M.status = 'assigned' LIMIT 25;", [id]);
     // dashboardInfo = await pool.query(
       // "SELECT P.id, P.title, P.owner, P.created_at, M.status FROM projects JOIN members AS M ON P.id = M.project_id WHERE M.user_id = $1 AND M.status = 'assigned';", [id]
       // "SELECT P.id, P.title, P.owner, P.created_at, M.status FROM projects JOIN members AS M ON P.id = M.project_id WHERE M.user_id = $1 AND M.status = 'assigned';", [id]
@@ -57,6 +65,7 @@ handler.get(async (req, res) => {
 
   };
   if (role === 'Project Manager') {
+    console.log("Project Manager Block")
     // ** original query
     // myProjects = pool.query("SELECT P.id, P.title, P.owner, P.created_at, M.status FROM projects JOIN members AS M ON P.id = M.project_id WHERE M.user_id = $1;", [id]);
     // ** this query combines three different tables
@@ -71,9 +80,9 @@ handler.get(async (req, res) => {
     // only gets tickets for projects they manage. They can view all tikcets assigned to any/all developers they assigned to a project they manage
     // = pool.query('SELECT P.id, P.title, P.owner, P.created_at, T.id, T.title, T.type, T.created_at FROM projects AS P JOIN tickets AS T WHERE P.id = T.project_id AND  LIMIT 25;', [slug]);
     myProjects = await pool.query(
-      "SELECT P.id, P.title, P.owner, P.created_at FROM projects AS P JOIN members AS M ON P.id = M.project_id WHERE M.user_id = $1;", [id]
+      "SELECT P.id, P.title, P.owner, P.created_at FROM projects AS P JOIN members AS M ON P.id = M.project_id WHERE M.user_id = $1 ORDER BY created_by DESC LIMIT 25;", [id]
     );
-    myTicketsQuery = "SELECT T.id, T.title, T.type, T.priority, T.status, T.created_at FROM tickets AS T WHERE T.project_id = $1;";
+    myTicketsQuery = "SELECT T.id, T.title, T.type, T.priority, T.status, T.created_at FROM tickets AS T WHERE T.project_id = $1 LIMIT 25;";
     // queryPromise, find tickets based in T.project_id
     for (let i = 0; i < myProjects.rows.length; i++) {
       const myTicketsPromise = await queryPromise(myTicketsQuery, myProjects.rows[i].id);
@@ -84,8 +93,9 @@ handler.get(async (req, res) => {
     // );
   };
   if (role === 'Admin') {
+    console.log("Admin Block")
     // ** original queries
-    myProjects = await pool.query("SELECT id, title, owner, created_at FROM projects ORDER DESC;");
+    myProjects = await pool.query("SELECT id, title, owner, created_at FROM projects ORDER BY created_at DESC LIMIT 25;");
     myTickets = await pool.query('SELECT id, title, status, priority, type, created_at FROM tickets LIMIT 25;');
     // dashboardInfo = await pool.query(
       // "SELECT "
@@ -96,6 +106,9 @@ handler.get(async (req, res) => {
   //   throw new Error("Failed to get all columns belonging to this board.");
   // }
 
+  console.log("final results")
+  console.log(myTickets)
+  console.log(myProjects)
   return res.status(200).json({
     status: "Retrieved dashboard information.",
     data: {

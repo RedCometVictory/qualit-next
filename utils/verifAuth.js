@@ -1,16 +1,18 @@
 import jwt from 'jsonwebtoken';
-require('dotenv').config();
+// require('dotenv').config();
 const JWT_SECRET = process.env.JWT_SECRET;
 
 const verifAuth = async (req, res, next) => {
   const { qual__token } = req.cookies;
+  console.log("req.cookies")
+  console.log(req.cookies)
   if (!qual__token) {
     // return res.status(401).json({ error: "No token. Authorization denied" });
-    return res.status(401).send("No token. Authorization denied.");
+    return res.status(401).send("No token or auth cookie. Authorization denied.");
   };
 
   try {
-    jwt.verify(blog__token, JWT_SECRET, (err, decoded) => {
+    jwt.verify(qual__token, JWT_SECRET, (err, decoded) => {
       if (err) {
         // return res.status(401).json({ errors: [{ msg: "User unauthenticated." }] });
         return res.status(401).send("User unauthenticated.");
@@ -37,6 +39,9 @@ const authRoleAdmin = (req, res, next) => {
 
 const authRoleDev = (req, res, next) => {
   const { role } = req.user;
+  console.log("@@@@@ Checking user role @@@@@")
+  console.log(role)
+  console.log("----role----end")
   if (req.user && (role === 'Developer' || role === 'Admin')) {
     next();
   } else {

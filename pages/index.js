@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from  'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from "next/router";
 import { toast } from 'react-toastify';
-// import { loginUser } from '@/redux/features/auth/authSlice';
+import { getDashboardInfo } from '@/redux/features/project/projectSlice';
 import MainLayout from "@/components/layouts/MainLayout";
 import ButtonUI from '@/components/UI/ButtonUI';
 import { Card, Input, InputLabel, FormGroup, CardContent, Typography } from "@mui/material";
@@ -12,24 +12,36 @@ import MyProjectsList from '@/components/dashBoard/MyProjectsList';
 import MyTicketsList from '@/components/dashBoard/MyTicketsList';
 
 const Home = () => {
+  const dispatch = useDispatch();
   const effectRan = useRef(false);
-  const { isAuthenticated } = useSelector(state => state.auth);
+  const { isAuthenticated, user, loading: authLoading } = useSelector(state => state.auth);
+  const { projects, tickets, loading: projectLoading } = useSelector(state => state.project);
   const [hasMounted, setHasMounted] = useState(false);
   
-  // useEffect(() => {
-  //   if (effectRan.current === true || process.env.NEXT_PUBLIC_NODE_ENV !== 'development') {
-  //   //   console.log('effectRan-inner')
-  //   //   console.log(effectRan)
-  //   // };
-  //   // return () => {
-  //   //   console.log('unmounted')
-  //   //   effectRan.current = true;
-  //   //   console.log('effectRan-02')
-  //   //   console.log(effectRan)
-  //   // };
-  //   }
-  // }, []);
-  
+  useEffect(() => {
+    dispatch(getDashboardInfo());
+    console.log("****projData****")
+    console.log(tickets)
+    console.log(projects)
+    console.log("-=-=-=-=-=-=-=-=-=-")
+    // console.log(authLoading)
+    console.log(projectLoading)
+    console.log("-=-=-=-=-=-=-=-=-=-")
+
+    console.log("****projData**END**")
+    // if (effectRan.current === true || process.env.NEXT_PUBLIC_NODE_ENV !== 'development') {
+    // //   console.log('effectRan-inner')
+    // //   console.log(effectRan)
+    // // };
+    // // return () => {
+    // //   console.log('unmounted')
+    // //   effectRan.current = true;
+    // //   console.log('effectRan-02')
+    // //   console.log(effectRan)
+    // // };
+    // }
+  }, [dispatch]);
+
   useEffect(() => {
     setHasMounted(true);
   }, []);
@@ -37,6 +49,40 @@ const Home = () => {
   if (!hasMounted) {
     return null;
   }
+  
+  // TODO: filter through tickets array for values of the diff status types and priority types, split the resulting values into priorityStats and typeStats and push the ticket array itself into the "My tickets comp"
+  let ticketStatusCount = {
+    statusNew: 0,
+    statusOpen: 0,
+    statusOnHold: 0,
+    statusInProgress: 0,
+    statusClosed: 0,
+    statusUnconfirmed: 0,
+  };
+  let ticketPriorityCount = {
+    priorityUrgent: 0,
+    priorityHigh: 0,
+    priorityMedium: 0,
+    priorityLow: 0,
+    priorityNone: 0,
+  };
+  if (tickets && tickets.length > 0) {
+    ticketStatusCount.statusNew = tickets.filter(indx => indx.status === "New").length;
+    ticketStatusCount.statusOpen = tickets.filter(indx => indx.status === "Open").length;
+    ticketStatusCount.statusOnHold = tickets.filter(indx => indx.status === "On Hold").length;
+    ticketStatusCount.statusInProgress = tickets.filter(indx => indx.status === "In Progress").length;
+    ticketStatusCount.statusClosed = tickets.filter(indx => indx.status === "Closed").length;
+    ticketStatusCount.statusUnconfirmed = tickets.filter(indx => indx.status === "Unconfirmed").length;
+    ticketPriorityCount.priorityUrgent = tickets.filter(indx => indx.priority === "Urgent").length;
+    ticketPriorityCount.priorityHigh = tickets.filter(indx => indx.priority === "High").length;
+    ticketPriorityCount.priorityMedium = tickets.filter(indx => indx.priority === "Medium").length;
+    ticketPriorityCount.priorityLow = tickets.filter(indx => indx.priority === "Low").length;
+    ticketPriorityCount.priorityNone = tickets.filter(indx => indx.priority === "None").length;
+  };
+  console.log("*****TICKET STATUS COUNT*****")
+  console.log(ticketStatusCount)
+  console.log("*****TICKET PRIORITY COUNT*****")
+  console.log(ticketPriorityCount)
 
   return !isAuthenticated ? (
     <section className="dash">
@@ -70,7 +116,11 @@ const Home = () => {
             </div>
           </div>
           <div className="dash__detail">
-            <PieChart />
+            {projectLoading ? (
+              <div className="empty">Loading...</div> 
+            ) : (
+              <PieChart priorityCount={ticketPriorityCount} />
+            )}
           </div>
         </Card>
         <Card className="dash__card">
@@ -80,9 +130,14 @@ const Home = () => {
             </div>
           </div>
           <div className="dash__detail">
-            <div className="dash__list">
-              {/* {ticket.tickets.map((ticket, index) => <MyTicketsList ticket={ticket} key={index} />
-              )} */}
+            <div className="dash__list list">
+              {projectLoading ? (
+                <div className="empty">Loading...</div>
+              ) : tickets.length > 0 ? (
+                <MyTicketsList tickets={tickets} />
+              ) : (
+                <div className="empty">Not currently assigned any tickets.</div>
+              )}
             </div>
           </div>
         </Card>
@@ -93,10 +148,14 @@ const Home = () => {
             </div>
           </div>
           <div className="dash__detail">
-            <div className="dash__list">
-              {/* {project.projects.map((project, index) => (
-                <MyProjectsList project={project} key={index} />
-              ))} */}
+            <div className="dash__list list">
+              {projectLoading ? (
+                <div className="empty">Loading...</div>
+              ) : projects.length > 0 ? (
+                <MyProjectsList projects={projects} />
+              ) : (
+                <div className="empty">No projects currently exist.</div>
+              )}
             </div>
           </div>
         </Card>
@@ -108,7 +167,11 @@ const Home = () => {
           </div>
           <div className="dash__detail">
             <div className="dash__list">
-              <BarChart />
+              {projectLoading ? (
+                <div className="empty">Loading...</div> 
+              ) : (
+                <BarChart statusCount={ticketStatusCount} />
+              )}
             </div>
           </div>
         </Card>
