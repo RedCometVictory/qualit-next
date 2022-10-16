@@ -1,5 +1,5 @@
 const baseUrl = process.env.NEXT_PUBLIC_DOMAIN;
-console.log("^^^^^^^^^^")
+console.log("^^^^^Fetching Funcs^^^^^")
 console.log(baseUrl)
 
 export const getData = async (url) => {
@@ -39,7 +39,7 @@ export const postData = async (url, postData) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(postData)
-  });
+  }); 
   const data = await res.json();
   return data;
 };

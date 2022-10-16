@@ -4,7 +4,9 @@ import { Pie } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const PieChart = () => {
+const PieChart = ({priorityCount}) => {
+  console.log("PieCHART")
+  console.log(priorityCount)
   const [graph, setGraph] = useState({
     labels: [], data: []
   });
@@ -12,23 +14,23 @@ const PieChart = () => {
   const graphData = [
     {
       label: 'Urgent',
-      value: 65
+      value: priorityCount.priorityUrgent
     },
     {
       label: 'High',
-      value: 59
+      value: priorityCount.priorityHigh
     },
     {
       label: 'Medium',
-      value: 80
+      value: priorityCount.priorityMedium
     },
     {
       label: 'Low',
-      value: 81
+      value: priorityCount.priorityLow
     },
     {
       label: 'None',
-      value: 56
+      value: priorityCount.priorityNone
     }
   ];
 

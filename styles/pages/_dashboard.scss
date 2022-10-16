@@ -50,9 +50,28 @@
     @include flex(row, center, center);
     background-color: orange;
     width: 100%;
-    height: 100%;
+    // height: 100%;
+    height: 252px;
     overflow-y: scroll;
     scrollbar-width: none;
+    position: relative;
+  }
+  &__list {
+    &.list {
+      position: absolute;
+      top: 0;
+      height: inherit;
+      .empty {
+        @include flex(column, center, center);
+        height: 100%;
+      }
+    }
+  }
+  &__list-details {
+    @include flex(column, flex-start, flex-start);
+    .detail-label {
+      font-size: 0.7rem;
+    }
   }
 }
 

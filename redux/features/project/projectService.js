@@ -1,10 +1,14 @@
-import { getData, postData, p, deleteData } from '@/utils/fetchData';
+import { getData, postData, putData, deleteData } from '@/utils/fetchData';
 
 const getDashboardInfo = async () => {
-  const res = await getData(`/dashboard`);
-  const result = res.data;
-  localStorage.setItem("qual__projects", JSON.stringify(result.projects));
+  console.log("|^|^|^|^|^|^|^|^|^|^|^|^|^|^|^|^|^|^|^|^|^|^|^|")
   console.log("***Project Service***");
+  console.log("*** get res***");
+  const res = await getData(`/dashboard`);
+  console.log("res");
+  console.log(res);
+  const result = res.data;
+  // localStorage.setItem("qual__projects", JSON.stringify(result.projects));
   console.log(result)
   console.log("----- END project service -----")
   return result;
@@ -192,6 +196,7 @@ const deleteUser = async (user_id) => {
 };
 
 const projectService = {
+  getDashboardInfo,
   getProjects,
   getProject,
   getTicket,

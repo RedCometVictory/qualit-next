@@ -4,6 +4,7 @@ import authReducer from "./features/auth/authSlice";
 import boardReducer from "./features/board/boardSlice";
 import cardReducer from "./features/card/cardSlice";
 import columnReducer from "./features/column/columnSlice";
+import projectReducer from "./features/project/projectSlice";
 import themeReducer from "./features/theme/themeSlice";
 // import userReducer from "./features/user/userSlice";
 
@@ -14,8 +15,8 @@ const store = configureStore({
     card: cardReducer,
     column: columnReducer,
     theme: themeReducer,
+    project: projectReducer,
     // order: orderReducer,
-    // product: productReducer,
     // slide: slideReducer,
     // stripe: stripeReducer,
     // user: userReducer
