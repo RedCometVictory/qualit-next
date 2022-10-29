@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { HYDRATE } from "next-redux-wrapper";
 import { toast } from 'react-toastify';
 import themeService from "./themeService";
 
@@ -84,38 +85,44 @@ export const themeSlice = createSlice({
       state.theme = 'light'
     }
   },
-  extraReducers: (builder) => {
-    builder
-      .addCase(globalTheme.pending, (state) => {
-        state.loading = true
-      })
-      .addCase(globalTheme.fulfilled, (state, action) => {
-        state.theme = action.payload;
-        // toast.success("Theme changed!", {theme: "colored", toastId: "themeSetSuccess"});
-      })
-      .addCase(globalTheme.rejected, (state, action) => {
-        state.error = action.payload;
-      })
-      // .addCase(unsplashTheme.pending, (state) => {
-      //   state.loading = true
-      // })
-      .addCase(unsplashTheme.fulfilled, (state, action) => {
-        state.drawer = action.payload;
-        // toast.success("Theme changed!", {theme: "colored", toastId: "themeSetSuccess"});
-      })
-      // .addCase(unsplashTheme.rejected, (state, action) => {
-      //   state.error = action.payload;
-      // })
-      // .addCase(backgroundImageTheme.pending, (state) => {
-      //   state.loading = true
-      // })
-      // .addCase(backgroundImageTheme.fulfilled, (state, action) => {
-      //   state.backgroundImage = action.payload;
-      //   // toast.success("Theme changed!", {theme: "colored", toastId: "themeSetSuccess"});
-      // })
-      // .addCase(backgroundImageTheme.rejected, (state, action) => {
-      //   state.error = action.payload;
-      // })
+  extraReducers: {
+    [HYDRATE]: (state, action) => {
+      console.log("HYDRATE", action.payload);
+      return {
+        ...state,
+        ...action.payload.project
+      }
+    },
+    [globalTheme.pending]: (state) => {
+      state.loading = true
+    },
+    [globalTheme.fulfilled]: (state, action) => {
+      state.theme = action.payload;
+      // toast.success("Theme changed!", {theme: "colored", toastId: "themeSetSuccess"});
+    },
+    [globalTheme.rejected]: (state, action) => {
+      state.error = action.payload;
+    },
+    // .addCase(unsplashTheme.pending, (state) => {
+    //   state.loading = true
+    // })
+    [unsplashTheme.fulfilled]: (state, action) => {
+      state.drawer = action.payload;
+      // toast.success("Theme changed!", {theme: "colored", toastId: "themeSetSuccess"});
+    },
+    // .addCase(unsplashTheme.rejected, (state, action) => {
+    //   state.error = action.payload;
+    // })
+    // .addCase(backgroundImageTheme.pending, (state) => {
+    //   state.loading = true
+    // })
+    // .addCase(backgroundImageTheme.fulfilled, (state, action) => {
+    //   state.backgroundImage = action.payload;
+    //   // toast.success("Theme changed!", {theme: "colored", toastId: "themeSetSuccess"});
+    // })
+    // .addCase(backgroundImageTheme.rejected, (state, action) => {
+    //   state.error = action.payload;
+    // })
   }
 });
 export const { themeReset, clearTheme } = themeSlice.actions;

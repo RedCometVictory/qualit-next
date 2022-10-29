@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { HYDRATE } from "next-redux-wrapper";
 import { toast } from 'react-toastify';
 import columnService from './columnService';
 
@@ -118,6 +119,13 @@ const columnSlice = createSlice({
     }
   },
   extraReducers: {
+    [HYDRATE]: (state, action) => {
+      console.log("HYDRATE", action.payload);
+      return {
+        ...state,
+        ...action.payload.column
+      }
+    },
     [fetchColumns.pending]: (state) => {
       state.status = 'pending';
       state.isRequested = true;

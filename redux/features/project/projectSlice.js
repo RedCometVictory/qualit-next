@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { HYDRATE } from "next-redux-wrapper";
 import { toast } from 'react-toastify';
 import projectService from './projectService';
 
@@ -10,8 +11,7 @@ const initialState = {
   tickets: [],
   ticket: {},
   comments: [],
-  uploads: [],
-  upload: {}, // may not need
+  history: [],
   loading: false,
   error: '',
   allowReset: false
@@ -359,6 +359,13 @@ const projectSlice = createSlice({
     }
   },
   extraReducers: {
+    [HYDRATE]: (state, action) => {
+      console.log("HYDRATE", action.payload);
+      return {
+        ...state,
+        ...action.payload.project
+      }
+    },
     [getDashboardInfo.pending]: (state) => {
       state.error = '';
       state.loading = true;
@@ -394,6 +401,20 @@ const projectSlice = createSlice({
       state.loading = false;
     },
     [getProject.rejected]: (state) => {
+      state.loading = false;
+      state.error = 'failed';
+    },
+    [getTicket.pending]: (state) => {
+      state.error = '';
+      state.loading = true;
+    },
+    [getTicket.fulfilled]: (state, { payload }) => {
+      state.ticket = payload.ticket;
+      state.comments = payload.comments;
+      state.history = payload.history;
+      state.loading = false;
+    },
+    [getTicket.rejected]: (state) => {
       state.loading = false;
       state.error = 'failed';
     },

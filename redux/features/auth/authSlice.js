@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { HYDRATE } from "next-redux-wrapper";
 import { toast } from "react-toastify";
 import authService from "./authService";
 
@@ -207,157 +208,162 @@ export const authSlice = createSlice({
       state.user = null
     }
   },
-  extraReducers: (builder) => {
-    builder
-      .addCase(demoUser.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(demoUser.fulfilled, (state, action) => {
-        state.token = action.payload.token;
-        state.loading = false;
-        state.isAuthenticated = true;
-        state.user = action.payload.user;
-        toast.success("Welcome!", {theme: "colored", toastId: "welcomeToastId"});
-      })
-      .addCase(demoUser.rejected, (state, action) => {
-        state.loading = false;
-        state.isAuthenticated = false;
-        state.user = null;
-        state.error = true;
-      })
-      .addCase(loadUser.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(loadUser.fulfilled, (state, action) => {
-        state.loading = false;
-        state.isAuthenticated = true;
-        state.usero = action.payload.user;
-      })
-      .addCase(loadUser.rejected, (state, action) => {
-        state.loading = false;
-        state.isAuthenticated = false;
-        state.user = null;
-        state.error = true;
-      })
-      .addCase(registerUser.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(registerUser.fulfilled, (state, action) => {
-        state.token = action.payload.token;
-        state.loading = false;
-        state.isAuthenticated = true;
-        state.user = action.payload.user;
-        toast.success("Successfully registered. Welcome.", {theme: "colored", toastId: "registerSuccessToastId"});
-      })
-      .addCase(registerUser.rejected, (state, action) => {
-        state.loading = false;
-        state.isAuthenticated = false;
-        state.user = null;
-        state.error = true;
-      })
-      .addCase(loginUser.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(loginUser.fulfilled, (state, action) => {
-        state.token = action.payload.token;
-        state.loading = false;
-        state.isAuthenticated = true;
-        state.user = action.payload.user;
-        toast.success("Welcome!", {theme: "colored", toastId: "welcomeToastId"});
-      })
-      .addCase(loginUser.rejected, (state, action) => {
-        state.loading = false;
-        state.isAuthenticated = false;
-        state.user = null;
-        state.error = true;
-      })
-      .addCase(logout.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(logout.fulfilled, (state) => {
-        state.token = null;
-        state.loading = false;
-        state.isAuthenticated = false;
-        state.user = null;
-      })
-      .addCase(logout.rejected, (state, action) => {
-        state.loading = false;
-        state.isAuthenticated = false;
-        state.user = null;
-        state.error = true;
-      })
-      .addCase(deleteUser.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(deleteUser.fulfilled, (state, action) => {
-        state.token = null;
-        state.loading = false;
-        state.isAuthenticated = false;
-        state.user = null;
-        toast.success("Your account has been deleted.", {theme: "colored", toastId: "deleteAcctToastId"});
-      })
-      .addCase(deleteUser.rejected, (state, action) => {
-        state.loading = false;
-        state.isAuthenticated = false;
-        state.user = null;
-        state.error = true;
-      })
-      .addCase(forgotPassword.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(forgotPassword.fulfilled, (state, action) => {
-        state.status = action.payload;
-        state.loading = false;
-        state.allowReset = false;
-        toast.success("Password reset link sent to your email.", {theme: "colored", toastId: "forgotPasswordToastId"});
-      })
-      .addCase(forgotPassword.rejected, (state, action) => {
-        state.loading = false;
-        state.allowReset = false;
-        state.error = action.payload;
-      })
-      .addCase(verifyPassword.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(verifyPassword.fulfilled, (state, action) => {
-        state.status = action.payload.status;
-        state.loading = false;
-        state.allowReset = true;
-        toast.success("Reset link valid.", {theme: "colored", toastId: "resetLinkToastId"});
-      })
-      .addCase(verifyPassword.rejected, (state, action) => {
-        state.loading = false;
-        state.allowReset = false;
-        state.error = action.payload;
-      })
-      .addCase(resetPassword.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(resetPassword.fulfilled, (state, action) => {
-        state.status = action.payload.status;
-        state.loading = false;
-        state.allowReset = false;
-        toast.success("Password reset. Please login using new password.", {theme: "colored", toastId: "resetValidToastId"});
-      })
-      .addCase(resetPassword.rejected, (state, action) => {
-        state.loading = false;
-        state.allowReset = false;
-        state.error = action.payload;
-      })
-      .addCase(refreshAccessToken.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(refreshAccessToken.fulfilled, (state, action) => {
-        state.token = action.payload;
-        state.loading = false;
-      })
-      .addCase(refreshAccessToken.rejected, (state, action) => {
-        state.loading = false;
-        state.allowReset = false;
-        state.error = action.payload;
-      })
+  extraReducers: {
+    [HYDRATE]: (state, action) => {
+      console.log("HYDRATE", action.payload);
+      return {
+        ...state,
+        ...action.payload.auth
+      }
+    },
+    [demoUser.pending]: (state) => {
+      state.loading = true;
+    },
+    [demoUser.fulfilled]: (state, { payload }) => {
+      state.token = payload.token;
+      state.loading = false;
+      state.isAuthenticated = true;
+      state.user = payload.user;
+      toast.success("Welcome!", {theme: "colored", toastId: "welcomeToastId"});
+    },
+    [demoUser.rejected]: (state) => {
+      state.loading = false;
+      state.isAuthenticated = false;
+      state.user = null;
+      state.error = true;
+    },
+    [loadUser.pending]: (state) => {
+      state.loading = true;
+    },
+    [loadUser.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.isAuthenticated = true;
+      state.user = payload.user;
+    },
+    [loadUser.rejected]: (state) => {
+      state.loading = false;
+      state.isAuthenticated = false;
+      state.user = null;
+      state.error = true;
+    },
+    [registerUser.pending]: (state) => {
+      state.loading = true;
+    },
+    [registerUser.fulfilled]: (state, { payload }) => {
+      state.token = payload.token;
+      state.loading = false;
+      state.isAuthenticated = true;
+      state.user = payload.user;
+      toast.success("Successfully registered. Welcome.", {theme: "colored", toastId: "registerSuccessToastId"});
+    },
+    [registerUser.rejected]: (state) => {
+      state.loading = false;
+      state.isAuthenticated = false;
+      state.user = null;
+      state.error = true;
+    },
+    [loginUser.pending]: (state) => {
+      state.loading = true;
+    },
+    [loginUser.fulfilled]: (state, { payload }) => {
+      state.token = payload.token;
+      state.loading = false;
+      state.isAuthenticated = true;
+      state.user = payload.user;
+      toast.success("Welcome!", {theme: "colored", toastId: "welcomeToastId"});
+    },
+    [loginUser.rejected]: (state) => {
+      state.loading = false;
+      state.isAuthenticated = false;
+      state.user = null;
+      state.error = true;
+    },
+    [logout.pending]: (state) => {
+      state.loading = true;
+    },
+    [logout.fulfilled]: (state) => {
+      state.token = null;
+      state.loading = false;
+      state.isAuthenticated = false;
+      state.user = null;
+    },
+    [logout.rejected]: (state) => {
+      state.loading = false;
+      state.isAuthenticated = false;
+      state.user = null;
+      state.error = true;
+    },
+    [deleteUser.pending]: (state) => {
+      state.loading = true;
+    },
+    [deleteUser.fulfilled]: (state, action) => {
+      state.token = null;
+      state.loading = false;
+      state.isAuthenticated = false;
+      state.user = null;
+      toast.success("Your account has been deleted.", {theme: "colored", toastId: "deleteAcctToastId"});
+    },
+    [deleteUser.rejected]: (state) => {
+      state.loading = false;
+      state.isAuthenticated = false;
+      state.user = null;
+      state.error = true;
+    },
+    [forgotPassword.pending]: (state) => {
+      state.loading = true;
+    },
+    [forgotPassword.fulfilled]: (state, action) => {
+      state.status = action.payload;
+      state.loading = false;
+      state.allowReset = false;
+      toast.success("Password reset link sent to your email.", {theme: "colored", toastId: "forgotPasswordToastId"});
+    },
+    [forgotPassword.rejected]: (state, action) => {
+      state.loading = false;
+      state.allowReset = false;
+      state.error = action.payload;
+    },
+    [verifyPassword.pending]: (state) => {
+      state.loading = true;
+    },
+    [verifyPassword.fulfilled]: (state, action) => {
+      state.status = action.payload.status;
+      state.loading = false;
+      state.allowReset = true;
+      toast.success("Reset link valid.", {theme: "colored", toastId: "resetLinkToastId"});
+    },
+    [verifyPassword.rejected]: (state, action) => {
+      state.loading = false;
+      state.allowReset = false;
+      state.error = action.payload;
+    },
+    [resetPassword.pending]: (state) => {
+      state.loading = true;
+    },
+    [resetPassword.fulfilled]: (state, action) => {
+      state.status = action.payload.status;
+      state.loading = false;
+      state.allowReset = false;
+      toast.success("Password reset. Please login using new password.", {theme: "colored", toastId: "resetValidToastId"});
+    },
+    [resetPassword.rejected]: (state, action) => {
+      state.loading = false;
+      state.allowReset = false;
+      state.error = action.payload;
+    },
+    [refreshAccessToken.pending]: (state) => {
+      state.loading = true;
+    },
+    [refreshAccessToken.fulfilled]: (state, action) => {
+      state.token = action.payload;
+      state.loading = false;
+    },
+    [refreshAccessToken.rejected]: (state, action) => {
+      state.loading = false;
+      state.allowReset = false;
+      state.error = action.payload;
+    }
   }
 });
-
 export const { authReset, clearAuth } = authSlice.actions;
 export default authSlice.reducer;

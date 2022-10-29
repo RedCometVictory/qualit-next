@@ -17,7 +17,7 @@ handler.post(async (req, res) => {
       expires: new Date(0)
     })
   );
-  res.cookie('qual_isLoggedIn', '', { expires: new Date(1) });
+  res.cookie('qual__isLoggedIn', '', { expires: new Date(1) });
   res.status(200).send({ "success": "Logged out successfully!" });
 });
 export default handler;

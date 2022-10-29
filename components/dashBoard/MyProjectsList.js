@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Grid, Typography, Divider, List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
 import { AiFillProject } from 'react-icons/ai';
 
@@ -11,7 +12,12 @@ const MyProjectsList = ({projects}) => {
           variant="h6"
           component="span"
         >
-          {project.id}
+          <Link
+            passHref
+            href={`/projects/${project.id}`}
+          >
+            {project.id}
+          </Link>
         </Typography>
         <span className="detail-label">
           [ Owner ID: ]
@@ -36,7 +42,14 @@ const MyProjectsList = ({projects}) => {
               <AiFillProject />
             </ListItemIcon>
             <ListItemText
-              primary={project.title}
+              primary={
+                <Link
+                  passHref
+                  href={`/projects/${project.id}`}
+                >
+                  {project.title}
+                </Link>
+              }
               secondary={<ListItemDetail project={project}/>}
             >
             </ListItemText>

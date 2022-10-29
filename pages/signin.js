@@ -47,7 +47,7 @@ const SignIn = () => {
     try {
      
       dispatch(loginUser(formData));
-      toast.success("Logged in successfully!");
+      // toast.success("Logged in successfully!");
     } catch (err) {
       console.error(err);
       toast.error("Failed to register. Check if email or password are valid.");

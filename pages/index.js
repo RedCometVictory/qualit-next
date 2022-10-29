@@ -19,7 +19,9 @@ const Home = () => {
   const [hasMounted, setHasMounted] = useState(false);
   
   useEffect(() => {
-    dispatch(getDashboardInfo());
+    if (isAuthenticated) {
+      dispatch(getDashboardInfo());
+    }
     console.log("****projData****")
     console.log(tickets)
     console.log(projects)
