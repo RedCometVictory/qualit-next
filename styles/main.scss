@@ -10,11 +10,13 @@
 @import './components/drawer';
 @import './components/mainNav';
 @import './components/miniNav';
+@import './components/modal';
 
 // 4 - layouts
 
 // 5 - pages
 @import './pages/dashboard';
+@import './pages/detail';
 @import './pages/boards';
 @import './pages/board';
 @import './pages/login';

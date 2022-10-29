@@ -13,18 +13,16 @@ handler.use(verifAuth);
 
 // get a list of tickets for dashboard
 handler.get(async (req, res) => {
-  const { ticketId } = req.query;
+  const { projectId } = req.query;
   const { id, role } = req.user;
-  console.log("########## BACKEND ##########");
+  console.log("########## BACKEND | GET PROJECT DATA BY ID ##########");
   console.log("|/\/\/\/\/\/\/\/\/\/\|")
-  console.log("req")
-  console.log(req)
+  console.log("req.user")
+  console.log(req.user)
   console.log("|\/\/\/\/\/\/\/\/\/\/|")
-  let ticketDetails;
-  // paginate comments and uploads
-  let ticketComments;
-  let ticketUploads;
-  let ticketHistory;
+  let projectDetails;
+  // paginate tickets
+  let projectTickets;
 
   const queryPromise = (query, ...values) => {
     return new Promise((resolve, reject) => {
@@ -38,33 +36,26 @@ handler.get(async (req, res) => {
     })
   };
 
-  ticketDetails = await pool.query("SELECT * FROM tickets WHERE id = $1;", [ticketId]);
-  ticketComments = await pool.query("SELECT * FROM messages WHERE ticket_id = $1;", [ticketId]);
-  ticketHistory = await pool.query("SELECT * FROM histories WHERE ticket_id = $1;", [ticket_id]);
-  // get upload belonging to each indiv comment if available, run through queryPromise
-  // get the ticket edit history
-  for (let i = 0; i < ticketComments.rowCount; i++) {
-    ticketUploadQuery = "SELECT * FROM uploads WHERE message_id = $1;";
-    // combine upload with respective message
-    const ticketUploadsPromise = await queryPromise(ticketUploadQuery, [ticketComments.rows[i].id]);
-    ticketComments.rows[i] = {...ticketComments.rows[i], ...ticketUploadsPromise.rows[0]}
-  };
+  projectDetails = await pool.query("SELECT * FROM projects WHERE id = $1;", [projectId]);
+  projectTickets = await pool.query("SELECT * FROM tickets WHERE project_id = $1;", [projectId]);
+  // for (let i = 0; i < ticketComments.rowCount; i++) {
+  //   ticketUploadQuery = "SELECT * FROM uploads WHERE message_id = $1;";
+  //   // combine upload with respective message
+  //   const ticketUploadsPromise = await queryPromise(ticketUploadQuery, [ticketComments.rows[i].id]);
+  //   ticketComments.rows[i] = {...ticketComments.rows[i], ...ticketUploadsPromise.rows[0]}
+  // };
     
   console.log("$$$$$$$$$$$$$$$$$$$$$$$")
   console.log("final results")
-  console.log(ticketDetails.rows)
+  console.log(projectDetails.rows)
   console.log("$$$$$$$$$$$$$$$$$$$$$$$")
-  console.log(ticketComments.rows)
-  console.log("$$$$$$$$$$$$$$$$$$$$$$$")
-  console.log(ticketHistory.rows)
-  console.log("$$$$$$$$$$$$$$$$$$$$$$$")
+  console.log(projectTickets.rows)
   console.log("$$$$$$$$$$$$$$$$$$$$$$$")
   return res.status(200).json({
     status: "Retrieved dashboard information.",
     data: {
-      ticket: ticketDetails.rows,
-      comments: ticketComments.rows,
-      history: ticketHistory.rows
+      project: projectDetails.rows,
+      tickets: projectTickets.rows
     }
   });
 });

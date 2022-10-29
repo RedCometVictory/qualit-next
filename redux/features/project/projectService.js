@@ -36,13 +36,9 @@ const getProject = async (project_id) => {
 };
 
 const getTicket = async (ticket_id) => {
-  // TODO: get ticket detail (place into ticket: {}) ALSO, get all comments and uplaods belonging to this indiv ticket (place into comments [] and uploads [] respectively)
   const res = await getData(`/tickets/${ticket_id}`);
   const result = res.data;
-  localStorage.setItem("qual__project", JSON.stringify(result.tickets));
-  console.log("***Project Service***");
-  console.log(result)
-  console.log("----- END project service -----")
+  localStorage.setItem("qual__ticket", JSON.stringify(result));
   return result;
 };
 

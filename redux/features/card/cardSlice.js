@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { HYDRATE } from "next-redux-wrapper";
 import { toast } from 'react-toastify';
 import cardService from './cardService';
 
@@ -125,6 +126,13 @@ const cardSlice = createSlice({
     }
   },
   extraReducers: {
+    [HYDRATE]: (state, action) => {
+      console.log("HYDRATE", action.payload);
+      return {
+        ...state,
+        ...action.payload.card
+      }
+    },
     [fetchCards.pending]: (state) => {
       state.status = 'pending';
       state.isRequested = true;

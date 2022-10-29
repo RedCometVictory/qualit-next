@@ -2,6 +2,16 @@ const baseUrl = process.env.NEXT_PUBLIC_DOMAIN;
 console.log("^^^^^Fetching Funcs^^^^^")
 console.log(baseUrl)
 
+export const getDataGSSP = async (url, header) => {
+  console.log("@@@GSSP@@@")
+  const res = await fetch(`${baseUrl}/api${url}`, {
+    method: 'GET',
+    headers: header
+  });
+  const data = await res.json();
+  return data;
+};
+
 export const getData = async (url) => {
   console.log("+++GET_URL+++")
   console.log(url)

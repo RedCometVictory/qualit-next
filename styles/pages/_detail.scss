@@ -1,0 +1,79 @@
+.detail {
+  background-color: lightblue;
+  height: 100%;
+  width: 100%;
+  position: relative;
+  &__container {
+    overflow: hidden;
+  }
+  &__header {
+    background-color: lightgreen;
+    @include flex(row, space-between, center);
+  }
+  &__info-box {
+    padding: 1rem 1rem;
+    &.left {
+
+      // padding: 1rem 0 0 1rem;
+      // height: 100%;
+    }
+    &.right {
+      // padding: 1rem 1rem 0 0;
+      // height: 100%;
+      align-self: flex-start;
+    }
+    .buttons {
+      margin: 1rem 0 0 0;
+      .btn-one {
+        margin: 0 0.75rem 0 0;
+      }
+    }
+  }
+  &__sub-header {
+    background-color: lightcoral;
+    @include flex(row, space-between, center);
+    padding: 0.275rem;
+    .title {
+      background-color: yellowgreen;
+    }
+    .stats-container {
+      background-color: rosybrown;
+    }
+  }
+  &__content {
+    background-color: lightgray;
+    @include flex(row, space-between, flex-start);
+    height: 100%;
+    padding: 1.5rem 1rem 0.275rem;
+    .left {
+      .text-area {
+        width: 100%;
+        max-width: 400px;
+        resize: none;
+        height: 2rem;
+        padding: 0.75rem 0.5rem;
+      }
+    }
+    .right {
+      margin: 0 0 0 0.75rem;
+      flex-shrink: 3;
+      .ticket-uploader {
+        padding: 0.75rem 0.5rem;
+      }
+    }
+  }
+  &__description {
+    max-width: 400px;
+    padding: 0.75rem 0.5rem;
+  }
+  &__actions {
+    margin: 1.4rem 0 1.2rem 0;
+    .btn-icon {
+      margin: 0 0.5rem 0 0;
+    }
+  }
+  
+  &__secondary-content {
+    background-color: lightcoral;
+  }
+}

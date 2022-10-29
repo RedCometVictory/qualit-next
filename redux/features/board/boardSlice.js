@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { HYDRATE } from 'next-redux-wrapper';
 import { toast } from 'react-toastify';
 import boardService from './boardService';
 
@@ -119,6 +120,13 @@ const boardSlice = createSlice({
     resetBoard: () => initialState
   },
   extraReducers: {
+    [HYDRATE]: (state, action) => {
+      console.log("HYDRATE", action.payload);
+      return {
+        ...state,
+        ...action.payload.board
+      }
+    },
     [getAllBoards.pending]: (state) => {
       state.status = 'pending';
       state.loading = true;
