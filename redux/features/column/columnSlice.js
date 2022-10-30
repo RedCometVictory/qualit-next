@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { HYDRATE } from "next-redux-wrapper";
+// import { HYDRATE } from "next-redux-wrapper";
 import { toast } from 'react-toastify';
 import columnService from './columnService';
 
@@ -112,6 +112,14 @@ const columnSlice = createSlice({
   name: 'column',
   initialState,
   reducers: {
+    rehydrate(state, action) {
+      state.columns = action.payload.columns;
+      state.column = action.payload.column;
+      state.status = action.payload.status;
+      state.isRequested = action.payload.isRequested;
+      state.loading = action.payload.loading;
+      state.error = action.payload.error;
+    },
     resetColumns: () => initialState,
     updateColumnSequenceInLocalState: (state, { payload }) => {
       const columnIndex = state.columns.findIndex(column => column.id === payload.id);
@@ -119,13 +127,13 @@ const columnSlice = createSlice({
     }
   },
   extraReducers: {
-    [HYDRATE]: (state, action) => {
-      console.log("HYDRATE", action.payload);
-      return {
-        ...state,
-        ...action.payload.column
-      }
-    },
+    // [HYDRATE]: (state, action) => {
+    //   console.log("HYDRATE", action.payload);
+    //   return {
+    //     ...state,
+    //     ...action.payload.column
+    //   }
+    // },
     [fetchColumns.pending]: (state) => {
       state.status = 'pending';
       state.isRequested = true;
@@ -206,5 +214,5 @@ const columnSlice = createSlice({
     },
   }
 });
-export const { resetColumns, updateColumnSequenceInLocalState } = columnSlice.actions;
+export const { rehydrate, resetColumns, updateColumnSequenceInLocalState } = columnSlice.actions;
 export default columnSlice.reducer;

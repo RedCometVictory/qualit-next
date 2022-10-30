@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { HYDRATE } from "next-redux-wrapper";
+// import { HYDRATE } from "next-redux-wrapper";
 import { toast } from "react-toastify";
 import userService from "./userService";
 
@@ -130,16 +130,22 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
+    rehydrate(state, action) {
+      state.users = action.payload.users;
+      state.user = action.payload.user;
+      state.loading = action.payload.loading;
+      state.error = action.payload.error;
+    },
     userReset: (state) => initialState,
   },
   extraReducers: {
-    [HYDRATE]: (state, action) => {
-      console.log("HYDRATE", action.payload);
-      return {
-        ...state,
-        ...action.payload.user
-      }
-    },
+    // [HYDRATE]: (state, action) => {
+    //   console.log("HYDRATE", action.payload);
+    //   return {
+    //     ...state,
+    //     ...action.payload.user
+    //   }
+    // },
     [getUserProfile.pending]: (state) => {
       state.error = '';
       state.loading = true;
@@ -218,5 +224,5 @@ export const userSlice = createSlice({
   }
 });
 
-export const { userReset } = userSlice.actions;
+export const { rehydrate, userReset } = userSlice.actions;
 export default userSlice.reducer;

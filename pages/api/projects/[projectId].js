@@ -54,7 +54,7 @@ handler.get(async (req, res) => {
   return res.status(200).json({
     status: "Retrieved dashboard information.",
     data: {
-      project: projectDetails.rows,
+      project: projectDetails.rows[0],
       tickets: projectTickets.rows
     }
   });

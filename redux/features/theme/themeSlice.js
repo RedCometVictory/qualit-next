@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { HYDRATE } from "next-redux-wrapper";
+// import { HYDRATE } from "next-redux-wrapper";
 import { toast } from 'react-toastify';
 import themeService from "./themeService";
 
@@ -77,6 +77,12 @@ export const themeSlice = createSlice({
   name: 'theme',
   initialState,
   reducers: {
+    rehydrate(state, action) {
+      state.theme = action.payload.theme;
+      state.drawer = action.payload.drawer;
+      state.backgroundImage = action.payload.backgroundImage;
+      state.error = action.payload.error;
+    },
     themeReset: (state, action) => {
       state = initialState
     },
@@ -86,13 +92,13 @@ export const themeSlice = createSlice({
     }
   },
   extraReducers: {
-    [HYDRATE]: (state, action) => {
-      console.log("HYDRATE", action.payload);
-      return {
-        ...state,
-        ...action.payload.project
-      }
-    },
+    // [HYDRATE]: (state, action) => {
+    //   console.log("HYDRATE", action.payload);
+    //   return {
+    //     ...state,
+    //     ...action.payload.project
+    //   }
+    // },
     [globalTheme.pending]: (state) => {
       state.loading = true
     },
@@ -125,5 +131,5 @@ export const themeSlice = createSlice({
     // })
   }
 });
-export const { themeReset, clearTheme } = themeSlice.actions;
+export const { rehydrate, themeReset, clearTheme } = themeSlice.actions;
 export default themeSlice.reducer;

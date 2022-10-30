@@ -1,4 +1,3 @@
-import { createWrapper } from "next-redux-wrapper";
 import { configureStore } from "@reduxjs/toolkit";
 // import setAuthToken from "../utils/setAuthToken";
 import authReducer from "./features/auth/authSlice";
@@ -26,8 +25,8 @@ const store = configureStore({
 });
 let currentState = store.getState();
 
-console.log("current state - one")
-console.log(currentState)
+// console.log("current state - one")
+// console.log(currentState)
 store.subscribe(() => {
   let previousState = currentState;
   currentState = store.getState(); // from rootReducer
@@ -38,12 +37,7 @@ store.subscribe(() => {
   //   setAuthToken(token);
   // }
 });
-const wrapper = createWrapper(store);
-// const wrapper = createWrapper(store, {
-  // debug: false,
-// });
-export default wrapper;
-// export default store;
+export default store;
 
 
 
