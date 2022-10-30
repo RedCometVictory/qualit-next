@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { HYDRATE } from 'next-redux-wrapper';
+// import { HYDRATE } from 'next-redux-wrapper';
 import { toast } from 'react-toastify';
 import boardService from './boardService';
 
@@ -114,19 +114,27 @@ const boardSlice = createSlice({
   name: 'board',
   initialState,
   reducers: {
+    rehydrate(state, action) {
+      state.boards = action.payload.boards;
+      state.board = action.payload.board;
+      state.status = action.payload.status;
+      state.requestingNew = action.payload.requestingNew;
+      state.loading = action.payload.loading;
+      state.error = action.payload.error;
+    },
     updateBoardDetail: (state, { payload }) => {
       state.board[payload.type] = payload.value;
     },
     resetBoard: () => initialState
   },
   extraReducers: {
-    [HYDRATE]: (state, action) => {
-      console.log("HYDRATE", action.payload);
-      return {
-        ...state,
-        ...action.payload.board
-      }
-    },
+    // [HYDRATE]: (state, action) => {
+    //   console.log("HYDRATE", action.payload);
+    //   return {
+    //     ...state,
+    //     ...action.payload.board
+    //   }
+    // },
     [getAllBoards.pending]: (state) => {
       state.status = 'pending';
       state.loading = true;
@@ -190,6 +198,5 @@ const boardSlice = createSlice({
     }
   }
 });
-
-export const { updateBoardDetail, resetBoard } = boardSlice.actions;
+export const { rehydrate, updateBoardDetail, resetBoard } = boardSlice.actions;
 export default boardSlice.reducer;

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { HYDRATE } from "next-redux-wrapper";
+// import { HYDRATE } from "next-redux-wrapper";
 import { toast } from 'react-toastify';
 import projectService from './projectService';
 
@@ -57,9 +57,14 @@ export const getProjects = createAsyncThunk(
 
 export const getProject = createAsyncThunk(
   'project/get/Project-By-Id',
-  async (project_id, thunkAPI) => {
+  async ({project_id, cookie}, thunkAPI) => {
     try {
-      return await projectService.getProject(project_id);
+      console.log("GET-PROJECT SERVICE");
+      console.log(project_id)
+      console.log("- - - - -")
+      console.log(cookie)
+      console.log("GET-PROJECT SERVICE END");
+      return await projectService.getProject(project_id, cookie);
     } catch (err) {
       const message =
         (err.response &&
@@ -331,6 +336,17 @@ const projectSlice = createSlice({
   name: 'project',
   initialState,
   reducers: {
+    rehydrate(state, action) {
+      state.projects = action.payload.projects;
+      state.project = action.payload.project;
+      state.tickets = action.payload.tickets;
+      state.ticket = action.payload.ticket;
+      state.comments = action.payload.comments;
+      state.history = action.payload.history;
+      state.allowReset = action.payload.allowReset;
+      state.loading = action.payload.loading;
+      state.error = action.payload.error;
+    },
     projectReset: (state, action) => {
       state = initialState
     },
@@ -359,13 +375,13 @@ const projectSlice = createSlice({
     }
   },
   extraReducers: {
-    [HYDRATE]: (state, action) => {
-      console.log("HYDRATE", action.payload);
-      return {
-        ...state,
-        ...action.payload.project
-      }
-    },
+    // [HYDRATE]: (state, action) => {
+    //   console.log("HYDRATE", action.payload);
+    //   return {
+    //     ...state,
+    //     ...action.payload.project
+    //   }
+    // },
     [getDashboardInfo.pending]: (state) => {
       state.error = '';
       state.loading = true;
@@ -396,6 +412,8 @@ const projectSlice = createSlice({
       state.loading = true;
     },
     [getProject.fulfilled]: (state, { payload }) => {
+      console.log("SLICE")
+      console.log(payload)
       state.project = payload.project;
       state.tickets = payload.tickets;
       state.loading = false;
@@ -420,5 +438,5 @@ const projectSlice = createSlice({
     },
   }
 });
-export const { projectReset, clearProject, clearTickets, clearTicket } = projectSlice.actions;
+export const { rehydrate, projectReset, clearProject, clearTickets, clearTicket } = projectSlice.actions;
 export default projectSlice.reducer;

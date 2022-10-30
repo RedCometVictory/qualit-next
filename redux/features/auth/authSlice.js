@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { HYDRATE } from "next-redux-wrapper";
+// import { HYDRATE } from "next-redux-wrapper";
 import { toast } from "react-toastify";
 import authService from "./authService";
 
@@ -197,6 +197,13 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
+    rehydrate(state, action) {
+      state.user = action.payload.user;
+      state.isAuthenticated = action.payload.isAuthenticated;
+      state.loading = action.payload.loading;
+      state.error = action.payload.error;
+      state.allowReset = action.payload.allowReset;
+    },
     authReset: (state, action) => {
       state = initialState;
     },
@@ -209,13 +216,13 @@ export const authSlice = createSlice({
     }
   },
   extraReducers: {
-    [HYDRATE]: (state, action) => {
-      console.log("HYDRATE", action.payload);
-      return {
-        ...state,
-        ...action.payload.auth
-      }
-    },
+    // [HYDRATE]: (state, action) => {
+    //   console.log("HYDRATE", action.payload);
+    //   return {
+    //     ...state,
+    //     ...action.payload.auth
+    //   }
+    // },
     [demoUser.pending]: (state) => {
       state.loading = true;
     },
@@ -365,5 +372,5 @@ export const authSlice = createSlice({
     }
   }
 });
-export const { authReset, clearAuth } = authSlice.actions;
+export const { rehydrate, authReset, clearAuth } = authSlice.actions;
 export default authSlice.reducer;

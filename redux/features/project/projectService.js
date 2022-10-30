@@ -1,4 +1,4 @@
-import { getData, postData, putData, deleteData } from '@/utils/fetchData';
+import { getData, postData, putData, deleteData, getDataSSR } from '@/utils/fetchData';
 
 const getDashboardInfo = async () => {
   console.log("|^|^|^|^|^|^|^|^|^|^|^|^|^|^|^|^|^|^|^|^|^|^|^|")
@@ -24,12 +24,18 @@ const getProjects = async () => {
   return result;
 };
 
-const getProject = async (project_id) => {
+const getProject = async (project_id, cookie) => {
   // TODO: get project detail and all tickets belonging to this project, place into tickets [] and project into {}
-  const res = await getData(`/projects/${project_id}`);
+  console.log("***Project Service for SSR***");
+  console.log("project_id")
+  console.log(project_id)
+  console.log("cookie")
+  console.log(cookie)
+  const res = await getDataSSR(`/projects/${project_id}`, cookie);
+  // const res = await getData(`/projects/${project_id}`);
   const result = res.data;
-  localStorage.setItem("qual__project", JSON.stringify(result));
-  console.log("***Project Service***");
+  // localStorage.setItem("qual__project", JSON.stringify(result));
+  console.log("result")
   console.log(result)
   console.log("----- END project service -----")
   return result;
