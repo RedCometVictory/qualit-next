@@ -35,8 +35,10 @@
 -- END; $SYNTAX_CHECK$;
 
 -- EXAMPLE ADMIN QUERY
--- INSERT INTO users (f_name, l_name, username, user_email, user_password, user_avatar, user_avatar_filename, admin) VALUES (first, here, HauseMaster, thehausewins@mail.com, , , , true); 
-
+-- insert into carts (id, user_id, created_at) values ('9ca31730-462c-405e-ba55-81e01b21e613', '99504ea2-dc96-4761-b79d-d237c6872cea', '2022-05-25 05:33:21.444885');
+-- INSERT INTO users (f_name, l_name, username, user_email, user_password, user_avatar, user_avatar_filename, admin) VALUES (first, here, HauseMaster, thehausewins@mail.com, , , , true);
+-- https://www.youtube.com/watch?v=YPX6cZrl-Ag
+-- https://www.youtube.com/watch?v=5jUU5TrMru8
 -- ALTER TABLE table_name
 -- ADD COLUMN new_column_name data_type constraint;
 
@@ -46,6 +48,9 @@
 -- ALTER TABLE table_name ADD UNIQUE (col_id, col_item);
 
 -- users: admin, project_manager, developer, submitter
+
+-- migrate heroku db to bit.io
+-- pg_dump --no-privileges --format p --file blazrgear_heroku_archive \ postgres://xnqooisbrqwcik:16c88b32590a83f77277c8954c53847ec4db48542d9abdea4e7a2ecee6def06e@ec2-3-228-235-79.compute-1.amazonaws.com:5432/d1q5ebhhjluul6
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 CREATE TABLE projects(
@@ -139,9 +144,11 @@ CREATE TABLE messages(
   message TEXT NOT NULL,
   user_id UUID NOT NULL, -- who created the msg
   ticket_id UUID, -- not needed for notifs
+  upload_id UUID,
   -- notification_id UUID,
   FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY(ticket_id) REFERENCES tickets(id),
+  FOREIGN KEY(upload_id) REFERENCES uploads(id),
   -- FOREIGN KEY(notification_id) REFERENCES products(id) ON DELETE CASCADE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT NULL
@@ -168,8 +175,8 @@ CREATE TABLE uploads(
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   file_url VARCHAR(320) NOT NULL,
   file_name VARCHAR(320) NOT NULL,
-  message_id UUID,
-  FOREIGN KEY (message_id) REFERENCES messages(id),
+  -- message_id UUID,
+  -- FOREIGN KEY (message_id) REFERENCES messages(id),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 -- --------------------------------------------------

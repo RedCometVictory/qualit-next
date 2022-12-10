@@ -5,13 +5,20 @@ import { pool } from '@/config/db';
 import { onError, onNoMatch } from '@/utils/ncOptions';
 import { accessTokenGenerator, accessTokenCookieOptions } from '@/utils/jwtGenerator';
 
+// export const config = {
+//   api: { bodyParser: false }
+// };
 const handler = nc({onError, onNoMatch});
 
 // POST /api/auth/login
 // jwt secret placed inside of cookie
 handler.post(async (req, res) => {
+  console.log("signin")
+  console.log(req.body)
+  // req.body = JSON.parse(req.body)
+  // console.log(email)
+  // console.log(password)
   const { email, password } = req.body;
-
   if (!email || !password) {
     throw new Error('All fields are required.');
   };

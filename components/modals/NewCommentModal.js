@@ -1,13 +1,146 @@
-// import 
+import { useEffect, useState } from 'react';
+import { FaFileUpload } from "react-icons/fa";
+import { createUpdateTicketCommentForm } from '@/utils/formDataServices';
+import CommentForm from "../details/CommentForm";
+import ButtonUI from "../UI/ButtonUI";
+import { TextareaAutosize } from "@mui/material";
 
-const NewCommentModal = () => {
+// const NewCommentModal = ({setCommentModal, message, setMessage, submitMsg}) => {
+const NewCommentModal = ({setCommentModal, ticketID}) => {
+  const [fileTypeError, setFileTypeError] = useState(false);
+  const [fileSizeError, setFileSizeError] = useState(false);
+  const [imageData, setImageData] = useState(null);
+  const [showImageData, isShowImageData] = useState(false);
+  const [formData, setFormData] = useState({
+    message: "",
+    upload: ""
+  });
+
+  const { message, upload } = formData;
+
+  const onChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleUploadChange = (e) => {
+    let fileToUpload = e.target.files[0];
+    checkFileType(fileToUpload);
+    checkFileSize(fileToUpload);
+
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.files[0],
+    });
+    // * set up image preview, if valid
+    if (fileToUpload) {
+      const reader = new FileReader();
+      reader.addEventListener("load", () => {
+        setImageData(reader.result)
+        isShowImageData(true);
+      });
+      reader.readAsDataURL(fileToUpload);
+    }
+  };
+
+  // TODO: add check for pdf
+  const checkFileType = (img) => {
+    const types = ["image/png", "image/jpg", "image/jpeg", "image/gif"];
+    if (types.every((type) => img.type !== type)) {
+      return setFileTypeError(true);
+    }
+    return setFileTypeError(false);
+  };
+
+  const checkFileSize = (img) => {
+    let size = 3 * 1024 * 1024; // size limit 3mb
+    if (img.size > size) {
+      return setFileSizeError(true);
+    }
+    return setFileSizeError(false);
+  };
+
+  const closeModalHandler = () => {
+    setCommentModal(false);
+  };
+
+  const submitCommentHandler = async (e) => {
+    e.preventDefault();
+    // const formData = {id: user.id, message: message};
+    // const formData = message;
+    let servicedData = await createUpdateTicketCommentForm(formData);
+
+    console.log("submitted comment")
+    console.log("(((formData)))")
+    console.log(formData);
+    // await dispatch(createTicketComment({ticket_id: ticket.id, formData: { formData}}));
+    await dispatch(createTicketComment({ticket_id: ticketID, servicedData}));
+    // setMessage(message = '')
+    setFormData({message: "", upload: ""});
+    setCommentModal(false);
+  };
+
   return (
-    <div>NewComment</div>
+    <div className="modal comment">
+      <div className="modal__header">
+        <h3 className="title">
+          New Comment
+        </h3>
+      </div>
+      <div className="modal__content comment">
+        <form onSubmit={submitCommentHandler}>
+          <TextareaAutosize
+            className='text-area'
+            maxRows={6}
+            minRows={6}
+            placeholder="Add new comment."
+            value={message}
+            onChange={onChange}
+            required
+          />
+          <div className="modal__actions comment">
+            <div className="file-uploader">
+              <div className='label-title'><FaFileUpload /> Upload File</div>
+              <label htmlFor="upload" className="file-upload-label">
+                <input
+                  type="file"
+                  accept=".jpeg, .jpg, .png, .gif, .pdf"
+                  placeholder=".jpeg, .jpg, .png, .gif, .pdf formats only"
+                  name="upload"
+                  onChange={handleUploadChange}
+                />
+              </label>
+            </div>
+            <div className="action-btns">
+              <ButtonUI
+                variant="contained"
+                // onClick={(e) => submitMsg(e)}
+              >
+                Submit
+              </ButtonUI>
+              <ButtonUI
+                variant="outlined"
+                onClick={() => closeModalHandler()}
+              >
+                Cancel
+              </ButtonUI>
+            </div>
+            {/* {fileTypeError || fileSizeError ? (
+                    <div className="form__error">
+                      File type or size limit exceeded: jpg, jpeg, png, gif only and size must be less than 3mb.
+                    </div>
+                  ) : (
+                    <button className="btn btn-secondary" type="submit">
+                      {isLoading ? "Submitted" : blogData ? 'Update' : 'Submit'}
+                    </button>
+                  )} */}
+          </div>
+        </form>
+      </div>
+      <div className="modal__footer"></div>
+    </div>
   )
 };
 export default NewCommentModal;
-
-
 
 
 

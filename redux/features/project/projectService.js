@@ -41,10 +41,10 @@ const getProject = async (project_id, cookie) => {
   return result;
 };
 
-const getTicket = async (ticket_id) => {
-  const res = await getData(`/tickets/${ticket_id}`);
+const getTicket = async (ticket_id, cookie) => {
+  const res = await getDataSSR(`/tickets/${ticket_id}`, cookie);
   const result = res.data;
-  localStorage.setItem("qual__ticket", JSON.stringify(result));
+  // localStorage.setItem("qual__ticket", JSON.stringify(result));
   return result;
 };
 
@@ -71,6 +71,9 @@ const createTicket = async (formData) => {
 };
 
 const createTicketComment = async (ticket_id, formData) => {
+  console.log("[[[SERVICE _FROMDATA]]]")
+  console.log(ticket_id)
+  console.log(formData)
   const res = await postData(`/tickets/${ticket_id}/comment`, formData);
   const result = res.data;
   // localStorage.setItem("qual__project", JSON.stringify(result.project));

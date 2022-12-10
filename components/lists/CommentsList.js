@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { Grid, Typography, Demo, Divider, List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
-import { ImTicket } from 'react-icons/im';
+import { FaComment } from 'react-icons/fa';
 
-const MyTicketsList = ({tickets}) => {
+const CommentsList = ({comments}) => {
 
-  const ListItemDetail = ({ticket}) => {
+  const ListItemDetail = ({comment}) => {
     return (
       <div className='dash__list-details'>
         <Typography
@@ -12,15 +12,21 @@ const MyTicketsList = ({tickets}) => {
           variant="h6"
           component="span"
         >
-          {ticket.id}
+          <Link
+            passHref
+            href={`/tickets/${comment.user_id}`}
+          >
+            {comment.f_name}{" "}{comment.l_name}
+          </Link>
         </Typography>
         <span className="detail-label">
-         [ status | priority | type ]
+         [ username ]
         </span>
         <span className="">
-          {ticket.status} | {ticket.priority} | {ticket.type}
+          {comment.username}
         </span>
-        <span className="">{ticket.created_at}</span>
+        <span className="">{comment.created_at}</span>
+        <span>{comment.updated_at}</span>
       </div>
     )
   };
@@ -28,25 +34,31 @@ const MyTicketsList = ({tickets}) => {
   return (
     <Grid item xs={12} md={6}>
       <List dense={true} >
-        {tickets.map((ticket, index) => (<>
+        {comments.map((comment, index) => (<>
           <ListItem
             key={index}
             // alignItems='flex-start'
           >
             <ListItemIcon>
-              <ImTicket />
+              <FaComment />
             </ListItemIcon>
             <ListItemText
-              primary={ticket.title}
-              secondary={<ListItemDetail ticket={ticket}/>}
+              primary={
+                <Link
+                  passHref
+                  // href={`/tickets/${ticket.id}`}
+                >
+                  {comment.title}
+                </Link>
+              }
+              secondary={<ListItemDetail comment={comment}/>}
             >
-              this the other text
             </ListItemText>
           </ListItem>
           <Divider variant='inset' component="li"/>
         </>))}
       </List>
     </Grid>
-  );
+  )
 };
-export default MyTicketsList;
+export default CommentsList;

@@ -45,7 +45,6 @@ const SignIn = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-     
       dispatch(loginUser(formData));
       // toast.success("Logged in successfully!");
     } catch (err) {
@@ -122,7 +121,7 @@ const SignIn = () => {
         </form>
         <CardContent>
           <div className="login__footer">
-            Already have an account?
+            Don&apos;t have an account?
             <ButtonUI
               href="/signup"
             >

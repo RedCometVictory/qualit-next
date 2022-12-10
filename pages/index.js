@@ -8,8 +8,8 @@ import ButtonUI from '@/components/UI/ButtonUI';
 import { Card, Input, InputLabel, FormGroup, CardContent, Typography } from "@mui/material";
 import BarChart from '@/components/dashBoard/BarChart';
 import PieChart from '@/components/dashBoard/PieChart';
-import MyProjectsList from '@/components/dashBoard/MyProjectsList';
-import MyTicketsList from '@/components/dashBoard/MyTicketsList';
+import MyProjectsList from '@/components/lists/MyProjectsList';
+import MyTicketsList from '@/components/lists/MyTicketsList';
 
 const Home = () => {
   const dispatch = useDispatch();
