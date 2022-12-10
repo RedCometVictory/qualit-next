@@ -80,9 +80,14 @@ export const getProject = createAsyncThunk(
 
 export const getTicket = createAsyncThunk(
   'project/get/Ticket-By-Id',
-  async (ticket_id, thunkAPI) => {
+  async ({ticket_id, cookie}, thunkAPI) => {
     try {
-      return await projectService.getTicket(ticket_id);
+      console.log("GET-PROJECT SERVICE");
+      console.log(ticket_id)
+      console.log("- - - - -")
+      console.log(cookie)
+      console.log("GET-PROJECT SERVICE END");
+      return await projectService.getTicket(ticket_id, cookie);
     } catch (err) {
       const message =
         (err.response &&
@@ -136,6 +141,9 @@ export const createTicketComment = createAsyncThunk(
   'project/post/Ticket-Comment',
   async ({ticket_id, formData}, thunkAPI) => {
     try {
+      console.log("{{{SLICE - FORMDATRA}}}")
+      console.log(ticket_id)
+      console.log(formData)
       return await projectService.createTicketComment(ticket_id, formData);
     } catch (err) {
       const message =
@@ -433,6 +441,18 @@ const projectSlice = createSlice({
       state.loading = false;
     },
     [getTicket.rejected]: (state) => {
+      state.loading = false;
+      state.error = 'failed';
+    },
+    [createTicketComment.pending]: (state) => {
+      state.error = '';
+      state.loading = true;
+    },
+    [createTicketComment.fulfilled]: (state, { payload }) => {
+      state.comments = [...state.comments, payload];
+      state.loading = false;
+    },
+    [createTicketComment.rejected]: (state) => {
       state.loading = false;
       state.error = 'failed';
     },

@@ -6,16 +6,16 @@ import store from '@/redux/store';
 import { logout } from "@/redux/features/auth/authSlice";
 import { getDataGSSP, getData } from "@/utils/fetchData";
 import { toast } from 'react-toastify';
-import { FaPlusCircle, FaPlusSquare, FaArrowAltCircleUp } from 'react-icons/fa';
+import { FaPlusCircle, FaRegEdit, FaArrowAltCircleUp } from 'react-icons/fa';
 import { Card, Divider, List, ListItem, ListItemIcon, 
 ListItemText, Typography } from '@mui/material';
 import ButtonUI from '@/components/UI/ButtonUI';
 import DetailLayout from '@/components/layouts/DetailLayout';
 import NewCommentModal from '@/components/modals/NewCommentModal';
 import NewTicketModal from '@/components/modals/NewTicketModal';
-import MyTicketsList from '@/components/dashBoard/MyTicketsList';
-import MyProjectsList from '@/components/dashBoard/MyProjectsList';
-import CommentsTextArea from '@/components/details/CommentsTextArea';
+import MyTicketsList from '@/components/lists/MyTicketsList';
+import MyProjectsList from '@/components/lists/MyProjectsList';
+import CommentsTextArea from '@/components/details/CommentForm';
 import Description from '@/components/details/Description';
 import Upload from '@/components/details/Upload';
 import { getProject, rehydrate } from '@/redux/features/project/projectSlice';
@@ -24,14 +24,6 @@ const Project = ({initialState, token}) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { project, tickets, loading: projectLoading } = useSelector(state => state.project);
-  console.log("token")
-  console.log(token)
-  console.log("inital project details")
-  console.log(initialState)
-  console.log("project details")
-  console.log(project)
-  console.log("ticket")
-  console.log(tickets)
   // const [commentModal, setCommentModal] = useState(false);
   const [ticketModal, setTicketModal] = useState(false);
   
@@ -48,9 +40,13 @@ const Project = ({initialState, token}) => {
     dispatch(rehydrate(initialState.project))
   }, [dispatch, initialState])
     
-  const createNewTicketHandler = () => {
+  const openNewTicketModal = () => {
     setTicketModal(ticketModal = true);
   };
+
+  const openDescriptionModal = () => {
+    console.log("editing description of porject")
+  }
     
 
   return (
@@ -60,7 +56,7 @@ const Project = ({initialState, token}) => {
       )}
       <div className="detail__header">
         <div className="detail__info-box left">
-          Title of the Ticket
+          Project Details
           <div className="buttons">
             <ButtonUI
               className="btn-one"
@@ -76,71 +72,60 @@ const Project = ({initialState, token}) => {
           </div>
         </div>
         <div className="detail__info-box right">
-          # of Tickets: 11 / # of Memebers: 09
+          # of Tickets: {tickets.length} / # of Memebers: 09
         </div>
       </div>
       <div className="detail__sub-header">
-        <span className="title">Title</span>
+        <span className="title">{project.title}</span>
         <div className="stats-container">
-          <span className="stats">Priority</span>
-          <span className=""> | </span>
-          <span className="stats">Status</span>
+          <span>{project.id}</span>
         </div>
         <span className="date">
-          Created On: 11/10/2022
+          Created On: {project.created_at}
         </span>
       </div>
       <div className="detail__content">
         <section className="left">
-          Project Description:
-          <Description/>
+          <Description description={project.description} />
           <div className="detail__actions">
             <ButtonUI
               variant='contained'
-              onClick={() => createNewTicketHandler()}
+              onClick={() => openDescriptionModal()}
+            >
+              <FaRegEdit className='btn-icon'/> Edit Description
+            </ButtonUI>
+            <ButtonUI
+              variant='contained'
+              onClick={() => openNewTicketModal()}
             >
               <FaPlusCircle className='btn-icon'/> New Ticket
             </ButtonUI>
           </div>
-          {/* <CommentsTextArea /> */}
         </section>
         <section className="right">
-          If tickets details page show comments list here, details include username, email, f_name, created_at, updated_at (for comment), and comment desc. If project details page then show a list of all tickets assigned to project.
-          {/* {urlContext === "projects" ? (
-          <MyProjectsList />
-        ) : urlContext === "tickets" ? (
-          <MyTicketsList />
-        ) : (
-          <div className="">
-            no items found...
-          </div>
-        )} */}
-          {/* <Upload /> */}
+          <Card className="list-header">
+            <Typography
+              variant="h6"
+              component="h6"
+            >
+              Project Tickets
+            </Typography>
+          </Card>
+          <Card className="detail__items-list">
+            {tickets ? (
+              <MyTicketsList tickets={tickets} />
+            ) : (
+              <div className="">
+                no tickets found...
+              </div>
+            )}
+          </Card>
         </section>
       </div>
     </section>
   );
 };
 export default Project;
-/* project ids
-  phone_book_app
-  3622cdf0-458a-442b-b37c-e4ceb5924bc4
-
-  recipe_app
-  5095e06a-9255-4fc7-a071-d37ab05e0f7f
-
-  weather_app
-  c41f610f-2141-4842-85f2-003c25235e49
-
-  news_app
-  8f0839be-3219-490c-b1d8-7aa58eecf6b8
-
-  retro_game_app [has 4 tickets]
-  5c675702-46b4-4c1b-8f9b-8922c4e83b8e
-
-  restaurant_app [has 7 tickets]
-  023f4147-b35e-4d3a-bd89-a2c05dc93625
-*/
 // ++++++++++++++++++++++++++++++++++++++++
 // ++++++++++++++++++++++++++++++++++++++++
 // ++++++++++++++++++++++++++++++++++++++++
@@ -182,8 +167,8 @@ export const getServerSideProps = async (context) => {
     const paramType = context.params.hasOwnProperty("projectId") ? 'projectId' : context.params.hasOwnProperty("ticketId") ? 'ticketId' : '';
     const detailPageType = paramType;
     // let token = context.req;
-    let token = context.req.cookies;
-    // let token = context.req.cookies.qual__token;
+    // let token = context.req.cookies;
+    let token = context.req.cookies.qual__token;
     let userInfo = context.req.cookies.qual__user;
     let projectInfo;
     let ticketInfo;
@@ -438,4 +423,4 @@ export const getServerSideProps = async (context) => {
 
 Project.getLayout = function getLayout(Project) {
   return <DetailLayout>{Project}</DetailLayout>
-}
+};

@@ -42,21 +42,23 @@ export const getData = async (url) => {
 };
 
 export const postData = async (url, postData) => {
-  console.log("+++GET_URL+++")
+  console.log("+++POST_URL+++")
   console.log(url)
   console.log("----------")
+  console.log("postData")
   console.log(postData)
   console.log("----------")
-  // const res = await fetch(`${baseUrl}/api${url}`, {
-  const res = await fetch(`/api${url}`, {
+  const res = await fetch(`${baseUrl}/api${url}`, {
+  // const res = await fetch(`/api${url}`, {
     method: 'POST',
-    mode: 'cors',
-    cache: 'no-cache',
+    // mode: 'cors',
+    // cache: 'no-cache',
     credentials: 'include',
     // credentials: 'same-origin',
     headers: {
-      // 'Accept': 'application/json',
-      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      // 'Content-Type': 'application/json, charset=utf8'
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify(postData)
   }); 
