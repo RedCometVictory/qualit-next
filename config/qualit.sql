@@ -139,19 +139,20 @@ CREATE TABLE tickets(
 );
 
 -- create porducts table first
+-- ALTER TABLE "messages" ALTER COLUMN message DROP NOT NULL;
 CREATE TABLE messages(
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  message TEXT NOT NULL,
+  message TEXT,
   user_id UUID NOT NULL, -- who created the msg
   ticket_id UUID, -- not needed for notifs
-  upload_id UUID,
+  -- upload_id UUID,
   -- notification_id UUID,
   FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY(ticket_id) REFERENCES tickets(id),
-  FOREIGN KEY(upload_id) REFERENCES uploads(id),
+  -- FOREIGN KEY(upload_id) REFERENCES uploads(id),
   -- FOREIGN KEY(notification_id) REFERENCES products(id) ON DELETE CASCADE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT NULL
+  -- updated_at TIMESTAMP DEFAULT NULL
 );
 
 CREATE TABLE histories(
@@ -175,8 +176,8 @@ CREATE TABLE uploads(
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   file_url VARCHAR(320) NOT NULL,
   file_name VARCHAR(320) NOT NULL,
-  -- message_id UUID,
-  -- FOREIGN KEY (message_id) REFERENCES messages(id),
+  message_id UUID,
+  FOREIGN KEY (message_id) REFERENCES messages(id),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 -- --------------------------------------------------

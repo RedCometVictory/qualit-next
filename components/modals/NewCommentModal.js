@@ -1,14 +1,18 @@
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector} from 'react-redux';
 import { FaFileUpload } from "react-icons/fa";
-import { createUpdateTicketCommentForm } from '@/utils/formDataServices';
+import { createTicketComment } from '@/redux/features/project/projectSlice';
+// import { createUpdateTicketCommentForm } from '@/utils/formDataServices';
 import CommentForm from "../details/CommentForm";
 import ButtonUI from "../UI/ButtonUI";
 import { TextareaAutosize } from "@mui/material";
 
 // const NewCommentModal = ({setCommentModal, message, setMessage, submitMsg}) => {
 const NewCommentModal = ({setCommentModal, ticketID}) => {
+  const dispatch = useDispatch();
   const [fileTypeError, setFileTypeError] = useState(false);
   const [fileSizeError, setFileSizeError] = useState(false);
+  const [isSubmitted, setSubmitted] = useState(false);
   const [imageData, setImageData] = useState(null);
   const [showImageData, isShowImageData] = useState(false);
   const [formData, setFormData] = useState({
@@ -17,6 +21,15 @@ const NewCommentModal = ({setCommentModal, ticketID}) => {
   });
 
   const { message, upload } = formData;
+
+  // useEffect(() => {
+  //   if (!token || !Cookies.get("blog__isLoggedIn")) {
+  //     dispatch({type: "LOGOUT"});
+  //     logoutUser();
+  //     return router.push("/");
+  //   }
+  //   setIsLoading(false);
+  // }, []);
 
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -44,7 +57,7 @@ const NewCommentModal = ({setCommentModal, ticketID}) => {
 
   // TODO: add check for pdf
   const checkFileType = (img) => {
-    const types = ["image/png", "image/jpg", "image/jpeg", "image/gif"];
+    const types = ["image/png", "image/jpg", "image/jpeg", "image/gif", "application/pdf"];
     if (types.every((type) => img.type !== type)) {
       return setFileTypeError(true);
     }
@@ -65,17 +78,23 @@ const NewCommentModal = ({setCommentModal, ticketID}) => {
 
   const submitCommentHandler = async (e) => {
     e.preventDefault();
+    setSubmitted(true);
     // const formData = {id: user.id, message: message};
     // const formData = message;
-    let servicedData = await createUpdateTicketCommentForm(formData);
-
-    console.log("submitted comment")
+    // let servicedData = await createUpdateTicketCommentForm(formData);
+    // let servicedData = createUpdateTicketCommentForm(formData);
     console.log("(((formData)))")
     console.log(formData);
-    // await dispatch(createTicketComment({ticket_id: ticket.id, formData: { formData}}));
-    await dispatch(createTicketComment({ticket_id: ticketID, servicedData}));
+    // formData.message = JSON.stringify(formData.message);    
+    // await dispatch(createTicketComment({ticket_id: ticketID, formData: formData}));
+    // await dispatch(createTicketComment({ticket_id: ticketID, servicedData}));
+    console.log("+{{{{{{{{{}}}}}}}}}+")
+    console.log("++++ticketID++++");
+    console.log(ticketID);
+    await dispatch(createTicketComment({ticket_id: ticketID, formData}));
     // setMessage(message = '')
-    setFormData({message: "", upload: ""});
+    // setFormData({message: "", upload: ""});
+    setSubmitted(false);
     setCommentModal(false);
   };
 
@@ -93,6 +112,7 @@ const NewCommentModal = ({setCommentModal, ticketID}) => {
             maxRows={6}
             minRows={6}
             placeholder="Add new comment."
+            name="message"
             value={message}
             onChange={onChange}
             required
@@ -111,12 +131,19 @@ const NewCommentModal = ({setCommentModal, ticketID}) => {
               </label>
             </div>
             <div className="action-btns">
-              <ButtonUI
-                variant="contained"
-                // onClick={(e) => submitMsg(e)}
-              >
-                Submit
-              </ButtonUI>
+              {fileTypeError || fileSizeError ? (
+                <div className="form__error">
+                  File type or size limit exceeded: jpg, jpeg, png, gif only and size must be less than 3mb.
+                </div>
+              ) : (
+                <ButtonUI
+                  variant="contained"
+                  // onClick={(e) => submitCommentHandler(e)}
+                  type="submit"
+                >
+                  {isSubmitted ? "Submitted" : "Submit"}
+                </ButtonUI>
+              )}
               <ButtonUI
                 variant="outlined"
                 onClick={() => closeModalHandler()}
@@ -124,15 +151,6 @@ const NewCommentModal = ({setCommentModal, ticketID}) => {
                 Cancel
               </ButtonUI>
             </div>
-            {/* {fileTypeError || fileSizeError ? (
-                    <div className="form__error">
-                      File type or size limit exceeded: jpg, jpeg, png, gif only and size must be less than 3mb.
-                    </div>
-                  ) : (
-                    <button className="btn btn-secondary" type="submit">
-                      {isLoading ? "Submitted" : blogData ? 'Update' : 'Submit'}
-                    </button>
-                  )} */}
           </div>
         </form>
       </div>

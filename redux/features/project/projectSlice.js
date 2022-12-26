@@ -144,6 +144,9 @@ export const createTicketComment = createAsyncThunk(
       console.log("{{{SLICE - FORMDATRA}}}")
       console.log(ticket_id)
       console.log(formData)
+      console.log("|||||||||||||||||||||||||||")
+      // console.log(formData.getAll("message"))
+      // console.log(formData.getAll("upload"))
       return await projectService.createTicketComment(ticket_id, formData);
     } catch (err) {
       const message =

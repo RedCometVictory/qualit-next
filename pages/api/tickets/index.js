@@ -43,6 +43,8 @@ handler.get(async (req, res) => {
   });
 });
 
+
+// create ticket
 // handler.post(async (req, res) => {
 //   const { id } = req.user;
 //   const { slug } = req.query;

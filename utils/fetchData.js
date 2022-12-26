@@ -55,14 +55,22 @@ export const postData = async (url, postData) => {
     // cache: 'no-cache',
     credentials: 'include',
     // credentials: 'same-origin',
-    headers: {
-      'Accept': 'application/json',
+    // headers: {
+      // "Content-Type": req.headers["content-type"],
+      // 'Accept': 'application/json',
       // 'Content-Type': 'application/json, charset=utf8'
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(postData)
+      // 'Content-Type': 'application/json'
+      // 'Content-Type': 'application/x-www-form-urlencoded' // --- 
+      // 'Content-Type': 'multipart/form-data'
+      // 'Accept': 'application/json',
+      // 'Content-Type': 'multipart/form-data;boundary=None'
+    // },
+    // body: JSON.stringify(postData)
+    // body: new URLSearchParams(postData).toString() // ---
+    // body: new URLSearchParams(postData) // ---
+    body: postData
   }); 
-  const data = await res.json();
+  // const data = await res.json();
   return data;
 };
 
