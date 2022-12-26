@@ -1,4 +1,6 @@
 import { getData, postData, putData, deleteData, getDataSSR } from '@/utils/fetchData';
+import { createUpdateTicketCommentForm } from "@/utils/formDataServices";
+import api from '@/utils/api';
 
 const getDashboardInfo = async () => {
   console.log("|^|^|^|^|^|^|^|^|^|^|^|^|^|^|^|^|^|^|^|^|^|^|^|")
@@ -72,11 +74,18 @@ const createTicket = async (formData) => {
 
 const createTicketComment = async (ticket_id, formData) => {
   console.log("[[[SERVICE _FROMDATA]]]")
+  let servicedData = createUpdateTicketCommentForm(formData);
   console.log(ticket_id)
   console.log(formData)
-  const res = await postData(`/tickets/${ticket_id}/comment`, formData);
+  console.log("======servicedData======")
+  console.log(servicedData)
+  console.log(servicedData.getAll("message"))
+  console.log(servicedData.getAll("upload"))
+  const res = await postData(`/tickets/${ticket_id}/comment`, servicedData); // ----
   const result = res.data;
   // localStorage.setItem("qual__project", JSON.stringify(result.project));
+  console.log("result")
+  console.log(result)
   // TODO: place newly created ticket comment ointo comments [] and save new state into LS qual__project
   console.log("***Project Service***");
   console.log(result)
