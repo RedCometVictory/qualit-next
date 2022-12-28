@@ -1,6 +1,6 @@
-import { getData, postData, putData, deleteData, getDataSSR } from '@/utils/fetchData';
+import { getData, postData, postFileData, putData, deleteData, getDataSSR } from '@/utils/fetchData';
 import { createUpdateTicketCommentForm } from "@/utils/formDataServices";
-import api from '@/utils/api';
+// import api from '@/utils/api';
 
 const getDashboardInfo = async () => {
   console.log("|^|^|^|^|^|^|^|^|^|^|^|^|^|^|^|^|^|^|^|^|^|^|^|")
@@ -81,7 +81,7 @@ const createTicketComment = async (ticket_id, formData) => {
   console.log(servicedData)
   console.log(servicedData.getAll("message"))
   console.log(servicedData.getAll("upload"))
-  const res = await postData(`/tickets/${ticket_id}/comment`, servicedData); // ----
+  const res = await postFileData(`/tickets/${ticket_id}/comment`, servicedData); // ----
   const result = res.data;
   // localStorage.setItem("qual__project", JSON.stringify(result.project));
   console.log("result")

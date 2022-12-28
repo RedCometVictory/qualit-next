@@ -41,7 +41,24 @@ export const getData = async (url) => {
   return data;
 };
 
-export const postData = async (url, postData) => {
+export const postData = async (url, putData) => {
+  const res = await fetch(`${baseUrl}/api/${url}`, {
+    method: 'POST',
+    mode: 'cors',
+    // cache: 'no-cache',
+    credentials: 'include',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(putData)
+  });
+  const data = await res.json();
+  return data;
+};
+
+// for fetchAPI to process images, do not include content-type in the headers and data should be handled by new FormData()
+export const postFileData = async (url, postData) => {
   console.log("+++POST_URL+++")
   console.log(url)
   console.log("----------")
@@ -49,25 +66,11 @@ export const postData = async (url, postData) => {
   console.log(postData)
   console.log("----------")
   const res = await fetch(`${baseUrl}/api${url}`, {
-  // const res = await fetch(`/api${url}`, {
     method: 'POST',
     // mode: 'cors',
     // cache: 'no-cache',
     credentials: 'include',
     // credentials: 'same-origin',
-    // headers: {
-      // "Content-Type": req.headers["content-type"],
-      // 'Accept': 'application/json',
-      // 'Content-Type': 'application/json, charset=utf8'
-      // 'Content-Type': 'application/json'
-      // 'Content-Type': 'application/x-www-form-urlencoded' // --- 
-      // 'Content-Type': 'multipart/form-data'
-      // 'Accept': 'application/json',
-      // 'Content-Type': 'multipart/form-data;boundary=None'
-    // },
-    // body: JSON.stringify(postData)
-    // body: new URLSearchParams(postData).toString() // ---
-    // body: new URLSearchParams(postData) // ---
     body: postData
   }); 
   // const data = await res.json();

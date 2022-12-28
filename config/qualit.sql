@@ -51,6 +51,13 @@
 
 -- migrate heroku db to bit.io
 -- pg_dump --no-privileges --format p --file blazrgear_heroku_archive \ postgres://xnqooisbrqwcik:16c88b32590a83f77277c8954c53847ec4db48542d9abdea4e7a2ecee6def06e@ec2-3-228-235-79.compute-1.amazonaws.com:5432/d1q5ebhhjluul6
+
+-- ########################################
+-- ########################################
+-- ########################################
+-- create database in psql terminal, it may take some time, once created select the database. Once connected - create the extension next. Then following that create the tables.
+CREATE DATABASE qualit_bug_tracker;
+
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 CREATE TABLE projects(
@@ -100,22 +107,6 @@ CREATE TABLE members(
   updated_at TIMESTAMP DEFAULT NULL
 );
 
--- attach to message table, user_id attached to user who receives the notif
-CREATE TABLE notifications(
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  -- ['read', 'unread']
-  status VARCHAR(100),
-  read_at TIMESTAMP DEFAULT NULL,
-  user_id UUID,
-  -- ticket id may be nullable or not necessary
-  -- ticket_id UUID,
-  message_id UUID,
-  FOREIGN KEY(user_id) REFERENCES users(id),
-  -- FOREIGN KEY(ticket_id) REFERENCES tickets(id),
-  FOREIGN KEY(message_id) REFERENCES messages(id),
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
 CREATE TABLE tickets(
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   title VARCHAR(120),
@@ -138,11 +129,12 @@ CREATE TABLE tickets(
   updated_at TIMESTAMP DEFAULT NULL
 );
 
--- create porducts table first
+-- create projects table first
 -- ALTER TABLE "messages" ALTER COLUMN message DROP NOT NULL;
 CREATE TABLE messages(
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   message TEXT,
+  notes TEXT,
   user_id UUID NOT NULL, -- who created the msg
   ticket_id UUID, -- not needed for notifs
   -- upload_id UUID,
@@ -152,7 +144,23 @@ CREATE TABLE messages(
   -- FOREIGN KEY(upload_id) REFERENCES uploads(id),
   -- FOREIGN KEY(notification_id) REFERENCES products(id) ON DELETE CASCADE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  -- updated_at TIMESTAMP DEFAULT NULL
+  updated_at TIMESTAMP DEFAULT NULL
+);
+
+-- attach to message table, user_id attached to user who receives the notif
+CREATE TABLE notifications(
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  -- ['read', 'unread']
+  status VARCHAR(100),
+  read_at TIMESTAMP DEFAULT NULL,
+  user_id UUID,
+  -- ticket id may be nullable or not necessary
+  -- ticket_id UUID,
+  message_id UUID,
+  FOREIGN KEY(user_id) REFERENCES users(id),
+  -- FOREIGN KEY(ticket_id) REFERENCES tickets(id),
+  FOREIGN KEY(message_id) REFERENCES messages(id),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE histories(
