@@ -129,9 +129,9 @@ handler.use(upload.single('upload')).post(async (req, res) => {
   const commentFileUpload = await pool.query("INSERT INTO uploads (file_url, file_name, message_id) VALUES ($1, $2, $3) RETURNING *;", [fileUrl, fileFilename, newComment.rows[0].id]);
 
   console.log("newComment")
-  console.log(newComment)
+  console.log(newComment.rows[0])
   console.log("commentFileUpload")
-  console.log(commentFileUpload)
+  console.log(commentFileUpload.rows[0])
 
 
   // const newComment = {...comment.rows[0], ...commentFileUpload.rows[0]};
@@ -158,11 +158,13 @@ handler.use(upload.single('upload')).post(async (req, res) => {
   return res.status(201).json({
     status: "Success! Created new comment.",
     data: {
+      ...newComment.rows[0],
+      upload: commentFileUpload.rows[0]
       // comment: newComment.rows[0]
-      comment: {
-        comment: newComment.rows[0],
-        upload: commentFileUpload.rows[0]
-      }
+      // comment: {
+        // comment: newComment.rows[0],
+        // upload: commentFileUpload.rows[0]
+      // }
     }
   });
 });

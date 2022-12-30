@@ -17,7 +17,7 @@ import CommentsList from '@/components/lists/CommentsList';
 import CommentsTextArea from '@/components/details/CommentForm';
 import Description from '@/components/details/Description';
 import Upload from '@/components/details/Upload';
-import { getProject} from '@/redux/features/project/projectSlice';
+import { getProject } from '@/redux/features/project/projectSlice';
 /*
 pg_dump --no-privileges --format custom --file heroku_archive \
 postgres://youruserid:yourpassword@ec2-yourec2host.compute-1.amazonaws.com:5432/yourdatabaseid
@@ -120,7 +120,7 @@ const Ticket = ({initialState, token}) => {
           {commentModal ? (
             <NewCommentModal
               setCommentModal={setCommentModal}
-              ticketID={ticket.id} 
+              // ticketID={ticket.id} 
               // message={message}
               // setMessage={setMessage}
               // submitMsg={submitCommentHandler}
@@ -132,7 +132,10 @@ const Ticket = ({initialState, token}) => {
         <section className="right">
           <Card>
             {comments.length > 0 ? (
-              <CommentsList comments={comments} />
+              <CommentsList
+                // key={}
+                comments={comments}
+              />
             ) : (
               <div className="">
                 no comments found...

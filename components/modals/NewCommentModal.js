@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector} from 'react-redux';
+import { useRouter } from 'next/router';
 import { FaFileUpload } from "react-icons/fa";
 import { createTicketComment } from '@/redux/features/project/projectSlice';
 // import { createUpdateTicketCommentForm } from '@/utils/formDataServices';
@@ -7,8 +8,17 @@ import CommentForm from "../details/CommentForm";
 import ButtonUI from "../UI/ButtonUI";
 import { TextareaAutosize } from "@mui/material";
 
-// const NewCommentModal = ({setCommentModal, message, setMessage, submitMsg}) => {
-const NewCommentModal = ({setCommentModal, ticketID}) => {
+// const NewCommentModal = ({setCommentModal, ticketID}) => {
+const NewCommentModal = ({setCommentModal}) => {
+  let router = useRouter();
+  // console.log("_+_+_+_+_+_+_+_+_+_+_")
+  // console.log("router params")
+  // console.log(router)
+  let ticketID = router.query.ticketId;
+  // console.log("ticket id")
+  // console.log(ticketID)
+  // console.log("_+_+_+_+_+_+_+_+_+_+_")
+
   const dispatch = useDispatch();
   const [fileTypeError, setFileTypeError] = useState(false);
   const [fileSizeError, setFileSizeError] = useState(false);
@@ -160,7 +170,54 @@ const NewCommentModal = ({setCommentModal, ticketID}) => {
 };
 export default NewCommentModal;
 
+// ##############################
+// ##############################
+// this is the redux state after successfule comment is created
+// TODO: need to re-work to object layering, at least strip one layer of the object out, should be layered like:
+/* TODO: [
+  {
+    id: ,
+    message:, 
+    created_on: ,
+    upload: {
+      id: ,
+      file_url,
+      created_on
+    }
+  },
+]
+*/
+/*
+{ 
+  project: {
+    comments: [
+      0: {
+        "comment": {
+          "comment": {
+            "id": "7be64bf2-edc9-4044-95bd-0473ce088f9e",
+            "message": "another comment",
+            "notes": null,
+            "user_id": "18fd6896-3761-4669-9b29-3b0fed2f27eb",
+            "ticket_id": "d01f3576-e368-4ea1-b27f-4349956a7210",
+            "created_at": "2022-12-30T01:43:05.291Z",
+            "updated_at": null
+          },
+          "upload": {
+            "id": "cac7688e-dfcb-4c9a-baf0-d960c3ce5f6e",
+            "file_url": "",
+            "file_name": "",
+            "message_id": "7be64bf2-edc9-4044-95bd-0473ce088f9e",
+            "created_at": "2022-12-30T01:43:05.304Z"
+          }
+        }
+      }
+    ]
+  }
+}
+*/
 
+// ##############################
+// ##############################
 
 
 
