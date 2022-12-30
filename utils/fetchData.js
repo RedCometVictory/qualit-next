@@ -72,8 +72,12 @@ export const postFileData = async (url, postData) => {
     credentials: 'include',
     // credentials: 'same-origin',
     body: postData
-  }); 
-  // const data = await res.json();
+  });
+  console.log("+|+|++|+|+|+|+|++|+|+")
+  console.log("returning data via fetch to project service")
+  const data = await res.json();
+  console.log(data)
+  console.log("+|+|++|+|+|+|+|++|+|+")
   return data;
 };
 

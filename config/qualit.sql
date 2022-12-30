@@ -111,6 +111,7 @@ CREATE TABLE tickets(
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   title VARCHAR(120),
   description TEXT,
+  notes TEXT,
   -- ['New','Open','On Hold','In Progress','Closed','Unconfirmed']
   status VARCHAR(100) NOT NULL DEFAULT 'New',
   -- ['Urgent','High','Medium','Low','None']
@@ -134,7 +135,7 @@ CREATE TABLE tickets(
 CREATE TABLE messages(
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   message TEXT,
-  notes TEXT,
+  -- notes TEXT,
   user_id UUID NOT NULL, -- who created the msg
   ticket_id UUID, -- not needed for notifs
   -- upload_id UUID,

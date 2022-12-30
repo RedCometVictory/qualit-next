@@ -31,7 +31,7 @@ export const getDashboardInfo = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to fetch projects list.", {theme: "colored", toastId: "ThemeError"});
+      toast.error("Failed to fetch dashboard information.", {theme: "colored", toastId: "DashBoardError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -49,7 +49,7 @@ export const getProjects = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to fetch projects list.", {theme: "colored", toastId: "ThemeError"});
+      toast.error("Failed to get projects list.", {theme: "colored", toastId: "GetProjectsError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -72,7 +72,7 @@ export const getProject = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to fetch projects list.", {theme: "colored", toastId: "ThemeError"});
+      toast.error("Failed to get project details.", {theme: "colored", toastId: "GetProjectError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -95,7 +95,7 @@ export const getTicket = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to fetch projects list.", {theme: "colored", toastId: "ThemeError"});
+      toast.error("Failed to get ticket details.", {theme: "colored", toastId: "TicketError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -113,7 +113,7 @@ export const createProject = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to fetch projects list.", {theme: "colored", toastId: "ThemeError"});
+      toast.error("Failed to create new project.", {theme: "colored", toastId: "CreateProjectError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -131,7 +131,7 @@ export const createTicket = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to fetch projects list.", {theme: "colored", toastId: "ThemeError"});
+      toast.error("Failed to create new ticket.", {theme: "colored", toastId: "CreateTicketError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -155,7 +155,7 @@ export const createTicketComment = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to fetch projects list.", {theme: "colored", toastId: "ThemeError"});
+      toast.error("Failed to create new ticket comment.", {theme: "colored", toastId: "CreateTicketCommentError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -173,7 +173,7 @@ export const createTicketUpload = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to fetch projects list.", {theme: "colored", toastId: "ThemeError"});
+      toast.error("Failed to create ticket upload.", {theme: "colored", toastId: "TicketUploadError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -191,7 +191,7 @@ export const updateProject = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to fetch projects list.", {theme: "colored", toastId: "ThemeError"});
+      toast.error("Failed to update project details.", {theme: "colored", toastId: "UpdateProjectError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -209,7 +209,7 @@ export const updateTicket = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to fetch projects list.", {theme: "colored", toastId: "ThemeError"});
+      toast.error("Failed to update ticket details.", {theme: "colored", toastId: "UpdateTicketError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -227,7 +227,7 @@ export const updateTicketComment = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to fetch projects list.", {theme: "colored", toastId: "ThemeError"});
+      toast.error("Failed to update ticket comment.", {theme: "colored", toastId: "UpdateTicketCommentError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -245,7 +245,7 @@ export const updateTicketUpload = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to fetch projects list.", {theme: "colored", toastId: "ThemeError"});
+      toast.error("Failed to update ticket upload.", {theme: "colored", toastId: "UpdateTicketUploadError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -263,7 +263,7 @@ export const deleteProject = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to fetch projects list.", {theme: "colored", toastId: "ThemeError"});
+      toast.error("Failed to delete project.", {theme: "colored", toastId: "DeleteProjectError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -281,7 +281,7 @@ export const deleteTicket = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to fetch projects list.", {theme: "colored", toastId: "ThemeError"});
+      toast.error("Failed to delete ticket.", {theme: "colored", toastId: "DeleteTicketError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -299,7 +299,7 @@ export const deleteTicketComment = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to fetch projects list.", {theme: "colored", toastId: "ThemeError"});
+      toast.error("Failed to delete ticket comment.", {theme: "colored", toastId: "DeleteTicketCommentError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -317,7 +317,7 @@ export const deleteTicketUpload = createAsyncThunk(
           err.response.data.message) ||
           err.message ||
         err.toString()
-        toast.error("Failed to fetch projects list.", {theme: "colored", toastId: "ThemeError"});
+        toast.error("Failed to delete ticket upload.", {theme: "colored", toastId: "DeleteTicketUploadError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -336,7 +336,7 @@ export const deleteUser = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to fetch projects list.", {theme: "colored", toastId: "ThemeError"});
+      toast.error("Failed to delete user from project.", {theme: "colored", toastId: "DeleteUserError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -452,8 +452,12 @@ const projectSlice = createSlice({
       state.loading = true;
     },
     [createTicketComment.fulfilled]: (state, { payload }) => {
+      console.log("******")
+      console.log("payload")
+      console.log(payload)
+      console.log("******")
       state.comments = [...state.comments, payload];
-      state.loading = false;
+      // state.loading = false;
     },
     [createTicketComment.rejected]: (state) => {
       state.loading = false;

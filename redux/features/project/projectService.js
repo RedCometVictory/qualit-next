@@ -84,8 +84,10 @@ const createTicketComment = async (ticket_id, formData) => {
   const res = await postFileData(`/tickets/${ticket_id}/comment`, servicedData); // ----
   const result = res.data;
   // localStorage.setItem("qual__project", JSON.stringify(result.project));
+  console.log("_+_+_+_+_+_+_+_+_")
   console.log("result")
   console.log(result)
+  console.log("_+_+_+_+_+_+_+_+_")
   // TODO: place newly created ticket comment ointo comments [] and save new state into LS qual__project
   console.log("***Project Service***");
   console.log(result)

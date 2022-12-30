@@ -39,18 +39,29 @@ handler.get(async (req, res) => {
   ticketHistory = await pool.query("SELECT * FROM histories WHERE ticket_id = $1;", [ticketId]);
   console.log("END OF MAIN QUERIES")
   console.log(ticketComments.rows[0])
+  console.log(ticketComments.rows[0].id)
   // get upload belonging to each indiv comment if available, run through queryPromise
   // get the ticket edit history
-  for (let i = 0; i < ticketComments.rowCount; i++) {
-    let ticketUploadQuery = "SELECT * FROM uploads WHERE message_id = $1;";
-    // combine upload with respective message
-    const ticketUploadsPromise = await queryPromise(ticketUploadQuery, [ticketComments.rows[i].id]);
-    ticketComments.rows[i] = {...ticketComments.rows[i], ...ticketUploadsPromise.rows[0]}
-  };
+
+  // if (products.rows.length > 0) {
+  //   if (products.rowCount >= 1) {
+  //     for (let i = 0; i < products.rows.length; i++) {
+  //       let created_at = products.rows[i].created_at;
+  //       let newCreatedAt = created_at.toISOString().slice(0, 10);
+  //       products.rows[i].created_at = newCreatedAt;
+  //     }
+  //   };
+    for (let i = 0; i < ticketComments.rows.length; i++) {
+      const ticketUploadQuery = 'SELECT id AS upload_id, file_url, file_name, message_id, created_at FROM uploads WHERE message_id = $1;';
+      const ticketUploadsPromise = await queryPromise(ticketUploadQuery, ticketComments.rows[i].id);
+      let uploadInfo = ticketUploadsPromise.rows[0];
+      ticketComments.rows[i] = { ...ticketComments.rows[i], ...uploadInfo };
+    }
+  // }
     
   console.log("$$$$$$$$$$$$$$$$$$$$$$$")
   console.log("final results")
-  console.log(ticketDetails.rows)
+  console.log(ticketDetails.rows[0])
   console.log("$$$$$$$$$$$$$$$$$$$$$$$")
   console.log(ticketComments.rows)
   console.log("$$$$$$$$$$$$$$$$$$$$$$$")
