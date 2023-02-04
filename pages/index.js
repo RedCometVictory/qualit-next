@@ -10,8 +10,10 @@ import BarChart from '@/components/dashBoard/BarChart';
 import PieChart from '@/components/dashBoard/PieChart';
 import MyProjectsList from '@/components/lists/MyProjectsList';
 import MyTicketsList from '@/components/lists/MyTicketsList';
+import authIsExpired from '@/utils/verifAuth';
 
 const Home = () => {
+  const router = useRouter();
   const dispatch = useDispatch();
   const effectRan = useRef(false);
   const { isAuthenticated, user, loading: authLoading } = useSelector(state => state.auth);
@@ -182,6 +184,84 @@ const Home = () => {
   )
 };
 export default Home;
+
+/*
+Can use url to pass data or cookies to pass data between components
+
+
+Cookies, yes using cookies can solve this problem. Let's just jump into the code now.
+
+export const getServerSideProps = async ({ params, query, req, res }: any) => {return {redirect: {permanent: false,destination: redirectionPath,
+message: 'Hello',},};};
+
+Now from the above example, I want to pass the message to the redirected page, but the problem is you won’t receive the message on the next page.
+So now we will add cookies.
+Before that, you need to install a module.
+
+npm i cookies
+
+Now you can use this module to add/get data to/from cookies.
+
+
+export const getServerSideProps = async ({ params, query, req, res }: any) => {const cookies = new Cookies(req, res);const redirectionPath = `/same-page?eventId=${differentId}`;const responseMessage = "Hello second page";cookies.set('message', responseMessage, {httpOnly: true,});return {redirect: {permanent: false,destination: redirectionPath,},};};
+
+Now you have added message data to cookies and you can get this data on the second page from cookies, how? here is a snippet
+
+Second pageexport const getServerSideProps = async ({ params, query, req, res }: any) => {const cookies = new Cookies(req, res);const message = cookies.get('message');// use this message to perform some operation// let's say you want to delete this after one use, means that after second page loads one the data should be removed and on reload we should not get the message from cookies.// code to remove the data from cookies, and this will make sure after first load your message is removed from the cookiesif (message) {
+// this will remove the property from the cookiescookies.set('message');}};
+
+And that's how you play around with data on the server-side using cookies.
+
+I hope this would have helped someone, as I was also searching for the solution to this problem a few weeks ago.
+
+Keep learning and Growing.
+*/
+
+export const getServerSideProps = async (context) => { 
+  try {
+    let token = context.req.cookies.qual__token;
+    token ? token : null;
+    console.log("token")
+    console.log(token)
+    if (!token) {
+      // await authIsExpired();
+      console.log("session expired")
+      return {
+        redirect: {
+          destination: `/signin`,
+          permanent: false,
+        },
+        props: {
+          // authIsExpired: "Session expired. Please login."
+        },
+      };
+    };
+
+    let validCookieAuth = context.req ? { cookie: context.req.headers.cookie } : undefined;
+    console.log("~|~|~|~|~|~|~|~|~|~|~|~|~|~|~|~|~|~|~")
+    console.log("validCookieAuth")
+    console.log(validCookieAuth)
+    console.log("~|~|~|~|~|~|~|~|~|~|~|~|~|~|~|~|~|~|~")
+
+    return {
+      props: {
+        // initialState: store.getState(),
+        token
+      }
+    }
+  } catch (err) {
+    console.error(err);
+    return {
+      redirect: {
+        destination: "/signin",
+        permanent: false
+      },
+      props: {
+        token: ""
+      }
+    }
+  }
+};
 Home.getLayout = function getLayout(Home) {
   return <MainLayout>{Home}</MainLayout>;
 }

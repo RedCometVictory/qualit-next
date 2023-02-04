@@ -1,7 +1,8 @@
 export const singleISODate = (date) => {
+  console.log("*****converting date*****")
   let createdAt = date;
   let newISODate = createdAt.toISOString().slice(0,10);
-  return newISODate
+  return newISODate;
 };
 
 // useEffect(() => {

@@ -185,6 +185,7 @@ CREATE TABLE uploads(
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   file_url VARCHAR(320) NOT NULL,
   file_name VARCHAR(320) NOT NULL,
+  file_mimetype VARCHAR(200),
   message_id UUID,
   FOREIGN KEY (message_id) REFERENCES messages(id),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

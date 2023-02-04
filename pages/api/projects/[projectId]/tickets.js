@@ -18,13 +18,11 @@ handler.use(verifAuth);
 
 // get more comments belonging to ticket via pagination
 handler.get(async (req, res) => {
-  const { ticketId } = req.query;
+  const { projectId } = req.query;
   const { id, role } = req.query;
 
   console.log("########## BACKEND ##########");
   console.log("|/\/\/\/\/\/\/\/\/\/\|")
-  // console.log("req")
-  // console.log(req)
   console.log("fetching pagination")
   console.log(req.query)
   console.log("|\/\/\/\/\/\/\/\/\/\/|")
@@ -39,38 +37,37 @@ handler.get(async (req, res) => {
   if (page < 1) page = 1;
   let limit = Number(itemsPerPage) || 20;
   let offset = (page - 1) * limit;
-  console.log(orderBy)
-  // if (!orderBy) order;
   let count;
-  let totalComments;
-  // let blogsFlatten = [];
-  // let blogs = [];
-  let ticketComments;
+  let totalTickets;
+  let projectTickets;
 
-  const queryPromise = (query, ...values) => {
-    return new Promise((resolve, reject) => {
-      pool.query(query, values, (err, res) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(res);
-        }
-      })
-    })
-  };
+  totalTickets = await pool.query('SELECT COUNT(id) FROM tickets WHERE project_id = $1;', [projectId]);
 
-  totalComments = await pool.query('SELECT COUNT(id) FROM messages;');
-
-  count = totalComments.rows[0].count;
+  count = totalTickets.rows[0].count;
   Number(count);
 
   // DESC is newest first
   if (order) {
-    ticketComments = await pool.query("SELECT M.id, M.message, M.ticket_id, M.created_at, U.id AS user_id, U.f_name, U.l_name, U.username FROM messages AS M JOIN users AS U ON M.user_id = U.id WHERE M.ticket_id = $1 ORDER BY M.created_at DESC LIMIT $2 OFFSET $3;", [ticketId, limit, offset]);
+    projectTickets = await pool.query("SELECT M.*, U.id AS user_id, U.f_name, U.l_name, U.username FROM messages AS M JOIN users AS U ON M.user_id = U.id WHERE ticket_id = $1 ORDER BY M.created_at DESC LIMIT $2 OFFSET $3;", [projectId, limit, offset]);
   }
   
   if (!order) {
-    ticketComments = await pool.query("SELECT M.id, M.message, M.ticket_id, M.created_at, U.id AS user_id, U.f_name, U.l_name, U.username FROM messages AS M JOIN users AS U ON M.user_id = U.id WHERE M.ticket_id = $1 ORDER BY M.created_at ASC LIMIT $2 OFFSET $3;", [ticketId, limit, offset]);
+    // TODO: chenage query for project tickets per each user role type
+    // TODO: re-edit queries for pagination
+    // project tickets for developers
+    if (role === 'Developer') {
+      projectTickets = await pool.query('SELECT id, title, status, priority, type, created_at FROM tickets WHERE user_id = $1 ORDER BY created_at DESC LIMIT 25;', [id]);
+    };
+    // project tickets for Project managers
+    if (role === 'Project Manager') {
+      projectTickets = "SELECT T.id, T.title, T.type, T.priority, T.status, T.created_at FROM tickets AS T WHERE T.project_id = $1 LIMIT 25;";
+    };
+    // project tickets for Admin
+    if (role === "Admin") {
+      projectTickets = "SELECT T.id, T.title, T.type, T.priority, T.status, T.created_at FROM tickets AS T WHERE T.project_id = $1 LIMIT 25;";
+      projectTickets = await pool.query('SELECT id, title, status, priority, type, created_at FROM tickets LIMIT 25;');
+    };
+    // projectTickets = await pool.query("SELECT M.*, U.id AS user_id, U.f_name, U.l_name, U.username FROM messages AS M JOIN users AS U ON M.user_id = U.id WHERE ticket_id = $1 ORDER BY M.created_at ASC LIMIT $2 OFFSET $3;", [projectId, limit, offset]);
   }
   
   if (ticketComments.rowCount > 0) {
@@ -81,16 +78,6 @@ handler.get(async (req, res) => {
     };
   };
   
-  for (let i = 0; i < ticketComments.rows.length; i++) {
-    const ticketUploadQuery = 'SELECT id AS upload_id, file_url, file_name, created_at AS uploaded_on FROM uploads WHERE message_id = $1;'; // ---
-    const ticketUploadsPromise = await queryPromise(ticketUploadQuery, ticketComments.rows[i].id);
-    let uploadInfo = ticketUploadsPromise.rows[0];
-    if (uploadInfo) {
-      uploadInfo.uploaded_on = singleISODate(uploadInfo.uploaded_on);
-    };
-    ticketComments.rows[i] = { ...ticketComments.rows[i], ...uploadInfo };
-  }
-
   console.log("^^^^^Fetching comments pagination^^^^^")
   // console.log()
   console.log("^^^^^Fetching comments pagination END^^^^^")
@@ -127,7 +114,6 @@ handler.use(upload.single('upload')).post(async (req, res) => {
   let { message } = req.body;
   let fileUrl = "";
   let fileFilename = "";
-  let fileType = "";
   // TODO: consider - if commenting you do not need to proviide text if uploading a image or doc, however is no text is found and no upload is found then casuse an error
   // if (message === null || !message || message.length === 0) {
   //   if (req.file) {
@@ -139,15 +125,12 @@ handler.use(upload.single('upload')).post(async (req, res) => {
   if (req.file && req.file.path) {
     fileUrl = req.file.path;
     fileFilename = req.file.filename;
-    fileType = req.file.mimetype;
   }
 
   console.log("fileUrl")
   console.log(fileUrl)
   console.log("fileFilename")
   console.log(fileFilename)
-  console.log("fileMimetype")
-  console.log(fileType)
 
   if (fileUrl.startsWith('public\\')) {
     let editFileUrl = fileUrl.slice(6);
@@ -161,10 +144,7 @@ handler.use(upload.single('upload')).post(async (req, res) => {
   const newComment = await pool.query('INSERT INTO messages (message, user_id, ticket_id) VALUES ($1, $2, $3) RETURNING *;', [message, id, ticketId]);
 
   console.log("moving onto the new file upload")
-  // const commentFileUpload = await pool.query("INSERT INTO uploads (file_url, file_name, message_id) VALUES ($1, $2, $3) RETURNING *;", [fileUrl, fileFilename, newComment.rows[0].id]);
-  // with mimetypes included
-  //  mimetype: 'image/png'
-  const commentFileUpload = await pool.query("INSERT INTO uploads (file_url, file_name, file_mimetype, message_id) VALUES ($1, $2, $3, $4) RETURNING *;", [fileUrl, fileFilename, fileType, newComment.rows[0].id]);
+  const commentFileUpload = await pool.query("INSERT INTO uploads (file_url, file_name, message_id) VALUES ($1, $2, $3) RETURNING *;", [fileUrl, fileFilename, newComment.rows[0].id]);
 
   console.log("newComment")
   console.log(newComment.rows[0])

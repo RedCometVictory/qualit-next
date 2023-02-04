@@ -6,51 +6,49 @@ import { toast } from 'react-toastify';
 import Cookies from 'js-cookie';
 import { FaPlusCircle, FaPlusSquare, FaArrowAltCircleUp } from 'react-icons/fa';
 import { logout } from "@/redux/features/auth/authSlice";
-import { getTicket, rehydrate, createTicketComment } from "@/redux/features/project/projectSlice";
-import { getDataSSR, getDataGSSP, getData } from "@/utils/fetchData";
+import { getTicket, rehydrate } from "@/redux/features/project/projectSlice";
+// import { getDataSSR, getDataGSSP, getData } from "@/utils/fetchData";
+// import { getProject } from '@/redux/features/project/projectSlice';
 import { Card, Divider, List, ListItem, ListItemIcon, 
 ListItemText, Typography } from '@mui/material';
 import ButtonUI from '@/components/UI/ButtonUI';
 import DetailLayout from '@/components/layouts/DetailLayout';
 import NewCommentModal from '@/components/modals/NewCommentModal';
 import CommentsList from '@/components/lists/CommentsList';
-import CommentsTextArea from '@/components/details/CommentForm';
+// import CommentsTextArea from '@/components/details/CommentForm';
 import Description from '@/components/details/Description';
-import Upload from '@/components/details/Upload';
-import { getProject } from '@/redux/features/project/projectSlice';
-/*
-pg_dump --no-privileges --format custom --file heroku_archive \
-postgres://youruserid:yourpassword@ec2-yourec2host.compute-1.amazonaws.com:5432/yourdatabaseid
-*/
+// import Upload from '@/components/details/Upload';
+
 const Ticket = ({initialState, token}) => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { ticket, comments, history, loading: projectLoading } = useSelector(state => state.project);
+  const { ticket, comments, history, loading: projectLoading, page, pages } = useSelector(state => state.project);
   const { user } = useSelector(state => state.auth);
-  // const [message, setMessage] = useState("");
-  // const [formData, setFormData] = useState({
-  //   message: "",
-  //   upload: ""
-  // });
-
-  // const { message, upload } = formData;
   const [commentModal, setCommentModal] = useState(false);
-  
+  const [hasMounted, setHasMounted] = useState(false);
+
   useEffect(() => {
     if (!token || !Cookies.get("qual__isLoggedIn")) {
       dispatch(logout());
       toast.success("Token or authorization expired.")
       return router.push("/");
     }
-    // setIsLoading(false);
   }, []);
-  
+
   useEffect(() => {
     dispatch(rehydrate(initialState.project))
   }, [dispatch, initialState])
     
   const openNewCommentModal = () => {
     setCommentModal(true);
+  };
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+  
+  if (!hasMounted) {
+    return null;
   };
 
   // const submitCommentHandler = async (e) => {
@@ -75,7 +73,7 @@ const Ticket = ({initialState, token}) => {
       )} */}
       <div className="detail__header">
         <div className="detail__info-box left">
-          Project Details
+          Ticket Details
           <div className="buttons">
             <ButtonUI
               className="btn-one"
@@ -130,11 +128,14 @@ const Ticket = ({initialState, token}) => {
           )}
         </section>
         <section className="right">
-          <Card>
+          <Card className="right-container">
             {comments.length > 0 ? (
               <CommentsList
                 // key={}
                 comments={comments}
+                loading={projectLoading}
+                page={page}
+                pages={pages}
               />
             ) : (
               <div className="">
@@ -148,10 +149,64 @@ const Ticket = ({initialState, token}) => {
   );
 };
 export default Ticket;
+
+export const getServerSideProps = async (context) => {
+  try {
+    let token = context.req.cookies.qual__token;
+    
+    token ? token : null;
+    console.log("token")
+    console.log(token)
+    console.log(null)
+    if (!token) {
+      return {
+        redirect: {
+          destination: `/signin?session_expired=true`,
+          permanent: false,
+        },
+        props: {},
+      };
+    };
+    
+    // TODO: may remove/use userInfo
+    let userInfo = context.req.cookies.qual__user;
+    let ticketID = context.params.ticketId;
+    let ticketInfo;
+    // TODO: validCookieAuth only ussed to dev. Remove for prod is token is all you need
+    let validCookieAuth = context.req ? { cookie: context.req.headers.cookie } : undefined;
+
+    // TODO: attempt to only pass token, not all cookies necessary to pass
+    ticketInfo = await store.dispatch(getTicket({ticket_id: ticketID, cookie: validCookieAuth}));
+
+    return {
+      props: {
+        initialState: store.getState(),
+        token
+      }
+    }
+  } catch (err) {
+    console.error(err);
+    return {
+      redirect: {
+        destination: "/signin",
+        permanent: false
+      },
+      props: {
+        token: ""
+        // data: "",
+        // initGeneral: [],
+        // initTrend: [],
+        // initFollow: [],
+      }
+    }
+  }
+};
+
+
 Ticket.getLayout = function getLayout(Ticket) {
   return <DetailLayout>{Ticket}</DetailLayout>
 };
-
+/*
 export const getServerSideProps = async (context) => {
   try {
     const paramType = context.params.hasOwnProperty("projectId") ? 'projectId' : context.params.hasOwnProperty("ticketId") ? 'ticketId' : '';
@@ -180,7 +235,7 @@ export const getServerSideProps = async (context) => {
           token: token,
         }
       }
-      /*
+      /
       if (user && user._id) {
         return {
           redirect: {
@@ -190,7 +245,7 @@ export const getServerSideProps = async (context) => {
           props: {},
         };
       }
-      */
+      /
     }
     return {
       redirect: {
@@ -211,3 +266,4 @@ export const getServerSideProps = async (context) => {
     }
   }
 };
+*/

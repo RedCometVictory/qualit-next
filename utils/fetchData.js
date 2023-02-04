@@ -2,6 +2,7 @@ const baseUrl = process.env.NEXT_PUBLIC_DOMAIN;
 console.log("^^^^^Fetching Funcs^^^^^")
 console.log(baseUrl)
 
+// ServerSideRender
 export const getDataSSR = async (url, header) => {
   console.log("@@@GETDATASSR@@@")
   const res = await fetch(`${baseUrl}/api${url}`, {
@@ -12,6 +13,7 @@ export const getDataSSR = async (url, header) => {
   return data;
 };
 
+// GetServerSideProps (MAY REMOVE)
 export const getDataGSSP = async (url, header) => {
   console.log("@@@GSSP@@@")
   const res = await fetch(`${baseUrl}/api${url}`, {

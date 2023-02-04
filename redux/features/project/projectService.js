@@ -34,7 +34,6 @@ const getProject = async (project_id, cookie) => {
   console.log("cookie")
   console.log(cookie)
   const res = await getDataSSR(`/projects/${project_id}`, cookie);
-  // const res = await getData(`/projects/${project_id}`);
   const result = res.data;
   // localStorage.setItem("qual__project", JSON.stringify(result));
   console.log("result")
@@ -94,6 +93,32 @@ const createTicketComment = async (ticket_id, formData) => {
   console.log("----- END project service -----")
   return result;
 };
+
+const paginateProjectTickets = async (ticket_id, pageNumber, itemsPerPage, orderBy) => {
+  console.log("pagination service")
+  const res = await getData(`/projects/${project_id}/tickets?pageNumber=${pageNumber}&itemsPerPage=${itemsPerPage}&orderBy=${orderBy}`); // ----
+  const result = res.data;
+  // localStorage.setItem("qual__project", JSON.stringify(result.project));
+  console.log("|_+|_|+|_|+|_|+|_|+|_|+|_|+|_|+|_|")
+  console.log("result")
+  console.log(result)
+  console.log("----- END project service -----")
+  return result;
+};
+
+const paginateTicketComments = async (ticket_id, pageNumber, itemsPerPage, orderBy) => {
+  console.log("pagination service")
+  const res = await getData(`/tickets/${ticket_id}/comment?pageNumber=${pageNumber}&itemsPerPage=${itemsPerPage}&orderBy=${orderBy}`); // ----
+  const result = res.data;
+  // localStorage.setItem("qual__project", JSON.stringify(result.project));
+  console.log("|_+|_|+|_|+|_|+|_|+|_|+|_|+|_|+|_|")
+  console.log("result")
+  console.log(result)
+  console.log("----- END project service -----")
+  return result;
+};
+
+
 
 const createTicketUpload = async (ticket_id, formData) => {
   // TODO: extract the form data image into via multipart/form
@@ -219,6 +244,8 @@ const projectService = {
   createProject,
   createTicket,
   createTicketComment,
+  paginateProjectTickets,
+  paginateTicketComments,
   createTicketUpload,
   updateProject,
   updateTicket,

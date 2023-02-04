@@ -14,7 +14,7 @@ const initialState = {
   email: "",
   password: ""
 };
-  
+
 const SignIn = () => {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -25,6 +25,8 @@ const SignIn = () => {
   const { email, password } = formData;
 
   useEffect(() => {
+    // console.log("isAuthenticated")
+    // console.log(isAuthenticated)
     if (isAuthenticated) {
       router.push('/');
     }
@@ -37,6 +39,10 @@ const SignIn = () => {
   if (!hasMounted) {
     return null;
   }
+
+  if (router.query.session_expired) {
+    toast.error("Session expired. Please login.", { toastId: "expiredAuthId" });
+  };
 
   const onChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -137,17 +143,3 @@ export default SignIn;
 SignIn.getLayout = function getLayout(SignIn) {
   return <MainLayout>{SignIn}</MainLayout>
 };
-
-
-/*
-export async function getServerSideProps({ req }) {
-  const { user } = await supabase.auth.api.getUserByCookie(req);
-
-  if (!user) {
-    console.log("no user in req ");
-    return { props: {}, redirect: { destination: "/", permanent: false } };
-  }
-
-  return { props: { user } };
-}
-*/
