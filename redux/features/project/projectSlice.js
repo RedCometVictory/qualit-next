@@ -12,8 +12,10 @@ const initialState = {
   ticket: {},
   comments: [],
   history: [],
-  loading: false,
   error: '',
+  page: null,
+  pages: null,
+  loading: false,
   allowReset: false
 };
 
@@ -141,10 +143,6 @@ export const createTicketComment = createAsyncThunk(
   'project/post/Ticket-Comment',
   async ({ticket_id, formData}, thunkAPI) => {
     try {
-      console.log("{{{SLICE - FORMDATRA}}}")
-      console.log(ticket_id)
-      console.log(formData)
-      console.log("|||||||||||||||||||||||||||")
       // console.log(formData.getAll("message"))
       // console.log(formData.getAll("upload"))
       return await projectService.createTicketComment(ticket_id, formData);
@@ -160,6 +158,56 @@ export const createTicketComment = createAsyncThunk(
     }
   }
 );
+
+// START Pagination Section
+
+export const paginateProjectTickets = createAsyncThunk(
+  'project/get/Ticket-Paginate-Comment',
+  async ({ticket_id, pageNumber, itemsPerPage, orderBy}, thunkAPI) => {
+    try {
+      console.log("{{{SLICE - PAGINATE}}}")
+      console.log(ticket_id)
+      console.log(pageNumber)
+      console.log(itemsPerPage)
+      console.log(orderBy)
+      return await projectService.paginateTicketComments(ticket_id, pageNumber, itemsPerPage, orderBy);
+    } catch (err) {
+      const message =
+        (err.response &&
+          err.response.data &&
+          err.response.data.message) ||
+        err.message ||
+        err.toString()
+      toast.error("Failed to paginate through comments.", {theme: "colored", toastId: "PaginateCommentError"});
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const paginateTicketComments = createAsyncThunk(
+  'project/get/Ticket-Paginate-Comment',
+  async ({ticket_id, pageNumber, itemsPerPage, orderBy}, thunkAPI) => {
+    try {
+      console.log("{{{SLICE - PAGINATE}}}")
+      console.log(ticket_id)
+      console.log(pageNumber)
+      console.log(itemsPerPage)
+      console.log(orderBy)
+      return await projectService.paginateTicketComments(ticket_id, pageNumber, itemsPerPage, orderBy);
+    } catch (err) {
+      const message =
+        (err.response &&
+          err.response.data &&
+          err.response.data.message) ||
+        err.message ||
+        err.toString()
+      toast.error("Failed to paginate through comments.", {theme: "colored", toastId: "PaginateCommentError"});
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+// END Pagination Section
 
 export const createTicketUpload = createAsyncThunk(
   'project/post/Ticket-Upload',
@@ -355,6 +403,8 @@ const projectSlice = createSlice({
       state.comments = action.payload.comments;
       state.history = action.payload.history;
       state.allowReset = action.payload.allowReset;
+      state.page = action.payload.page;
+      state.pages = action.payload.pages;
       state.loading = action.payload.loading;
       state.error = action.payload.error;
     },
@@ -423,10 +473,10 @@ const projectSlice = createSlice({
       state.loading = true;
     },
     [getProject.fulfilled]: (state, { payload }) => {
-      console.log("SLICE")
-      console.log(payload)
       state.project = payload.project;
       state.tickets = payload.tickets;
+      state.page = payload.page;
+      state.pages = payload.pages;
       state.loading = false;
     },
     [getProject.rejected]: (state) => {
@@ -441,6 +491,8 @@ const projectSlice = createSlice({
       state.ticket = payload.ticket;
       state.comments = payload.comments;
       state.history = payload.history;
+      state.page = payload.page;
+      state.pages = payload.pages;
       state.loading = false;
     },
     [getTicket.rejected]: (state) => {
@@ -452,14 +504,41 @@ const projectSlice = createSlice({
       state.loading = true;
     },
     [createTicketComment.fulfilled]: (state, { payload }) => {
-      console.log("******")
-      console.log("payload")
-      console.log(payload)
-      console.log("******")
       state.comments = [...state.comments, payload];
       // state.loading = false;
     },
     [createTicketComment.rejected]: (state) => {
+      state.loading = false;
+      state.error = 'failed';
+    },
+    [paginateProjectTickets.pending]: (state) => {
+      state.error = '';
+      state.loading = true;
+    },
+    [paginateProjectTickets.fulfilled]: (state, { payload }) => {
+      // state.tickets = [...state.tickets, payload];
+      state.loading = false;
+      // state.comments = payload.comments;
+      state.tickets = payload.tickets;
+      state.pages = payload.pages;
+      state.page = payload.page;
+    },
+    [paginateProjectTickets.rejected]: (state) => {
+      state.loading = false;
+      state.error = 'failed';
+    },
+    [paginateTicketComments.pending]: (state) => {
+      state.error = '';
+      state.loading = true;
+    },
+    [paginateTicketComments.fulfilled]: (state, { payload }) => {
+      // state.comments = [...state.comments, payload];
+      state.loading = false;
+      state.comments = payload.comments;
+      state.pages = payload.pages;
+      state.page = payload.page;
+    },
+    [paginateTicketComments.rejected]: (state) => {
       state.loading = false;
       state.error = 'failed';
     },

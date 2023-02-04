@@ -2,6 +2,7 @@ import nc from 'next-connect';
 import { onError, onNoMatch } from '@/utils/ncOptions';
 import { verifAuth, authRoleDev } from '@/utils/verifAuth';
 import { pool } from '@/config/db';
+import { singleISODate } from '@/utils/toISODate';
 
 export const config = {
   api: { bodyParser: false }
@@ -15,12 +16,15 @@ handler.use(verifAuth);
 handler.get(async (req, res) => {
   const { ticketId } = req.query;
   const { id, role } = req.user;
+  // TODO: need to implement pagination for ticket comments to limit the loading of tickets
   console.log("########## BACKEND ##########");
   let ticketDetails;
   // paginate comments and uploads
   let ticketComments;
+  let totalComments;
   let ticketUploads;
   let ticketHistory;
+  let count;
 
   const queryPromise = (query, ...values) => {
     return new Promise((resolve, reject) => {
@@ -34,46 +38,57 @@ handler.get(async (req, res) => {
     })
   };
 
+  // TODO: hydration error caused possibly due to not converting the created_at date from tickets to their respective comments annd the history.Thus on the backend convert the dates to be more easily readable so that client side can render properly.
   ticketDetails = await pool.query("SELECT * FROM tickets WHERE id = $1;", [ticketId]);
-  ticketComments = await pool.query("SELECT M.*, U.id AS user_id, U.f_name, U.l_name, U.username FROM messages AS M JOIN users AS U ON M.user_id = U.id WHERE ticket_id = $1;", [ticketId]);
-  ticketHistory = await pool.query("SELECT * FROM histories WHERE ticket_id = $1;", [ticketId]);
-  console.log("END OF MAIN QUERIES")
-  console.log(ticketComments.rows[0])
-  console.log(ticketComments.rows[0].id)
-  // get upload belonging to each indiv comment if available, run through queryPromise
-  // get the ticket edit history
+  
+  // TODO: test this code using jest
+  if (ticketDetails.rowCount > 0) {
+    ticketDetails.rows[0].created_at = singleISODate(ticketDetails.rows[0].created_at);
+  };
+  
+  totalComments = await pool.query('SELECT COUNT(id) FROM messages WHERE ticket_id = $1;', [ticketId]);
 
-  // if (products.rows.length > 0) {
-  //   if (products.rowCount >= 1) {
-  //     for (let i = 0; i < products.rows.length; i++) {
-  //       let created_at = products.rows[i].created_at;
-  //       let newCreatedAt = created_at.toISOString().slice(0, 10);
-  //       products.rows[i].created_at = newCreatedAt;
-  //     }
-  //   };
+  count = totalComments.rows[0].count;
+  Number(count);
+
+  ticketComments = await pool.query("SELECT M.id, M.message, M.ticket_id, M.created_at, U.id AS user_id, U.f_name, U.l_name, U.username FROM messages AS M JOIN users AS U ON M.user_id = U.id WHERE M.ticket_id = $1 ORDER BY M.created_at DESC LIMIT 20;", [ticketId]);
+  // todo: get the ticket edit history
+  ticketHistory = await pool.query("SELECT * FROM histories WHERE ticket_id = $1;", [ticketId]);
+  
+  if (ticketComments.rowCount > 0) {
     for (let i = 0; i < ticketComments.rows.length; i++) {
-      const ticketUploadQuery = 'SELECT id AS upload_id, file_url, file_name, message_id, created_at FROM uploads WHERE message_id = $1;';
-      const ticketUploadsPromise = await queryPromise(ticketUploadQuery, ticketComments.rows[i].id);
-      let uploadInfo = ticketUploadsPromise.rows[0];
-      ticketComments.rows[i] = { ...ticketComments.rows[i], ...uploadInfo };
-    }
-  // }
-    
-  console.log("$$$$$$$$$$$$$$$$$$$$$$$")
-  console.log("final results")
-  console.log(ticketDetails.rows[0])
-  console.log("$$$$$$$$$$$$$$$$$$$$$$$")
-  console.log(ticketComments.rows)
-  console.log("$$$$$$$$$$$$$$$$$$$$$$$")
-  console.log(ticketHistory.rows)
-  console.log("$$$$$$$$$$$$$$$$$$$$$$$")
-  console.log("$$$$$$$$$$$$$$$$$$$$$$$")
+      let created_at = ticketComments.rows[i].created_at;
+      let newDate = singleISODate(created_at);
+      ticketComments.rows[i].created_at = newDate;
+    };
+  };
+
+  if (ticketHistory.rowCount > 0) {
+    for (let i = 0; i < ticketHistory.rows.length; i++) {
+      let created_at = ticketHistory.rows[i].created_at;
+      let newDate = singleISODate(created_at);
+      ticketHistory.rows[i].created_at = newDate;
+    };
+  };
+  
+  for (let i = 0; i < ticketComments.rows.length; i++) {
+    const ticketUploadQuery = 'SELECT id AS upload_id, file_url, file_name, created_at AS uploaded_on FROM uploads WHERE message_id = $1;'; // ---
+    const ticketUploadsPromise = await queryPromise(ticketUploadQuery, ticketComments.rows[i].id);
+    let uploadInfo = ticketUploadsPromise.rows[0];
+    if (uploadInfo) {
+      uploadInfo.uploaded_on = singleISODate(uploadInfo.uploaded_on);
+    };
+    ticketComments.rows[i] = { ...ticketComments.rows[i], ...uploadInfo };
+  }
+
   return res.status(200).json({
     status: "Retrieved dashboard information.",
     data: {
       ticket: ticketDetails.rows[0],
       comments: ticketComments.rows,
-      history: ticketHistory.rows
+      history: ticketHistory.rows,
+      page: 1,
+      pages: count
     }
   });
 });

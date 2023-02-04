@@ -1,6 +1,11 @@
 import jwt from 'jsonwebtoken';
+import { toast } from "react-toastify";
 // require('dotenv').config();
 const JWT_SECRET = process.env.JWT_SECRET;
+
+const authIsExpired = async () => {
+  return toast.error("Session expired. Please Login.");
+};
 
 const verifAuth = async (req, res, next) => {
   const { qual__token } = req.cookies;
@@ -67,4 +72,4 @@ const authRoleSub = (req, res, next) => {
   };
 };
 
-module.exports = {verifAuth, authRoleAdmin, authRoleDev, authRoleProjMngr, authRoleSub};
+module.exports = { authIsExpired, verifAuth, authRoleAdmin, authRoleDev, authRoleProjMngr, authRoleSub };
