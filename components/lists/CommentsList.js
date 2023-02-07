@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { paginateTicketComments } from '@/redux/features/project/projectSlice';
 import { Grid, Typography, Demo, Divider, List, ListItem, ListItemIcon, ListItemText, ListItemAvatar, Card, Select, MenuItem, InputLabel } from "@mui/material";
 import { FaComment } from 'react-icons/fa';
+import ButtonUI from '../UI/ButtonUI';
 import Paginate from '../nav/Paginate';
 
 const CommentsList = ({comments, loading, page, pages}) => {
@@ -48,7 +49,7 @@ const CommentsList = ({comments, loading, page, pages}) => {
   const ListItemDetail = ({comment}) => {
     return (<>
       <Typography
-        className='dash__list-details'
+        className='catalog__list-details'
         sx={{ display: 'inline', fontSize: '0.775rem' }}
         variant="h6"
         component="span"
@@ -61,25 +62,11 @@ const CommentsList = ({comments, loading, page, pages}) => {
           {comment.f_name}{" "}{comment.l_name}
         </Link> */}
       </Typography>
-      <Card>
-        {!comment.file_name ? (
-          <Typography>No image...</Typography>
-        ) : (
-          <>
-          {/* comment,file_mimetype will dictate if using <Image> or swapping out the html for supporting pssdf file viewing or pdf template image to be shown along with a download link tot the file itself or a redirect to view and c=download the pdf in a new tab */}
-            {comment.file_name && (
-              <div className="">
-                <Image
-                  className={"image"}
-                  src={comment.file_url}
-                  alt="comment file or image"
-                  layout="fill"
-                />
-              </div>
-            )}
-          </>
-        )}
-      </Card>
+      <div className="catalog__img-cell">
+        {/* comment,file_mimetype will dictate if using <Image> or swapping out the html for supporting pssdf file viewing or pdf template image to be shown along with a download link tot the file itself or a redirect to view and c=download the pdf in a new tab */}
+          {/* <Typography>No image...</Typography> */}
+        
+      </div>
         {/* <span className="detail-label">
          [ username ]
         </span>
@@ -99,9 +86,9 @@ const CommentsList = ({comments, loading, page, pages}) => {
 
   const CommentList = () => {
     return (
-      <Grid className="catalog__list" item xs={12} md={6}>
+      <Grid className="catalog__list-container" item xs={12} md={6}>
         <List
-          className="catalog__list-item"
+          className="catalog__list"
           dense={true}
           // sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
         >
@@ -114,22 +101,50 @@ const CommentsList = ({comments, loading, page, pages}) => {
             > */}
             {/* </Link> */}
               <ListItem
+                className='catalog__list-item'
                 // alignItems='flex-start'
               >
-                <ListItemIcon>
-                  <FaComment />
-                </ListItemIcon>
-                <div className="catalog__comments-desc">
-                  <div className='catalog__message'>{comment.message}</div>
-                  <ListItemText
-                    primary={comment.id}
-                    secondary={<ListItemDetail comment={comment}/>}
-                  />
+                <div className="catalog__main-item-content">
+                  <ListItemIcon className='list-item-icon'>
+                    <FaComment />
+                  </ListItemIcon>
+                  <div className="catalog__comments-desc">
+                    <div className='catalog__message'>{comment.message}</div>
+                    <ListItemText
+                      primary={comment.id}
+                      secondary={<ListItemDetail comment={comment}/>}
+                    />
+                  </div>
                 </div>
+                {comment.file_name.length === 0 ? (
+                  <></>
+                ) : comment.file_mimetype !== "application/pdf" ? (
+                  <div className="catalog__image-container">
+                    <Image
+                      className={"catalog__image"}
+                      src={comment.file_url}
+                      alt="comment file or image"
+                      layout="fill"
+                    />
+                  </div>
+                ) : (
+                  <div className="catalog__image-container pdf">
+                    <a
+                      download             href={comment.file_url}
+                      className=""
+                    >
+                      <ButtonUI
+                        variant="outlined"
+                      >
+                        View PDF
+                      </ButtonUI>
+                    </a>
+                    <div className="pdf-name">
+                      {comment.file_name}
+                    </div>
+                  </div>
+                )}
               </ListItem>
-              {/* <div>
-                {comment.description}
-              </div> */}
               <Divider variant='inset' component="li"/>
             </Card>
           ))}
