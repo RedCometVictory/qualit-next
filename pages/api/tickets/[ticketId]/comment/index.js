@@ -82,7 +82,7 @@ handler.get(async (req, res) => {
   };
   
   for (let i = 0; i < ticketComments.rows.length; i++) {
-    const ticketUploadQuery = 'SELECT id AS upload_id, file_url, file_name, created_at AS uploaded_on FROM uploads WHERE message_id = $1;'; // ---
+    const ticketUploadQuery = 'SELECT id AS upload_id, file_url, file_name, file_mimetype, created_at AS uploaded_on FROM uploads WHERE message_id = $1;'; // ---
     const ticketUploadsPromise = await queryPromise(ticketUploadQuery, ticketComments.rows[i].id);
     let uploadInfo = ticketUploadsPromise.rows[0];
     if (uploadInfo) {

@@ -65,7 +65,8 @@ handler.get(async (req, res) => {
     // project tickets for Admin
     if (role === "Admin") {
       projectTickets = "SELECT T.id, T.title, T.type, T.priority, T.status, T.created_at FROM tickets AS T WHERE T.project_id = $1 LIMIT 25;";
-      projectTickets = await pool.query('SELECT id, title, status, priority, type, created_at FROM tickets LIMIT 25;');
+      // or use!!!!!!!!!!!!
+      // projectTickets = await pool.query('SELECT id, title, status, priority, type, created_at FROM tickets LIMIT 25;');
     };
     // projectTickets = await pool.query("SELECT M.*, U.id AS user_id, U.f_name, U.l_name, U.username FROM messages AS M JOIN users AS U ON M.user_id = U.id WHERE ticket_id = $1 ORDER BY M.created_at ASC LIMIT $2 OFFSET $3;", [projectId, limit, offset]);
   }

@@ -1,4 +1,5 @@
 .catalog {
+  width: 30.25rem;
   padding: 0 0.75rem;
   &__option-container {
     border: 2px solid blue;
@@ -44,7 +45,7 @@
   }
   &__order-by {}
 
-  &__list {
+  &__list-container {
     overflow-y: scroll;
     height: 21.25rem;
     -ms-overflow-style: none;
@@ -55,18 +56,48 @@
       background: transparent; // make scrollbar invisible
     }
   }
+  // &__list {}
   &__list-item {
-    // overflow-y: scroll;
+    @include flex(column, center, center);
+  }
+  &__main-item-content {
+    @include flex(row, center, center);
+    .list-item-icon {
+      align-self: center;
+    }
+    width: 100%;
   }
   &__message {
     background: lightblue;
     border-radius: 6px;
     margin: 0.75rem 0 0 0;
-    padding: 1.25rem 2rem;
+    padding: 0.75rem 0;
     width: 100%;
   }
   &__comments-desc {
-    @include flex(column, center, center);
+    @include flex(column, center, flex-start);
     width: 100%;
+  }
+  &__image-container {
+    width: 100%;
+    max-height: 22rem;
+    > span {
+      position: unset !important;
+    }
+    &.empty {
+      padding: 1rem 0;
+    }
+    &.pdf {
+      @include flex(row, space-between, center);
+      padding: 1rem 0;
+    }
+  }
+  &__image {
+    position: relative !important;
+    height: unset !important;
+    object-fit: contain;
+    width: 100% !important;
+    max-width: 600px !important;
+    z-index: 50;
   }
 }
