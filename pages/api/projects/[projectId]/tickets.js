@@ -16,6 +16,7 @@ const handler = nc({onError, onNoMatch});
 // handler.use(verifAuth, authRoleDev);
 handler.use(verifAuth);
 
+// ROUTE for paginate project tickets
 // get more comments belonging to ticket via pagination
 handler.get(async (req, res) => {
   const { projectId } = req.query;

@@ -1,10 +1,9 @@
-import { useId, useEffect, useState } from 'react';
-import Link from 'next/link';
+import { useId, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { paginateTicketComments } from '@/redux/features/project/projectSlice';
-import { Grid, Typography, Demo, Divider, List, ListItem, ListItemIcon, ListItemText, ListItemAvatar, Card, Select, MenuItem, InputLabel } from "@mui/material";
+import { Grid, Typography, Divider, List, ListItem, ListItemIcon, ListItemText, Card, Select, MenuItem } from "@mui/material";
 import { FaComment } from 'react-icons/fa';
 import ButtonUI from '../UI/ButtonUI';
 import Paginate from '../nav/Paginate';
@@ -54,33 +53,8 @@ const CommentsList = ({comments, loading, page, pages}) => {
         variant="h6"
         component="span"
       >
-        {comment.f_name} {comment.l_name}
-        {/* <Link
-          passHref
-          href={`/tickets/${comment.user_id}`}
-        >
-          {comment.f_name}{" "}{comment.l_name}
-        </Link> */}
+        {comment.created_at}
       </Typography>
-      <div className="catalog__img-cell">
-        {/* comment,file_mimetype will dictate if using <Image> or swapping out the html for supporting pssdf file viewing or pdf template image to be shown along with a download link tot the file itself or a redirect to view and c=download the pdf in a new tab */}
-          {/* <Typography>No image...</Typography> */}
-        
-      </div>
-        {/* <span className="detail-label">
-         [ username ]
-        </span>
-        <span className="">
-          {comment.username}
-        </span> */}
-        {/* <span className="">{comment.created_at}</span> */}
-        {/* <span>{comment.updated_at}</span> */}
-        {/* <Link
-          passHref
-          href={`/tickets/${comment.ticket_id}`}
-        >
-          {comment.description}
-        </Link> */}
     </>)
   };
 
@@ -94,15 +68,8 @@ const CommentsList = ({comments, loading, page, pages}) => {
         >
           {comments.map((comment, index) => (
             <Card key={comment.id}>
-              {/* <div className='catalog__message'>{comment.message}</div> */}
-            {/* <Link
-              passHref
-              href={`/tickets/${comment.ticket_id}`}
-            > */}
-            {/* </Link> */}
               <ListItem
                 className='catalog__list-item'
-                // alignItems='flex-start'
               >
                 <div className="catalog__main-item-content">
                   <ListItemIcon className='list-item-icon'>
@@ -111,7 +78,11 @@ const CommentsList = ({comments, loading, page, pages}) => {
                   <div className="catalog__comments-desc">
                     <div className='catalog__message'>{comment.message}</div>
                     <ListItemText
-                      primary={comment.id}
+                      primary={
+                        <>
+                          {comment.f_name} {comment.l_name} - {comment.role}
+                        </>
+                      }
                       secondary={<ListItemDetail comment={comment}/>}
                     />
                   </div>
@@ -162,11 +133,6 @@ const CommentsList = ({comments, loading, page, pages}) => {
               <div className="">
                 Items on Page: {" "}
               </div>
-              {/* <select name="itemCount" value={itemsPerPage} onChange={e => itemCountChange(e)}>
-                <option value="20">20</option>
-                <option value="50">50</option>
-              </select> */}
-              {/* <InputLabel id="item-label">Items</InputLabel> */}
               <Select
                 className='select-menu'
                 name="itemCount"

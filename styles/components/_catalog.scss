@@ -1,6 +1,9 @@
 .catalog {
   width: 30.25rem;
   padding: 0 0.75rem;
+  &.dashboard {
+    width: initial;
+  }
   &__option-container {
     border: 2px solid blue;
     .option-group {
@@ -59,6 +62,12 @@
   // &__list {}
   &__list-item {
     @include flex(column, center, center);
+    &.dashboard {
+      @include flex(row, center, center);
+    }
+    &.tickets-list {
+      @include flex(row, center, center);
+    }
   }
   &__main-item-content {
     @include flex(row, center, center);
@@ -68,7 +77,6 @@
     width: 100%;
   }
   &__message {
-    background: lightblue;
     border-radius: 6px;
     margin: 0.75rem 0 0 0;
     padding: 0.75rem 0;

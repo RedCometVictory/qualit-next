@@ -63,4 +63,10 @@ handler.get(async (req, res) => {
 //     }
 //   });
 // });
+
+
+// EXAMPLE of CREATING A TICKET
+/*
+INSERT INTO tickets (title, description, status, priority, type, user_id, project_id) VALUES ('Video Game Purchase', 'Many users have requested the ability to digitally donload the video game they rent. Consider building the link and the support for a download to take place once payment is collected.', 'On Hold', 'Low', 'Feature Request', '5179087c-68c0-4a9a-82bd-5fcb9c3e5f0e', '3af1df59-822c-495c-af9b-f5f7ed2d3772');
+*/
 export default handler;

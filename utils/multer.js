@@ -82,9 +82,6 @@ export const upload = multer({
       */
     }
     if (file.mimetype === 'image/gif' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
-      console.log("^^^^^^^^^^")
-      console.log("file is an image type")
-      console.log(file.mimetype)
       return cb(null, true);
     }
     return cb("Only .gif, .jpg, .jpeg, or .png image files can be uploaded or .pdf files.")
