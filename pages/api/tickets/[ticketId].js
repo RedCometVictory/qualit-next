@@ -16,8 +16,7 @@ handler.use(verifAuth);
 handler.get(async (req, res) => {
   const { ticketId } = req.query;
   const { id, role } = req.user;
-  // TODO: need to implement pagination for ticket comments to limit the loading of tickets
-  console.log("########## BACKEND ##########");
+
   let ticketDetails;
   // paginate comments and uploads
   let ticketComments;
@@ -38,7 +37,6 @@ handler.get(async (req, res) => {
     })
   };
 
-  // TODO: hydration error caused possibly due to not converting the created_at date from tickets to their respective comments annd the history.Thus on the backend convert the dates to be more easily readable so that client side can render properly.
   ticketDetails = await pool.query("SELECT * FROM tickets WHERE id = $1;", [ticketId]);
   
   // TODO: test this code using jest
@@ -51,7 +49,7 @@ handler.get(async (req, res) => {
   count = totalComments.rows[0].count;
   Number(count);
 
-  ticketComments = await pool.query("SELECT M.id, M.message, M.ticket_id, M.created_at, U.id AS user_id, U.f_name, U.l_name, U.username FROM messages AS M JOIN users AS U ON M.user_id = U.id WHERE M.ticket_id = $1 ORDER BY M.created_at DESC LIMIT 20;", [ticketId]);
+  ticketComments = await pool.query("SELECT M.id, M.message, M.ticket_id, M.created_at, U.id AS user_id, U.f_name, U.l_name, U.username, U.role FROM messages AS M JOIN users AS U ON M.user_id = U.id WHERE M.ticket_id = $1 ORDER BY M.created_at DESC LIMIT 20;", [ticketId]);
   // todo: get the ticket edit history
   ticketHistory = await pool.query("SELECT * FROM histories WHERE ticket_id = $1;", [ticketId]);
   

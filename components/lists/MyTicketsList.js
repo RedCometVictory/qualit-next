@@ -73,7 +73,7 @@ const MyTicketsList = ({tickets, page, pages}) => {
         <List dense={true} >
           {tickets.map((ticket, index) => (<>
             <ListItem
-              className="catalog__list-item"
+              className={`catalog__list-item ${projectId ? 'tickets-list' : 'dashboard'}`}
               key={index}
               // alignItems='flex-start'
             >
@@ -101,7 +101,7 @@ const MyTicketsList = ({tickets, page, pages}) => {
   };
 
   return (
-    <div className="catalog">
+    <div className={`catalog ${projectId ? '' : 'dashboard'}`}>
       {projectId ? (<>
         <div className="catalog__option-container">
           <div className="option-group one">
@@ -146,7 +146,7 @@ const MyTicketsList = ({tickets, page, pages}) => {
             </div>
           </div>
           <div className="option-group two">
-            <div className="">Tickets: {pages}</div>
+            <div className="">Tickets: {pages || 0}</div>
           </div>
           <div className="option-group three">
             <Paginate

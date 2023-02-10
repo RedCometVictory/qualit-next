@@ -94,7 +94,7 @@ const createTicketComment = async (ticket_id, formData) => {
   return result;
 };
 
-const paginateProjectTickets = async (ticket_id, pageNumber, itemsPerPage, orderBy) => {
+const paginateProjectTickets = async (project_id, pageNumber, itemsPerPage, orderBy) => {
   console.log("pagination service")
   const res = await getData(`/projects/${project_id}/tickets?pageNumber=${pageNumber}&itemsPerPage=${itemsPerPage}&orderBy=${orderBy}`); // ----
   const result = res.data;

@@ -21,13 +21,6 @@ handler.get(async (req, res) => {
   const { ticketId } = req.query;
   const { id, role } = req.query;
 
-  console.log("########## BACKEND ##########");
-  console.log("|/\/\/\/\/\/\/\/\/\/\|")
-  // console.log("req")
-  // console.log(req)
-  console.log("fetching pagination")
-  console.log(req.query)
-  console.log("|\/\/\/\/\/\/\/\/\/\/|")
   // If orderBy is true then the order of comments is newest first, thus psql DESC
   const {
     pageNumber,
@@ -39,12 +32,8 @@ handler.get(async (req, res) => {
   if (page < 1) page = 1;
   let limit = Number(itemsPerPage) || 20;
   let offset = (page - 1) * limit;
-  console.log(orderBy)
-  // if (!orderBy) order;
   let count;
   let totalComments;
-  // let blogsFlatten = [];
-  // let blogs = [];
   let ticketComments;
 
   const queryPromise = (query, ...values) => {
@@ -66,11 +55,11 @@ handler.get(async (req, res) => {
 
   // DESC is newest first
   if (order) {
-    ticketComments = await pool.query("SELECT M.id, M.message, M.ticket_id, M.created_at, U.id AS user_id, U.f_name, U.l_name, U.username FROM messages AS M JOIN users AS U ON M.user_id = U.id WHERE M.ticket_id = $1 ORDER BY M.created_at DESC LIMIT $2 OFFSET $3;", [ticketId, limit, offset]);
+    ticketComments = await pool.query("SELECT M.id, M.message, M.ticket_id, M.created_at, U.id AS user_id, U.f_name, U.l_name, U.username, U.role FROM messages AS M JOIN users AS U ON M.user_id = U.id WHERE M.ticket_id = $1 ORDER BY M.created_at DESC LIMIT $2 OFFSET $3;", [ticketId, limit, offset]);
   }
   
   if (!order) {
-    ticketComments = await pool.query("SELECT M.id, M.message, M.ticket_id, M.created_at, U.id AS user_id, U.f_name, U.l_name, U.username FROM messages AS M JOIN users AS U ON M.user_id = U.id WHERE M.ticket_id = $1 ORDER BY M.created_at ASC LIMIT $2 OFFSET $3;", [ticketId, limit, offset]);
+    ticketComments = await pool.query("SELECT M.id, M.message, M.ticket_id, M.created_at, U.id AS user_id, U.f_name, U.l_name, U.username, U.role FROM messages AS M JOIN users AS U ON M.user_id = U.id WHERE M.ticket_id = $1 ORDER BY M.created_at ASC LIMIT $2 OFFSET $3;", [ticketId, limit, offset]);
   }
   
   if (ticketComments.rowCount > 0) {
@@ -91,9 +80,6 @@ handler.get(async (req, res) => {
     ticketComments.rows[i] = { ...ticketComments.rows[i], ...uploadInfo };
   }
 
-  console.log("^^^^^Fetching comments pagination^^^^^")
-  // console.log()
-  console.log("^^^^^Fetching comments pagination END^^^^^")
   return res.status(200).json({
     status: "Retrieved ticket comments.",
     data: {
