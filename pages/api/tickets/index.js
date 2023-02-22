@@ -11,6 +11,7 @@ const handler = nc({onError, onNoMatch});
 handler.use(verifAuth, authRoleDev);
 
 // get a list of tickets for dashboard
+// TODO: this route may not be used
 handler.get(async (req, res) => {
   const { role } = req.user;
   // const { slug } = req.query;

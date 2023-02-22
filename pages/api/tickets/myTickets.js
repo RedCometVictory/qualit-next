@@ -78,7 +78,7 @@ handler.get(async (req, res) => {
   return res.status(200).json({
     status: "Retrieved ticket comments.",
     data: {
-      tickets: projectTickets.rows,
+      tickets: myTickets.rows,
       page: page,
       pages: count
     }
