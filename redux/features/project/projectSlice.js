@@ -38,12 +38,30 @@ export const getDashboardInfo = createAsyncThunk(
     }
   }
 );
-
+// my projects
 export const getProjects = createAsyncThunk(
   'project/get/All-Projects',
   async (_, thunkAPI) => {
     try {
       return await projectService.getProjects();
+    } catch (err) {
+      const message =
+        (err.response &&
+          err.response.data &&
+          err.response.data.message) ||
+        err.message ||
+        err.toString()
+      toast.error("Failed to get projects list.", {theme: "colored", toastId: "GetProjectsError"});
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+// my tickets
+export const getTickets = createAsyncThunk(
+  'project/get/All-Tickets',
+  async ({keyword, status, priority, type, submitter, pageNumber, itemsPerPage, orderBy, orderChoice, cookie}, thunkAPI) => {
+    try {
+      return await projectService.getTickets(keyword, status, priority, type, submitter, pageNumber, itemsPerPage, orderBy, orderChoice, cookie);
     } catch (err) {
       const message =
         (err.response &&
@@ -465,6 +483,22 @@ const projectSlice = createSlice({
       state.loading = false;
     },
     [getProjects.rejected]: (state) => {
+      state.loading = false;
+      state.error = 'failed';
+    },
+    [getTickets.pending]: (state) => {
+      state.error = '';
+      state.loading = true;
+    },
+    [getTickets.fulfilled]: (state, { payload }) => {
+      state.tickets = payload.tickets;
+      // state.comments = payload.comments;
+      // state.history = payload.history;
+      state.page = payload.page;
+      state.pages = payload.pages;
+      state.loading = false;
+    },
+    [getTickets.rejected]: (state) => {
       state.loading = false;
       state.error = 'failed';
     },

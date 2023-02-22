@@ -45,6 +45,9 @@
     @include flex(row, space-evenly, flex-start);
     height: 100%;
     padding: 1.5rem 1rem 0.275rem;
+    &.my-content {
+      @include flex(column, flex-start, flex-start);
+    }
     .left {
       width: 100%;
       max-width: 26.25rem;
@@ -112,8 +115,110 @@
       margin: 0 0.5rem 0 0;
     }
   }
-  
   &__secondary-content {
     background-color: lightcoral;
+  }
+  // ------------------
+  // ------------------
+  &__option-container {
+    .option-group {
+      &.one {
+        @include flex(row, space-around, center);
+        background-color: lawngreen;
+        margin: 0.75rem 0 0 0;
+        .items {
+          @include flex(row, space-around, center);
+          .select-menu {
+            margin: 0 0 0 0.35rem;
+          }
+          .order-by-options {
+            margin: 0 0 0 0.35rem;
+            .option {
+              cursor: pointer;
+              border: 1px solid blue;
+              border-radius: 3px;
+              padding: 6px 8px;
+              &.active {
+                color: white;
+                background-color: aquamarine;
+                border-color: white;
+              }
+            }
+            .option:nth-child(2) {
+              margin: 0 0 0 0.35rem;
+            }
+          }
+        }
+      }
+      &.two {
+        @include flex(row, center, center);
+        margin: 0.25rem 0 0.25rem 0;
+        background-color: firebrick;
+      }
+      &.three {
+        background-color: darkblue;
+        @include flex(row, center, center);
+      }
+    }
+  }
+  // ------------------
+  // ------------------
+  &__roster {
+    width: 100%;
+  }
+  &__roster-header {
+    &.my-project {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      // grid-template-rows: repeat(2, 1fr);
+      border-bottom: 2px solid black;
+      grid-template-rows: 1fr;
+      grid-column-gap: 0px;
+      grid-row-gap: 0px;
+      width: 100%;
+      background-color: goldenrod;
+    }
+    &.my-ticket {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      // grid-template-rows: repeat(2, 1fr);
+      border-bottom: 2px solid black;
+      grid-template-rows: 1fr;
+      grid-column-gap: 0px;
+      grid-row-gap: 0px;
+      width: 100%;
+      background-color: goldenrod;
+    }
+  }
+  &__roster-row {
+    &.my-project {
+      padding: 1rem 0;
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      grid-template-rows: 1fr;
+      grid-column-gap: 0px;
+      grid-row-gap: 0px;
+      width: 100%;
+    }
+    &.my-ticket {
+      padding: 1rem 0;
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      grid-template-rows: 1fr;
+      grid-column-gap: 0px;
+      grid-row-gap: 0px;
+      width: 100%;
+    }
+  }
+  // &__roster-item-group {}
+  &__roster-item {
+    @include flex(column, flex-start, flex-start);
+    .option-link {
+      &:first-child {
+        margin: 0 0 0.4rem 0;
+      }
+    }
   }
 }

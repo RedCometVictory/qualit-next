@@ -17,7 +17,7 @@ handler.use(verifAuth);
 // ROUTE for getting tickets based on user role
 // get essential ticket data
 handler.get(async (req, res) => {
-  const { id, role } = req.query;
+  const { id, role } = req.user;
 
   console.log("########## BACKEND ##########");
   console.log("|/\/\/\/\/\/\/\/\/\/\|")
@@ -44,9 +44,20 @@ handler.get(async (req, res) => {
   let offset = (page - 1) * limit;
   let count;
   // let totalTickets;
+  let parametersUsed = [];
+  let keywordTrimmed;
   let myTickets;
+  console.log("+_+_+_+_+_+_+_+_+_+")
+  console.log("page")
+  console.log(page)
+  console.log("limit")
+  console.log(limit)
+  console.log("order")
+  console.log(order)
+  console.log("orderChoice")
+  console.log(orderChoice)
 
-  if (keyword && keyword.length > 0) keyword = keyword.trim();
+  if (keyword && keyword.length > 0) keywordTrimmed = keyword.trim();
   // DESC is newest first
   // TODO: status, prioroty, type are all select menus with their own appripriate options
   // TODO: can switch order of tickets by deadline, to see which tickets need to be finished in order of first or last addistionally you can fllip a switch for the search bar in order to search for submitter instead of keyword in title
@@ -66,13 +77,15 @@ handler.get(async (req, res) => {
         console.log(error)
     }
   */
-  let parametersUsed = [];
+  
+  console.log("beginning queries")
   if (role === "Developer" || role === "Project Manager") {
     parametersUsed.push(id);
+    console.log("developer or PM")
     if (keyword === '' || keyword.length === 0 || !keyword) keywordQuery = ""
     if (keyword && keyword.length > 0) {
       keywordQuery = "AND title ILIKE '%'$X'%' ";
-      parametersUsed.push(keyword);
+      parametersUsed.push(keywordTrimmed);
     };
 
     if (!status) statusQuery = ""
@@ -118,19 +131,26 @@ handler.get(async (req, res) => {
       if (!order) deadlineQuery = "ORDER BY deadline ASC LIMIT $X OFFSET $X;"
       mainSearchQuery = "SELECT * FROM tickets WHERE user_id = $X " + keywordQuery + statusQuery + priorityQuery + typeQuery + submittedQuery + deadlineQuery;
     }
-    for (let i = 1; i <= parametersUsed.length; i++) {
-      mainSearchQuery = mainSearchQuery.replace('$X', `$${i}`);
-    };
-    myTickets = await pool.query(mainSearchQuery, parametersUsed);
+    // for (let i = 1; i <= parametersUsed.length; i++) {
+    //   mainSearchQuery = mainSearchQuery.replace('$X', `$${i}`);
+    // };
+    // myTickets = await pool.query(mainSearchQuery, parametersUsed);
+    // console.log("mainSearchQuery");
+    // console.log(mainSearchQuery);
+    // console.log("parametersUsed");
+    // console.log(parametersUsed);
   };
 
   if (role === "Admin") {
+    console.log("role is admin")
+    console.log("checking keyword")
     if (keyword === '' || keyword.length === 0 || !keyword) keywordQuery = ""
     if (keyword && keyword.length > 0) {
       keywordQuery = "title ILIKE '%'$X'%' ";
-      parametersUsed.push(keyword);
+      parametersUsed.push(keywordTrimmed);
     };
 
+    console.log("checking status")
     if (!status) statusQuery = ""
     if (status) {
       if (parametersUsed.length > 0) {
@@ -141,6 +161,7 @@ handler.get(async (req, res) => {
       parametersUsed.push(status);
     };
 
+    console.log("checking priority")
     if (!priority) priorityQuery = ""
     if (priority) {
       if (parametersUsed.length > 0) {
@@ -151,6 +172,7 @@ handler.get(async (req, res) => {
       parametersUsed.push(priority);
     };
 
+    console.log("checking type")
     if (!type) typeQuery = ""
     if (type) {
       if (parametersUsed.length > 0) {
@@ -161,6 +183,7 @@ handler.get(async (req, res) => {
       parametersUsed.push(type);
     };
 
+    console.log("checking aubmitter")
     if (!submitter) submittedQuery = ""
     if (submitter) {
       if (parametersUsed.length > 0) {
@@ -174,31 +197,70 @@ handler.get(async (req, res) => {
     parametersUsed.push(limit);
     parametersUsed.push(offset);
     
-    console.log(mainSearchQuery);
-    console.log(parametersUsed);
     // if searching by order of ticket creation date
     // orderchoice date = true
+    console.log("mainSearchQuery - before orderChoice");
+    console.log(mainSearchQuery);
     if (orderChoice === 'date') {
-      mainSearchQuery = "SELECT * FROM tickets WHERE " + keywordQuery + statusQuery + priorityQuery + typeQuery + submittedQuery + orderQuery;
       if (order) orderQuery = "ORDER BY created_at DESC LIMIT $X OFFSET $X;"
       if (!order) orderQuery = "ORDER BY created_at ASC LIMIT $X OFFSET $X;"
+      if (parametersUsed.length < 3) {
+        mainSearchQuery = "SELECT * FROM tickets " + keywordQuery + statusQuery + priorityQuery + typeQuery + submittedQuery + orderQuery;
+      } else {
+        mainSearchQuery = "SELECT * FROM tickets WHERE " + keywordQuery + statusQuery + priorityQuery + typeQuery + submittedQuery + orderQuery;
+      };
     }
     // if searching by order of ticket deadline date
     // orderchoice date = false
-    if (order) deadlineQuery = "ORDER BY deadline DESC LIMIT $X OFFSET $X;"
-    if (!order) deadlineQuery = "ORDER BY deadline ASC LIMIT $X OFFSET $X;"
     if (orderChoice === 'deadline') {
-      mainSearchQuery = "SELECT * FROM tickets WHERE " + keywordQuery + statusQuery + priorityQuery + typeQuery + submittedQuery + deadlineQuery;
+      if (order) deadlineQuery = "ORDER BY deadline DESC LIMIT $X OFFSET $X;"
+      if (!order) deadlineQuery = "ORDER BY deadline ASC LIMIT $X OFFSET $X;"
+      if (parametersUsed.length < 3) {
+        mainSearchQuery = "SELECT * FROM tickets " + keywordQuery + statusQuery + priorityQuery + typeQuery + submittedQuery + deadlineQuery;
+      } else {
+        mainSearchQuery = "SELECT * FROM tickets WHERE " + keywordQuery + statusQuery + priorityQuery + typeQuery + submittedQuery + deadlineQuery;
+      };
     }
-    for (let i = 1; i <= parametersUsed.length; i++) {
-      mainSearchQuery = mainSearchQuery.replace('$X', `$${i}`);
-    };
-    myTickets = await pool.query(mainSearchQuery, parametersUsed);
+    // for (let i = 1; i <= parametersUsed.length; i++) {
+    //   mainSearchQuery = mainSearchQuery.replace('$X', `$${i}`);
+    // };
+    // myTickets = await pool.query(mainSearchQuery, parametersUsed);
+    // console.log(mainSearchQuery);
+    // console.log(parametersUsed);
   };
+  
+  console.log("mainSearchQuery - before LOOP");
+  console.log(mainSearchQuery);
+  for (let i = 1; i <= parametersUsed.length; i++) {
+    mainSearchQuery = mainSearchQuery.replace('$X', `$${i}`);
+  };
+  console.log("keywordQuery");
+  console.log(keywordQuery);
+  console.log("statusQuery");
+  console.log(statusQuery);
+  console.log("priorityQuery");
+  console.log(priorityQuery);
+  console.log("typeQuery");
+  console.log(typeQuery);
+  console.log("submittedQuery");
+  console.log(submittedQuery);
+  console.log("orderQuery");
+  console.log(orderQuery);
+  console.log("deadlineQuery");
+  console.log(deadlineQuery);
+  console.log("mainSearchQuery - after");
+  console.log(mainSearchQuery);
+  console.log("parametersUsed");
+  console.log(parametersUsed);
+  
+  myTickets = await pool.query(mainSearchQuery, parametersUsed);
+  console.log("my found tickets")
+  console.log(myTickets.rows[0])
+  console.log(myTickets.rows.length)
 
   for (let i = 0; i < myTickets.rows.length; i++) {
-    myTickets.rows[i].deadline = singleISODate(myTickets.rows[i].deadline);
-    myTickets.rows[i].created_at = singleISODate(myTickets.rows[i].created_at);
+    if (myTickets.rows[i].deadline) myTickets.rows[i].deadline = singleISODate(myTickets.rows[i].deadline);
+    if (myTickets.rows[i].created_at) myTickets.rows[i].created_at = singleISODate(myTickets.rows[i].created_at);
   };
 
   // count = totalTickets.rows[0].count;
@@ -209,7 +271,7 @@ handler.get(async (req, res) => {
     data: {
       tickets: myTickets.rows,
       page: page,
-      pages: count
+      pages: count || 20
     }
   });
 });

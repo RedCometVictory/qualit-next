@@ -26,6 +26,17 @@ const getProjects = async () => {
   return result;
 };
 
+const getTickets = async (keyword, status, priority, type, submitter, pageNumber, itemsPerPage, orderBy, orderChoice, cookie) => {
+  const res = await getDataSSR(`/tickets/search?keyword=${keyword}&status=${status}&priority=${priority}&type=${type}&submitter=${submitter}&pageNumber=${pageNumber}&itemsPerPage=${itemsPerPage}&orderBy=${orderBy}&orderChoice=${orderChoice}`, cookie); // ----
+  // const res = await getData(`/tickets/search?keyword=${keyword}&status=${status}&priority=${priority}&type=${type}&submitter=${submitter}&pageNumber=${pageNumber}&itemsPerPage=${itemsPerPage}&orderBy=${orderBy}&orderChoice=${orderChoice}`); // ----
+  const result = res.data;
+  // localStorage.setItem("qual__projects", JSON.stringify(result.projects));
+  console.log("***Project Service***");
+  console.log(result)
+  console.log("----- END project service -----")
+  return result;
+};
+
 const getProject = async (project_id, cookie) => {
   // TODO: get project detail and all tickets belonging to this project, place into tickets [] and project into {}
   console.log("***Project Service for SSR***");
@@ -239,6 +250,7 @@ const deleteUser = async (user_id) => {
 const projectService = {
   getDashboardInfo,
   getProjects,
+  getTickets,
   getProject,
   getTicket,
   createProject,

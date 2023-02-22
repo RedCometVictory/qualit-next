@@ -15,7 +15,8 @@ const MyTicketsList = ({tickets, page, pages}) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const paginatingTickets = async () => {
-    return await dispatchEvent(paginateTickets({project_id: projectId, pageNumber: currentPage, itemsPerPage, orderBy}));
+    // return await dispatchEvent(paginateTickets({project_id: projectId, pageNumber: currentPage, itemsPerPage, orderBy}));
+    return await dispatch(paginateTickets({project_id: projectId, pageNumber: currentPage, itemsPerPage, orderBy}));
   };
 
   const orderByChange = (value) => {
