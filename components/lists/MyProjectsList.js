@@ -35,6 +35,7 @@ const MyProjectsList = ({projects}) => {
       <List dense={true} >
         {projects.map((project, index) => (<>
           <ListItem
+            className={`dash__list-item`}
             key={index}
             // alignItems='flex-start'
           >

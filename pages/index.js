@@ -113,6 +113,7 @@ const Home = () => {
   ) : (
     <section className="dash">
       <div className="dash__content">
+        <div className="dash__mobile-padding top"></div>
         <Card className="dash__card">
           <div className="dash__heading-sec">
             <div className="dash__header">
@@ -179,6 +180,7 @@ const Home = () => {
             </div>
           </div>
         </Card>
+        <div className="dash__mobile-padding bottom"></div>
       </div>
     </section>
   )

@@ -52,6 +52,7 @@ body {
   display: flex;
   height: 100%;
   // @include flex(row, center, center);
+  position: relative;
 }
 
 .routes {
@@ -64,14 +65,20 @@ body {
 
 .pie {
   margin: -40px 0 0 0;
-  width: 300px;
-  height: 300px;
+  width: 234px; // ---
+  height: 234px; // ---
+  // width: 300px; // ---
+  // height: 300px; // ---
+  & > canvas {
+    // @include flex(row, center, center);
+    margin: 0 0 0 6px;
+  }
 }
 
 .bar {
   margin: 60px 0 0 0;
-  width: 300px;
-  height: 300px;
+  width: 234px;
+  height: 234px;
 }
 
 @keyframes App-logo-spin {
@@ -81,5 +88,42 @@ body {
 
   to {
     transform: rotate(360deg);
+  }
+}
+
+
+
+// ##############################
+// ##############################
+// ##############################
+@media (min-width: 300px) {
+  .pie {
+    margin: -40px 0 0 0;
+    width: 260px; // ---
+    height: 260px; // ---
+    // width: 300px; // ---
+    // height: 300px; // ---
+    & > canvas {
+      // @include flex(row, center, center);
+      margin: 0 0 0 6px;
+    }
+  }
+  .bar {
+    margin: 60px 0 0 0;
+    width: 240px;
+    height: 240px;
+  }
+}
+
+@media (min-width: 360px) {
+  .pie {
+    margin: -40px 0 0 0;
+    width: 300px;
+    height: 300px;
+  }
+  .bar {
+    margin: 60px 0 0 0;
+    width: 300px;
+    height: 300px;
   }
 }
