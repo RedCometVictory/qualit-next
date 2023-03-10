@@ -235,7 +235,7 @@ const MyTickets = ({initialState, token}) => {
                 <MenuItem value={50}>50</MenuItem>
               </Select>
             </span>
-            <div className="detail__order-by">
+            <div className="detail__order-by items">
               <span className="items">
                 <div className="">
                   Order By: {" "}
@@ -289,22 +289,27 @@ const MyTickets = ({initialState, token}) => {
           </div>
           <div className='option-group two'>
             <span className="items">
-              <div className="">
-                Status: {" "}
-              </div>
-              <FormControl sx={{ m: 1, minWidth: 120 }}>
-              <InputLabel id="demo-controlled-open-select-label">Age</InputLabel>
+              <FormControl
+                className="form-control"
+                sx={{ m: 1, minWidth: 120 }}
+                size='small'
+              >
+                <InputLabel
+                  className='input-label'
+                  id="demo-controlled-open-select-status-label"
+                >
+                  Status
+                </InputLabel>
                 <Select
                   className='select-menu'
                   name="status"
-                  id="demo-controlled-open-select"
+                  id="demo-controlled-open-select-status"
                   label="status"
                   value={status}
                   onChange={e => statusChange(e)}
                   labelId="item-label"
-                  size='small'
                 >
-                  <MenuItem value={''} defaultChecked defaultValue={true}>Null</MenuItem>
+                  <MenuItem value={''} defaultChecked defaultValue={true}>None</MenuItem>
                   <MenuItem value={'New'}>New</MenuItem>
                   <MenuItem value={'Open'}>Open</MenuItem>
                   <MenuItem value={'On Hold'}>On Hold</MenuItem>
@@ -313,53 +318,73 @@ const MyTickets = ({initialState, token}) => {
                   <MenuItem value={'Unconfirmed'}>Unconfirmed</MenuItem>
                 </Select>
               </FormControl>
-            </span>
+            </span>            
             <span className="items">
-              <div className="">
-                Priority: {" "}
-              </div>
-              <Select
-                className='select-menu'
-                name="priority"
-                value={priority}
-                onChange={e => priorityChange(e)}
-                labelId="item-label"
+              <FormControl
+                className='form-control'
+                sx={{ m: 1, minWidth: 120 }}
                 size='small'
               >
-                <MenuItem value={''}>Null</MenuItem>
-                <MenuItem value={'Urgent'}>Urgent</MenuItem>
-                <MenuItem value={'High'}>High</MenuItem>
-                <MenuItem value={'Medium'}>Medium</MenuItem>
-                <MenuItem value={'Low'}>Low</MenuItem>
-                <MenuItem value={'None'}>None</MenuItem>
-              </Select>
+                <InputLabel
+                  className="input-label"
+                  id="demo-controlled-open-select-priority-label"
+                >
+                  Priority
+                </InputLabel>
+                <Select
+                  className='select-menu'
+                  name="priority"
+                  label="priority"
+                  id="demo-controlled-open-select-priority"
+                  value={priority}
+                  onChange={e => priorityChange(e)}
+                  labelId="item-label"
+                >
+                  <MenuItem value={''} defaultChecked defaultValue={true}>None</MenuItem>
+                  <MenuItem value={'Urgent'}>Urgent</MenuItem>
+                  <MenuItem value={'High'}>High</MenuItem>
+                  <MenuItem value={'Medium'}>Medium</MenuItem>
+                  <MenuItem value={'Low'}>Low</MenuItem>
+                  <MenuItem value={'None'}>None</MenuItem>
+                </Select>
+              </FormControl>
             </span>
             <span className="items">
-              <div className="">
-                Type: {" "}
-              </div>
-              <Select
-                className='select-menu'
-                name="type"
-                value={type}
-                onChange={e => typeChange(e)}
-                labelId="item-label"
+              <FormControl
+                className='form-control'
+                sx={{ m: 1, minWidth: 120 }}
                 size='small'
               >
-                <MenuItem value={''}>Null</MenuItem>
-                <MenuItem value={'Bug'}>Bug</MenuItem>
-                <MenuItem value={'Breaking Change'}>Breaking Change</MenuItem>
-                <MenuItem value={'Discussion'}>Discussion</MenuItem>
-                <MenuItem value={'Error'}>Error</MenuItem>
-                <MenuItem value={'Enhancement'}>Enhancement</MenuItem>
-                <MenuItem value={'Feature Request'}>Feature Request</MenuItem>
-                <MenuItem value={'Needs Investigation'}>Needs Investigation</MenuItem>
-                <MenuItem value={'Question'}>Question</MenuItem>
-                <MenuItem value={'Release'}>Release</MenuItem>
-                <MenuItem value={'Regression'}>Regression</MenuItem>
-                <MenuItem value={'Security'}>Security</MenuItem>
-                <MenuItem value={'Misc'}>Misc</MenuItem>
-              </Select>
+                <InputLabel
+                  className='input-label'
+                  id="demo-controlled-open-select-type-label"
+                >
+                  Type
+                </InputLabel>
+                <Select
+                  className='select-menu'
+                  name="type"
+                  label="type"
+                  id="demo-controlled-open-select-type"
+                  value={type}
+                  onChange={e => typeChange(e)}
+                  labelId="item-label"
+                >
+                  <MenuItem value={''} defaultChecked defaultValue={true}>None</MenuItem>
+                  <MenuItem value={'Bug'}>Bug</MenuItem>
+                  <MenuItem value={'Breaking Change'}>Breaking Change</MenuItem>
+                  <MenuItem value={'Discussion'}>Discussion</MenuItem>
+                  <MenuItem value={'Error'}>Error</MenuItem>
+                  <MenuItem value={'Enhancement'}>Enhancement</MenuItem>
+                  <MenuItem value={'Feature Request'}>Feature Request</MenuItem>
+                  <MenuItem value={'Needs Investigation'}>Needs Investigation</MenuItem>
+                  <MenuItem value={'Question'}>Question</MenuItem>
+                  <MenuItem value={'Release'}>Release</MenuItem>
+                  <MenuItem value={'Regression'}>Regression</MenuItem>
+                  <MenuItem value={'Security'}>Security</MenuItem>
+                  <MenuItem value={'Misc'}>Misc</MenuItem>
+                </Select>
+              </FormControl>
             </span>
             <div className="">Comments: {pages}</div>          
           </div>
