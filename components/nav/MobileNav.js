@@ -1,4 +1,4 @@
-import { FaAngleRight, FaChevronRight } from "react-icons/fa";
+import { FaChevronRight } from "react-icons/fa";
 
 const MobileNav = ({openMenu, setOpenMenu}) => {
   return (

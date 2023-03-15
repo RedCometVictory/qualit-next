@@ -58,7 +58,7 @@
 
   &__detail {
     @include flex(row, center, center);
-    background-color: orange;
+    // background-color: orange;
     width: 100%;
     // height: 100%;
     height: 252px;
@@ -100,7 +100,8 @@
       height: 1rem;
     }
     &.bottom {
-      height: 60px;
+      // height: 60px;
+      height: 4rem;
     }
   }
 }
@@ -126,7 +127,7 @@
   }
 }
 
-@media (min-width: 520px) {
+@media (min-width: 560px) {
   .dash {
     &__mobile-padding {
       &.bottom {
@@ -139,8 +140,12 @@
 // ##############################
 // ##############################
 // ##############################
-@media (min-width: 620px) {
+@media (min-width: 560px) {
   .dash {
+    &__content {
+      padding: 0 1rem 0 1rem;
+      margin: 0 0 0 4rem;
+    }
     // @include flex(column, center, center);
     // max-width: 680px;
     // max-width: 12.375rem;
@@ -164,9 +169,45 @@
 }
 
 @media (min-width: 888px) {
+// @media (min-width: 1008px) {
   .dash {
-    &__mobile-padding {
-      display: none;
+    &__content {
+      padding: 0 1rem 0 1rem;
+      margin: 0 0 0 4rem;
     }
+    &__card {
+      max-width: 380px;
+    }
+    // &__mobile-padding {
+    //   display: none;
+    // }
+  }
+}
+
+@media (min-width: 990px) {
+// @media (min-width: 1008px) {
+  .dash {
+    &__content {
+      padding: 0 1rem 0 1rem;
+    }
+    // &__mobile-padding {
+    //   display: none;
+    // }
+  }
+}
+
+@media (min-width: 1080px) {
+// @media (min-width: 1008px) {
+  .dash {
+    &__content {
+      padding: 0 1rem 0 1rem;
+      margin: initial;
+    }
+    &__card {
+      max-width: 420px;
+    }
+    // &__mobile-padding {
+    //   display: none;
+    // }
   }
 }

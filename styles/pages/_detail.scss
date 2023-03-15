@@ -1,5 +1,5 @@
 .detail {
-  background-color: lightblue;
+  // background-color: lightblue;
   height: 100%;
   width: 100%;
   position: relative;
@@ -7,7 +7,7 @@
     overflow: hidden;
   }
   &__header {
-    background-color: lightgreen;
+    // background-color: lightgreen;
     @include flex(row, space-between, center);
   }
   &__info-box {
@@ -30,18 +30,19 @@
     }
   }
   &__sub-header {
-    background-color: lightcoral;
+    // background-color: lightcoral;
     @include flex(row, space-between, center);
     padding: 0.275rem;
     .title {
-      background-color: yellowgreen;
+      // background-color: yellowgreen;
     }
     .stats-container {
-      background-color: rosybrown;
+      // background-color: rosybrown;
     }
   }
   &__content {
     max-width: 1280px;
+    margin: 0 auto;
     // background-color: lightgray;
     @include flex(row, space-evenly, flex-start);
     height: 100%;
@@ -260,6 +261,13 @@
     }
   }
 }
+@media (min-width: 560px) {
+  .detail {
+    &__container {
+      padding: 0 0 0 62px;
+    }
+  }
+}
 @media (min-width: 660px) {
   .detail {
     &__content {
@@ -283,8 +291,12 @@
 }
 @media (min-width: 1080px) {
   .detail {
+    &__container {
+      padding: initial;
+    }
     &__content {
-      max-width: 960px;
+      // max-width: 960px;
+      max-width: initial;
     }
   }
 }
@@ -292,6 +304,13 @@
   .detail {
     &__content {
       max-width: 1280px;
+    }
+  }
+}
+@media (min-width: 1444px) {
+  .detail {
+    &__content {
+      margin: initial;
     }
   }
 }
