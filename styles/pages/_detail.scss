@@ -4,7 +4,9 @@
   width: 100%;
   position: relative;
   &__container {
-    overflow: hidden;
+    overflow-y: auto;
+    // margin: 0 0 2rem 0;
+    padding: 0 0 3rem 0;
   }
   &__header {
     // background-color: lightgreen;
@@ -45,7 +47,8 @@
     margin: 0 auto;
     // background-color: lightgray;
     @include flex(row, space-evenly, flex-start);
-    height: 100%;
+    // height: 100%;
+    height: 70vh;
     padding: 1.5rem 1rem 0.275rem;
     &.my-content {
       @include flex(column, flex-start, flex-start);
@@ -186,6 +189,11 @@
   // ------------------
   &__roster {
     width: 100%;
+    overflow-y: auto;
+    // height: 70vh;
+    .bottom-padding {
+      margin: 0 0 3rem 0;
+    }
   }
   &__roster-header {
     &.my-project {
