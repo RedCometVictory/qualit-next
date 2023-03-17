@@ -469,6 +469,7 @@ const MyTickets = ({initialState, token}) => {
               </div>
             </div>
           ))}
+          <div className="bottom-padding"></div>
         </section>
       </div>
     </section>
