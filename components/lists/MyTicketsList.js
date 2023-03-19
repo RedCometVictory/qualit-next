@@ -49,6 +49,7 @@ const MyTicketsList = ({tickets, page, pages}) => {
           sx={{ display: 'inline', fontSize: '0.775rem' }}
           variant="h6"
           component="span"
+          className='sub-header'
         >
           <Link
             passHref
@@ -83,12 +84,14 @@ const MyTicketsList = ({tickets, page, pages}) => {
               </ListItemIcon>
               <ListItemText
                 primary={
-                  <Link
-                    passHref
-                    href={`/tickets/${ticket.id}`}
-                  >
-                    {ticket.title}
-                  </Link>
+                  <span className='header'>
+                    <Link
+                      passHref
+                      href={`/tickets/${ticket.id}`}
+                    >
+                      {ticket.title}
+                    </Link>
+                  </span>
                 }
                 secondary={<ListItemDetail ticket={ticket}/>}
               >

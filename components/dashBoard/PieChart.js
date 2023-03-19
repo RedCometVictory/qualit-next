@@ -90,17 +90,22 @@ const PieChart = ({priorityCount}) => {
     legend: {
       display: true,
       position: 'right',
-      align: 'center'
+      align: 'center',
+      labels: {
+        color: '#a1a1a1'
+      }
     },
     maintainAspectRatio: true,
     responsive: true
   };
+
   return (
     <section
       className="pie"
       // style={{ marginTop: "-40px", width: "300px", height: "300px" }}
     >
       <Pie
+      className='pie-canvas'
         data={state}
         options={{
           plugins: chartOptions

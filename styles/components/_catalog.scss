@@ -1,6 +1,7 @@
 .catalog {
   width: 30.25rem;
   padding: 0 0.75rem;
+  color: var(--body-text-02);
   &.dashboard {
     width: initial;
   }
@@ -72,6 +73,12 @@
     }
     &.tickets-list {
       @include flex(row, center, center);
+    }
+    .header a {
+      color: var(--body-text-link);
+      &:visited {
+        color: var(--body-text-visited);
+      }
     }
   }
   &__main-item-content {
