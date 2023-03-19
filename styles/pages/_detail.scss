@@ -127,31 +127,32 @@
   // ------------------
   &__option-container {
     // width: 100%;
-    border: 1px solid blue;
+    background-color: var(--bg-card-primary);
+    padding: 0 1rem 0 1rem;
     @include flex(row, flex-end, center);
     flex-wrap: wrap;
     .option-group {
       &.one {
         @include flex(row, space-around, center);
-        // background-color: lawngreen;
         margin: 0.75rem 0 0 0;
         .items {
           @include flex(row, space-around, center);
           margin: 0 0 0 16px;
           .select-menu {
             margin: 0 0 0 0.35rem;
+            color: var(--body-text);
           }
           .order-by-options {
             margin: 0 0 0 0.35rem;
             .option {
               cursor: pointer;
-              border: 1px solid blue;
+              border: 1px solid #1976d2;
               border-radius: 3px;
               padding: 6px 8px;
               &.active {
                 color: white;
-                background-color: aquamarine;
-                border-color: white;
+                background-color: #1976d2;
+                border-color: #1976d2;
               }
             }
             .option:nth-child(2) {
@@ -183,6 +184,19 @@
         // background-color: darkblue;
         @include flex(row, center, center);
       }
+      .items {
+        label {
+          color: var(--body-text);
+        }
+        div {
+          svg {
+            color: var(--body-text);
+          }
+          fieldset {
+            border-color: var(--body-text);
+          }
+        }
+      }
     }
   }
   // ------------------
@@ -200,23 +214,24 @@
       display: grid;
       grid-template-columns: repeat(8, 1fr);
       // grid-template-rows: repeat(2, 1fr);
-      border-bottom: 2px solid black;
+      // border-bottom: 2px solid black;
       grid-template-rows: 1fr;
       grid-column-gap: 0px;
       grid-row-gap: 0px;
       width: 100%;
-      background-color: goldenrod;
+      background-color: var(--bg-card-primary);
     }
     &.my-ticket {
+      background-color: var(--bg-card-primary);
       display: grid;
       grid-template-columns: repeat(8, 1fr);
       // grid-template-rows: repeat(2, 1fr);
+      padding: 0 0 8px 0;
       border-bottom: 2px solid black;
       grid-template-rows: 1fr;
       grid-column-gap: 0px;
       grid-row-gap: 0px;
       width: 100%;
-      background-color: goldenrod;
     }
   }
   &__roster-row {
@@ -247,6 +262,12 @@
     .option-link {
       &:first-child {
         margin: 0 0 0.4rem 0;
+      }
+      a {
+        color: var(--body-text-link);
+        &:visited {
+          color: var(--body-text-visited);
+        }
       }
     }
   }

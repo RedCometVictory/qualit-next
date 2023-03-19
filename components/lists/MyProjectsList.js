@@ -11,6 +11,7 @@ const MyProjectsList = ({projects}) => {
           sx={{ display: 'inline', fontSize: '0.775rem' }}
           variant="h6"
           component="span"
+          className="sub-header"
         >
           <Link
             passHref
@@ -44,12 +45,14 @@ const MyProjectsList = ({projects}) => {
             </ListItemIcon>
             <ListItemText
               primary={
-                <Link
-                  passHref
-                  href={`/projects/${project.id}`}
-                >
-                  {project.title}
-                </Link>
+                <span className="header">
+                  <Link
+                    passHref
+                    href={`/projects/${project.id}`}
+                  >
+                    {project.title}
+                  </Link>
+                </span>
               }
               secondary={<ListItemDetail project={project}/>}
             >

@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from  'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from "next/router";
-import { toast } from 'react-toastify';
 import { getDashboardInfo } from '@/redux/features/project/projectSlice';
 import MainLayout from "@/components/layouts/MainLayout";
+import CardUI from '@/components/UI/CardUI';
 import ButtonUI from '@/components/UI/ButtonUI';
 import { Card, Input, InputLabel, FormGroup, CardContent, Typography } from "@mui/material";
 import BarChart from '@/components/dashBoard/BarChart';
@@ -114,7 +114,10 @@ const Home = () => {
     <section className="dash">
       <div className="dash__content">
         <div className="dash__mobile-padding top"></div>
-        <Card className="dash__card">
+        <Card
+          className="dash__card"
+          // raised
+        >
           <div className="dash__heading-sec">
             <div className="dash__header">
               <Typography variant='h6' component='h1'>Tickets by Priority</Typography>

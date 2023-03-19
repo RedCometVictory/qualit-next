@@ -4,7 +4,9 @@
   // body html tag colors & other props
   --body-icon: rgb(67, 67, 67);
   --body-text: rgb(67, 67, 67);
-  --body-text-hover: rgb(67, 67, 67);
+  --body-text-hover: rgb(221, 171, 8);
+  --body-text-link: rgb(221, 171, 8);
+  --body-text-visited: rgb(221, 171, 8);
   --body-link: rgb(80, 102, 144);
   --body-navbar: rgb(197, 197, 214);
   --body-navbar-a: rgba(211, 214, 222, 1);
@@ -55,6 +57,7 @@
   --sedcondary-color-a-2: rgba(234, 176, 51, 0.2);
 
   // Panels
+  --bg-card-primary: rgb(239, 243, 253);
   --bg-primary: rgba(222, 225, 238, 1); // ---
   --bg-primary-a-8: rgba(222, 225, 238, 0.8);
   --bg-primary-a-6: rgba(222, 225, 238, 0.6);
@@ -101,13 +104,20 @@
   --dark-disabled-color: #242121;
 }
 
+// original color of mui: #1976d2
+
 :root.dark {
 // .theme-dark {
   // General Purpose
   // body html tag colors & other props
+  --body-icon-ex: #a1a1a1;
   --body-icon: rgb(181, 181, 181);
   --body-text: rgb(197, 193, 193);
-  --body-text-hover: rgb(181, 181, 181);
+  --body-text-02: rgb(221, 221, 221);
+  --body-text-hover: rgb(243, 247, 16);
+  --body-text-link: rgb(243, 247, 16);
+  --body-text-visited: rgb(169, 172, 5);
+  // --body-text-hover: rgb(181, 181, 181);
   --body-link: rgb(80, 102, 144);
   --body-navbar: rgb(67, 67, 67);
   --body-navbar-a: rgba(2, 29, 53, 1);
@@ -160,7 +170,10 @@
   --sedcondary-color-a-2: rgba(51, 94, 234, 0.2);
 
   // Panels
-  --bg-primary: rgb(66, 61, 61);
+  // --bg-primary: rgb(66, 61, 61);
+  // --bg-card-primary: rgb(66, 61, 61); // ---
+  // --bg-card-primary: rgb(28, 36, 104);
+  --bg-card-primary: rgb(47, 68, 114);
   --bg-primary-a-8: rgb(66, 61, 61, 0.8);
   --bg-primary-a-6: rgb(66, 61, 61, 0.6);
   --bg-primary-a-4: rgb(66, 61, 61, 0.4);
