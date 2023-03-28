@@ -64,6 +64,7 @@
   &__list-item {
     @include flex(column, center, center);
     & > div {
+      color: var(--body-text);
       &:nth-child(1) {
         display: none;
       }

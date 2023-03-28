@@ -5,6 +5,7 @@ import { FaFileUpload } from "react-icons/fa";
 import { createTicketComment } from '@/redux/features/project/projectSlice';
 // import { createUpdateTicketCommentForm } from '@/utils/formDataServices';
 import CommentForm from "../details/CommentForm";
+import PaperUI from '../UI/PaperUI';
 import ButtonUI from "../UI/ButtonUI";
 import { TextareaAutosize } from "@mui/material";
 
@@ -109,6 +110,76 @@ const NewCommentModal = ({setCommentModal}) => {
   };
 
   return (
+    <PaperUI
+      className="modal comment"
+    >
+      <div className="modal__header">
+        <h3 className="title">
+          New Comment
+        </h3>
+      </div>
+      <div className="modal__content comment">
+        <form onSubmit={submitCommentHandler}>
+          <TextareaAutosize
+            className='text-area'
+            maxRows={6}
+            minRows={6}
+            placeholder="Add new comment."
+            name="message"
+            value={message}
+            onChange={onChange}
+            required
+          />
+          <div className="modal__actions comment">
+            <div className="file-uploader">
+              <div className='label-title'><FaFileUpload /> Upload File</div>
+              <label htmlFor="upload" className="file-upload-label">
+                <input
+                  type="file"
+                  accept=".jpeg, .jpg, .png, .gif, .pdf"
+                  placeholder=".jpeg, .jpg, .png, .gif, .pdf formats only"
+                  name="upload"
+                  onChange={handleUploadChange}
+                />
+              </label>
+            </div>
+            <div className="action-btns">
+              {fileTypeError || fileSizeError ? (
+                <div className="form__error">
+                  File type or size limit exceeded: jpg, jpeg, png, gif only and size must be less than 3mb.
+                </div>
+              ) : (
+                <ButtonUI
+                  variant="contained"
+                  // onClick={(e) => submitCommentHandler(e)}
+                  type="submit"
+                >
+                  {isSubmitted ? "Submitted" : "Submit"}
+                </ButtonUI>
+              )}
+              <ButtonUI
+                variant="outlined"
+                // sx={{ color: 'primary.contrastText' }}
+                sx={{ color: 'primary.main' }}
+                onClick={() => closeModalHandler()}
+              >
+                Cancel
+              </ButtonUI>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div className="modal__footer"></div>
+    </PaperUI>
+  )
+};
+export default NewCommentModal;
+
+// ========================================
+// ======== ORIGINAL MODAL EXAMPLE ========
+// ========================================
+/*
+return (
     <div className="modal comment">
       <div className="modal__header">
         <h3 className="title">
@@ -156,6 +227,8 @@ const NewCommentModal = ({setCommentModal}) => {
               )}
               <ButtonUI
                 variant="outlined"
+                // sx={{ color: 'primary.contrastText' }}
+                sx={{ color: 'primary.main' }}
                 onClick={() => closeModalHandler()}
               >
                 Cancel
@@ -167,8 +240,10 @@ const NewCommentModal = ({setCommentModal}) => {
       <div className="modal__footer"></div>
     </div>
   )
-};
-export default NewCommentModal;
+*/
+// ========================================
+// ========================================
+// ========================================
 
 // ##############################
 // ##############################

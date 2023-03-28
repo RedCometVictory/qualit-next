@@ -1,7 +1,7 @@
 .card {
   margin: 0 0 0.75rem 0;
-  background-color: var(--bg-panel) !important;
-  color: var(--body-text) !important;
+  // background-color: var(--bg-panel) !important;
+  // color: var(--body-text) !important;
 
   &:last-child {
     margin: 0 0 0 0;
@@ -23,7 +23,7 @@
 
   &__item {
     &:hover {
-      background-color: rgba(85, 88, 240, 0.75);
+      // background-color: rgba(85, 88, 240, 0.75);
     }
   }
 

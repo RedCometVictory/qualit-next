@@ -12,6 +12,7 @@ import { logout } from "@/redux/features/auth/authSlice";
 import { getTickets, rehydrate } from '@/redux/features/project/projectSlice';
 import DetailLayout from "@/components/layouts/DetailLayout";
 import { Card, Divider, List, ListItem, ListItemIcon, ListItemText, Typography, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import PaperUI from '@/components/UI/PaperUI';
 import ButtonUI from "@/components/UI/ButtonUI";
 import MyTicketsList from '@/components/lists/MyTicketsList';
 import Paginate from '@/components/nav/Paginate';
@@ -184,19 +185,21 @@ const MyTickets = ({initialState, token}) => {
       <div className="detail__header">
         <div className="detail__info-box left">
           <h3>My Tickets</h3>
-          <div className="buttons">
+          {/* <div className="buttons">
             <ButtonUI
               className="btn-one"
               variant="contained"
+              // color="secondary"
             >
               Edit
             </ButtonUI>
             <ButtonUI
               variant="contained"
+              // color="secondary"
             >
               Delete
             </ButtonUI>
-          </div>
+          </div> */}
         </div>
         <div className="detail__info-box right">
           {/* # of Comments: {comments.length} / # of Memebers: 09 */}
@@ -345,7 +348,6 @@ const MyTickets = ({initialState, token}) => {
                   <MenuItem value={'High'}>High</MenuItem>
                   <MenuItem value={'Medium'}>Medium</MenuItem>
                   <MenuItem value={'Low'}>Low</MenuItem>
-                  <MenuItem value={'None'}>None</MenuItem>
                 </Select>
               </FormControl>
             </span>
@@ -411,7 +413,7 @@ const MyTickets = ({initialState, token}) => {
         </section>
         <section className="detail__roster">
           {tickets.map((ticket, index) => (
-            <div className="detail__roster-row my-ticket" key={ticket.id}>            
+            <PaperUI className="detail__roster-row my-ticket" key={ticket.id}>            
               <div className="detail__roster-item-group">
                 <div className="detail__roster-item">
                   {ticket.title}
@@ -449,25 +451,31 @@ const MyTickets = ({initialState, token}) => {
               </div>
               <div className="detail__roster-item-group">
                 <div className="detail__roster-item">
-                  <span className="option-link">
+                  <Typography
+                    className="option-link"
+                    variant='body2'
+                  >
                     <Link
                       href={`/tickets/${ticket.id}`}
                       passHref
                     >
                       Edit / Assign
                     </Link>
-                  </span>
-                  <span className="option-link">
+                  </Typography>
+                  <Typography
+                    className="option-link"
+                    variant='body2'
+                  >
                     <Link
                       href={`/tickets/${ticket.id}`}
                       passHref
                     >
                       View Details
                     </Link>
-                  </span>
+                  </Typography>
                 </div>
               </div>
-            </div>
+            </PaperUI>
           ))}
           <div className="bottom-padding"></div>
         </section>
