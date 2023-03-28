@@ -6,7 +6,7 @@
   left: -100%;
   opacity: 0;
   background-color: var(--navbar-color);
-  color: var(--navbar-text);
+  // color: var(--navbar-text);
   padding: 0 1rem 0 1rem;
   z-index: 400;
   transition: all 0.5s ease-in-out;
@@ -20,7 +20,7 @@
     left: 0;
     right: 0;
     background-color: var(--navbar-color);
-    color: var(--navbar-text);
+    // color: var(--navbar-text);
     padding: 16px 0;
     width: 100%;
     height: 48px;
@@ -37,7 +37,7 @@
           transform: rotateZ(-180deg);
         }
         &:hover {
-          color: var(--navbar-text-hover);
+          color: var(--body-text-hover);
         }
       }
     }
@@ -61,6 +61,7 @@
         opacity: 0;
         transition: 0.22s ease-in;
         &.active {
+          cursor: pointer;
           pointer-events: initial;
           opacity: 1;
         }
@@ -96,7 +97,7 @@
   }
   &__theme-container {
     border-radius: 6px;
-    background-color: var(--btn-primary);
+    // background-color: var(--btn-primary);
     cursor: pointer;
     height: 2rem;
     width: 2rem;
@@ -109,6 +110,7 @@
   // ########## LOGO #############
   &__logo-container {
     margin: 3.275rem 0 3.275rem 0;
+    cursor: pointer;
   }
   &__logo {
     font-weight: 800;
@@ -117,7 +119,7 @@
       transition: all 0.35s ease-in-out;
     }
     a {
-      color: var(--navbar-text);
+      color: var(--body-text);
       text-decoration: none;
     }
   }
@@ -132,7 +134,7 @@
     border-radius: 6px;
     width: 100%;
     height: 6px;
-    background-color: var(--navbar-text);
+    background-color: var(--body-text);
     margin: 0.575rem 0 0 0;
   }
   // ########## Links #############
@@ -169,7 +171,7 @@
     &:hover {
       .nav__link, .nav__link-icon {
         transition: 0.3s ease-in;
-        color: var(--navbar-text-hover);
+        color: var(--body-text-hover);
       }
     }
   }
@@ -191,7 +193,7 @@
         margin-left:20px;
         transform:translate(0, -50%);
         padding:0;
-        color:#EEEEEE;
+        // color:#EEEEEE;
         background-color:#444444;
         font-weight:normal;
         font-size:13px;
@@ -217,7 +219,9 @@
     transition: 0.3s ease-in-out;
     text-decoration: none;
     font-weight: 600;
-    color: var(--navbar-text);
+    // color: var(--navbar-text);
+    // color: \\ use for exampels on deciding secondary and primary colors for buttons in white theme
+    
     cursor: default;
     pointer-events: none;
     opacity: 0;
@@ -279,6 +283,7 @@
     &__link {
       pointer-events: initial;
       opacity: 0; // ---
+      // color: #1975d2;
     }
     &__menu-toggle {
       display: initial;
@@ -297,7 +302,7 @@
           transform: rotateZ(-180deg);
         }
         &:hover {
-          color: var(--navbar-text-hover);
+          color: var(--body-text-hover);
         }
       }
     }
@@ -427,7 +432,7 @@
     }
     .nav__menu-toggle {
       transition: 0.5s ease-in-out;
-      background-color: var(--navbar-color);
+      // background-color: var(--navbar-color);
       top: 10px;
     }
     &__links {

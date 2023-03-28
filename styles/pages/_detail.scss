@@ -9,6 +9,7 @@
     padding: 0 0 3rem 0;
   }
   &__header {
+    max-width: 1280px;
     // background-color: lightgreen;
     @include flex(row, space-between, center);
   }
@@ -34,7 +35,9 @@
   &__sub-header {
     // background-color: lightcoral;
     @include flex(row, space-between, center);
-    padding: 0.275rem;
+    max-width: 1280px;
+    // padding: 0.275rem;
+    padding: 0.275rem 1rem;
     .title {
       // background-color: yellowgreen;
     }
@@ -46,11 +49,12 @@
     max-width: 1280px;
     margin: 0 auto;
     // background-color: lightgray;
-    @include flex(row, space-evenly, flex-start);
+    @include flex(row, space-evenly, flex-start); // ---
     // height: 100%;
-    height: 70vh;
+    // height: 70vh;
     padding: 1.5rem 1rem 0.275rem;
     &.my-content {
+      // background-color: var(--primary-color);
       @include flex(column, flex-start, flex-start);
     }
     .left {
@@ -121,13 +125,13 @@
     }
   }
   &__secondary-content {
-    background-color: lightcoral;
+    // background-color: lightcoral;
   }
   // ------------------
   // ------------------
   &__option-container {
     // width: 100%;
-    background-color: var(--bg-card-primary);
+    // background-color: var(--bg-card-primary);
     padding: 0 1rem 0 1rem;
     @include flex(row, flex-end, center);
     flex-wrap: wrap;
@@ -140,7 +144,7 @@
           margin: 0 0 0 16px;
           .select-menu {
             margin: 0 0 0 0.35rem;
-            color: var(--body-text);
+            // color: var(--body-text);
           }
           .order-by-options {
             margin: 0 0 0 0.35rem;
@@ -150,9 +154,9 @@
               border-radius: 3px;
               padding: 6px 8px;
               &.active {
-                color: white;
-                background-color: #1976d2;
-                border-color: #1976d2;
+                // color: white;
+                // background-color: #1976d2;
+                // border-color: #1976d2;
               }
             }
             .option:nth-child(2) {
@@ -186,14 +190,14 @@
       }
       .items {
         label {
-          color: var(--body-text);
+          // color: var(--body-text);
         }
         div {
           svg {
-            color: var(--body-text);
+            // color: var(--body-text);
           }
           fieldset {
-            border-color: var(--body-text);
+            // border-color: var(--body-text);
           }
         }
       }
@@ -219,10 +223,10 @@
       grid-column-gap: 0px;
       grid-row-gap: 0px;
       width: 100%;
-      background-color: var(--bg-card-primary);
+      // background-color: var(--bg-card-primary);
     }
     &.my-ticket {
-      background-color: var(--bg-card-primary);
+      // background-color: var(--bg-card-primary);
       display: grid;
       grid-template-columns: repeat(8, 1fr);
       // grid-template-rows: repeat(2, 1fr);
@@ -246,6 +250,7 @@
       width: 100%;
     }
     &.my-ticket {
+      background-color: var(--primary-color);
       padding: 1rem 0;
       display: grid;
       grid-template-columns: repeat(8, 1fr);
@@ -314,7 +319,7 @@
 @media (min-width: 960px) {
   .detail {
     &__content {
-      max-width: 820px;
+      // max-width: 820px;
     }
   }
 }
@@ -324,14 +329,24 @@
       padding: initial;
     }
     &__content {
+      @include flex(row, space-between, flex-start);
+      margin: initial;
       // max-width: 960px;
-      max-width: initial;
+      // max-width: 820px;
+      // max-width: initial;
     }
   }
 }
 @media (min-width: 1300px) {
   .detail {
+    &__header {
+      margin: 0 auto;
+    }
+    &__sub-header {
+      margin: 0 auto;
+    }
     &__content {
+      margin: 0 auto;
       max-width: 1280px;
     }
   }
@@ -339,7 +354,7 @@
 @media (min-width: 1444px) {
   .detail {
     &__content {
-      margin: initial;
+      // margin: initial;
     }
   }
 }

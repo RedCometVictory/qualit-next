@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from "next/router";
 import { getDashboardInfo } from '@/redux/features/project/projectSlice';
 import MainLayout from "@/components/layouts/MainLayout";
+import PaperUI from '@/components/UI/PaperUI';
 import CardUI from '@/components/UI/CardUI';
 import ButtonUI from '@/components/UI/ButtonUI';
 import { Card, Input, InputLabel, FormGroup, CardContent, Typography } from "@mui/material";
@@ -114,13 +115,16 @@ const Home = () => {
     <section className="dash">
       <div className="dash__content">
         <div className="dash__mobile-padding top"></div>
-        <Card
+        <PaperUI
           className="dash__card"
           // raised
+          // variant={'outlined'}
+          // square
+          // elevation={0}
         >
           <div className="dash__heading-sec">
             <div className="dash__header">
-              <Typography variant='h6' component='h1'>Tickets by Priority</Typography>
+              <Typography variant='h3'>Tickets by Priority</Typography>
             </div>
           </div>
           <div className="dash__detail">
@@ -130,11 +134,16 @@ const Home = () => {
               <PieChart priorityCount={ticketPriorityCount} />
             )}
           </div>
-        </Card>
-        <Card className="dash__card">
+        </PaperUI>
+        <PaperUI
+          className="dash__card"
+          // variant={'elevation'}
+          // square
+          // elevation={0}
+        >
           <div className="dash__heading-sec">
             <div className="dash__header">
-              <Typography variant='h6' component='h1'>My Tickets</Typography>
+              <Typography variant='h3'>My Tickets</Typography>
             </div>
           </div>
           <div className="dash__detail">
@@ -148,11 +157,16 @@ const Home = () => {
               )}
             </div>
           </div>
-        </Card>
-        <Card className="dash__card">
+        </PaperUI>
+        <PaperUI
+          className="dash__card"
+          // variant={'outlined'}
+          // square
+          // elevation={20}
+        >
           <div className="dash__heading-sec">
             <div className="dash__header">
-              <Typography variant='h6' component='h1'>My Projects</Typography>
+              <Typography variant='h3'>My Projects</Typography>
             </div>
           </div>
           <div className="dash__detail">
@@ -166,11 +180,16 @@ const Home = () => {
               )}
             </div>
           </div>
-        </Card>
-        <Card className="dash__card">
+        </PaperUI>
+        <PaperUI
+          className="dash__card"
+          // variant={'elevation'}
+          // square
+          // elevation={0}
+        >
           <div className="dash__heading-sec">
             <div className="dash__header">
-              <Typography variant='h6' component='h1'>Tickets by Status</Typography>
+              <Typography variant='h3'>Tickets by Status</Typography>
             </div>
           </div>
           <div className="dash__detail">
@@ -182,7 +201,7 @@ const Home = () => {
               )}
             </div>
           </div>
-        </Card>
+        </PaperUI>
         <div className="dash__mobile-padding bottom"></div>
       </div>
     </section>

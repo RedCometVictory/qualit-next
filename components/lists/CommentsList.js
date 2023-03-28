@@ -101,18 +101,24 @@ const CommentsList = ({comments, loading, page, pages}) => {
                 ) : (
                   <div className="catalog__image-container pdf">
                     <a
-                      download             href={comment.file_url}
+                      download
+                      href={comment.file_url}
                       className=""
                     >
                       <ButtonUI
                         variant="outlined"
+                        sx={{ color: 'primary.main' }}
                       >
                         View PDF
                       </ButtonUI>
                     </a>
-                    <div className="pdf-name">
+                    <Typography
+                      className="pdf-name"
+                      variant='body1'
+                      noWrap
+                    >
                       {comment.file_name}
-                    </div>
+                    </Typography>
                   </div>
                 )}
               </ListItem>

@@ -10,12 +10,14 @@ import { MdDashboard } from 'react-icons/md';
 import { logout } from '@/redux/features/auth/authSlice';
 import ModeButton from '@/components/ModeButton';
 import Logo from '../UI/Logo';
+import { Typography, useTheme } from '@mui/material';
 
 // TODO:
 // Get role from redux state
 // based on role (Admin, Project Manager, Submitter, Developer) hide links.
 // swap auth links, show pending on logged in or not
 const MainNav = ({openMenu, setOpenMenu}) => {
+  const theme = useTheme();
   const router = useRouter();
   const dispatch = useDispatch();
   const { isAuthenticated, user, loading: authLoading } = useSelector(state => state.auth);
@@ -52,7 +54,13 @@ const MainNav = ({openMenu, setOpenMenu}) => {
               <div class="tooltip">
                 <div class="right">
                   <div class="text-content">
-                    <h3>New Project</h3>
+                    <Typography
+                      variant="h3"
+                      color={'primary.contrastText'}
+                      noWrap
+                    >
+                      New Project
+                    </Typography>
                   </div>
                 </div>
               </div>
@@ -60,7 +68,7 @@ const MainNav = ({openMenu, setOpenMenu}) => {
           </Link>
         </div>
         <Link passHref href="/new-project">
-          <span className='nav__link'>New Project</span>
+          <Typography className='nav__link' variant='h4' color={'primary.contrastText'}>New Project</Typography>
         </Link>
       </div>
     </li>
@@ -79,7 +87,9 @@ const MainNav = ({openMenu, setOpenMenu}) => {
               <div class="tooltip">
                 <div class="right">
                   <div class="text-content">
-                    <h3>My Boards</h3>
+                    <Typography color={'primary.contrastText'} variant="h3">
+                      My Boards
+                    </Typography>
                   </div>
                 </div>
               </div>
@@ -90,7 +100,7 @@ const MainNav = ({openMenu, setOpenMenu}) => {
           passHref
           href={"/"}
         >
-          <a className='nav__link'>Dashboard</a>
+          <Typography color={'primary.contrastText'} variant="h4" className='nav__link'>Dashboard</Typography>
         </Link>
       </div>
     </li>
@@ -106,7 +116,7 @@ const MainNav = ({openMenu, setOpenMenu}) => {
               <div class="tooltip">
                 <div class="right">
                   <div class="text-content">
-                    <h3>My Projects</h3>
+                    <Typography color={'primary.contrastText'} variant="h3">My Projects</Typography>
                   </div>
                 </div>
               </div>
@@ -117,7 +127,7 @@ const MainNav = ({openMenu, setOpenMenu}) => {
           passHref
           href={`/my/projects`}
         >
-          <span className='nav__link'>My Projects</span>
+          <Typography variant='h4' color={'primary.contrastText'} className='nav__link'>My Projects</Typography>
         </Link>
       </div>
     </li>
@@ -133,7 +143,7 @@ const MainNav = ({openMenu, setOpenMenu}) => {
               <div class="tooltip">
                 <div class="right">
                   <div class="text-content">
-                    <h3>My Tickets</h3>
+                    <Typography color={'primary.contrastText'} variant="h3">My Tickets</Typography>
                   </div>
                 </div>
               </div>
@@ -144,7 +154,7 @@ const MainNav = ({openMenu, setOpenMenu}) => {
           passHref
           href={`/my/tickets`}
         >
-          <span className='nav__link'>My Tickets</span>
+          <Typography color={'primary.contrastText'} variant="h4" className='nav__link'>My Tickets</Typography>
         </Link>
       </div>
     </li>
@@ -156,10 +166,24 @@ const MainNav = ({openMenu, setOpenMenu}) => {
         <div className={`theme-info ${openMenu ? "active" : ""}`}>
           <ModeButton />
           {user !== null && (
-            <div className="nav__user">
-              <span>Hello, {user?.username}</span> 
-              <span>As: {user?.role}</span>
-            </div>
+            <>
+            <Typography
+              variant='body2'
+              className="nav__user"
+              color={'primary.contrastText'}
+            >
+              Hello, {user?.username} 
+            </Typography>
+            <Typography
+              variant='body2'
+              className="nav__user"
+              color={'primary.contrastText'}
+            > 
+              As: {user?.role}
+            </Typography>
+            {/* <span>Hello, {user?.username}</span> 
+            span>As: {user?.role}</span> */}
+            </>
           )}
         </div>
 
@@ -174,7 +198,13 @@ const MainNav = ({openMenu, setOpenMenu}) => {
           <div className="nav__logo small">
             <h1>
               <Link passHref href="/" className="nav__logo-icon">
-                <a>Q</a>
+                <Typography
+                  // variant='body2'
+                  variant='body3'
+                  color={'primary.contrastText'}
+                >
+                  Q
+                </Typography>
               </Link>
             </h1>
           </div>
@@ -209,7 +239,7 @@ const MainNav = ({openMenu, setOpenMenu}) => {
                     <div class="tooltip">
                     <div class="right">
                       <div class="text-content">
-                        <h3>Sign Out</h3>
+                        <Typography variant="h3" color={'primary.contrastText'}>Sign Out</Typography>
                       </div>
                     </div>
                   </div>
@@ -220,7 +250,7 @@ const MainNav = ({openMenu, setOpenMenu}) => {
                     className='nav__link'
                     onClick={() => logoutHandler()}
                   >
-                    <span className='nav__link'>Sign Out</span>
+                    <Typography color={'primary.contrastText'} variant="h4" className='nav__link'>Sign Out</Typography>
                   </a>
                 </div>
               </li>
@@ -237,7 +267,7 @@ const MainNav = ({openMenu, setOpenMenu}) => {
                     <div class="tooltip">
                       <div class="right">
                         <div class="text-content">
-                          <h3>Sign In</h3>
+                          <Typography color={'primary.contrastText'} variant="h3">Sign In</Typography>
                         </div>
                       </div>
                     </div>
@@ -248,7 +278,7 @@ const MainNav = ({openMenu, setOpenMenu}) => {
                     passHref
                     href="/signin"
                   >
-                    <span className='nav__link'>Sign In</span>
+                    <Typography variant="h4" color={'primary.contrastText'} className='nav__link'>Sign In</Typography>
                   </Link>
                 </div>
               </li>

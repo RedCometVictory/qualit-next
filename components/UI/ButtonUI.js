@@ -20,7 +20,8 @@ const ButtonUI = ({
       <Button
         className={className ? className : ' '}
         variant={variant ? variant : 'text'}
-        color={color ? color : 'primary'}
+        color={color ? color : 'secondary'}
+        // color={color ? color : 'primary'}
         disabled={disabled ? disabled : false}
         {...{...restProps, underline}}
       >

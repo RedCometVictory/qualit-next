@@ -11,6 +11,7 @@ import { getTicket, rehydrate } from "@/redux/features/project/projectSlice";
 // import { getProject } from '@/redux/features/project/projectSlice';
 import { Card, Divider, List, ListItem, ListItemIcon, 
 ListItemText, Typography } from '@mui/material';
+import { orange } from '@mui/material/colors';
 import ButtonUI from '@/components/UI/ButtonUI';
 import DetailLayout from '@/components/layouts/DetailLayout';
 import NewCommentModal from '@/components/modals/NewCommentModal';
@@ -83,6 +84,7 @@ const Ticket = ({initialState, token}) => {
             </ButtonUI>
             <ButtonUI
               variant="contained"
+              // color='secondary'
             >
               Delete
             </ButtonUI>
