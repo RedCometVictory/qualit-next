@@ -11,7 +11,7 @@ import { getDataGSSP, getData } from "@/utils/fetchData";
 import { logout } from "@/redux/features/auth/authSlice";
 import { getTickets, rehydrate } from '@/redux/features/project/projectSlice';
 import DetailLayout from "@/components/layouts/DetailLayout";
-import { Card, Divider, List, ListItem, ListItemIcon, ListItemText, Typography, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { Card, Divider, List, ListItem, ListItemIcon, ListItemText, Typography, FormControl, TextField, InputLabel, Select, MenuItem } from '@mui/material';
 import PaperUI from '@/components/UI/PaperUI';
 import ButtonUI from "@/components/UI/ButtonUI";
 import MyTicketsList from '@/components/lists/MyTicketsList';
@@ -205,18 +205,18 @@ const MyTickets = ({initialState, token}) => {
           {/* # of Comments: {comments.length} / # of Memebers: 09 */}
         </div>
       </div>
-      <div className="detail__sub-header">
-        {/* <span className="title">{ticket.title}</span> */}
+      {/* <div className="detail__sub-header">
+        <span className="title">{ticket.title}</span>
         <div className="stats-container">
-          {/* <span>{ticket.id}</span> */}
-          {/* <span className="stats">Priority</span>
+          <span>{ticket.id}</span>
+          <span className="stats">Priority</span>
           <span className=""> | </span>
-          <span className="stats">Status</span> */}
+          <span className="stats">Status</span>
         </div>
         <span className="date">
-          {/* Created On: {ticket.created_at} */}
+          Created On: {ticket.created_at}
         </span>
-      </div>
+      </div> */}
       <div className="detail__content my-content">
         <div className="detail__option-container">
           <div className="option-group one">
@@ -244,18 +244,22 @@ const MyTickets = ({initialState, token}) => {
                   Order By: {" "}
                 </div>
                 <div className="order-by-options">
-                  <span
+                  <ButtonUI
+                    variant="outlined"
+                    sx={{ color: 'primary.main' }}
                     className={`option ${orderBy ? 'active' : ''}`}
                     onClick={() => orderByChange(true)}
                   >
                     New
-                  </span>
-                  <span
+                  </ButtonUI>
+                  <ButtonUI
+                    variant="outlined"
+                    sx={{ color: 'primary.main' }}
                     className={`option ${!orderBy ? 'active' : ''}`}
                     onClick={() => orderByChange(false)}
                   >
                     Old
-                  </span>
+                  </ButtonUI>
                 </div>
               </span>
             </div>
@@ -274,13 +278,16 @@ const MyTickets = ({initialState, token}) => {
             </span>
             <span className="items">
               <div className="search-input-group">
-                <input
+                <TextField
                   type="text"
                   className="search-input"
-                  placeholder="search title..."
+                  label="search title..."
+                  // placeholder="search title..."
                   value={keyword}
                   onChange={e => updateText(e)}
                   onKeyDown={e => keywordSearchHandler(e)}
+                  size="small"
+                  id="outlined-search-label"
                 />
                 {/* <div className="search-confirm-btn">
                   <button className="search-btn">
@@ -388,7 +395,7 @@ const MyTickets = ({initialState, token}) => {
                 </Select>
               </FormControl>
             </span>
-            <div className="">Comments: {pages}</div>          
+            <div className="item-count">Comments: {pages}</div>          
           </div>
           <div className="option-group three">
             <Paginate

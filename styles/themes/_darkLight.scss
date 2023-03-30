@@ -31,7 +31,8 @@
 
   // Backgrounds
   --primary-color: rgb(227, 248, 255);
-  --secondary-color: rgb(234, 176, 51);
+  // --secondary-color: rgb(234, 176, 51);
+  --secondary-color: rgb(255, 152, 0);
   --primary-color-a: rgba(234, 51, 51, 0.8);
   --primary-color-a-6: rgba(234, 51, 51, 0.6);
   --primary-color-a-4: rgba(234, 51, 51, 0.4);
@@ -43,6 +44,18 @@
 
   // Cards
   --card-primary: rgb(239, 243, 253);
+
+  // Buttons
+  // --btn: 
+  // --btn-primary:
+  --btn-primary-active: rgb(25, 118, 210);
+  --btn-primary-active-a-8: rgba(25, 118, 210, 0.8);
+  --btn-primary-active-a-6: rgba(25, 118, 210, 0.6);
+  --btn-primary-active-a-4: rgba(25, 118, 210, 0.4);
+  --btn-primary-active-a-2: rgba(25, 118, 210, 0.2);
+  // --btn-secondary:
+  --btn-secondary-active: rgb(255, 152, 0);
+  
 
   // Panels
 
@@ -139,7 +152,8 @@
   // Backgrounds
   // --primary-color: rgb(161, 51, 234);
   --primary-color: rgb(57, 54, 58);
-  --secondary-color: rgb(51, 94, 234);
+  // --secondary-color: rgb(51, 94, 234); // orig may rdelete
+  --secondary-color: rgb(51, 94, 234); // orig may rdelete
   --primary-color-a: rgba(161, 51, 234, 0.8);
   --primary-color-a-6: rgba(161, 51, 234, 0.6);
   --primary-color-a-4: rgba(161, 51, 234, 0.4);
@@ -148,6 +162,21 @@
   --secondary-color-a-6: rgba(51, 94, 234, 0.6);
   --secondary-color-a-4: rgba(51, 94, 234, 0.4);
   --sedcondary-color-a-2: rgba(51, 94, 234, 0.2);
+
+  // Buttons
+    // Buttons
+  // --btn: 
+  // --btn-primary:
+  // --btn-primary-active: rgb(25, 118, 210);
+  // --btn-primary-active: rgb(243, 247, 16);
+  --btn-primary-active: rgb(255, 193, 7);
+  --btn-primary-active-a-8: rgba(255, 193, 7, 0.8);
+  --btn-primary-active-a-6: rgba(255, 193, 7, 0.6);
+  --btn-primary-active-a-4: rgba(255, 193, 7, 0.4);
+  --btn-primary-active-a-2: rgba(255, 193, 7, 0.2);
+  // --btn-secondary:
+  --btn-secondary-active: rgb(255, 152, 0);
+
 
   
   // Cards
