@@ -16,6 +16,7 @@ const handler = nc({onError, onNoMatch});
 handler.use(verifAuth);
 
 // ROUTE for getting projects based on user role
+// TODO: perhaps delete this route - it may not be used aND GETTING projects is used via dashboard route
 handler.get(async (req, res) => {
   const { id, role } = req.query;
 

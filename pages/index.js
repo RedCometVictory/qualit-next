@@ -1,5 +1,7 @@
-import { useEffect, useRef, useState } from  'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import Cookies from 'js-cookie';
+import cookie from "cookie";
 import { useRouter } from "next/router";
 import { getDashboardInfo } from '@/redux/features/project/projectSlice';
 import MainLayout from "@/components/layouts/MainLayout";
@@ -243,13 +245,34 @@ Keep learning and Growing.
 
 export const getServerSideProps = async (context) => { 
   try {
+    // let cookies = new Cookie()
     let token = context.req.cookies.qual__token;
     token ? token : null;
     console.log("token")
     console.log(token)
+    console.log("+++ context +++")
+    console.log(context)
+    console.log("+++ end +++")
     if (!token) {
       // await authIsExpired();
       console.log("session expired")
+      // cookie.set("qual__isLoggedIn")
+      context.res.setHeader(
+        "Set-Cookie", [
+          `qual__isLoggedIn=deleted; Max-Age=0`,
+          // `qual__=deleted; Max-Age=0`
+        ]
+      )
+      // context.res
+      // res.setHeader(
+      //   "Set-Cookie", [
+      //     cookie.serialize("qual__token", jwtAccessToken, cookieOptions),
+      //     cookie.serialize("qual__isLoggedIn", true, {path: "/"})
+      //   ]
+      // );
+      // Cookies.remove("qual__isLoggedIn");
+      // Cookies.set("qual__isLoggedIn", "false");
+      // localStorage.removeItem("qual__user");
       return {
         redirect: {
           destination: `/signin`,

@@ -16,10 +16,10 @@ const getDashboardInfo = async () => {
   return result;
 };
 
-const getProjects = async () => {
-  const res = await getData(`/projects`);
+const getProjects = async (keyword, pageNumber, itemsPerPage, orderBy, cookie) => {
+  const res = await getDataSSR(`/projects/search?keyword=${keyword}&pageNumber=${pageNumber}&itemsPerPage=${itemsPerPage}&orderBy=${orderBy}`, cookie);
   const result = res.data;
-  localStorage.setItem("qual__projects", JSON.stringify(result.projects));
+  // localStorage.setItem("qual__projects", JSON.stringify(result.projects));
   console.log("***Project Service***");
   console.log(result)
   console.log("----- END project service -----")
@@ -104,10 +104,22 @@ const createTicketComment = async (ticket_id, formData) => {
   console.log("----- END project service -----")
   return result;
 };
-
-const paginateProjectTickets = async (project_id, pageNumber, itemsPerPage, orderBy) => {
+// TODO: need to implement for my projects page
+const paginateMyProjects = async (keyword, pageNumber, itemsPerPage, orderBy) => {
   console.log("pagination service")
-  const res = await getData(`/projects/${project_id}/tickets?pageNumber=${pageNumber}&itemsPerPage=${itemsPerPage}&orderBy=${orderBy}`); // ----
+  const res = await getData(`/projects/search?keyword=${keyword}&pageNumber=${pageNumber}&itemsPerPage=${itemsPerPage}&orderBy=${orderBy}`); // ----
+  const result = res.data;
+  // localStorage.setItem("qual__project", JSON.stringify(result.project));
+  console.log("|_+|_|+|_|+|_|+|_|+|_|+|_|+|_|+|_|")
+  console.log("result")
+  console.log(result)
+  console.log("----- END project service -----")
+  return result;
+};
+
+const paginateMyTickets = async (keyword, status, priority, type, submitter, pageNumber, itemsPerPage, orderBy, orderChoice) => {
+  console.log("pagination service")
+  const res = await getData(`/tickets/search?keyword=${keyword}&status=${status}&priority=${priority}&type=${type}&submitter=${''}&pageNumber=${pageNumber}&itemsPerPage=${itemsPerPage}&orderBy=${orderBy}&orderChoice=${orderChoice}`); // ----
   const result = res.data;
   // localStorage.setItem("qual__project", JSON.stringify(result.project));
   console.log("|_+|_|+|_|+|_|+|_|+|_|+|_|+|_|+|_|")
@@ -256,7 +268,8 @@ const projectService = {
   createProject,
   createTicket,
   createTicketComment,
-  paginateProjectTickets,
+  paginateMyProjects,
+  paginateMyTickets,
   paginateTicketComments,
   createTicketUpload,
   updateProject,

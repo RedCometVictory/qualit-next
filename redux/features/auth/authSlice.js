@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import Cookies from "js-cookie";
 // import { HYDRATE } from "next-redux-wrapper";
 import { toast } from "react-toastify";
 import authService from "./authService";
@@ -6,7 +7,7 @@ import authService from "./authService";
 const initialState = {
   // token: typeof window !== "undefined" && localStorage.getItem("qual__token") ? localStorage.getItem("qual__token") : null,
   user: typeof window !== "undefined" && localStorage.getItem("qual__user") ? JSON.parse(localStorage.getItem("qual__user")) : {},
-  isAuthenticated: typeof window !== "undefined" && localStorage.getItem("qual__user") ? true : false,
+  isAuthenticated: typeof window !== "undefined" && localStorage.getItem("qual__user") && Cookies.get("qual__isLoggedIn") ? true : false,
   loading: false,
   error: null,
   allowReset: false

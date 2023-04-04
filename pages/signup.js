@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from  'react';
+import Link from 'next/link';
+import { useEffect, useState } from  'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from "next/router";
 import { toast } from 'react-toastify';
@@ -20,7 +21,6 @@ const initialState = {
 };
   
 const SignUp = () => {
-  const effectRan = useRef(false);
   const dispatch = useDispatch();
   const router = useRouter();
   const [formData, setFormData] = useState(initialState);
@@ -30,24 +30,10 @@ const SignUp = () => {
   const { firstName, lastName, username, email, password, password2 } = formData;
 
   useEffect(() => {
-    // console.log('effectRan-01')
-    // console.log(effectRan)
-    // if (effectRan.current === true || process.env.NEXT_PUBLIC_NODE_ENV !== 'development') {
-    //   console.log('effectRan-inner')
-    //   console.log(effectRan)
-      if (isAuthenticated) {
-        router.push('/');
-      }
-    // };
-    // return () => {
-    //   console.log('unmounted')
-    //   effectRan.current = true;
-    //   console.log('effectRan-02')
-    //   console.log(effectRan)
-
-    // };
-    
-  }, [isAuthenticated]);
+    if (isAuthenticated) {
+      router.push('/');
+    }
+  }, [router, isAuthenticated]);
 
   useEffect(() => {
     setHasMounted(true);
@@ -219,12 +205,13 @@ const SignUp = () => {
         </form>
         <CardContent>
           <div className="login__footer">
-            Already have an account?
-            <ButtonUI
+            Already have an account?{" "}
+            <Link
+            // passHref
               href="/signin"
             >
               Sign In
-            </ButtonUI>
+            </Link>
           </div>
         </CardContent>
       </Card>

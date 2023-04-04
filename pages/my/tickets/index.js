@@ -1,20 +1,17 @@
 import { useRouter } from 'next/router';
+import Cookies from 'js-cookie';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
-import { FaPlusCircle, FaRegEdit, FaArrowAltCircleUp } from 'react-icons/fa';
-import { FaSearch } from 'react-icons/fa';
+import { BsSearch } from "react-icons/bs";
 import store from '@/redux/store';
-import { getDataGSSP, getData } from "@/utils/fetchData";
 import { logout } from "@/redux/features/auth/authSlice";
-import { getTickets, rehydrate } from '@/redux/features/project/projectSlice';
+import { getTickets, paginateMyTickets, rehydrate } from '@/redux/features/project/projectSlice';
 import DetailLayout from "@/components/layouts/DetailLayout";
 import { Card, Divider, List, ListItem, ListItemIcon, ListItemText, Typography, FormControl, TextField, InputLabel, Select, MenuItem } from '@mui/material';
 import PaperUI from '@/components/UI/PaperUI';
 import ButtonUI from "@/components/UI/ButtonUI";
-import MyTicketsList from '@/components/lists/MyTicketsList';
 import Paginate from '@/components/nav/Paginate';
 
 
@@ -90,6 +87,7 @@ const MyTickets = ({initialState, token}) => {
   };
 
   const paginatingTickets = () => {
+    console.log("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSS")
     console.log("paginating tickets list")
     console.log("keyword")
     console.log(keyword)
@@ -107,7 +105,7 @@ const MyTickets = ({initialState, token}) => {
     console.log(orderBy)
     console.log("orderChoice")
     console.log(orderChoice)
-    // dispatch(getTickets({keyword: '', status: '', priority: '', type: '', submitter: '', pageNumber: currentPage, itemsPerPage, orderBy, orderChoice: 'date', cookie: validCookieAuth}));
+    dispatch(paginateMyTickets({keyword, status, priority, type, pageNumber: currentPage, itemsPerPage, orderBy, orderChoice}));
   };
 
   const updateText = (e) => {
@@ -120,8 +118,28 @@ const MyTickets = ({initialState, token}) => {
     setKeyword(keyword = "");
   };
 
+  // const iconSearchHandler = (e) => {
+  //   // if (e.key === "Enter") {
+  //   //   setIsLoading(true);
+  //   //   e.preventDefault();
+  //     if (keyword.length > 0) {
+  //       setKeyword(keyword = e.target.value);
+  //       // resetInput(e);
+  //       paginatingTickets();
+  //     } else {
+  //       return;
+  //     }
+  //   }
+  //   // setKeyword(keyword = e.target.value);
+  //   // paginatingTickets();
+  // };
   const keywordSearchHandler = (e) => {
+    console.log("XXXXXXXXXXXXXXXXXXXXXX")
+    console.log("searching via keyword")
+    console.log(e.key)
     if (e.key === "Enter") {
+      console.log("e.target.value")
+      console.log(e.target.value)
       setIsLoading(true);
       e.preventDefault();
       if (keyword.length > 0) {
@@ -129,7 +147,8 @@ const MyTickets = ({initialState, token}) => {
         // resetInput(e);
         paginatingTickets();
       } else {
-        return;
+        // resets tickets
+        paginatingTickets();
       }
     }
     // setKeyword(keyword = e.target.value);
@@ -171,7 +190,7 @@ const MyTickets = ({initialState, token}) => {
       setCurrentPage(currentPage = currentPage - 1);
     }
     if (currentPage === 0) setCurrentPage(1);
-    setItemsPerPage(Number(e.target.value)); // 12 or 20, dropdown
+    setItemsPerPage(itemsPerPage = Number(e.target.value)); // 12 or 20, dropdown
     paginatingTickets();
   };
 
@@ -288,12 +307,21 @@ const MyTickets = ({initialState, token}) => {
                   onKeyDown={e => keywordSearchHandler(e)}
                   size="small"
                   id="outlined-search-label"
+                  // inputProps={
+                  //   <FaSearch />
+                      // <SearchIcon />
+                  // }
                 />
-                {/* <div className="search-confirm-btn">
+                <div className="search-confirm-btn">
                   <button className="search-btn">
-                    <FaSearch />
+                    <BsSearch
+                      className='btn-glass'                    
+                      // onClick={e => keywordSearchHandler(e)}
+                    />
+                    {/* <FaSearch /> */}
+                    {/* <SearchIcon /> */}
                   </button>
-                </div> */}
+                </div>
               </div>
             </span>
           </div>
@@ -395,7 +423,7 @@ const MyTickets = ({initialState, token}) => {
                 </Select>
               </FormControl>
             </span>
-            <div className="item-count">Comments: {pages}</div>          
+            <div className="item-count">Tickets: {pages}</div>          
           </div>
           <div className="option-group three">
             <Paginate
@@ -495,10 +523,13 @@ export const getServerSideProps = async (context) => {
   try {
     let token = context.req.cookies.qual__token;
     token ? token : null;
-    console.log("token")
-    console.log(token)
-    console.log(null)
     if (!token) {
+      context.res.setHeader(
+        "Set-Cookie", [
+          `qual__isLoggedIn=deleted; Max-Age=0`,
+          // `qual__=deleted; Max-Age=0`
+        ]
+      )
       return {
         redirect: {
           destination: `/signin?session_expired=true`,
