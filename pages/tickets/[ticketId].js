@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router';
+import Cookies from 'js-cookie';
 import { useEffect, useRef, useState } from 'react';
 import store from '@/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import Cookies from 'js-cookie';
 import { FaPlusCircle, FaPlusSquare, FaArrowAltCircleUp } from 'react-icons/fa';
 import { logout } from "@/redux/features/auth/authSlice";
 import { getTicket, rehydrate } from "@/redux/features/project/projectSlice";
@@ -106,7 +106,7 @@ const Ticket = ({initialState, token}) => {
           Created On: {ticket.created_at}
         </span>
       </div>
-      <div className="detail__content">
+      <div className="detail__content detail-page">
         <section className="left">
           <Description description={ticket.description} />
           <div className="detail__actions">
@@ -161,6 +161,15 @@ export const getServerSideProps = async (context) => {
     console.log(token)
     console.log(null)
     if (!token) {
+      console.log("session expired")
+      // Cookies.remove("qual__isLoggedIn");
+      context.res.setHeader(
+        "Set-Cookie", [
+          `qual__isLoggedIn=deleted; Max-Age=0`,
+          // `qual__=deleted; Max-Age=0`
+        ]
+      )
+      // localStorage.removeItem("qual__user");
       return {
         redirect: {
           destination: `/signin?session_expired=true`,

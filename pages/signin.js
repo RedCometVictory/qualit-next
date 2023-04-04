@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useEffect, useState } from  'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from "next/router";
@@ -25,22 +26,19 @@ const SignIn = () => {
   const { email, password } = formData;
 
   useEffect(() => {
-    // console.log("isAuthenticated")
-    // console.log(isAuthenticated)
     if (isAuthenticated) {
       router.push('/');
     }
-  }, [isAuthenticated]);
+  }, [router, isAuthenticated]);
 
   useEffect(() => {
     setHasMounted(true);
   }, []);
   
-  if (!hasMounted) {
-    return null;
-  }
+  if (!hasMounted) return null;
 
   if (router.query.session_expired) {
+    console.log("session has expired")
     toast.error("Session expired. Please login.", { toastId: "expiredAuthId" });
   };
 
@@ -52,7 +50,6 @@ const SignIn = () => {
     e.preventDefault();
     try {
       dispatch(loginUser(formData));
-      // toast.success("Logged in successfully!");
     } catch (err) {
       console.error(err);
       toast.error("Failed to register. Check if email or password are valid.");
@@ -127,12 +124,13 @@ const SignIn = () => {
         </form>
         <CardContent>
           <div className="login__footer">
-            Don&apos;t have an account?
-            <ButtonUI
+            Don&apos;t have an account?{" "}
+            <Link
+              // passHref
               href="/signup"
             >
               Sign Up
-            </ButtonUI>
+            </Link>
           </div>
         </CardContent>
       </Card>

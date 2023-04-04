@@ -25,7 +25,7 @@ handler.get(async (req, res) => {
   console.log(req.query)
   console.log("|\/\/\/\/\/\/\/\/\/\/|")
   // If orderBy is true then the order of comments is newest first, thus psql DESC
-  const {
+  let {
     keyword, // title, or submitter
     status, // -- ['New','Open','On Hold','In Progress','Closed','Unconfirmed']
     priority, // -- ['Urgent','High','Medium','Low','None']
@@ -38,15 +38,17 @@ handler.get(async (req, res) => {
   } = req.query;
   // let deadlineOrder = JSON.parse(deadline);
   let order = JSON.parse(orderBy);
+  // let order = orderBy;
   let page = Number(pageNumber);
   if (page < 1) page = 1;
   let limit = Number(itemsPerPage) || 20;
   let offset = (page - 1) * limit;
   let count;
-  // let totalTickets;
+  let totalTickets;
   let parametersUsed = [];
   let keywordTrimmed;
   let myTickets;
+  // submitter = '';
   console.log("+_+_+_+_+_+_+_+_+_+")
   console.log("page")
   console.log(page)
@@ -62,21 +64,6 @@ handler.get(async (req, res) => {
   // TODO: status, prioroty, type are all select menus with their own appripriate options
   // TODO: can switch order of tickets by deadline, to see which tickets need to be finished in order of first or last addistionally you can fllip a switch for the search bar in order to search for submitter instead of keyword in title
   let mainSearchQuery, keywordQuery, orderQuery, statusQuery, priorityQuery, typeQuery, submittedQuery, deadlineQuery;
-  // TODO: split string by $, iterate and place number and a space after $, then join
-  /*
-    ?? EXAMPLE
-    try {
-        const valuesInTheBody = Object.values(req.body);
-        const numberOfValues = valuesInTheBody.length;
-        const updateStatement = Object.entries(req.body).map(([key, value], i) => `${key}=$${i + 1}`).join(",")
-        const query = `UPDATE product SET ${updateStatement}, updated_at='${moment().format("YYYY-MM-DD hh:mm:ss")}' 
-                        WHERE prod_id=$${numberOfValues + 1} RETURNING *`
-        const result = await db.query(query, [...valuesInTheBody, req.params.productId])
-        res.send(result.rows[0])
-    } catch (error) {
-        console.log(error)
-    }
-  */
   
   console.log("beginning queries")
   if (role === "Developer" || role === "Project Manager") {
@@ -84,8 +71,8 @@ handler.get(async (req, res) => {
     console.log("developer or PM")
     if (keyword === '' || keyword.length === 0 || !keyword) keywordQuery = ""
     if (keyword && keyword.length > 0) {
-      keywordQuery = "AND title ILIKE '%'$X'%' ";
-      parametersUsed.push(keywordTrimmed);
+      keywordQuery = "AND title ILIKE $X ";
+      parametersUsed.push('%' + keywordTrimmed + '%');
     };
 
     if (!status) statusQuery = ""
@@ -146,12 +133,12 @@ handler.get(async (req, res) => {
     console.log("checking keyword")
     if (keyword === '' || keyword.length === 0 || !keyword) keywordQuery = ""
     if (keyword && keyword.length > 0) {
-      keywordQuery = "title ILIKE '%'$X'%' ";
-      parametersUsed.push(keywordTrimmed);
+      keywordQuery = "title ILIKE $X ";
+      parametersUsed.push('%' + keywordTrimmed + '%');
     };
 
     console.log("checking status")
-    if (!status) statusQuery = ""
+    if (status.length === 0 || !status) statusQuery = ""
     if (status) {
       if (parametersUsed.length > 0) {
         statusQuery = "AND status = $X "
@@ -162,7 +149,7 @@ handler.get(async (req, res) => {
     };
 
     console.log("checking priority")
-    if (!priority) priorityQuery = ""
+    if (status.length === 0 || !priority) priorityQuery = ""
     if (priority) {
       if (parametersUsed.length > 0) {
         priorityQuery = "AND priority = $X "
@@ -173,7 +160,7 @@ handler.get(async (req, res) => {
     };
 
     console.log("checking type")
-    if (!type) typeQuery = ""
+    if (status.length === 0 || !type) typeQuery = ""
     if (type) {
       if (parametersUsed.length > 0) {
         typeQuery = "AND type = $X "
@@ -184,7 +171,7 @@ handler.get(async (req, res) => {
     };
 
     console.log("checking aubmitter")
-    if (!submitter) submittedQuery = ""
+    if (status.length === 0 || !submitter) submittedQuery = ""
     if (submitter) {
       if (parametersUsed.length > 0) {
         submittedQuery = "AND submitter = $X "
@@ -197,6 +184,8 @@ handler.get(async (req, res) => {
     parametersUsed.push(limit);
     parametersUsed.push(offset);
     
+    // console.log("typeof order")
+    // console.log(typeof order)
     // if searching by order of ticket creation date
     // orderchoice date = true
     console.log("mainSearchQuery - before orderChoice");
@@ -263,15 +252,18 @@ handler.get(async (req, res) => {
     if (myTickets.rows[i].created_at) myTickets.rows[i].created_at = singleISODate(myTickets.rows[i].created_at);
   };
 
-  // count = totalTickets.rows[0].count;
-  count = myTickets.rows.length;
+  if (role === "Developer" || role === "Project Manager") {
+    totalTickets = await pool.query("SELECT COUNT(id) FROM tickets AS WHERE user_id = $1;", [id]);
+  };
+  if (role === "Admin") totalTickets = await pool.query("SELECT COUNT(id) FROM tickets;");
+  count = totalTickets.rows[0].count;
   Number(count);
   return res.status(200).json({
     status: "Retrieved ticket comments.",
     data: {
       tickets: myTickets.rows,
       page: page,
-      pages: count || 20
+      pages: count
     }
   });
 });

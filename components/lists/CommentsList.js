@@ -159,7 +159,7 @@ const CommentsList = ({comments, loading, page, pages}) => {
                   Order By: {" "}
                 </div>
                 <div className="order-by-options">
-                  <span
+                  {/* <span
                     className={`option ${orderBy ? 'active' : ''}`}
                     onClick={() => orderByChange(true)}
                   >
@@ -170,7 +170,23 @@ const CommentsList = ({comments, loading, page, pages}) => {
                     onClick={() => orderByChange(false)}
                   >
                     Old
-                  </span>
+                  </span> */}
+                  <ButtonUI
+                    variant="outlined"
+                    sx={{ color: 'primary.main' }}
+                    className={`option ${orderBy ? 'active' : ''}`}
+                    onClick={() => orderByChange(true)}
+                  >
+                    New
+                  </ButtonUI>
+                  <ButtonUI
+                    variant="outlined"
+                    sx={{ color: 'primary.main' }}
+                    className={`option ${!orderBy ? 'active' : ''}`}
+                    onClick={() => orderByChange(false)}
+                  >
+                    Old
+                  </ButtonUI>
                 </div>
               </span>
             </div>

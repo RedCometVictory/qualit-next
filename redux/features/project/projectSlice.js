@@ -38,12 +38,12 @@ export const getDashboardInfo = createAsyncThunk(
     }
   }
 );
-// my projects
+// my projects - gssp
 export const getProjects = createAsyncThunk(
   'project/get/All-Projects',
-  async (_, thunkAPI) => {
+  async ({keyword, pageNumber, itemsPerPage, orderBy, cookie}, thunkAPI) => {
     try {
-      return await projectService.getProjects();
+      return await projectService.getProjects(keyword, pageNumber, itemsPerPage, orderBy, cookie);
     } catch (err) {
       const message =
         (err.response &&
@@ -56,7 +56,7 @@ export const getProjects = createAsyncThunk(
     }
   }
 );
-// my tickets
+// my tickets - gssp
 export const getTickets = createAsyncThunk(
   'project/get/All-Tickets',
   async ({keyword, status, priority, type, submitter, pageNumber, itemsPerPage, orderBy, orderChoice, cookie}, thunkAPI) => {
@@ -178,17 +178,46 @@ export const createTicketComment = createAsyncThunk(
 );
 
 // START Pagination Section
-
-export const paginateProjectTickets = createAsyncThunk(
-  'project/get/Ticket-Paginate-Comment',
-  async ({ticket_id, pageNumber, itemsPerPage, orderBy}, thunkAPI) => {
+// TODO: ticket id may not be needed
+export const paginateMyProjects = createAsyncThunk(
+  'project/get/Paginate-Project',
+  async ({keyword, pageNumber, itemsPerPage, orderBy}, thunkAPI) => {
     try {
       console.log("{{{SLICE - PAGINATE}}}")
-      console.log(ticket_id)
+      console.log(keyword)
       console.log(pageNumber)
       console.log(itemsPerPage)
       console.log(orderBy)
-      return await projectService.paginateTicketComments(ticket_id, pageNumber, itemsPerPage, orderBy);
+      return await projectService.paginateMyProjects(keyword, pageNumber, itemsPerPage, orderBy);
+    } catch (err) {
+      const message =
+        (err.response &&
+          err.response.data &&
+          err.response.data.message) ||
+        err.message ||
+        err.toString()
+      toast.error("Failed to paginate through comments.", {theme: "colored", toastId: "PaginateCommentError"});
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+// TODO: ticket id may not be needed
+export const paginateMyTickets = createAsyncThunk(
+  'project/get/Paginate-Ticket',
+  // add submitter after type when in use
+  async ({keyword, status, priority, type, submitter = '', pageNumber, itemsPerPage, orderBy, orderChoice}, thunkAPI) => {
+    try {
+      console.log("{{{SLICE - PAGINATE}}}")
+      console.log(keyword)
+      console.log(status)
+      console.log(priority)
+      console.log(type)
+      console.log(submitter)
+      console.log(pageNumber)
+      console.log(itemsPerPage)
+      console.log(orderBy)
+      console.log(orderChoice)
+      return await projectService.paginateMyTickets(keyword, status, priority, type, submitter, pageNumber, itemsPerPage, orderBy, orderChoice);
     } catch (err) {
       const message =
         (err.response &&
@@ -480,6 +509,8 @@ const projectSlice = createSlice({
     },
     [getProjects.fulfilled]: (state, { payload }) => {
       state.projects = payload.projects;
+      state.page = payload.page;
+      state.pages = payload.pages;
       state.loading = false;
     },
     [getProjects.rejected]: (state) => {
@@ -545,11 +576,27 @@ const projectSlice = createSlice({
       state.loading = false;
       state.error = 'failed';
     },
-    [paginateProjectTickets.pending]: (state) => {
+    [paginateMyProjects.pending]: (state) => {
       state.error = '';
       state.loading = true;
     },
-    [paginateProjectTickets.fulfilled]: (state, { payload }) => {
+    [paginateMyProjects.fulfilled]: (state, { payload }) => {
+      // state.tickets = [...state.tickets, payload];
+      state.loading = false;
+      // state.comments = payload.comments;
+      state.projects = payload.projects;
+      state.pages = payload.pages;
+      state.page = payload.page;
+    },
+    [paginateMyProjects.rejected]: (state) => {
+      state.loading = false;
+      state.error = 'failed';
+    },
+    [paginateMyTickets.pending]: (state) => {
+      state.error = '';
+      state.loading = true;
+    },
+    [paginateMyTickets.fulfilled]: (state, { payload }) => {
       // state.tickets = [...state.tickets, payload];
       state.loading = false;
       // state.comments = payload.comments;
@@ -557,7 +604,7 @@ const projectSlice = createSlice({
       state.pages = payload.pages;
       state.page = payload.page;
     },
-    [paginateProjectTickets.rejected]: (state) => {
+    [paginateMyTickets.rejected]: (state) => {
       state.loading = false;
       state.error = 'failed';
     },

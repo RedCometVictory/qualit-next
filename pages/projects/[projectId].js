@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
+import Cookies from 'js-cookie';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Cookies from 'js-cookie';
 import store from '@/redux/store';
 import { logout } from "@/redux/features/auth/authSlice";
 import { getDataGSSP, getData } from "@/utils/fetchData";
@@ -14,7 +14,6 @@ import DetailLayout from '@/components/layouts/DetailLayout';
 import NewCommentModal from '@/components/modals/NewCommentModal';
 import NewTicketModal from '@/components/modals/NewTicketModal';
 import MyTicketsList from '@/components/lists/MyTicketsList';
-import MyProjectsList from '@/components/lists/MyProjectsList';
 import CommentsTextArea from '@/components/details/CommentForm';
 import Description from '@/components/details/Description';
 import Upload from '@/components/details/Upload';
@@ -91,7 +90,7 @@ const Project = ({initialState, token}) => {
           Created On: {project.created_at}
         </span>
       </div>
-      <div className="detail__content">
+      <div className="detail__content detail-page">
         <section className="left">
           <Description description={project.description} />
           <div className="detail__actions">
@@ -143,6 +142,15 @@ export const getServerSideProps = async (context) => {
     console.log(token)
     console.log(null)
     if (!token) {
+      console.log("session expired")
+      // Cookies.remove("qual__isLoggedIn");
+      context.res.setHeader(
+        "Set-Cookie", [
+          `qual__isLoggedIn=deleted; Max-Age=0`,
+          // `qual__=deleted; Max-Age=0`
+        ]
+      )
+      // localStorage.removeItem("qual__user");
       return {
         redirect: {
           // todo: use urls to init toast on signin page - on signin page search for param, if found init toast

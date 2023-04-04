@@ -51,9 +51,9 @@ const MainNav = ({openMenu, setOpenMenu}) => {
           <Link passHref href="/new-project">
             <>
               <FaPlus />
-              <div class="tooltip">
-                <div class="right">
-                  <div class="text-content">
+              <div className="tooltip">
+                <div className="right">
+                  <div className="text-content">
                     <Typography
                       variant="h3"
                       color={'primary.contrastText'}
@@ -84,9 +84,9 @@ const MainNav = ({openMenu, setOpenMenu}) => {
           >
             <>
               <MdDashboard />
-              <div class="tooltip">
-                <div class="right">
-                  <div class="text-content">
+              <div className="tooltip">
+                <div className="right">
+                  <div className="text-content">
                     <Typography color={'primary.contrastText'} variant="h3">
                       My Boards
                     </Typography>
@@ -113,9 +113,9 @@ const MainNav = ({openMenu, setOpenMenu}) => {
           >
             <>
               <AiOutlineProject />
-              <div class="tooltip">
-                <div class="right">
-                  <div class="text-content">
+              <div className="tooltip">
+                <div className="right">
+                  <div className="text-content">
                     <Typography color={'primary.contrastText'} variant="h3">My Projects</Typography>
                   </div>
                 </div>
@@ -140,9 +140,9 @@ const MainNav = ({openMenu, setOpenMenu}) => {
           >
             <>
               <ImTicket />
-              <div class="tooltip">
-                <div class="right">
-                  <div class="text-content">
+              <div className="tooltip">
+                <div className="right">
+                  <div className="text-content">
                     <Typography color={'primary.contrastText'} variant="h3">My Tickets</Typography>
                   </div>
                 </div>
@@ -236,9 +236,9 @@ const MainNav = ({openMenu, setOpenMenu}) => {
                 <div className="nav__link-group">
                   <div className="nav__link-icon">
                     <ImExit />
-                    <div class="tooltip">
-                    <div class="right">
-                      <div class="text-content">
+                    <div className="tooltip">
+                    <div className="right">
+                      <div className="text-content">
                         <Typography variant="h3" color={'primary.contrastText'}>Sign Out</Typography>
                       </div>
                     </div>
@@ -264,9 +264,9 @@ const MainNav = ({openMenu, setOpenMenu}) => {
                     >
                     <>
                     <ImEnter />
-                    <div class="tooltip">
-                      <div class="right">
-                        <div class="text-content">
+                    <div className="tooltip">
+                      <div className="right">
+                        <div className="text-content">
                           <Typography color={'primary.contrastText'} variant="h3">Sign In</Typography>
                         </div>
                       </div>
