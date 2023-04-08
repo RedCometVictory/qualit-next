@@ -1,0 +1,90 @@
+.form {
+  width: 100%;
+  // margin: 0 auto;
+  // @include flex(row, center, center);
+  position: relative;
+  &.create-form {
+    // background-color: var(--primary-color);
+  }
+  .form-control {
+    width: inherit;
+    margin: initial;
+    padding: 8px;
+    // width: 100%;
+  }
+  &__container {
+    // margin: 0 auto;
+    padding: 0 1rem 0 1rem;
+    width: 100%;
+  }
+  &__new-construct {
+    width: 100%;
+  }
+  &__header {
+    // margin: 0 auto;
+    // margin: 0 auto;
+    @include flex(row, space-between, center);
+    width: 100%;
+    max-width: 1280px;
+    // max-width: 60vw;
+    padding: 1rem 1rem;
+    margin: 0;
+  }
+  &__heading {
+  }
+  &__content {
+    width: 100%;
+    // max-width: 60vw;
+    // margin: 0 auto;
+    &.my-form {
+      margin: 0 auto;
+      background-color: var(--primary-color);
+    }
+  }
+  &__group {
+    width: 100%;
+    &.set.two {
+      @include flex(column, flex-start, flex-start);
+    }
+    .search-input {
+      margin: 1rem 0;
+      width: inherit;
+    }
+    .description-box {
+      &.box {
+
+        background-color: var(--primary-color);
+      }
+      // border: none;
+    }
+    .project-description {
+      width: 100%;
+      // max-width: 400px;
+      resize: none;
+      // height: 2rem;
+      background-color: var(--primary-color);
+      border: none;
+      color: var(--body-text);
+      font-family: inherit;
+      // border: 1px solid var(--body-text);
+      padding: 0.75rem 0.5rem;
+    }
+  }
+}
+@media (min-width: 560px) {
+  .form {
+    &__container {
+      padding: 0 0 0 62px;
+      margin: 0 0 0 2rem;
+    }
+    &__header {
+      padding: 1rem 0 1rem 0;
+    }
+    &__content {
+      max-width: 60vw;
+      &.my-form {
+        margin: initial;
+      }
+    }
+  }
+}

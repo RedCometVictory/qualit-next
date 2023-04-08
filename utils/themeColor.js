@@ -177,8 +177,6 @@ const ThemeColor = ({ children }) => {
           // text: {
           //   // primary: "#fff", // ---
           //   // secondary: "#71717a", // ---
-          //   // // primary: "#FFFFFF",
-          //   // // secondary: "#FFFFFF",
           //   // disabled: "rgba(255, 255, 255, 0.48)",
           // }
         })

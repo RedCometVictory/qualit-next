@@ -60,7 +60,7 @@ const getTicket = async (ticket_id, cookie) => {
   return result;
 };
 
-const createProject = async (formData) => {
+const createProject = async (formData, router) => {
   const res = await postData(`/projects`, formData);
   const result = res.data;
   // localStorage.setItem("qual__projects", JSON.stringify(result.project));
@@ -68,7 +68,8 @@ const createProject = async (formData) => {
   console.log("***Project Service***");
   console.log(result)
   console.log("----- END project service -----")
-  return result;
+  return router.push('/my/projects');
+  // return result;
 };
 
 const createTicket = async (formData) => {
