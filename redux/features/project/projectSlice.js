@@ -122,10 +122,10 @@ export const getTicket = createAsyncThunk(
 );
 
 export const createProject = createAsyncThunk(
-  'project/post/Ticket',
-  async (formData, thunkAPI) => {
+  'project/post/Project',
+  async ({formData, router}, thunkAPI) => {
     try {
-      return await projectService.createTicket(formData);
+      return await projectService.createProject(formData, router);
     } catch (err) {
       const message =
         (err.response &&

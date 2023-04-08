@@ -5,10 +5,11 @@ import { TextField } from "@mui/material";
 import { MobileDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import ButtonUI from "../UI/ButtonUI";
+import PaperUI from "../UI/PaperUI";
 import Upload from "./Upload";
 
 const TicketForm = () => {
-  const [value, setValue] = useState(dayjs("2020-08-12T21:11:54"));
+  const [value, setValue] = useState(dayjs("2023-08-12T21:11:54"));
   
   const dateChangeHandler = (newValue) => {
     setValue(newValue);
@@ -18,20 +19,26 @@ const TicketForm = () => {
     <FormControl style={{width: '100%'}}>
       <div className="modal__ticket">
         <div className="modal__ticket--container">
-          <div className="">
-            <TextField
-              className='ticket-title'
-              variant="standard"
-              label="Ticket Title"
-            />
-            <TextareaAutosize
-              className='ticket-description'
-              maxRows={6}
-              minRows={6}
-              placeholder="Ticket description."
-            />
-          </div>
-          <Upload />
+          <PaperUI
+            className="ticket-paper box"
+          >
+            <div className="sub-box one">
+              <TextField
+                className='ticket-title'
+                variant="standard"
+                label="Ticket Title"
+              />
+              <TextareaAutosize
+                className='ticket-description'
+                maxRows={6}
+                minRows={3}
+                placeholder="Ticket description."
+              />
+            </div>
+            <div className="sub-box two">
+              <Upload />
+            </div>
+          </PaperUI>
         </div>
         <div className="modal__radio-selects">
           <div className="modal__radio-group status">

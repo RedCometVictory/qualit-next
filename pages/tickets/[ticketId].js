@@ -151,7 +151,6 @@ const Ticket = ({initialState, token}) => {
   );
 };
 export default Ticket;
-
 export const getServerSideProps = async (context) => {
   try {
     let token = context.req.cookies.qual__token;
@@ -212,8 +211,6 @@ export const getServerSideProps = async (context) => {
     }
   }
 };
-
-
 Ticket.getLayout = function getLayout(Ticket) {
   return <DetailLayout>{Ticket}</DetailLayout>
 };

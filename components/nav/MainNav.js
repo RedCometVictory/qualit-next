@@ -48,7 +48,7 @@ const MainNav = ({openMenu, setOpenMenu}) => {
     <li className="nav__link-item">
       <div className="nav__link-group">
         <div className="nav__link-icon">
-          <Link passHref href="/new-project">
+          <Link passHref href="/projects/new-project">
             <>
               <FaPlus />
               <div className="tooltip">
@@ -67,7 +67,7 @@ const MainNav = ({openMenu, setOpenMenu}) => {
             </>
           </Link>
         </div>
-        <Link passHref href="/new-project">
+        <Link passHref href="/projects/new-project">
           <Typography className='nav__link' variant='h4' color={'primary.contrastText'}>New Project</Typography>
         </Link>
       </div>

@@ -120,18 +120,20 @@ const NewCommentModal = ({setCommentModal}) => {
       </div>
       <div className="modal__content comment">
         <form onSubmit={submitCommentHandler}>
-          <TextareaAutosize
-            className='text-area'
-            maxRows={6}
-            minRows={6}
-            placeholder="Add new comment."
-            name="message"
-            value={message}
-            onChange={onChange}
-            required
-          />
+          <PaperUI className="text-area-paper">
+            <TextareaAutosize
+              className='text-area'
+              maxRows={6}
+              minRows={3}
+              placeholder="Add new comment."
+              name="message"
+              value={message}
+              onChange={onChange}
+              required
+            />
+          </PaperUI>
           <div className="modal__actions comment">
-            <div className="file-uploader">
+            <div className="file-uploader comment">
               <div className='label-title'><FaFileUpload /> Upload File</div>
               <label htmlFor="upload" className="file-upload-label">
                 <input
@@ -143,7 +145,7 @@ const NewCommentModal = ({setCommentModal}) => {
                 />
               </label>
             </div>
-            <div className="action-btns">
+            <div className="action-btns comment">
               {fileTypeError || fileSizeError ? (
                 <div className="form__error">
                   File type or size limit exceeded: jpg, jpeg, png, gif only and size must be less than 3mb.
