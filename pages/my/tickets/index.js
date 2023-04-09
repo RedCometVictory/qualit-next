@@ -436,84 +436,86 @@ const MyTickets = ({initialState, token}) => {
             />
           </div>
         </div>
-        <section className="detail__roster-header my-ticket">
-          <h4>Title</h4>
-          <h4>Submitter</h4>
-          <h4>Status</h4>
-          <h4>Priority</h4>
-          <h4>Type</h4>
-          <h4>Deadline</h4>
-          <h4>Created On</h4>
-          <h4>Options</h4>
-        </section>
-        <section className="detail__roster">
-          {tickets.map((ticket, index) => (
-            <PaperUI className="detail__roster-row my-ticket" key={ticket.id}>            
-              <div className="detail__roster-item-group">
-                <div className="detail__roster-item">
-                  {ticket.title}
+        <div className="detail__roster-slide">
+          <section className="detail__roster-header my-ticket">
+            <h4>Title</h4>
+            <h4>Submitter</h4>
+            <h4>Status</h4>
+            <h4>Priority</h4>
+            <h4>Type</h4>
+            <h4>Deadline</h4>
+            <h4>Created On</h4>
+            <h4>Options</h4>
+          </section>
+          <section className="detail__roster">
+            {tickets.map((ticket, index) => (
+              <PaperUI className="detail__roster-row my-ticket" key={ticket.id}>            
+                <div className="detail__roster-item-group">
+                  <div className="detail__roster-item">
+                    {ticket.title}
+                  </div>
                 </div>
-              </div>
-              <div className="detail__roster-item-group">
-                <div className="detail__roster-item">
-                  {ticket.submitter}
+                <div className="detail__roster-item-group">
+                  <div className="detail__roster-item">
+                    {ticket.submitter}
+                  </div>
                 </div>
-              </div>
-              <div className="detail__roster-item-group">
-                <div className="detail__roster-item">
-                  {ticket.status}
+                <div className="detail__roster-item-group">
+                  <div className="detail__roster-item">
+                    {ticket.status}
+                  </div>
                 </div>
-              </div>
-              <div className="detail__roster-item-group">
-                <div className="detail__roster-item">
-                  {ticket.priority}
+                <div className="detail__roster-item-group">
+                  <div className="detail__roster-item">
+                    {ticket.priority}
+                  </div>
                 </div>
-              </div>
-              <div className="detail__roster-item-group">
-                <div className="detail__roster-item">
-                  {ticket.type}
+                <div className="detail__roster-item-group">
+                  <div className="detail__roster-item">
+                    {ticket.type}
+                  </div>
                 </div>
-              </div>
-              <div className="detail__roster-item-group">
-                <div className="detail__roster-item">
-                  {ticket.deadline}
+                <div className="detail__roster-item-group">
+                  <div className="detail__roster-item">
+                    {ticket.deadline}
+                  </div>
                 </div>
-              </div>
-              <div className="detail__roster-item-group">
-                <div className="detail__roster-item">
-                  {ticket.created_at}
+                <div className="detail__roster-item-group">
+                  <div className="detail__roster-item">
+                    {ticket.created_at}
+                  </div>
                 </div>
-              </div>
-              <div className="detail__roster-item-group">
-                <div className="detail__roster-item">
-                  <Typography
-                    className="option-link"
-                    variant='body2'
-                  >
-                    <Link
-                      href={`/tickets/${ticket.id}`}
-                      passHref
+                <div className="detail__roster-item-group">
+                  <div className="detail__roster-item">
+                    <Typography
+                      className="option-link"
+                      variant='body2'
                     >
-                      Edit / Assign
-                    </Link>
-                  </Typography>
-                  <Typography
-                    className="option-link"
-                    variant='body2'
-                  >
-                    <Link
-                      href={`/tickets/${ticket.id}`}
-                      passHref
+                      <Link
+                        href={`/tickets/${ticket.id}`}
+                        passHref
+                      >
+                        Edit / Assign
+                      </Link>
+                    </Typography>
+                    <Typography
+                      className="option-link"
+                      variant='body2'
                     >
-                      View Details
-                    </Link>
-                  </Typography>
+                      <Link
+                        href={`/tickets/${ticket.id}`}
+                        passHref
+                      >
+                        View Details
+                      </Link>
+                    </Typography>
+                  </div>
                 </div>
-              </div>
-            </PaperUI>
-          ))}
-          <div className="bottom-padding"></div>
-        </section>
+              </PaperUI>
+            ))}
+            <div className="bottom-padding"></div>
+          </section>
+        </div>
       </div>
     </section>
   );

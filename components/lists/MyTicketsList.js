@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useDispatch, useSelector } from "react-redux";
 import { Grid, Typography, Demo, Divider, List, ListItem, ListItemIcon, ListItemText, Select, MenuItem } from "@mui/material";
 import { ImTicket } from 'react-icons/im';
+import ButtonUI from '../UI/ButtonUI';
 import Paginate from "../nav/Paginate";
 
 const MyTicketsList = ({tickets, page, pages}) => {
@@ -105,7 +106,7 @@ const MyTicketsList = ({tickets, page, pages}) => {
   };
 
   return (
-    <div className={`catalog ${projectId ? '' : 'dashboard'}`}>
+    <div className={`catalog ${projectId ? 'proj-detail' : 'dashboard'}`}>
       {projectId ? (<>
         <div className="catalog__option-container">
           <div className="option-group one">
@@ -133,24 +134,28 @@ const MyTicketsList = ({tickets, page, pages}) => {
                   Order By: {" "}
                 </div>
                 <div className="order-by-options">
-                <span
-                    className={`option ${orderBy ? 'active' : ''}`}
-                    onClick={() => orderByChange(true)}
+                <ButtonUI
+                  className={`option ${orderBy ? 'active' : ''}`}
+                  variant="outlined"
+                  sx={{ color: 'primary.main' }}
+                  onClick={() => orderByChange(true)}
                   >
                     New
-                  </span>
-                  <span
+                  </ButtonUI>
+                  <ButtonUI
                     className={`option ${!orderBy ? 'active' : ''}`}
+                    variant="outlined"
+                    sx={{ color: 'primary.main' }}
                     onClick={() => orderByChange(false)}
                   >
                     Old
-                  </span>
+                  </ButtonUI>
                 </div>
               </span>
             </div>
           </div>
           <div className="option-group two">
-            <div className="">Tickets: {pages || 0}</div>
+            {/* <div className="">Tickets: {pages || 0}</div> */}
           </div>
           <div className="option-group three">
             <Paginate
