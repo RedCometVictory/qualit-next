@@ -1,12 +1,13 @@
 import { Card } from "@mui/material";
+import PaperUI from "../UI/PaperUI";
 
 const Description = ({description}) => {
   return (<>
-    <Card
-      className="detail__description"
+    <PaperUI
+      className="detail__description paper"
     >
       {description}
-    </Card>
+    </PaperUI>
   </>)
 };
 export default Description;

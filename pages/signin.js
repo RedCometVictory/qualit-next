@@ -39,7 +39,7 @@ const SignIn = () => {
 
   if (router.query.session_expired) {
     console.log("session has expired")
-    toast.error("Session expired. Please login.", { toastId: "expiredAuthId" });
+    toast?.error("Session expired. Please login.", { toastId: "expiredAuthId" });
   };
 
   const onChange = e => {
@@ -52,7 +52,7 @@ const SignIn = () => {
       dispatch(loginUser(formData));
     } catch (err) {
       console.error(err);
-      toast.error("Failed to register. Check if email or password are valid.");
+      toast?.error("Failed to register. Check if email or password are valid.");
     }
   };
 

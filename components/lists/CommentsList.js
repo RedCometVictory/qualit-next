@@ -6,6 +6,7 @@ import { paginateTicketComments } from '@/redux/features/project/projectSlice';
 import { Grid, Typography, Divider, List, ListItem, ListItemIcon, ListItemText, Card, Select, MenuItem } from "@mui/material";
 import { FaComment } from 'react-icons/fa';
 import ButtonUI from '../UI/ButtonUI';
+import PaperUI from '../UI/PaperUI';
 import Paginate from '../nav/Paginate';
 
 const CommentsList = ({comments, loading, page, pages}) => {
@@ -67,7 +68,10 @@ const CommentsList = ({comments, loading, page, pages}) => {
           // sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
         >
           {comments.map((comment, index) => (
-            <Card key={comment.id}>
+            <PaperUI
+              key={comment.id}
+              className="catalog__comment paper"
+            >
               <ListItem
                 className='catalog__list-item'
               >
@@ -122,8 +126,8 @@ const CommentsList = ({comments, loading, page, pages}) => {
                   </div>
                 )}
               </ListItem>
-              <Divider variant='inset' component="li"/>
-            </Card>
+              {/* <Divider variant='inset' component="li"/> */}
+            </PaperUI>
           ))}
         </List>
       </Grid>
@@ -192,7 +196,7 @@ const CommentsList = ({comments, loading, page, pages}) => {
             </div>
           </div>
           <div className='option-group two'>
-            <div className="">Comments: {pages}</div>          
+            {/* <div className="">Comments: {pages}</div>           */}
           </div>
           <div className="option-group three">
             <Paginate

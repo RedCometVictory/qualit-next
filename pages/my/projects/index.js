@@ -299,88 +299,93 @@ const MyProjects = ({initialState, token}) => {
             />
           </div>
         </div>
-        <section className="detail__roster-header my-ticket">
-          <h4>Title</h4>
-          {/* <h4>Description</h4> */}
-          <h4>Github</h4>
-          <h4>Owner</h4>
-          <h4>Website</h4>
-          <h4>Tickets</h4>
-          <h4>Created On</h4>
-          <h4>Options</h4>
-        </section>
-        <section className="detail__roster">
-          {projects.map((project, index) => (
-            <PaperUI className="detail__roster-row my-ticket" key={project.id}>            
-              <div className="detail__roster-item-group">
-                <div className="detail__roster-item">
-                  {project.title}
+        <div className="detail__roster-slide">
+          <section className="detail__roster-header my-ticket">
+            <h4>Title</h4>
+            {/* <h4>Description</h4> */}
+            <h4>Github</h4>
+            <h4>Owner</h4>
+            <h4>Website</h4>
+            <h4>Tickets</h4>
+            <h4>Created On</h4>
+            <h4>Options</h4>
+          </section>
+          <section className="detail__roster">
+            {projects.map((project, index) => (
+              <PaperUI className="detail__roster-row my-ticket" key={project.id}>            
+                <div className="detail__roster-item-group">
+                  <div className="detail__roster-item">
+                    {project.title}
+                  </div>
                 </div>
-              </div>
-              {/* <div className="detail__roster-item-group">
-                <div className="detail__roster-item">
-                  {project.description}
-                </div>
-              </div> */}
-              <div className="detail__roster-item-group">
-                <div className="detail__roster-item">
-                  <a href={project.github_url}>
-                    <FaGithub />
-                  </a>
-                </div>
-              </div>
-              <div className="detail__roster-item-group">
-                <div className="detail__roster-item">
-                  <span className="full-name">
-                    {project.f_name}{" "}{project.l_name}
-                  </span>
-                </div>
-              </div>
-              <div className="detail__roster-item-group">
-                <div className="detail__roster-item">
-                  {project.site_url}
-                </div>
-              </div>
-              <div className="detail__roster-item-group">
-                <div className="detail__roster-item">
-                  {project.ticket_count}
-                </div>
-              </div>
-              <div className="detail__roster-item-group">
-                <div className="detail__roster-item">
-                  {project.created_at}
-                </div>
-              </div>
-              <div className="detail__roster-item-group">
-                <div className="detail__roster-item">
-                  <Typography
-                    className="option-link"
-                    variant='body2'
-                  >
-                    <Link
-                      href={`/projects/${project.id}`}
-                      passHref
+                {/* <div className="detail__roster-item-group">
+                  <div className="detail__roster-item">
+                    {project.description}
+                  </div>
+                </div> */}
+                <div className="detail__roster-item-group">
+                  <div className="detail__roster-item">
+                    <a
+                      className='github-icon'
+                      href={project.github_url}
                     >
-                      Edit / Assign
-                    </Link>
-                  </Typography>
-                  <Typography
-                    className="option-link"
-                    variant='body2'
-                  >
-                    <Link
-                      href={`/projects/${project.id}`}
-                      passHref
-                    >
-                      View Details
-                    </Link>
-                  </Typography>
+                      <FaGithub />
+                    </a>
+                  </div>
                 </div>
-              </div>
-            </PaperUI>
-          ))}
-          <div className="bottom-padding"></div>
-        </section>
+                <div className="detail__roster-item-group">
+                  <div className="detail__roster-item">
+                    <span className="full-name">
+                      {project.f_name}{" "}{project.l_name}
+                    </span>
+                  </div>
+                </div>
+                <div className="detail__roster-item-group">
+                  <div className="detail__roster-item">
+                    {project.site_url}
+                  </div>
+                </div>
+                <div className="detail__roster-item-group">
+                  <div className="detail__roster-item">
+                    {project.ticket_count}
+                  </div>
+                </div>
+                <div className="detail__roster-item-group">
+                  <div className="detail__roster-item">
+                    {project.created_at}
+                  </div>
+                </div>
+                <div className="detail__roster-item-group">
+                  <div className="detail__roster-item">
+                    <Typography
+                      className="option-link"
+                      variant='body2'
+                    >
+                      <Link
+                        href={`/projects/${project.id}`}
+                        passHref
+                      >
+                        Edit / Assign
+                      </Link>
+                    </Typography>
+                    <Typography
+                      className="option-link"
+                      variant='body2'
+                    >
+                      <Link
+                        href={`/projects/${project.id}`}
+                        passHref
+                      >
+                        View Details
+                      </Link>
+                    </Typography>
+                  </div>
+                </div>
+              </PaperUI>
+            ))}
+            <div className="bottom-padding"></div>
+          </section>
+        </div>
       </div>
     </section>
   );

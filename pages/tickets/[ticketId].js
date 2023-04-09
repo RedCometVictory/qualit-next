@@ -13,6 +13,7 @@ import { Card, Divider, List, ListItem, ListItemIcon,
 ListItemText, Typography } from '@mui/material';
 import { orange } from '@mui/material/colors';
 import ButtonUI from '@/components/UI/ButtonUI';
+import PaperUI from '@/components/UI/PaperUI';
 import DetailLayout from '@/components/layouts/DetailLayout';
 import NewCommentModal from '@/components/modals/NewCommentModal';
 import CommentsList from '@/components/lists/CommentsList';
@@ -91,7 +92,7 @@ const Ticket = ({initialState, token}) => {
           </div>
         </div>
         <div className="detail__info-box right">
-          # of Comments: {comments.length} / # of Memebers: 09
+          Comments: {pages} / Members: 09
         </div>
       </div>
       <div className="detail__sub-header">
@@ -106,7 +107,7 @@ const Ticket = ({initialState, token}) => {
           Created On: {ticket.created_at}
         </span>
       </div>
-      <div className="detail__content detail-page">
+      <div className="detail__content detail-page ticket-page">
         <section className="left">
           <Description description={ticket.description} />
           <div className="detail__actions">
@@ -129,8 +130,8 @@ const Ticket = ({initialState, token}) => {
             null
           )}
         </section>
-        <section className="right">
-          <Card className="right-container">
+        <section className="right ticket-detail">
+          <PaperUI className="right-container paper">
             {comments.length > 0 ? (
               <CommentsList
                 // key={}
@@ -144,7 +145,7 @@ const Ticket = ({initialState, token}) => {
                 no comments found...
               </div>
             )}
-          </Card>
+          </PaperUI>
         </section>
       </div>
     </section>

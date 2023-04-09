@@ -18,6 +18,7 @@ import CommentsTextArea from '@/components/details/CommentForm';
 import Description from '@/components/details/Description';
 import Upload from '@/components/details/Upload';
 import { getProject, rehydrate } from '@/redux/features/project/projectSlice';
+import PaperUI from '@/components/UI/PaperUI';
 
 const Project = ({initialState, token}) => {
   const router = useRouter();
@@ -78,7 +79,7 @@ const Project = ({initialState, token}) => {
           </div>
         </div>
         <div className="detail__info-box right">
-          # of Tickets: {tickets.length} / # of Memebers: 09
+          Tickets: {tickets.length} / Members: 09
         </div>
       </div>
       <div className="detail__sub-header">
@@ -90,7 +91,7 @@ const Project = ({initialState, token}) => {
           Created On: {project.created_at}
         </span>
       </div>
-      <div className="detail__content detail-page">
+      <div className="detail__content detail-page project-page">
         <section className="left">
           <Description description={project.description} />
           <div className="detail__actions">
@@ -108,24 +109,24 @@ const Project = ({initialState, token}) => {
             </ButtonUI>
           </div>
         </section>
-        <section className="right">
-          <Card className="list-header">
+        <section className="right project-detail">
+          <PaperUI className="list-header paper">
             <Typography
-              variant="h6"
-              component="h6"
+              variant="h3"
+              // component="h6"
             >
               Project Tickets
             </Typography>
-          </Card>
-          <Card className="detail__items-list">
+          </PaperUI>
+          <PaperUI className="detail__items-list paper">
             {tickets.length > 0 ? (
               <MyTicketsList tickets={tickets} />
             ) : (
-              <div className="detail__description">
+              <PaperUI className="detail__description paper">
                 no tickets found...
-              </div>
+              </PaperUI>
             )}
-          </Card>
+          </PaperUI>
         </section>
       </div>
     </section>
