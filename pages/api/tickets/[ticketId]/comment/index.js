@@ -183,12 +183,7 @@ handler.use(upload.single('upload')).post(async (req, res) => {
     status: "Success! Created new comment.",
     data: {
       ...newComment.rows[0],
-      upload: commentFileUpload.rows[0]
-      // comment: newComment.rows[0]
-      // comment: {
-        // comment: newComment.rows[0],
-        // upload: commentFileUpload.rows[0]
-      // }
+      ...commentFileUpload.rows[0]
     }
   });
 });

@@ -68,72 +68,110 @@ const CommentsList = ({comments, loading, page, pages}) => {
           // sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
         >
           {comments.map((comment, index) => (
-            <PaperUI
-              key={comment.id}
-              className="catalog__comment paper"
-            >
-              <ListItem
-                className='catalog__list-item'
+            <div key={comment.id} className="catalog__comment">
+              <PaperUI
+                className="paper"
+                // className="catalog__comment paper"
               >
-                <div className="catalog__main-item-content">
-                  <ListItemIcon className='list-item-icon'>
-                    <FaComment />
-                  </ListItemIcon>
-                  <div className="catalog__comments-desc">
-                    <div className='catalog__message'>{comment.message}</div>
-                    <ListItemText
-                      primary={
-                        <>
-                          {comment.f_name} {comment.l_name} - {comment.role}
-                        </>
-                      }
-                      secondary={<ListItemDetail comment={comment}/>}
-                    />
+                <ListItem
+                  className='catalog__list-item'
+                >
+                  <div className="catalog__main-item-content">
+                    <ListItemIcon className='list-item-icon'>
+                      <FaComment />
+                    </ListItemIcon>
+                    <div className="catalog__comments-desc">
+                      <div className='catalog__message'>{comment.message}</div>
+                      <ListItemText
+                        primary={
+                          <>
+                            {comment.f_name} {comment.l_name} - {comment.role}
+                          </>
+                        }
+                        secondary={<ListItemDetail comment={comment}/>}
+                      />
+                    </div>
                   </div>
-                </div>
-                {comment.file_name.length === 0 ? (
-                  <></>
-                ) : comment.file_mimetype !== "application/pdf" ? (
-                  <div className="catalog__image-container">
-                    <Image
-                      className={"catalog__image"}
-                      src={comment.file_url}
-                      alt="comment file or image"
-                      layout="fill"
-                    />
-                  </div>
-                ) : (
-                  <div className="catalog__image-container pdf">
-                    <a
-                      download
-                      href={comment.file_url}
-                      className=""
-                    >
-                      <ButtonUI
-                        variant="outlined"
-                        sx={{ color: 'primary.main' }}
+                  {/* {comment.file_name && comment.file_name.length === 0 ? ( */}
+                  {/* ) : comment.file_mimetype !== "application/pdf" ( */}
+                  {comment.file_name.length === 0 ? (
+                    null
+                  ) : comment.file_mimetype !== "application/pdf" ? (
+                    <div className="catalog__image-container">
+                      <Image
+                        className={"catalog__image"}
+                        src={comment.file_url}
+                        alt="comment file or image"
+                        layout="fill"
+                      />
+                    </div>
+                  ) : (
+                    <div className="catalog__image-container pdf">
+                      <a
+                        download
+                        href={comment.file_url}
+                        className=""
                       >
-                        View PDF
-                      </ButtonUI>
-                    </a>
-                    <Typography
-                      className="pdf-name"
-                      variant='body1'
-                      noWrap
-                    >
-                      {comment.file_name}
-                    </Typography>
-                  </div>
-                )}
-              </ListItem>
-              {/* <Divider variant='inset' component="li"/> */}
-            </PaperUI>
+                        <ButtonUI
+                          variant="outlined"
+                          sx={{ color: 'primary.main' }}
+                        >
+                          View PDF
+                        </ButtonUI>
+                      </a>
+                      <Typography
+                        className="pdf-name"
+                        variant='body1'
+                        noWrap
+                      >
+                        {comment.file_name}
+                      </Typography>
+                    </div>
+                  )}
+                </ListItem>
+              </PaperUI>
+            </div>
           ))}
         </List>
       </Grid>
     )
   };
-  
+  /*
+  {comment?.file_name && comment?.file_name?.length === 0 ? (
+    null
+  ) : comment?.file_mimetype !== "application/pdf" ? (
+    <div className="catalog__image-container">
+      <Image
+        className={"catalog__image"}
+        src={comment?.file_url || ""}
+        alt="comment file or image"
+        layout="fill"
+      />
+    </div>
+  ) : (
+    <div className="catalog__image-container pdf">
+      <a
+        download
+        href={comment.file_url}
+        className=""
+      >
+        <ButtonUI
+          variant="outlined"
+          sx={{ color: 'primary.main' }}
+        >
+          View PDF
+        </ButtonUI>
+      </a>
+      <Typography
+        className="pdf-name"
+        variant='body1'
+        noWrap
+      >
+        {comment.file_name}
+      </Typography>
+    </div>
+  )}
+  */
   return (<>
     <div className='catalog'>
       {ticketId ? (<>
