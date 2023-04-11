@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
+import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import store from '@/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
@@ -77,12 +78,18 @@ const Ticket = ({initialState, token}) => {
         <div className="detail__info-box left">
           Ticket Details
           <div className="buttons">
-            <ButtonUI
-              className="btn-one"
-              variant="contained"
+            <Link
+              href={`/tickets/${ticket.id}/edit`}
+              passHref
             >
-              Edit
-            </ButtonUI>
+              <ButtonUI
+                className="btn-one"
+                variant="contained"
+                color="primary"
+              >
+                Edit
+              </ButtonUI>
+            </Link>
             <ButtonUI
               variant="contained"
               // color='secondary'
@@ -182,12 +189,12 @@ export const getServerSideProps = async (context) => {
     // TODO: may remove/use userInfo
     let userInfo = context.req.cookies.qual__user;
     let ticketID = context.params.ticketId;
-    let ticketInfo;
+    // let ticketInfo;
     // TODO: validCookieAuth only ussed to dev. Remove for prod is token is all you need
     let validCookieAuth = context.req ? { cookie: context.req.headers.cookie } : undefined;
 
     // TODO: attempt to only pass token, not all cookies necessary to pass
-    ticketInfo = await store.dispatch(getTicket({ticket_id: ticketID, cookie: validCookieAuth}));
+    await store.dispatch(getTicket({ticket_id: ticketID, cookie: validCookieAuth}));
 
     return {
       props: {
