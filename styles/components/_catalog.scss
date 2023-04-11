@@ -15,7 +15,8 @@
         @include flex(column, center, center);
         // @include flex(row, space-around, center);
         // background-color: lawngreen;
-        margin: 0.75rem 0 0 0;
+        margin: 0.75rem 0 0 0; // ---
+        // padding: 0.75rem 0 0 0;
         .items {
           @include flex(row, space-around, center);
           .select-menu {
@@ -69,14 +70,27 @@
       background: transparent; // make scrollbar invisible
     }
   }
-  // &__list {}
+  &__list {
+    overflow-y: scroll;
+    height: 21.25rem;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      height: 0;
+      width: 0; // remove scrollbar space
+      background: transparent; // make scrollbar invisible
+    }
+    // & > ul {
+    //   padding: 0;
+    // }
+  }
   &__comment {
-    &.paper {
+    margin: 0 0 6px 0;
+    &:last-child {
+      margin: 0;
+    }
+    .paper {
       background-color: var(--primary-color);
-      margin: 0 0 6px 0;
-      &:last-child {
-        margin: 0;
-      }
     }
   }
   &__list-item {
@@ -92,6 +106,7 @@
       @include flex(row, center, center);
     }
     &.tickets-list {
+      // padding-bottom: 0;
       @include flex(row, center, center);
     }
     .header a {
@@ -120,7 +135,7 @@
   }
   &__image-container {
     width: 100%;
-    max-height: 22rem;
+    // max-height: 22rem;
     > span {
       position: unset !important;
     }

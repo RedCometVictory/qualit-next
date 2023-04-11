@@ -569,7 +569,10 @@ const projectSlice = createSlice({
       state.loading = true;
     },
     [createTicketComment.fulfilled]: (state, { payload }) => {
-      state.comments = [...state.comments, payload];
+      // add comment to top
+      state.comments = [payload, ...state.comments];
+      // add comment to bottom
+      // state.comments = [...state.comments, payload];
       // state.loading = false;
     },
     [createTicketComment.rejected]: (state) => {

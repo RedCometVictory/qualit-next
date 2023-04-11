@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { useDispatch, useSelector } from "react-redux";
-import { Grid, Typography, Demo, Divider, List, ListItem, ListItemIcon, ListItemText, Select, MenuItem } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { Grid, Typography, Divider, List, ListItem, ListItemIcon, ListItemText, Select, MenuItem } from "@mui/material";
 import { ImTicket } from 'react-icons/im';
 import ButtonUI from '../UI/ButtonUI';
 import Paginate from "../nav/Paginate";
 
 const MyTicketsList = ({tickets, page, pages}) => {
+  const dispatch = useDispatch();
   const router = useRouter();
   let projectId = router.query.projectId;
   let [orderBy, setOrderBy] = useState(true);
@@ -16,7 +17,6 @@ const MyTicketsList = ({tickets, page, pages}) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const paginatingTickets = async () => {
-    // return await dispatchEvent(paginateTickets({project_id: projectId, pageNumber: currentPage, itemsPerPage, orderBy}));
     return await dispatch(paginateTickets({project_id: projectId, pageNumber: currentPage, itemsPerPage, orderBy}));
   };
 
@@ -78,7 +78,6 @@ const MyTicketsList = ({tickets, page, pages}) => {
             <ListItem
               className={`catalog__list-item ${projectId ? 'tickets-list' : 'dashboard'}`}
               key={index}
-              // alignItems='flex-start'
             >
               <ListItemIcon>
                 <ImTicket />
@@ -98,7 +97,7 @@ const MyTicketsList = ({tickets, page, pages}) => {
               >
               </ListItemText>
             </ListItem>
-            <Divider variant='inset' component="li"/>
+            <Divider className='catalog__divider divider' variant='inset' component="li"/>
           </>))}
         </List>
       </Grid>
