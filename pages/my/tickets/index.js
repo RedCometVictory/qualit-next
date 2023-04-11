@@ -178,18 +178,17 @@ const MyTickets = ({initialState, token}) => {
   };
 
   const orderChoiceChange = (e) => {
-    setIsLoading(true);
+    // setIsLoading(true);
     setOrderChoice(orderChoice = e.target.value);
     paginatingTickets();
   };
 
   const itemCountChange = (e) => {
-    setIsLoading(true);
-    // todo: errs when changing from high item count to lower item count
+    // setIsLoading(true);
     if (e.target.value > itemsPerPage) {
-      setCurrentPage(currentPage = currentPage - 1);
+      setCurrentPage(currentPage = 1);
     }
-    if (currentPage === 0) setCurrentPage(1);
+    if (currentPage === 0 || currentPage < 0) setCurrentPage(1);
     setItemsPerPage(itemsPerPage = Number(e.target.value)); // 12 or 20, dropdown
     paginatingTickets();
   };

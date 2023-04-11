@@ -21,19 +21,18 @@ const MyTicketsList = ({tickets, page, pages}) => {
   };
 
   const orderByChange = (value) => {
-    setIsLoading(true);
+    // setIsLoading(true);
     if (!value) setOrderBy(orderBy = false);
     if (value) setOrderBy(orderBy = true);
     paginatingTickets();
   };
 
   const itemCountChange = (e) => {
-    setIsLoading(true);
-    // todo: errs when changing from high item count to lower item count
+    // setIsLoading(true);
     if (e.target.value > itemsPerPage) {
-      setCurrentPage(currentPage = currentPage - 1);
+      setCurrentPage(currentPage = 1);
     }
-    if (currentPage === 0) setCurrentPage(1);
+    if (currentPage === 0 || currentPage < 0) setCurrentPage(1);
     setItemsPerPage(Number(e.target.value)); // 12 or 20, dropdown
     paginatingTickets();
   };
@@ -171,7 +170,6 @@ const MyTicketsList = ({tickets, page, pages}) => {
         null
       )}
       <TicketList />
-      {/* <Paginate currentPage={currentPage} itemsPerPage={itemsPerPage} pages={pages} pageChange={pageChange} /> */}
     </div>
   );
 };

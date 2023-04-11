@@ -83,27 +83,12 @@ const Paginate = ({itemCountChange, pageChange, currentPage, totalCount, itemsPe
       current={currentPage}
       total={totalCount}
       pageSize={itemsPerPageCount}
-
-
-      // onShowSizeChange={itemCountChange}
-      // onChange={pageChange}
-      // current={currentPage}
-      // total={comments.length}
-      // pageSize={5}
-
       // showSizeChanger
       // defaultPageSize={20}
       // defaultCurrent={5}
-      // total={450}
       // showQuickJumper
-
-
-      // onChange={pageChange}
-      // total={20}
-      // pageSize={itemsPerPage}
       // defaultPageSize={comments.length}
       // pageSizeOptions={['20', '50']}
-      // onShowSizeChange={itemCountChange}
       showPrevNextJumpers
       showLessItems
       style={{ marginBottom: '2rem' }}

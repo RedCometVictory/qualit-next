@@ -1,16 +1,15 @@
-import { useId, useState } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { paginateTicketComments } from '@/redux/features/project/projectSlice';
-import { Grid, Typography, Divider, List, ListItem, ListItemIcon, ListItemText, Card, Select, MenuItem } from "@mui/material";
+import { Grid, Typography, List, ListItem, ListItemIcon, ListItemText, Select, MenuItem } from "@mui/material";
 import { FaComment } from 'react-icons/fa';
 import ButtonUI from '../UI/ButtonUI';
 import PaperUI from '../UI/PaperUI';
 import Paginate from '../nav/Paginate';
 
 const CommentsList = ({comments, loading, page, pages}) => {
-  const id = useId();
   const dispatch = useDispatch();
   const router = useRouter();
   let ticketId = router.query.ticketId;
@@ -24,19 +23,29 @@ const CommentsList = ({comments, loading, page, pages}) => {
   };
 
   const orderByChange = (value) => {
-    setIsLoading(true);
+    // setIsLoading(true);
     if (!value) setOrderBy(orderBy = false);
     if (value) setOrderBy(orderBy = true);
     paginatingComments();
   };
   
   const itemCountChange = (e) => {
-    setIsLoading(true);
-    // todo: errs when changing from high item count to lower item count
-    if (e.target.value > itemsPerPage) {
-      setCurrentPage(currentPage = currentPage - 1);
+    // setIsLoading(true);
+    let newCount = e.target.value;
+    if (newCount > itemsPerPage) {
+      setCurrentPage(currentPage = 1);
+      // setCurrentPage(currentPage = currentPage - 1);  // old ver
+      // TODO: consider improvement on maths
+      // if (currentPage < newCount) {
+      //   let modulo = newCount % currentPage;
+      //   setCurrentPage(currentPage = modulo / 2);
+      //   // setCurrentPage(currentPage = currentPage - 1);        
+      // } else {
+      //   // currentPage = currentPage / 2;
+      //   setCurrentPage(currentPage = (currentPage / 2) - 1);
+      // }
     }
-    if (currentPage === 0) setCurrentPage(1);
+    if (currentPage === 0 || currentPage < 0) setCurrentPage(1);
     setItemsPerPage(itemsPerPage = Number(e.target.value)); // 12 or 20, dropdown
     paginatingComments();
   };
@@ -69,13 +78,8 @@ const CommentsList = ({comments, loading, page, pages}) => {
         >
           {comments.map((comment, index) => (
             <div key={comment.id} className="catalog__comment">
-              <PaperUI
-                className="paper"
-                // className="catalog__comment paper"
-              >
-                <ListItem
-                  className='catalog__list-item'
-                >
+              <PaperUI className="paper">
+                <ListItem className='catalog__list-item'>
                   <div className="catalog__main-item-content">
                     <ListItemIcon className='list-item-icon'>
                       <FaComment />
@@ -92,8 +96,6 @@ const CommentsList = ({comments, loading, page, pages}) => {
                       />
                     </div>
                   </div>
-                  {/* {comment.file_name && comment.file_name.length === 0 ? ( */}
-                  {/* ) : comment.file_mimetype !== "application/pdf" ( */}
                   {comment.file_name.length === 0 ? (
                     null
                   ) : comment.file_mimetype !== "application/pdf" ? (
@@ -136,42 +138,7 @@ const CommentsList = ({comments, loading, page, pages}) => {
       </Grid>
     )
   };
-  /*
-  {comment?.file_name && comment?.file_name?.length === 0 ? (
-    null
-  ) : comment?.file_mimetype !== "application/pdf" ? (
-    <div className="catalog__image-container">
-      <Image
-        className={"catalog__image"}
-        src={comment?.file_url || ""}
-        alt="comment file or image"
-        layout="fill"
-      />
-    </div>
-  ) : (
-    <div className="catalog__image-container pdf">
-      <a
-        download
-        href={comment.file_url}
-        className=""
-      >
-        <ButtonUI
-          variant="outlined"
-          sx={{ color: 'primary.main' }}
-        >
-          View PDF
-        </ButtonUI>
-      </a>
-      <Typography
-        className="pdf-name"
-        variant='body1'
-        noWrap
-      >
-        {comment.file_name}
-      </Typography>
-    </div>
-  )}
-  */
+
   return (<>
     <div className='catalog'>
       {ticketId ? (<>
@@ -201,18 +168,6 @@ const CommentsList = ({comments, loading, page, pages}) => {
                   Order By: {" "}
                 </div>
                 <div className="order-by-options">
-                  {/* <span
-                    className={`option ${orderBy ? 'active' : ''}`}
-                    onClick={() => orderByChange(true)}
-                  >
-                    New
-                  </span>
-                  <span
-                    className={`option ${!orderBy ? 'active' : ''}`}
-                    onClick={() => orderByChange(false)}
-                  >
-                    Old
-                  </span> */}
                   <ButtonUI
                     variant="outlined"
                     sx={{ color: 'primary.main' }}
@@ -234,7 +189,7 @@ const CommentsList = ({comments, loading, page, pages}) => {
             </div>
           </div>
           <div className='option-group two'>
-            {/* <div className="">Comments: {pages}</div>           */}
+            {/* <div className="">Comments: {pages}</div> */}
           </div>
           <div className="option-group three">
             <Paginate

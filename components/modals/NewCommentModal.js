@@ -70,17 +70,13 @@ const NewCommentModal = ({setCommentModal}) => {
   const submitCommentHandler = async (e) => {
     e.preventDefault();
     setSubmitted(true);
-    console.log("formData")
-    console.log(formData)
     await dispatch(createTicketComment({ticket_id: ticketID, formData}));
     setSubmitted(false);
     setCommentModal(false);
   };
 
   return (
-    <PaperUI
-      className="modal comment"
-    >
+    <PaperUI className="modal comment">
       <div className="modal__header">
         <h3 className="title">
           New Comment
