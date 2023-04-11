@@ -492,7 +492,7 @@ const MyTickets = ({initialState, token}) => {
                       variant='body2'
                     >
                       <Link
-                        href={`/tickets/${ticket.id}`}
+                        href={`/tickets/${ticket.id}/edit`}
                         passHref
                       >
                         Edit / Assign
@@ -544,12 +544,12 @@ export const getServerSideProps = async (context) => {
     // TODO: may remove/use userInfo
     let userInfo = context.req.cookies.qual__user;
     // let ticketID = context.params.ticketId;
-    let ticketInfo;
+    // let ticketInfo;
     // TODO: validCookieAuth only ussed to dev. Remove for prod is token is all you need
     let validCookieAuth = context.req ? { cookie: context.req.headers.cookie } : undefined;
 
     // TODO: attempt to only pass token, not all cookies necessary to pass
-    ticketInfo = await store.dispatch(getTickets({keyword: '', status: '', priority: '', type: '', submitter: '', pageNumber: 1, itemsPerPage: 20, orderBy: true, orderChoice: 'date', cookie: validCookieAuth}));
+    await store.dispatch(getTickets({keyword: '', status: '', priority: '', type: '', submitter: '', pageNumber: 1, itemsPerPage: 20, orderBy: true, orderChoice: 'date', cookie: validCookieAuth}));
 
     return {
       props: {

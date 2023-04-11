@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
+import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import store from '@/redux/store';
@@ -20,7 +21,7 @@ import Upload from '@/components/details/Upload';
 import { getProject, rehydrate } from '@/redux/features/project/projectSlice';
 import PaperUI from '@/components/UI/PaperUI';
 
-const Project = ({initialState, token}) => {
+const Project = ({initialState, token, slug}) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { project, tickets, loading: projectLoading } = useSelector(state => state.project); // ---
@@ -65,17 +66,28 @@ const Project = ({initialState, token}) => {
         <div className="detail__info-box left">
           Project Details
           <div className="buttons">
-            <ButtonUI
-              className="btn-one"
-              variant="contained"
+            <Link
+              href={`/projects/${project.id}/edit`}
+              passHref
             >
-              Edit
-            </ButtonUI>
-            <ButtonUI
-              variant="contained"
-            >
-              Delete
-            </ButtonUI>
+              <ButtonUI
+                className="btn-one"
+                variant="contained"
+                color="primary"
+              >
+                Edit
+              </ButtonUI>
+            </Link>
+            {/* <Link
+              href={`/tickets/${ticket.id}/edit`}
+              passHref
+            > */}
+              <ButtonUI
+                variant="contained"
+              >
+                Delete
+              </ButtonUI>
+            {/* </Link> */}
           </div>
         </div>
         <div className="detail__info-box right">
@@ -164,11 +176,11 @@ export const getServerSideProps = async (context) => {
     
     let userInfo = context.req.cookies.qual__user;
     let projectID = context.params.projectId;
-    let projectInfo;
+    // let projectInfo;
     // TODO: validCookieAuth only ussed to dev. Remove for prod is token is all you need
     let validCookieAuth = context.req ? { cookie: context.req.headers.cookie } : undefined;
 
-    projectInfo = await store.dispatch(getProject({project_id: projectID, cookie: validCookieAuth}));
+    await store.dispatch(getProject({project_id: projectID, cookie: validCookieAuth}));
 
     return {
       props: {
