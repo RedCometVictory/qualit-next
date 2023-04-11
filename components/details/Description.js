@@ -1,4 +1,3 @@
-import { Card } from "@mui/material";
 import PaperUI from "../UI/PaperUI";
 
 const Description = ({description}) => {

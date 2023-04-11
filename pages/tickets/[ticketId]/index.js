@@ -43,24 +43,7 @@ const Ticket = ({initialState, token}) => {
     setHasMounted(true);
   }, []);
   
-  if (!hasMounted) {
-    return null;
-  };
-
-  // const submitCommentHandler = async (e) => {
-  //   e.preventDefault();
-  //   // const formData = {id: user.id, message: message};
-  //   // const formData = message;
-
-  //   console.log("submitted comment")
-  //   setCommentModal(false);
-  //   console.log("(((formData)))")
-  //   console.log(formData);
-  //   // await dispatch(createTicketComment({ticket_id: ticket.id, formData: { formData}}));
-  //   await dispatch(createTicketComment({ticket_id: ticket.id, formData}));
-  //   // setMessage(message = '')
-  //   setFormData({message: "", upload: ""});
-  // };
+  if (!hasMounted) return null;
 
   return (
     <section className="ticket detail detail__container">
@@ -137,16 +120,15 @@ const Ticket = ({initialState, token}) => {
           <PaperUI className="right-container paper">
             {comments.length > 0 ? (
               <CommentsList
-                // key={}
                 comments={comments}
                 loading={projectLoading}
                 page={page}
                 pages={pages}
               />
             ) : (
-              <div className="">
+              <PaperUI className="detail__description paper">
                 no comments found...
-              </div>
+              </PaperUI>
             )}
           </PaperUI>
         </section>

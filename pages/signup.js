@@ -8,16 +8,8 @@ import MainLayout from "@/components/layouts/MainLayout";
 import ButtonUI from '@/components/UI/ButtonUI';
 import { Card, Input, InputLabel, FormGroup, CardContent, Typography } from "@mui/material";
 
-/*
-  email, firstname, lastname, username, password, password2, role by default is set to developer
-*/
 const initialState = {
-  firstName: "",
-  lastName: "",
-  username: "",
-  email: "",
-  password: "",
-  password2: ""
+  firstName: "", lastName: "", username: "", email: "", password: "", password2: ""
 };
   
 const SignUp = () => {
@@ -39,9 +31,7 @@ const SignUp = () => {
     setHasMounted(true);
   }, []);
   
-  if (!hasMounted) {
-    return null;
-  }
+  if (!hasMounted) return null;
 
   const onChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -51,14 +41,12 @@ const SignUp = () => {
     e.preventDefault();
     try {
       if (password !== password2) {
-        toast.error('Passwords do not match.', {theme: 'colored', toastId: "noPasswordMatch"});
+        toast?.error('Passwords do not match.', {theme: 'colored', toastId: "noPasswordMatch"});
         return;
       }
-      // toast.success("Submitted new registry.")
       dispatch(registerUser(formData));
     } catch (err) {
-      console.error(err);
-      toast.error("Failed to register. Check if email or password are valid.");
+      toast?.error("Failed to register. Check if email or password are valid.");
     }
   };
 
@@ -222,19 +210,3 @@ export default SignUp;
 SignUp.getLayout = function getLayout(SignUp) {
   return <MainLayout>{SignUp}</MainLayout>
 };
-
-
-/*
-export async function getServerSideProps({ req }) {
-  const { user } = await supabase.auth.api.getUserByCookie(req);
-
-  if (!user) {
-    console.log("no user in req ");
-    return { props: {}, redirect: { destination: "/", permanent: false } };
-  }
-
-  return { props: { user } };
-}
-
-
-*/

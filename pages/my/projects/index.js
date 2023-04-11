@@ -4,63 +4,22 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { FaPlusCircle, FaRegEdit, FaArrowAltCircleUp, FaGithub } from 'react-icons/fa';
-import { FaSearch } from 'react-icons/fa';
+import { FaGithub } from 'react-icons/fa';
+import { BsSearch } from "react-icons/bs";
 import store from '@/redux/store';
-import { getDataGSSP, getData } from "@/utils/fetchData";
 import { logout } from "@/redux/features/auth/authSlice";
 import { getProjects, rehydrate } from '@/redux/features/project/projectSlice';
 import DetailLayout from "@/components/layouts/DetailLayout";
-import { Card, Divider, List, ListItem, ListItemIcon, ListItemText, Typography, FormControl, TextField, InputLabel, Select, MenuItem } from '@mui/material';
+import { Typography, TextField, Select, MenuItem } from '@mui/material';
 import PaperUI from '@/components/UI/PaperUI';
 import ButtonUI from "@/components/UI/ButtonUI";
 import Paginate from '@/components/nav/Paginate';
-
-
-  // current page = page number
-  // let [orderBy, setOrderBy] = useState(true);
-  // let [currentPage, setCurrentPage] = useState(page || 1);
-  // const [itemsPerPage, setItemsPerPage] = useState(20);
-
-// const orderByChange = (value) => {
-//   setIsLoading(true);
-//   if (!value) setFormData(orderBy = false);
-//   if (value) setFormData(orderBy = true);
-//   paginatingComments();
-// };
-
-// const itemCountChange = (e) => {
-//   setIsLoading(true);
-//   // todo: errs when changing from high item count to lower item count
-//   if (e.target.value > itemsPerPage) {
-//     setFormData(pageNumber = pageNumber - 1);
-//   }
-//   if (pageNumber === 0) setFormData(pageNumber = 1);
-//   setFormData(itemsPerPage = Number(e.target.value)); // 12 or 20, dropdown
-//   paginatingComments();
-// };
-
-// const pageChange = (chosenPage) => {
-//   // setCurrentPage(currentPage = chosenPage);
-//   setFormData(pageNumber = chosenPage);
-//   paginatingComments();
-// };
-
-
-// const initialState = {
-//   keyword: '', status: '', priority: '', type: '', submitter: '', pageNumber: 1, itemsPerPage: 20, orderBy: true, orderChoice: 'date'
-// };
 
 const MyProjects = ({initialState, token}) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { projects, page, pages, loading: projectLoading } = useSelector(state => state.project); // ---
   const [keyword, setKeyword] = useState(initialState.keyword || '');
-  const [status, setStatus] = useState(initialState.status || '');
-  const [priority, setPriority] = useState(initialState.priority || '');
-  const [type, setType] = useState(initialState.type || '');
-  // const [submitter, setSubmitter] = useState(initialState.submitter || '');  // disable for now
-  const [orderChoice, setOrderChoice] = useState(initialState.orderChoice || 'date');
   let [orderBy, setOrderBy] = useState(true);
   let [currentPage, setCurrentPage] = useState(page || 1);
   const [itemsPerPage, setItemsPerPage] = useState(20);
@@ -82,30 +41,10 @@ const MyProjects = ({initialState, token}) => {
   useEffect(() => {
     setHasMounted(true);
   }, []);
-  
-  // todo - seems to fix hydration error
-  if (!hasMounted) {
-    return null;
-  };
+
+  if (!hasMounted) return null;
 
   const paginatingTickets = () => {
-    console.log("paginating tickets list")
-    console.log("keyword")
-    console.log(keyword)
-    console.log("status")
-    console.log(status)
-    console.log("priority")
-    console.log(priority)
-    console.log("type")
-    console.log(type)
-    console.log("currentPage")
-    console.log(currentPage)
-    console.log("itemsPerPage")
-    console.log(itemsPerPage)
-    console.log("orderBY")
-    console.log(orderBy)
-    console.log("orderChoice")
-    console.log(orderChoice)
     dispatch(getProjects({keyword, pageNumber: currentPage, itemsPerPage, orderBy}));
   };
 
@@ -120,48 +59,23 @@ const MyProjects = ({initialState, token}) => {
   };
 
   const keywordSearchHandler = (e) => {
-    console.log("XXXXXXXXXXXXXXXXXXXXXX")
-    console.log("searching via keyword")
-    console.log(e.key)
     if (e.key === "Enter") {
-      console.log("e.target.value")
-      console.log(e.target.value)
       setIsLoading(true);
       e.preventDefault();
       if (keyword.length > 0) {
         setKeyword(keyword = e.target.value);
+        // resetInput(e);
         paginatingTickets();
       } else {
         paginatingTickets();
       }
     }
   }
-  const statusChange = (e) => {
-    setIsLoading(true);
-    setStatus(status = e.target.value);
-    paginatingTickets();
-  };
-  const priorityChange = (e) => {
-    setIsLoading(true);
-    setPriority(priority = e.target.value);
-    paginatingTickets();
-  };
-  const typeChange = (e) => {
-    setIsLoading(true);
-    setType(type = e.target.value);
-    paginatingTickets();
-  };
 
   const orderByChange = (value) => {
     // setIsLoading(true);
     if (!value) setOrderBy(orderBy = false);
     if (value) setOrderBy(orderBy = true);
-    paginatingTickets();
-  };
-
-  const orderChoiceChange = (e) => {
-    // setIsLoading(true);
-    setOrderChoice(orderChoice = e.target.value);
     paginatingTickets();
   };
 
@@ -186,38 +100,10 @@ const MyProjects = ({initialState, token}) => {
       <div className="detail__header">
         <div className="detail__info-box left">
           <h3>My Projects</h3>
-          {/* <div className="buttons">
-            <ButtonUI
-              className="btn-one"
-              variant="contained"
-              // color="secondary"
-            >
-              Edit
-            </ButtonUI>
-            <ButtonUI
-              variant="contained"
-              // color="secondary"
-            >
-              Delete
-            </ButtonUI>
-          </div> */}
         </div>
         <div className="detail__info-box right">
-          {/* # of Comments: {comments.length} / # of Memebers: 09 */}
         </div>
       </div>
-      {/* <div className="detail__sub-header">
-        <span className="title">{ticket.title}</span>
-        <div className="stats-container">
-          <span>{ticket.id}</span>
-          <span className="stats">Priority</span>
-          <span className=""> | </span>
-          <span className="stats">Status</span>
-        </div>
-        <span className="date">
-          Created On: {ticket.created_at}
-        </span>
-      </div> */}
       <div className="detail__content my-content">
         <div className="detail__option-container">
           <div className="option-group one">
@@ -277,11 +163,14 @@ const MyProjects = ({initialState, token}) => {
                   size="small"
                   id="outlined-search-label"
                 />
-                {/* <div className="search-confirm-btn">
+                <div className="search-confirm-btn">
                   <button className="search-btn">
-                    <FaSearch />
+                    <BsSearch
+                      className='btn-glass'
+                      // onClick={e => keywordSearchHandler(e)}
+                    />
                   </button>
-                </div> */}
+                </div>
               </div>
             </span>
           </div>
@@ -395,19 +284,14 @@ export const getServerSideProps = async (context) => {
   try {
     let token = context.req.cookies.qual__token;
     token ? token : null;
-    console.log("token")
-    console.log(token)
-    console.log(null)
     if (!token) {
-      console.log("session expired")
-      // Cookies.remove("qual__isLoggedIn");
       context.res.setHeader(
         "Set-Cookie", [
           `qual__isLoggedIn=deleted; Max-Age=0`,
-          // `qual__=deleted; Max-Age=0`
+          // `qual__user=deleted; Max-Age=0`
         ]
       )
-      // localStorage.removeItem("qual__user");
+
       return {
         redirect: {
           destination: `/signin?session_expired=true`,
@@ -416,15 +300,9 @@ export const getServerSideProps = async (context) => {
         props: {},
       };
     };
-    
-    // TODO: may remove/use userInfo
-    let userInfo = context.req.cookies.qual__user;
+    // let userInfo = context.req.cookies.qual__user;
     // let ticketID = context.params.ticketId;
-    // let projectInfo;
-    // TODO: validCookieAuth only ussed to dev. Remove for prod is token is all you need
     let validCookieAuth = context.req ? { cookie: context.req.headers.cookie } : undefined;
-
-    // TODO: attempt to only pass token, not all cookies necessary to pass
     await store.dispatch(getProjects({keyword: '', pageNumber: 1, itemsPerPage: 20, orderBy: true, cookie: validCookieAuth}));
 
     return {

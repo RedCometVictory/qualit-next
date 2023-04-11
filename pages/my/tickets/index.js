@@ -9,45 +9,10 @@ import store from '@/redux/store';
 import { logout } from "@/redux/features/auth/authSlice";
 import { getTickets, paginateMyTickets, rehydrate } from '@/redux/features/project/projectSlice';
 import DetailLayout from "@/components/layouts/DetailLayout";
-import { Card, Divider, List, ListItem, ListItemIcon, ListItemText, Typography, FormControl, TextField, InputLabel, Select, MenuItem } from '@mui/material';
+import { Typography, FormControl, TextField, InputLabel, Select, MenuItem } from '@mui/material';
 import PaperUI from '@/components/UI/PaperUI';
 import ButtonUI from "@/components/UI/ButtonUI";
 import Paginate from '@/components/nav/Paginate';
-
-
-  // current page = page number
-  // let [orderBy, setOrderBy] = useState(true);
-  // let [currentPage, setCurrentPage] = useState(page || 1);
-  // const [itemsPerPage, setItemsPerPage] = useState(20);
-
-// const orderByChange = (value) => {
-//   setIsLoading(true);
-//   if (!value) setFormData(orderBy = false);
-//   if (value) setFormData(orderBy = true);
-//   paginatingComments();
-// };
-
-// const itemCountChange = (e) => {
-//   setIsLoading(true);
-//   // todo: errs when changing from high item count to lower item count
-//   if (e.target.value > itemsPerPage) {
-//     setFormData(pageNumber = pageNumber - 1);
-//   }
-//   if (pageNumber === 0) setFormData(pageNumber = 1);
-//   setFormData(itemsPerPage = Number(e.target.value)); // 12 or 20, dropdown
-//   paginatingComments();
-// };
-
-// const pageChange = (chosenPage) => {
-//   // setCurrentPage(currentPage = chosenPage);
-//   setFormData(pageNumber = chosenPage);
-//   paginatingComments();
-// };
-
-
-// const initialState = {
-//   keyword: '', status: '', priority: '', type: '', submitter: '', pageNumber: 1, itemsPerPage: 20, orderBy: true, orderChoice: 'date'
-// };
 
 const MyTickets = ({initialState, token}) => {
   const router = useRouter();
@@ -81,30 +46,10 @@ const MyTickets = ({initialState, token}) => {
     setHasMounted(true);
   }, []);
   
-  // todo - seems to fix hydration error
-  if (!hasMounted) {
-    return null;
-  };
+  // seems to fix hydration error
+  if (!hasMounted) return null;
 
   const paginatingTickets = () => {
-    console.log("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSS")
-    console.log("paginating tickets list")
-    console.log("keyword")
-    console.log(keyword)
-    console.log("status")
-    console.log(status)
-    console.log("priority")
-    console.log(priority)
-    console.log("type")
-    console.log(type)
-    console.log("currentPage")
-    console.log(currentPage)
-    console.log("itemsPerPage")
-    console.log(itemsPerPage)
-    console.log("orderBY")
-    console.log(orderBy)
-    console.log("orderChoice")
-    console.log(orderChoice)
     dispatch(paginateMyTickets({keyword, status, priority, type, pageNumber: currentPage, itemsPerPage, orderBy, orderChoice}));
   };
 
@@ -118,28 +63,8 @@ const MyTickets = ({initialState, token}) => {
     setKeyword(keyword = "");
   };
 
-  // const iconSearchHandler = (e) => {
-  //   // if (e.key === "Enter") {
-  //   //   setIsLoading(true);
-  //   //   e.preventDefault();
-  //     if (keyword.length > 0) {
-  //       setKeyword(keyword = e.target.value);
-  //       // resetInput(e);
-  //       paginatingTickets();
-  //     } else {
-  //       return;
-  //     }
-  //   }
-  //   // setKeyword(keyword = e.target.value);
-  //   // paginatingTickets();
-  // };
   const keywordSearchHandler = (e) => {
-    console.log("XXXXXXXXXXXXXXXXXXXXXX")
-    console.log("searching via keyword")
-    console.log(e.key)
     if (e.key === "Enter") {
-      console.log("e.target.value")
-      console.log(e.target.value)
       setIsLoading(true);
       e.preventDefault();
       if (keyword.length > 0) {
@@ -147,12 +72,9 @@ const MyTickets = ({initialState, token}) => {
         // resetInput(e);
         paginatingTickets();
       } else {
-        // resets tickets
         paginatingTickets();
       }
     }
-    // setKeyword(keyword = e.target.value);
-    // paginatingTickets();
   };
   const statusChange = (e) => {
     setIsLoading(true);
@@ -203,38 +125,10 @@ const MyTickets = ({initialState, token}) => {
       <div className="detail__header">
         <div className="detail__info-box left">
           <h3>My Tickets</h3>
-          {/* <div className="buttons">
-            <ButtonUI
-              className="btn-one"
-              variant="contained"
-              // color="secondary"
-            >
-              Edit
-            </ButtonUI>
-            <ButtonUI
-              variant="contained"
-              // color="secondary"
-            >
-              Delete
-            </ButtonUI>
-          </div> */}
         </div>
         <div className="detail__info-box right">
-          {/* # of Comments: {comments.length} / # of Memebers: 09 */}
         </div>
       </div>
-      {/* <div className="detail__sub-header">
-        <span className="title">{ticket.title}</span>
-        <div className="stats-container">
-          <span>{ticket.id}</span>
-          <span className="stats">Priority</span>
-          <span className=""> | </span>
-          <span className="stats">Status</span>
-        </div>
-        <span className="date">
-          Created On: {ticket.created_at}
-        </span>
-      </div> */}
       <div className="detail__content my-content">
         <div className="detail__option-container">
           <div className="option-group one">
@@ -306,19 +200,13 @@ const MyTickets = ({initialState, token}) => {
                   onKeyDown={e => keywordSearchHandler(e)}
                   size="small"
                   id="outlined-search-label"
-                  // inputProps={
-                  //   <FaSearch />
-                      // <SearchIcon />
-                  // }
                 />
                 <div className="search-confirm-btn">
                   <button className="search-btn">
                     <BsSearch
-                      className='btn-glass'                    
+                      className='btn-glass'
                       // onClick={e => keywordSearchHandler(e)}
                     />
-                    {/* <FaSearch /> */}
-                    {/* <SearchIcon /> */}
                   </button>
                 </div>
               </div>
@@ -528,7 +416,7 @@ export const getServerSideProps = async (context) => {
       context.res.setHeader(
         "Set-Cookie", [
           `qual__isLoggedIn=deleted; Max-Age=0`,
-          // `qual__=deleted; Max-Age=0`
+          // `qual__user=deleted; Max-Age=0`
         ]
       )
       return {
@@ -540,14 +428,10 @@ export const getServerSideProps = async (context) => {
       };
     };
     
-    // TODO: may remove/use userInfo
-    let userInfo = context.req.cookies.qual__user;
+    // let userInfo = context.req.cookies.qual__user;
     // let ticketID = context.params.ticketId;
-    // let ticketInfo;
-    // TODO: validCookieAuth only ussed to dev. Remove for prod is token is all you need
     let validCookieAuth = context.req ? { cookie: context.req.headers.cookie } : undefined;
 
-    // TODO: attempt to only pass token, not all cookies necessary to pass
     await store.dispatch(getTickets({keyword: '', status: '', priority: '', type: '', submitter: '', pageNumber: 1, itemsPerPage: 20, orderBy: true, orderChoice: 'date', cookie: validCookieAuth}));
 
     return {
