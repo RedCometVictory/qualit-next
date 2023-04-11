@@ -115,9 +115,7 @@ const EditTicket = ({initialState, token}) => {
     setHasMounted(true);
   }, []);
   
-  if (!hasMounted) {
-    return null;
-  };
+  if (!hasMounted) return null;
 
   const dateChangeHandler = (newValue) => {
     setValue(newValue);
@@ -133,13 +131,13 @@ const EditTicket = ({initialState, token}) => {
     // return;
   };
 
-  const submitProjectHandler = (e) => {
+  const submitTicketHandler = (e) => {
     e.preventDefault();
     console.log("submitting info for new project")
     setFormData(formData.owner = id);
     owner = id // use state may need to be let not const
     return console.log(formData);
-    // dispatch(editProject({formData, router}));
+    // dispatch(editTicket({formData, router}));
   };
 
   return (

@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import store from '@/redux/store';
 import { logout } from "@/redux/features/auth/authSlice";
 import { toast } from 'react-toastify';
-import { FaPlusCircle, FaRegEdit } from 'react-icons/fa';
+import { FaPlusCircle } from 'react-icons/fa';
 import { Typography } from '@mui/material';
 import ButtonUI from '@/components/UI/ButtonUI';
 import DetailLayout from '@/components/layouts/DetailLayout';
@@ -49,9 +49,9 @@ const Project = ({initialState, token}) => {
     setTicketModal(ticketModal = true);
   };
 
-  const openDescriptionModal = () => {
-    console.log("editing description of porject")
-  }
+  // const openDescriptionModal = () => {
+  //   console.log("editing description of porject")
+  // }
 
   return (
     <section className="detail detail__container">
@@ -109,12 +109,12 @@ const Project = ({initialState, token}) => {
         <section className="left">
           <Description description={project.description} />
           <div className="detail__actions">
-            <ButtonUI
+            {/* <ButtonUI
               variant='contained'
               onClick={() => openDescriptionModal()}
             >
               <FaRegEdit className='btn-icon'/> Edit Description
-            </ButtonUI>
+            </ButtonUI> */}
             <ButtonUI
               variant='contained'
               onClick={() => openNewTicketModal()}

@@ -213,7 +213,8 @@
         .sub-box {
           margin: initial;
           &.one {
-            width: initial;
+            // width:initial; is to be used along with upload box, otherwise should be 100%
+            width: 100%;
           }
         }
       }

@@ -49,7 +49,7 @@ const MainNav = ({openMenu, setOpenMenu}) => {
       <div className="nav__link-group">
         <div className="nav__link-icon">
           <Link passHref href="/projects/new-project">
-            <>
+            <Typography variant="body1">
               <FaPlus />
               <div className="tooltip">
                 <div className="right">
@@ -64,7 +64,7 @@ const MainNav = ({openMenu, setOpenMenu}) => {
                   </div>
                 </div>
               </div>
-            </>
+            </Typography>
           </Link>
         </div>
         <Link passHref href="/projects/new-project">
@@ -82,7 +82,7 @@ const MainNav = ({openMenu, setOpenMenu}) => {
             passHref
             href={"/"}
           >
-            <>
+            <Typography variant="body1">
               <MdDashboard />
               <div className="tooltip">
                 <div className="right">
@@ -93,7 +93,7 @@ const MainNav = ({openMenu, setOpenMenu}) => {
                   </div>
                 </div>
               </div>
-            </>
+            </Typography>
           </Link>
         </div>
         <Link
@@ -111,7 +111,7 @@ const MainNav = ({openMenu, setOpenMenu}) => {
             passHref
             href={`/my/projects`}
           >
-            <>
+            <Typography variant="body1">
               <AiOutlineProject />
               <div className="tooltip">
                 <div className="right">
@@ -120,7 +120,7 @@ const MainNav = ({openMenu, setOpenMenu}) => {
                   </div>
                 </div>
               </div>
-            </>
+            </Typography>
           </Link>
         </div>
         <Link
@@ -138,7 +138,7 @@ const MainNav = ({openMenu, setOpenMenu}) => {
             passHref
             href={`/my/tickets`}
           >
-            <>
+            <Typography variant="body1">
               <ImTicket />
               <div className="tooltip">
                 <div className="right">
@@ -147,7 +147,7 @@ const MainNav = ({openMenu, setOpenMenu}) => {
                   </div>
                 </div>
               </div>
-            </>
+            </Typography>
           </Link>
         </div>
         <Link
@@ -235,7 +235,7 @@ const MainNav = ({openMenu, setOpenMenu}) => {
               <li className="nav__link-item">
                 <div className="nav__link-group">
                   <div className="nav__link-icon">
-                    <ImExit />
+                    <ImExit onClick={() => logoutHandler()} />
                     <div className="tooltip">
                     <div className="right">
                       <div className="text-content">
@@ -262,16 +262,16 @@ const MainNav = ({openMenu, setOpenMenu}) => {
                       passHref
                       href="/signin"
                     >
-                    <>
-                    <ImEnter />
-                    <div className="tooltip">
-                      <div className="right">
-                        <div className="text-content">
-                          <Typography color={'primary.contrastText'} variant="h3">Sign In</Typography>
+                      <Typography variant="body1">
+                        <ImEnter />
+                        <div className="tooltip">
+                          <div className="right">
+                            <div className="text-content">
+                              <Typography color={'primary.contrastText'} variant="h3">Sign In</Typography>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                    </>
+                      </Typography>
                     </Link>
                   </div>
                   <Link

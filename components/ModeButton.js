@@ -4,10 +4,7 @@ import { globalTheme } from "../redux/features/theme/themeSlice";
 
 const ModeButton = () => {
   const dispatch = useDispatch();
-  // const currentheme = useSelector(state => state.theme);
-  // const { theme } = currentTheme;
   const { theme } = useSelector(state => state.theme);
-  // const { theme } = currentTheme;
 
   const toggleTheme = (value) => {
     dispatch(globalTheme(value));

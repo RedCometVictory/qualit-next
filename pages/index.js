@@ -1,14 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Cookies from 'js-cookie';
-import cookie from "cookie";
 import { useRouter } from "next/router";
 import { getDashboardInfo } from '@/redux/features/project/projectSlice';
 import MainLayout from "@/components/layouts/MainLayout";
 import PaperUI from '@/components/UI/PaperUI';
-import CardUI from '@/components/UI/CardUI';
 import ButtonUI from '@/components/UI/ButtonUI';
-import { Card, Input, InputLabel, FormGroup, CardContent, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import BarChart from '@/components/dashBoard/BarChart';
 import PieChart from '@/components/dashBoard/PieChart';
 import MyProjectsList from '@/components/lists/MyProjectsList';
@@ -92,7 +89,7 @@ const Home = () => {
   console.log(ticketPriorityCount)
 
   return !isAuthenticated ? (
-    <section className="dash">
+    <section className="dash unauth">
       <div className="dash__unauth">
         <h3>Please Sign In.</h3>
         <div className="dash__unauth-btns">
@@ -105,6 +102,7 @@ const Home = () => {
           </ButtonUI>
           <ButtonUI
             className="dash__unauth-btn"
+            sx={{ color: 'secondary.main' }}
             variant='outlined'
             href="/signup"
           >
@@ -260,7 +258,7 @@ export const getServerSideProps = async (context) => {
       context.res.setHeader(
         "Set-Cookie", [
           `qual__isLoggedIn=deleted; Max-Age=0`,
-          // `qual__=deleted; Max-Age=0`
+          // `qual__user=deleted; Max-Age=0`
         ]
       )
       // context.res
