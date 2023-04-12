@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import store from '@/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { FaPlusCircle } from 'react-icons/fa';
+import { FaPlusCircle, FaRegEdit } from 'react-icons/fa';
 import { logout } from "@/redux/features/auth/authSlice";
 import { getTicket, rehydrate } from "@/redux/features/project/projectSlice";
 import ButtonUI from '@/components/UI/ButtonUI';
@@ -35,6 +35,10 @@ const Ticket = ({initialState, token}) => {
     dispatch(rehydrate(initialState.project))
   }, [dispatch, initialState])
     
+  const openNoteModal = () => {
+    console.log("adding a new note to list")
+    // setCommentModal(true);
+  };
   const openNewCommentModal = () => {
     setCommentModal(true);
   };
@@ -82,7 +86,7 @@ const Ticket = ({initialState, token}) => {
           </div>
         </div>
         <div className="detail__info-box right">
-          Comments: {pages} / Members: 09
+          Comments: {pages} / Members: ?
         </div>
       </div>
       <div className="detail__sub-header">
@@ -101,6 +105,12 @@ const Ticket = ({initialState, token}) => {
         <section className="left">
           <Description description={ticket.description} />
           <div className="detail__actions">
+            <ButtonUI
+              variant='contained'
+              onClick={() => openNoteModal()}
+            >
+              <FaRegEdit className='btn-icon'/> Add Note
+            </ButtonUI>
             <ButtonUI
               variant='contained'
               onClick={() => openNewCommentModal()}

@@ -8,13 +8,7 @@ import MainLayout from "@/components/layouts/MainLayout";
 import ButtonUI from '@/components/UI/ButtonUI';
 import { Card, Input, InputLabel, FormGroup, CardContent, Typography } from "@mui/material";
 
-/*
-  email, firstname, lastname, username, password, password2, role by default is set to developer
-*/
-const initialState = {
-  email: "",
-  password: ""
-};
+const initialState = {email: "", password: ""};
 
 const SignIn = () => {
   const dispatch = useDispatch();
@@ -38,7 +32,6 @@ const SignIn = () => {
   if (!hasMounted) return null;
 
   if (router.query.session_expired) {
-    console.log("session has expired")
     toast?.error("Session expired. Please login.", { toastId: "expiredAuthId" });
   };
 
