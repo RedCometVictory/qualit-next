@@ -7,13 +7,15 @@ import ButtonUI from "../UI/ButtonUI";
 import PaperUI from "../UI/PaperUI";
 import Upload from "./Upload";
 
-const initialState = {title: "", description: "", notes: [], status: "", priority: "", type: "", submitter: "", deadline: ""};
-
+const initialState = {title: "", description: "", notes: [], status: "New", priority: "High", type: "Bug", submitter: "", deadline: ""};
+// TODO: submitter is assigned via backend upon form submission - additionally notes are created later (on the ticket details page)
 const TicketForm = () => {
   let [formData, setFormData] = useState(initialState);
+  // let [status, setStatus] = useState('New');
   const [value, setValue] = useState(dayjs("2023-08-12T21:11:54"));
 
   let {title, description, notes, status, priority, type, submitter, deadline} = formData;
+  // let {title, description, notes, priority, type, submitter, deadline} = formData;
 
   const onChange = e => setFormData({...formData, [e.target.name]: e.target.value})
   
@@ -21,9 +23,26 @@ const TicketForm = () => {
     setValue(newValue);
   };
 
+  const changeRadioHandler = (e) => {
+    // console.log("e.target")
+    // console.log(e.target)
+    console.log("e.target.name")
+    console.log(e.target.name)
+    // setFormData(formData.status = {...e.target.value})
+    setFormData(formData = {...formData, [e.target.name]: e.target.value})
+    // setFormData({...formData, [e.target.name]: e.target.value})
+    // setStatus(status = e.target.value)
+    console.log("formData")
+    console.log(formData)
+    // console.log("status")
+    // console.log(status)
+  };
+
   // const submitHandler = async (e) => {
   const submitHandler = (e) => {
     e.preventDefault();
+    console.log("creating new ticket")
+    console.log(formData)
     // dispatch(createTicket(formData));
     // try {
     //   // dispatch(createTicket(formData));
@@ -49,12 +68,20 @@ const TicketForm = () => {
                   className='ticket-title'
                   variant="standard"
                   label="Ticket Title"
+                  name="title"
+                  value={title}
+                  onChange={onChange}
+                  required
                 />
                 <TextareaAutosize
                   className='ticket-description'
                   maxRows={6}
                   minRows={3}
                   placeholder="Ticket description."
+                  name="description"
+                  value={description}
+                  onChange={onChange}
+                  required
                 />
               </div>
               {/* <div className="sub-box two">
@@ -74,6 +101,9 @@ const TicketForm = () => {
               <RadioGroup
                 row
                 defaultValue="New"
+                name="status"
+                onChange={changeRadioHandler}
+                value={status}
               >
                 <FormControlLabel value="New" control={<Radio />} label="New"/>
                 <FormControlLabel value="Open" control={<Radio />} label="Open"/>
@@ -95,6 +125,9 @@ const TicketForm = () => {
               <RadioGroup
                 row
                 defaultValue="High"
+                name="priority"
+                onChange={changeRadioHandler}
+                value={priority}
               >
                 <FormControlLabel value="Urgent" control={<Radio />} label="Urgent"/>
                 <FormControlLabel value="High" control={<Radio />} label="High"/>
@@ -115,6 +148,9 @@ const TicketForm = () => {
               <RadioGroup
                 row
                 defaultValue="Bug"
+                name="type"
+                onChange={changeRadioHandler}
+                value={type}
               >
                 <FormControlLabel value="Bug" control={<Radio />} label="Bug"/>
                 <FormControlLabel value="Breaking Change" control={<Radio />} label="Breaking Change"/>
@@ -136,8 +172,11 @@ const TicketForm = () => {
             <h4 className="date-picker-header">Date Deadline (Optional):</h4>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <MobileDatePicker
+                sx={{ color: 'primary.main' }}
                 label="Date Deadline"
                 inputFormat="MM/DD/YYYY"
+                name='deadline'
+                // value={deadline}
                 value={value}
                 onChange={dateChangeHandler}
                 renderInput={(params) => <TextField {...params}/>}

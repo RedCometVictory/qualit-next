@@ -10,14 +10,11 @@ import { MdDashboard } from 'react-icons/md';
 import { logout } from '@/redux/features/auth/authSlice';
 import ModeButton from '@/components/ModeButton';
 import Logo from '../UI/Logo';
-import { Typography, useTheme } from '@mui/material';
+import { Typography } from '@mui/material';
 
-// TODO:
-// Get role from redux state
 // based on role (Admin, Project Manager, Submitter, Developer) hide links.
 // swap auth links, show pending on logged in or not
 const MainNav = ({openMenu, setOpenMenu}) => {
-  const theme = useTheme();
   const router = useRouter();
   const dispatch = useDispatch();
   const { isAuthenticated, user, loading: authLoading } = useSelector(state => state.auth);
@@ -29,9 +26,7 @@ const MainNav = ({openMenu, setOpenMenu}) => {
     setHasMounted(true);
   }, []);
   
-  if (!hasMounted) {
-    return null;
-  }
+  if (!hasMounted) return null;
 
   const logoutHandler = async () => {
     try {
@@ -181,8 +176,6 @@ const MainNav = ({openMenu, setOpenMenu}) => {
             > 
               As: {user?.role}
             </Typography>
-            {/* <span>Hello, {user?.username}</span> 
-            span>As: {user?.role}</span> */}
             </>
           )}
         </div>
