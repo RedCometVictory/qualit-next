@@ -13,14 +13,40 @@ const TicketForm = () => {
   let [formData, setFormData] = useState(initialState);
   // let [status, setStatus] = useState('New');
   const [value, setValue] = useState(dayjs("2023-08-12T21:11:54"));
+  const [date, setDate] = useState("");
 
   let {title, description, notes, status, priority, type, submitter, deadline} = formData;
   // let {title, description, notes, priority, type, submitter, deadline} = formData;
 
   const onChange = e => setFormData({...formData, [e.target.name]: e.target.value})
   
+  // const dateChangeHandler = (e) => {
   const dateChangeHandler = (newValue) => {
-    setValue(newValue);
+    console.log("changing the date of deadline")
+    setValue(value = newValue);
+    // setValue(formData = {...formData, [e.target.name]: e.target.value});
+    // console.log("formData")
+    // console.log(formData)
+    // console.log("value")
+    // console.log(value)
+    // console.log(value.$d)
+    // console.log("value.$d.toISOString()")
+    // console.log(value.$d.toISOString())
+    let updatedFormValue = {...formData, deadline: newValue.$d.toISOString()}
+    console.log("formData -> value set to deadline")
+    console.log("newValue")
+    console.log(newValue.$d)
+    console.log(newValue.$d.toISOString())
+    console.log("updatedFormValue")
+    console.log(updatedFormValue)
+    // setFormData(formData = {...formData, [e.target.name]: e.target.value});
+    // setFormData(formData = {...formData, [deadline]: value.$d.toISOString()});
+    // setFormData(formData = {...formData, [deadline]: newValue.$d.toISOString()});
+    setFormData(formData = {...formData, deadline: newValue.$d.toISOString()}); // seems to work best!!!
+    // setFormData(formData.deadline = {...value.$d.toISOString()})
+    console.log("formData")
+    console.log(formData)
+    
   };
 
   const changeRadioHandler = (e) => {
@@ -29,7 +55,7 @@ const TicketForm = () => {
     console.log("e.target.name")
     console.log(e.target.name)
     // setFormData(formData.status = {...e.target.value})
-    setFormData(formData = {...formData, [e.target.name]: e.target.value})
+    setFormData(formData = {...formData, [e.target.name]: e.target.value});
     // setFormData({...formData, [e.target.name]: e.target.value})
     // setStatus(status = e.target.value)
     console.log("formData")
@@ -41,6 +67,8 @@ const TicketForm = () => {
   // const submitHandler = async (e) => {
   const submitHandler = (e) => {
     e.preventDefault();
+    setFormData(formData = {...formData, [deadline]: value.$d.toISOString()});
+    // setFormData(formData.deadline = value.$d.toISOString())
     console.log("creating new ticket")
     console.log(formData)
     // dispatch(createTicket(formData));
@@ -52,7 +80,39 @@ const TicketForm = () => {
     // }
   };
 
+  const exampleForm = (e) => {
+    e.preventDefault();
+    console.log("submitting the date form")
+    console.log(date)
+    console.log(new Date(date).toISOString())
+  };
+  const dateHandler = (e) => {
+    console.log("changing the date")
+    setDate(date = e.target.value)
+    console.log(date)
+  };
+
   return (<>
+    <form onSubmit={exampleForm}>
+      <div className="form__group">
+        <input
+          aria-required="true"
+          required
+          type="date"
+          name="date"
+          value={date}
+          onChange={e => dateHandler(e)}
+          placeholder=" "
+        />
+        <label htmlFor="date" className="form__label">
+          <span className="form__label-name">Date</span>
+        </label>
+      </div>
+      <button type="submit">Test</button>
+    </form>
+
+
+
     <form
       className="login__form"
       onSubmit={submitHandler}
@@ -172,12 +232,12 @@ const TicketForm = () => {
             <h4 className="date-picker-header">Date Deadline (Optional):</h4>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <MobileDatePicker
-                sx={{ color: 'primary.main' }}
                 label="Date Deadline"
                 inputFormat="MM/DD/YYYY"
                 name='deadline'
                 // value={deadline}
                 value={value}
+                // onChange={e => dateChangeHandler(e)}
                 onChange={dateChangeHandler}
                 renderInput={(params) => <TextField {...params}/>}
               />
@@ -188,6 +248,7 @@ const TicketForm = () => {
           <ButtonUI
             variant="contained"
             type="submit"
+            sx={{ color: 'primary.text' }}
           >
             Submit
           </ButtonUI>

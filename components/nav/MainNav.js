@@ -51,7 +51,7 @@ const MainNav = ({openMenu, setOpenMenu}) => {
                   <div className="text-content">
                     <Typography
                       variant="h3"
-                      color={'primary.contrastText'}
+                      color={'primary.tooltipText'}
                       noWrap
                     >
                       New Project
@@ -63,7 +63,7 @@ const MainNav = ({openMenu, setOpenMenu}) => {
           </Link>
         </div>
         <Link passHref href="/projects/new-project">
-          <Typography className='nav__link' variant='h4' color={'primary.contrastText'}>New Project</Typography>
+          <Typography className='nav__link' variant='h4' color={'primary.mainMenuText'}>New Project</Typography>
         </Link>
       </div>
     </li>
@@ -82,7 +82,7 @@ const MainNav = ({openMenu, setOpenMenu}) => {
               <div className="tooltip">
                 <div className="right">
                   <div className="text-content">
-                    <Typography color={'primary.contrastText'} variant="h3">
+                    <Typography color={'primary.tooltipText'} variant="h3">
                       My Boards
                     </Typography>
                   </div>
@@ -95,7 +95,7 @@ const MainNav = ({openMenu, setOpenMenu}) => {
           passHref
           href={"/"}
         >
-          <Typography color={'primary.contrastText'} variant="h4" className='nav__link'>Dashboard</Typography>
+          <Typography color={'primary.mainMenuText'} variant="h4" className='nav__link'>Dashboard</Typography>
         </Link>
       </div>
     </li>
@@ -111,7 +111,7 @@ const MainNav = ({openMenu, setOpenMenu}) => {
               <div className="tooltip">
                 <div className="right">
                   <div className="text-content">
-                    <Typography color={'primary.contrastText'} variant="h3">My Projects</Typography>
+                    <Typography color={'primary.tooltipText'} variant="h3">My Projects</Typography>
                   </div>
                 </div>
               </div>
@@ -122,7 +122,7 @@ const MainNav = ({openMenu, setOpenMenu}) => {
           passHref
           href={`/my/projects`}
         >
-          <Typography variant='h4' color={'primary.contrastText'} className='nav__link'>My Projects</Typography>
+          <Typography variant='h4' color={'primary.mainMenuText'} className='nav__link'>My Projects</Typography>
         </Link>
       </div>
     </li>
@@ -138,7 +138,7 @@ const MainNav = ({openMenu, setOpenMenu}) => {
               <div className="tooltip">
                 <div className="right">
                   <div className="text-content">
-                    <Typography color={'primary.contrastText'} variant="h3">My Tickets</Typography>
+                    <Typography color={'primary.tooltipText'} variant="h3">My Tickets</Typography>
                   </div>
                 </div>
               </div>
@@ -149,7 +149,7 @@ const MainNav = ({openMenu, setOpenMenu}) => {
           passHref
           href={`/my/tickets`}
         >
-          <Typography color={'primary.contrastText'} variant="h4" className='nav__link'>My Tickets</Typography>
+          <Typography color={'primary.mainMenuText'} variant="h4" className='nav__link'>My Tickets</Typography>
         </Link>
       </div>
     </li>
@@ -160,19 +160,19 @@ const MainNav = ({openMenu, setOpenMenu}) => {
       <div className={`nav__content-group upper mobile ${openMenu ? "active" : ""}`}>
         <div className={`theme-info ${openMenu ? "active" : ""}`}>
           <ModeButton />
-          {user !== null && (
+          {isAuthenticated && (
             <>
             <Typography
               variant='body2'
               className="nav__user"
-              color={'primary.contrastText'}
+              color={'primary.mainMenuText'}
             >
               Hello, {user?.username} 
             </Typography>
             <Typography
               variant='body2'
               className="nav__user"
-              color={'primary.contrastText'}
+              color={'primary.mainMenuText'}
             > 
               As: {user?.role}
             </Typography>
@@ -194,7 +194,7 @@ const MainNav = ({openMenu, setOpenMenu}) => {
                 <Typography
                   // variant='body2'
                   variant='body3'
-                  color={'primary.contrastText'}
+                  color={'primary.tooltipText'}
                 >
                   Q
                 </Typography>
@@ -205,7 +205,7 @@ const MainNav = ({openMenu, setOpenMenu}) => {
       </div>
       <div className="nav__content-group upper desktop">
         <ModeButton />
-        {user !== null && (
+        {isAuthenticated && (
           <div className="nav__user">
             <span>Hello, {user?.username}</span> 
             <span>As: {user?.role}</span>
@@ -232,7 +232,7 @@ const MainNav = ({openMenu, setOpenMenu}) => {
                     <div className="tooltip">
                     <div className="right">
                       <div className="text-content">
-                        <Typography variant="h3" color={'primary.contrastText'}>Sign Out</Typography>
+                        <Typography variant="h3" color={'primary.tooltipText'}>Sign Out</Typography>
                       </div>
                     </div>
                   </div>
@@ -243,7 +243,7 @@ const MainNav = ({openMenu, setOpenMenu}) => {
                     className='nav__link'
                     onClick={() => logoutHandler()}
                   >
-                    <Typography color={'primary.contrastText'} variant="h4" className='nav__link'>Sign Out</Typography>
+                    <Typography color={'primary.mainMenuText'} variant="h4" className='nav__link'>Sign Out</Typography>
                   </a>
                 </div>
               </li>
@@ -260,7 +260,7 @@ const MainNav = ({openMenu, setOpenMenu}) => {
                         <div className="tooltip">
                           <div className="right">
                             <div className="text-content">
-                              <Typography color={'primary.contrastText'} variant="h3">Sign In</Typography>
+                              <Typography color={'primary.tooltipText'} variant="h3">Sign In</Typography>
                             </div>
                           </div>
                         </div>
@@ -271,7 +271,7 @@ const MainNav = ({openMenu, setOpenMenu}) => {
                     passHref
                     href="/signin"
                   >
-                    <Typography variant="h4" color={'primary.contrastText'} className='nav__link'>Sign In</Typography>
+                    <Typography variant="h4" color={'primary.mainMenuText'} className='nav__link'>Sign In</Typography>
                   </Link>
                 </div>
               </li>

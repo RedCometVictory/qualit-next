@@ -54,20 +54,26 @@ const ThemeColor = ({ children }) => {
               light: "#e3f2fd",
               main: "#1976d2",
               dark: "#42a5f5",
-              contrastText: "#434343"
+              // contrastText: "#434343", // --- orig
+              contrastText: "#fcf8f8",
+              mainMenuText: "#434343",
+              tooltipText: "#fcf8f8",
+              text: "#fcf8f8"
               // light: will be calculated from palette.primary.main,
               // dark: will be calculated from palette.primary.main,
               // contrastText: will be calculated to contrast with palette.primary.main
             },
             secondary: {
-              main: "#ff9800", // ---
-              // main: "#ffffff",
+              // -teal
+              main: "#009688", // ---
+              light: "#4db6ac",
+              dark: "#00796b",
               // dark: will be calculated from palette.secondary.main,
-              contrastText: '#ffcc00', // ---
-              // main: "#10B981",
-              light: "#3FC79A",
-              dark: "#0B815A",
-              // contrastText: "#FFFFFF",
+              // contrastText: '#ffcc00', // --- orig
+              contrastText: '#fcf8f8', // ---
+              mainMenuText: '#434343', // ---
+              tooltipText: '#fcf8f8', // ---
+              text: '#fcf8f8' // ---
             },
             // success: {
             //   // main: "#14B8A6",
@@ -132,23 +138,27 @@ const ThemeColor = ({ children }) => {
           // divider: "#004282", // ---
           // // divider: "#0E8074",
           primary: {
-            // orange
-            // light: "#ffb74d",
-            // main: "#ff98", // ---
-            // dark: "#fb8c00",
-
             // -Amber
             light: "#ffd54f",
             main: "#ffc107", // ---
             // dark: "#ffb300", // 600
             dark: "#ffa000", // 700
-            contrastText: "#c5c1c1",
+            // contrastText: "#c5c1c1", // --- orig
+            contrastText: "#434343",
+            mainMenuText: "#c5c1c1",
+            tooltipText: "#c5c1c1",
+            text: "#434343"
           },
           secondary: {
+            // green
             main: "#4caf50", // ---
             light: "#54c558",
             dark: "#449747",
-            contrastText: "#c5c1c1",
+            contrastText: "#434343",
+            // contrastText: "#c5c1c1", // --- orig
+            mainMenuText: "#c5c1c1",
+            tooltipText: "#c5c1c1",
+            text: "#434343"
           },
           // success: {
           //   // main: "#14B8A6",
@@ -232,8 +242,10 @@ const ThemeColor = ({ children }) => {
         // variants: [
         //   {
         //     props: {
-        //       variant: 'outlined',
-        //       color: 'secondary'
+        //       // variant: 'outlined',
+        //       // color: 'secondary'
+        //       variant: 'contained',
+        //       color: `${theme === 'light' ? '#fcf8f8' : '#434343'}`
         //     },
         //   }
         // ],
@@ -244,7 +256,7 @@ const ThemeColor = ({ children }) => {
           root: {
             // color: '#c5c1c1'
             // color: '#434343'
-            color: `${theme === 'light' ? '#fcf8f8' : '#434343'}`
+            // color: `${theme === 'light' ? '#fcf8f8' : '#434343'}` // -----
             // color: `${theme === 'light' ? '#c5c1c1' : '#434343'}`// ---
             // color: `${theme === 'light' ? '#c5c1c1' : '#8d8c8c'}`
         //     textTransform: "none",
@@ -273,6 +285,15 @@ const ThemeColor = ({ children }) => {
         // defaultProps: {
         //   disableRipple: true,
         // },
+        
+        color: "purple",
+        styleOverrides: {
+          
+          color: 'palegreen',
+          sizeMedium: {
+            color: 'palegreen'
+          }
+        }
       },
       MuiCardContent: {
         // styleOverrides: {
@@ -377,6 +398,27 @@ const ThemeColor = ({ children }) => {
         //   },
         // },
       },
+      // MuiIconButton: {
+      //   styleOverrides: {
+      //     sizeMedium: {
+      //       color: 'palegreen'
+      //     }
+      //   }
+      // },
+      // MuiOutlinedInput: {
+      //   styleOverrides: {
+      //     root: {
+      //       color: 'palegreen'
+      //     }
+      //   }
+      // },
+      // MuiInputLabel: {
+      //   styleOverrides: {
+      //     root: {
+      //       color: 'palegreen'
+      //     }
+      //   }
+      // }
     },
     typography: {
       button: {
