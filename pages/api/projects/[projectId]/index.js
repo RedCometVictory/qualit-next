@@ -12,7 +12,7 @@ const handler = nc({onError, onNoMatch});
 // handler.use(verifAuth, authRoleDev);
 handler.use(verifAuth);
 
-// get a list of tickets for dashboard
+// * get list of tickets for dashboard and for project details
 handler.get(async (req, res) => {
   const { projectId } = req.query;
   const { id, role } = req.user;
@@ -80,22 +80,22 @@ handler.get(async (req, res) => {
   });
 });
 
-handler.post(async (req, res) => {
-  const { id } = req.user;
-  const { slug } = req.query;
-  const { name, sequence } = req.body;
+// handler.post(async (req, res) => {
+//   const { id } = req.user;
+//   const { slug } = req.query;
+//   const { name, sequence } = req.body;
   
-  let newColumn = await pool.query('INSERT INTO columns (name, sequence, board_id, user_id) VALUES ($1, $2, $3, $4) RETURNING *;', [name, sequence, slug, id]);
+//   let newColumn = await pool.query('INSERT INTO columns (name, sequence, board_id, user_id) VALUES ($1, $2, $3, $4) RETURNING *;', [name, sequence, slug, id]);
 
-  if (newColumn.rowCount === 0 || newColumn === null) {
-    throw new Error('Failed to create new column.');
-  }
+//   if (newColumn.rowCount === 0 || newColumn === null) {
+//     throw new Error('Failed to create new column.');
+//   }
 
-  return res.status(201).json({
-    status: "Success! Created new column.",
-    data: {
-      column: newColumn.rows[0]
-    }
-  });
-});
+//   return res.status(201).json({
+//     status: "Success! Created new column.",
+//     data: {
+//       column: newColumn.rows[0]
+//     }
+//   });
+// });
 export default handler;

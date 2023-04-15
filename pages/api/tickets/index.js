@@ -46,24 +46,31 @@ handler.get(async (req, res) => {
 
 
 // create ticket
-// handler.post(async (req, res) => {
-//   const { id } = req.user;
-//   const { slug } = req.query;
-//   const { name, sequence } = req.body;
+handler.post(async (req, res) => {
+  const { id, role } = req.user;
+  const { slug } = req.query;
+  const { title, description, status, priority, type, deadline } = req.body;
   
-//   let newColumn = pool.query('INSERT INTO columns (name, sequence, board_id, user_id) VALUES ($1, $2, $3, $4) RETURNING *;', [name, sequence, slug, id]);
+  if (role !== "Admin" || role !== "Project Manager") {
+    throw new Error("Need sufficient authroization to create a ticket.")
+  };
 
-//   if (newColumn.rowCount === 0 || newColumn === null) {
-//     throw new Error('Failed to create new column.');
-//   }
+  let notes = [];
+  let submitter = id; // user id
 
-//   return res.status(201).json({
-//     status: "Success! Created new column.",
-//     data: {
-//       column: newColumn.rows[0]
-//     }
-//   });
-// });
+  let newTicket = pool.query('INSERT INTO tickets (title, description, notes, status, priority, type, submitter, deadline) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *;', [title, description, notes, status, priority, type, submitter, deadline]);
+
+  if (newTicket.rowCount === 0 || newTicket === null) {
+    throw new Error('Failed to create new ticket.');
+  }
+
+  return res.status(201).json({
+    status: "Success! Created new ticket.",
+    data: {
+      column: newTicket.rows[0]
+    }
+  });
+});
 
 
 // EXAMPLE of CREATING A TICKET
