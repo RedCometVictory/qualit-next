@@ -1,15 +1,16 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from "next/router";
-import { getDashboardInfo } from '@/redux/features/project/projectSlice';
 import MainLayout from "@/components/layouts/MainLayout";
-import PaperUI from '@/components/UI/PaperUI';
-import ButtonUI from '@/components/UI/ButtonUI';
+import { getDashboardInfo } from '@/redux/features/project/projectSlice';
+import Spinner from '@/components/Spinner';
 import { Typography } from "@mui/material";
 import BarChart from '@/components/dashBoard/BarChart';
 import PieChart from '@/components/dashBoard/PieChart';
 import MyProjectsList from '@/components/lists/MyProjectsList';
 import MyTicketsList from '@/components/lists/MyTicketsList';
+import PaperUI from '@/components/UI/PaperUI';
+import ButtonUI from '@/components/UI/ButtonUI';
 import authIsExpired from '@/utils/verifAuth';
 
 const Home = () => {
@@ -88,6 +89,8 @@ const Home = () => {
   console.log("*****TICKET PRIORITY COUNT*****")
   console.log(ticketPriorityCount)
 
+  projectLoading = true
+
   return !isAuthenticated ? (
     <section className="dash unauth">
       <div className="dash__unauth">
@@ -129,7 +132,7 @@ const Home = () => {
           </div>
           <div className="dash__detail">
             {projectLoading ? (
-              <div className="empty">Loading...</div> 
+              <div className="empty"><Spinner /></div> 
             ) : (
               <PieChart priorityCount={ticketPriorityCount} />
             )}
@@ -149,7 +152,7 @@ const Home = () => {
           <div className="dash__detail">
             <div className="dash__list list">
               {projectLoading ? (
-                <div className="empty">Loading...</div>
+                <div className="empty"><Spinner /></div>
               ) : tickets.length > 0 ? (
                 <MyTicketsList tickets={tickets} />
               ) : (
@@ -172,7 +175,7 @@ const Home = () => {
           <div className="dash__detail">
             <div className="dash__list list">
               {projectLoading ? (
-                <div className="empty">Loading...</div>
+                <div className="empty"><Spinner /></div>
               ) : projects.length > 0 ? (
                 <MyProjectsList projects={projects} />
               ) : (
@@ -195,7 +198,7 @@ const Home = () => {
           <div className="dash__detail">
             <div className="dash__list">
               {projectLoading ? (
-                <div className="empty">Loading...</div> 
+                <div className="empty"><Spinner /></div>
               ) : (
                 <BarChart statusCount={ticketStatusCount} />
               )}

@@ -1,7 +1,7 @@
 const Spinner = () => {
   return (
-    <section id="spinner" className="spinner-page-wrapper">
-      <div className="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+    <section id="spinner">
+      <div className="lds-grid spinner-page-wrapper"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
     </section>
   )
 };
