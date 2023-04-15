@@ -14,7 +14,7 @@ const handler = nc({onError, onNoMatch});
 // handler.use(verifAuth, authRoleDev);
 handler.use(verifAuth);
 
-// ROUTE for getting projects based on user role
+// * ROUTE for getting / paginating projects based on user role
 handler.get(async (req, res) => {
   const { id, role } = req.user;
 

@@ -564,6 +564,32 @@ const projectSlice = createSlice({
       state.loading = false;
       state.error = 'failed';
     },
+    [createProject.pending]: (state) => {
+      state.error = '';
+      state.loading = true;
+    },
+    [createProject.fulfilled]: (state, { payload }) => {
+      // add ticket to top
+      state.projects = [payload, ...state.projects];
+      state.loading = false;
+    },
+    [createProject.rejected]: (state) => {
+      state.loading = false;
+      state.error = 'failed';
+    },
+    [createTicket.pending]: (state) => {
+      state.error = '';
+      state.loading = true;
+    },
+    [createTicket.fulfilled]: (state, { payload }) => {
+      // add ticket to top
+      state.tickets = [payload, ...state.tickets];
+      state.loading = false;
+    },
+    [createTicket.rejected]: (state) => {
+      state.loading = false;
+      state.error = 'failed';
+    },
     [createTicketComment.pending]: (state) => {
       state.error = '';
       state.loading = true;
