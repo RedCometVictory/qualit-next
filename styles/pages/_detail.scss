@@ -117,6 +117,21 @@
       }
     }
   }
+  &__users {
+    .header-container {
+      margin: 0 0 1rem 0;
+    }
+    .paper {
+      padding: 0.56rem 0;
+      background-color: var(--primary-color);
+      .header {
+        text-align: center;
+      }
+      &.list-container {
+        padding: 0.56rem;
+      }
+    }
+  }
   &__items-list {
     max-height: 50vh;
     overflow-y: scroll;

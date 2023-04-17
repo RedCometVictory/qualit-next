@@ -12,6 +12,7 @@ import ButtonUI from '@/components/UI/ButtonUI';
 import DetailLayout from '@/components/layouts/DetailLayout';
 import NewTicketModal from '@/components/modals/NewTicketModal';
 import MyTicketsList from '@/components/lists/MyTicketsList';
+import UsersList from '@/components/lists/UsersList';
 import Description from '@/components/details/Description';
 import { getProject, rehydrate } from '@/redux/features/project/projectSlice';
 import PaperUI from '@/components/UI/PaperUI';
@@ -19,8 +20,8 @@ import PaperUI from '@/components/UI/PaperUI';
 const Project = ({initialState, token}) => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const { isAuthenticated, user } = useSelector(state => state.auth);
   const { project, tickets, loading: projectLoading } = useSelector(state => state.project); // ---
-  const { user } = useSelector(state => state.auth);
   const [ticketModal, setTicketModal] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
 
@@ -122,6 +123,13 @@ const Project = ({initialState, token}) => {
               <FaPlusCircle className='btn-icon'/> New Ticket
             </ButtonUI>
           </div>
+          {user.role === "Admin" && isAuthenticated ? (
+            <div className="detail__users section">
+              <UsersList projectId={project.id} />
+            </div>
+          ) : (
+            null
+          )}
         </section>
         <section className="right project-detail">
           <PaperUI className="list-header paper">

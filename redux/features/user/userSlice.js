@@ -3,12 +3,24 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import userService from "./userService";
 
+// const initUserState = {
+//   id: '',
+//   f_name: '',
+//   l_name: '',
+//   username: '',
+//   email: ''
+// };
 const initUserState = {
-  id: '',
-  f_name: '',
-  l_name: '',
-  username: '',
-  email: ''
+  user: {
+    id: '',
+    f_name: '',
+    l_name: '',
+    username: '',
+    email: ''
+  },
+  users: [],
+  unassignedUsers: [],
+  assignedUsers: [],
 };
 
 const initialState = {
@@ -18,6 +30,24 @@ const initialState = {
   error: ""
 };
 
+export const getUsersAdmin = createAsyncThunk(
+  'user/get/All-Admin',
+  async ({projectId}, thunkAPI) => {
+    try {
+      return await userService.getUsersAdmin(projectId);
+    } catch (err) {
+      const message =
+        (err.response &&
+          err.response.data &&
+          err.response.data.message) ||
+        err.message ||
+        err.toString()
+      toast.error("Failed to list users.", {theme: "colored", toastId: "getUsersToastId"});
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+// none of the below actions are currently being used:
 export const getUserProfile = createAsyncThunk(
   'user/get/profile',
   async (_, thunkAPI) => {
@@ -54,23 +84,7 @@ export const getUserProfileAdmin = createAsyncThunk(
   }
 );
 
-export const getUsersAdmin = createAsyncThunk(
-  'user/get/All-Admin',
-  async (_, thunkAPI) => {
-    try {
-      return await userService.getUsersAdmin();
-    } catch (err) {
-      const message =
-        (err.response &&
-          err.response.data &&
-          err.response.data.message) ||
-        err.message ||
-        err.toString()
-      toast.error("Failed to list users.", {theme: "colored", toastId: "getUsersToastId"});
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
+
 
 export const updateUserInfo = createAsyncThunk(
   'user/put/info-update',

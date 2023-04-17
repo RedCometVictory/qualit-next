@@ -89,8 +89,6 @@ const Home = () => {
   console.log("*****TICKET PRIORITY COUNT*****")
   console.log(ticketPriorityCount)
 
-  projectLoading = true
-
   return !isAuthenticated ? (
     <section className="dash unauth">
       <div className="dash__unauth">
