@@ -6,7 +6,7 @@ import cardReducer from "./features/card/cardSlice";
 import columnReducer from "./features/column/columnSlice";
 import projectReducer from "./features/project/projectSlice";
 import themeReducer from "./features/theme/themeSlice";
-// import userReducer from "./features/user/userSlice";
+import userReducer from "./features/user/userSlice";
 
 const store = configureStore({
   reducer: {
@@ -19,7 +19,7 @@ const store = configureStore({
     // order: orderReducer,
     // slide: slideReducer,
     // stripe: stripeReducer,
-    // user: userReducer
+    user: userReducer
   },
   // devTools: false, // fasle = disable devtools for prod
 });

@@ -121,6 +121,15 @@
     .header-container {
       margin: 0 0 1rem 0;
     }
+    // .users-list {
+    //   background-color: orange;
+    //   text-decoration: none;
+    // }
+    .user-name {
+      // background-color: orange;
+      text-decoration: none;
+      cursor: pointer;
+    }
     .paper {
       padding: 0.56rem 0;
       background-color: var(--primary-color);

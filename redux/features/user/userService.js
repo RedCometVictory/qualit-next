@@ -3,8 +3,9 @@ import { getData, postData, putData, deleteData } from '@/utils/fetchData';
 
 const getUsersAdmin = async (projectId) => {
   const res = await getData(`/users?projectId=${projectId}`);
-  const result = res;
+  const result = res.data;
   // localStorage.setItem('qual__users', JSON.stringify(result));
+  console.log(result)
   return result;
 };
 // ==============================
@@ -46,9 +47,9 @@ const updateUserAdmin = async (user_id, userForm) => {
 };
 
 const userService = {
+  getUsersAdmin,
   getUserProfile,
   getUserProfileAdmin,
-  getUsersAdmin,
   updateUserInfo,
   createUserProfile,
   updateUserAdmin
