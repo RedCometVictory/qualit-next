@@ -7,7 +7,7 @@ import PaperUI from "@/components/UI/PaperUI";
 import ButtonUI from "@/components/UI/ButtonUI";
 import DetailLayout from "@/components/layouts/DetailLayout";
 
-const initialState = {title: "", description: "", github_url: "", site_url: "", owner: ""};
+const initialState = {title: "", description: "", github_url: "", site_url: ""};
 
 const NewProject = () => {
   // create new project
@@ -20,7 +20,7 @@ const NewProject = () => {
   const [formData, setFormData] = useState(initialState);
   const [hasMounted, setHasMounted] = useState(false);
 
-  let { title, description, github_url, site_url, owner } = formData;
+  let { title, description, github_url, site_url } = formData;
 
   useEffect(() => {
     setHasMounted(true);
@@ -42,11 +42,11 @@ const NewProject = () => {
   const submitProjectHandler = (e) => {
     e.preventDefault();
     console.log("submitting info for new project")
-    setFormData(formData.owner = id);
-    owner = id // use state may need to be let not const
-    return console.log(formData);
-    // dispatch(createProject({formData, router}));
+    console.log("formData")
+    console.log(formData);
+    dispatch(createProject({formData, router}));
   };
+
   return (
     <section className="form__container">
       <Typography

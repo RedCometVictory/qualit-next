@@ -12,11 +12,28 @@ const handler = nc({onError, onNoMatch});
 // handler.use(verifAuth, authRoleDev);
 handler.use(verifAuth);
 
-// * get list of tickets for dashboard and for project details
+/*
+CREATE TABLE members(
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  -- active BOOLEAN DEFAULT true NOT NULL,
+  -- ['assigned','reassigned','removed']
+  status VARCHAR(120),
+  user_id UUID,
+  project_id UUID,
+  FOREIGN KEY(user_id) REFERENCES users(id),
+  FOREIGN KEY(project_id) REFERENCES projects(id),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT NULL
+);
+*/
+// * get list of users for assignment and project details
+// additionally get a list of all users currently assigned to the project for de-assignment
 handler.get(async (req, res) => {
   const { projectId } = req.query;
   const { id, role } = req.user;
   let projectDetails;
+  let assignedUsers;
+  let 
   // paginate tickets
   let projectTickets;
   let totalTickets;
@@ -63,12 +80,12 @@ handler.get(async (req, res) => {
   //   ticketComments.rows[i] = {...ticketComments.rows[i], ...ticketUploadsPromise.rows[0]}
   // };
     
-  // console.log("$$$$$$$$$$$$$$$$$$$$$$$")
-  // console.log("final results")
-  // console.log(projectDetails.rows)
-  // console.log("$$$$$$$$$$$$$$$$$$$$$$$")
-  // console.log(projectTickets.rows)
-  // console.log("$$$$$$$$$$$$$$$$$$$$$$$")
+  console.log("$$$$$$$$$$$$$$$$$$$$$$$")
+  console.log("final results")
+  console.log(projectDetails.rows)
+  console.log("$$$$$$$$$$$$$$$$$$$$$$$")
+  console.log(projectTickets.rows)
+  console.log("$$$$$$$$$$$$$$$$$$$$$$$")
   return res.status(200).json({
     status: "Retrieved dashboard information.",
     data: {

@@ -1,7 +1,9 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import Cookies from 'js-cookie';
+import store from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
-import { getProject, editProject } from "@/redux/features/project/projectSlice";
+import { getProjectAndUserAssignments, updateProject, rehydrate } from "@/redux/features/project/projectSlice";
 import { Divider, FormControl, FormControlLabel, FormLabel, InputLabel, Radio, RadioGroup, TextareaAutosize, TextField, Typography } from "@mui/material";
 import PaperUI from "@/components/UI/PaperUI";
 import ButtonUI from "@/components/UI/ButtonUI";
@@ -137,7 +139,7 @@ const EditProject = ({initialState, token}) => {
         variant="body1"
       >
         <Typography className="form__heading" variant="h3">
-          New Project
+          Edit Project & Assign Members
         </Typography>
       </Typography>
       <PaperUI

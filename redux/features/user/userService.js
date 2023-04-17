@@ -1,5 +1,14 @@
 import { getData, postData, putData, deleteData } from '@/utils/fetchData';
 
+
+const getUsersAdmin = async (projectId) => {
+  const res = await getData(`/users?projectId=${projectId}`);
+  const result = res;
+  // localStorage.setItem('qual__users', JSON.stringify(result));
+  return result;
+};
+// ==============================
+
 const getUserProfile = async (card) => {
   const res = await getData(`/users/me`);
   localStorage.setItem('qual__user', JSON.stringify(result));
@@ -14,12 +23,6 @@ const getUserProfileAdmin = async (user_id) => {
   return result;
 };
 
-const getUsersAdmin = async () => {
-  const res = await getData(`/users`);
-  const result = res;
-  // localStorage.setItem('qual__users', JSON.stringify(result));
-  return result;
-};
 
 const updateUserInfo = async (userForm) => {
   const res = await putData(`/users/info`, userForm);
