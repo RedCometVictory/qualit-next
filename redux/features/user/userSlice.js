@@ -3,28 +3,42 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import userService from "./userService";
 
-// const initUserState = {
-//   id: '',
-//   f_name: '',
-//   l_name: '',
-//   username: '',
-//   email: ''
-// };
 const initUserState = {
-  user: {
-    id: '',
-    f_name: '',
-    l_name: '',
-    username: '',
-    email: ''
-  },
+  id: '',
+  f_name: '',
+  l_name: '',
+  username: '',
+  email: ''
+};
+// const initUserState = {
+//   user: {
+//     id: '',
+//     f_name: '',
+//     l_name: '',
+//     username: '',
+//     email: ''
+//   },
+//   users: [],
+//   unassignedUsers: [],
+//   assignedUsers: [],
+//     id: '',
+//     f_name: '',
+//     l_name: '',
+//     username: '',
+//     email: ''
+//   }
+// };
+
+let initialState = {
+  // id: '',
+  // f_name: '',
+  // l_name: '',
+  // username: '',
+  // email: ''
   users: [],
   unassignedUsers: [],
   assignedUsers: [],
-};
-
-const initialState = {
-  users: typeof window !== "undefined" && localStorage.getItem('qual__users') ? JSON.parse(localStorage.getItem('qual__users')) : [],
+  // users: typeof window !== "undefined" && localStorage.getItem('qual__users') ? JSON.parse(localStorage.getItem('qual__users')) : [],
   user: typeof window !== "undefined" && localStorage.getItem('qual__user') ? JSON.parse(localStorage.getItem('qual__user')) : initUserState,
   loading: false,
   error: ""
@@ -145,6 +159,8 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     rehydrate(state, action) {
+      state.unassignedUsers = action.payload.unassignedUsers;
+      state.assignedUsers = action.payload.assignedUsers;
       state.users = action.payload.users;
       state.user = action.payload.user;
       state.loading = action.payload.loading;
@@ -160,6 +176,21 @@ export const userSlice = createSlice({
     //     ...action.payload.user
     //   }
     // },
+    [getUsersAdmin.pending]: (state) => {
+      state.error = '';
+      state.loading = true;
+    },
+    [getUsersAdmin.fulfilled]: (state, { payload }) => {
+      // state.users = payload;
+      state.users = payload.users,
+      state.assignedUsers = payload.assignedUsers,
+      state.unassignedUsers = payload.unassignedUsers,
+      state.loading = false;
+    },
+    [getUsersAdmin.rejected]: (state) => {
+      state.loading = false;
+      state.error = 'failed';
+    },
     [getUserProfile.pending]: (state) => {
       state.error = '';
       state.loading = true;
@@ -184,18 +215,7 @@ export const userSlice = createSlice({
       state.loading = false;
       state.error = 'failed';
     },
-    [getUsersAdmin.pending]: (state) => {
-      state.error = '';
-      state.loading = true;
-    },
-    [getUsersAdmin.fulfilled]: (state, { payload }) => {
-      state.users = payload;
-      state.loading = false;
-    },
-    [getUsersAdmin.rejected]: (state) => {
-      state.loading = false;
-      state.error = 'failed';
-    },
+    
     [updateUserInfo.pending]: (state) => {
       state.error = '';
       state.loading = true;

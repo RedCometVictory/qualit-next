@@ -58,66 +58,13 @@ handler.get(async (req, res) => {
   console.log("^^^^^^unassignedPersonnel.rows^^^^^^")
   console.log(unassignedPersonnel.rows)
 
-  // paginate tickets
-  // let projectTickets;
-  // let totalTickets;
-  // let count;
-
-  // const queryPromise = (query, ...values) => {
-  //   return new Promise((resolve, reject) => {
-  //     pool.query(query, values, (err, res) => {
-  //       if (err) {
-  //         reject(err);
-  //       } else {
-  //         resolve(res);
-  //       }
-  //     })
-  //   })
-  // };
-
-  // allPersonnel = await pool.query("SELECT id, f_name, l_name, username, email FROM users WHERE id = $1;", [projectId]);
-
-  // if (projectDetails.rowCount > 0) {
-  //   let created_at = projectDetails.rows[0].created_at;
-  //   let newDate = singleISODate(created_at);
-  //   projectDetails.rows[0].created_at = newDate;
-  // };
-
-  // totalTickets = await pool.query('SELECT COUNT(id) FROM tickets WHERE project_id = $1;', [projectId]);
-
-  // count = totalTickets.rows[0].count;
-  // Number(count);
-  
-  // projectTickets = await pool.query("SELECT * FROM tickets WHERE project_id = $1;", [projectId]);
-  
-  // if (projectTickets.rowCount > 0) {
-  //   for (let i = 0; i < projectTickets.rows.length; i++) {
-  //     let created_at = projectTickets.rows[i].created_at;
-  //     let newDate = singleISODate(created_at);
-  //     projectTickets.rows[i].created_at = newDate;
-  //   };
-  // };
-  // for (let i = 0; i < ticketComments.rowCount; i++) {
-  //   ticketUploadQuery = "SELECT * FROM uploads WHERE message_id = $1;";
-  //   // combine upload with respective message
-  //   const ticketUploadsPromise = await queryPromise(ticketUploadQuery, [ticketComments.rows[i].id]);
-  //   ticketComments.rows[i] = {...ticketComments.rows[i], ...ticketUploadsPromise.rows[0]}
-  // };
-    
-  // console.log("$$$$$$$$$$$$$$$$$$$$$$$")
-  // console.log("final results")
-  // console.log(projectDetails.rows)
-  // console.log("$$$$$$$$$$$$$$$$$$$$$$$")
-  // console.log(projectTickets.rows)
-  // console.log("$$$$$$$$$$$$$$$$$$$$$$$")
   return res.status(200).json({
     status: "Retrieved personnel information.",
-    // data: {
-    //   project: projectDetails.rows[0],
-    //   tickets: projectTickets.rows,
-    //   page: 1,
-    //   pages: count
-    // }
+    data: {
+      users: allUsers.rows,
+      assignedUsers: assignedPersonnel.rows,
+      unassignedUsers: unassignedPersonnel.rows
+    }
   });
 });
 
