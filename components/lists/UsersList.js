@@ -4,16 +4,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { TiUser } from "react-icons/ti";
 import { Box, Drawer, Divider, Input, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
 import { getUsersAdmin } from '@/redux/features/user/userSlice';
+import ButtonUI from '../UI/ButtonUI';
 import PaperUI from '../UI/PaperUI';
 import Spinner from '../Spinner';
 
-const UsersList = ({projectId}) => {
+const UsersList = ({projectId, openModal, assignedUsers, unassignedUsers}) => {
   const dispatch = useDispatch();
-  // const users = useSelector(state => state.user);
-  // console.log("0000000000000000users000000000000000000")
-  // console.log(users)
-  const { assignedUsers, unassignedUsers } = useSelector(state => state.user);
-  console.log(assignedUsers)
+
+  // const { assignedUsers, unassignedUsers } = useSelector(state => state.user);
+
   useEffect(() => {
     console.log("finding users")
     dispatch(getUsersAdmin({projectId}));
@@ -27,8 +26,8 @@ const UsersList = ({projectId}) => {
         </Typography>
       </PaperUI>
       <PaperUI className="paper list-container">
-        <Typography variant="body2" className='list'>
-          Hello
+        <Typography variant="body2" className='list sub-header'>
+          Users assigned to this project.
         </Typography>
         <PaperUI className="paper users-list">
           {assignedUsers.map((assigned, index) => (
@@ -44,19 +43,25 @@ const UsersList = ({projectId}) => {
                   <span className='user-name'>
                     <Typography
                       variant='body2'
-                      passHref
-                      href={`/users/${assigned.id}`}
+                      // passHref
+                      // href={`/users/${assigned.id}`}
                     >
-                      {`${assigned.f_name} ${assigned.l_name}`}
+                      {`${assigned.l_name}, ${assigned.f_name}`}
                     </Typography>
                   </span>
                 }
-                // secondary={<ListItemDetail ticket={ticket}/>}
               >
               </ListItemText>
             </ListItem>
           ))}
         </PaperUI>
+        <ButtonUI
+          variant="outlined"
+          sx={{ color: 'primary.main' }}
+          onClick={e => openModal(e)}
+        >
+          Manage Personnel
+        </ButtonUI>
       </PaperUI>
     </section>
   )
