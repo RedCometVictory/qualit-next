@@ -8,6 +8,14 @@ const getUsersAdmin = async (projectId) => {
   console.log(result)
   return result;
 };
+
+const updateAssignmentListsAdmin = async (projectId,) => {
+  // const res = await getData(`/users?projectId=${projectId}`);
+  // const result = res.data;
+  // localStorage.setItem('qual__users', JSON.stringify(result));
+  console.log(result)
+  return result;
+};
 // ==============================
 
 const getUserProfile = async (card) => {
@@ -48,6 +56,8 @@ const updateUserAdmin = async (user_id, userForm) => {
 
 const userService = {
   getUsersAdmin,
+  updateAssignmentListsAdmin,
+  // ++++++++++++++++++
   getUserProfile,
   getUserProfileAdmin,
   updateUserInfo,

@@ -161,6 +161,59 @@
       margin: 0 0 1rem 0;
     }
   }
+  &__user {
+    &.sub-desc {
+      // margin: 0 0 0.75rem 0;
+    }
+  }
+  &__users {
+    // margin: 0.75rem 0;
+    height: 100%;
+    &.list-header {
+      margin: 0.75rem 0 0 0;
+      @include flex(row, space-around, center);
+    }
+    &.lists-container {
+      margin: 0.75rem 0;
+      @include flex(row, space-around, center);
+    }
+    &.btn-container {
+      margin: 0.75rem 0 0 0;
+      @include flex(row, space-around, center);
+    }
+    .user-name {
+      cursor: pointer;
+      .active {
+        color: var(--body-text-hover);
+      }
+    }
+    .users-list {
+      height: 100%;
+      max-height: 300px;
+      max-width: 300px;
+      // margin: 0.875rem 0 0 0;
+      // padding: 0 0.75rem 0 0;
+      overflow-y: scroll;
+      -ms-overflow-style: scrollbar;
+      /* Internet Explorer 10+ */
+      scrollbar-width: thin;
+      // max-height: 80vh;
+      &::-webkit-scrollbar {
+        width: 6px;
+        // background-color: var(--scrollbar-line);
+      }
+      &::-webkit-scrollbar-thumb {
+        // background-color: var(--scrollbar-line);
+        border-radius: 20px;
+        border: transparent;
+      }
+    }
+    
+    .paper {
+      height: 242px;
+      background-color: var(--primary-color);
+    }
+  }
   &__radio-selects {
     margin: 0.75rem 0 0 0;
   }

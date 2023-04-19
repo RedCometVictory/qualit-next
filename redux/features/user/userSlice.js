@@ -61,6 +61,24 @@ export const getUsersAdmin = createAsyncThunk(
     }
   }
 );
+
+// export const updateAssignmentListsAdmin = createAsyncThunk(
+//   'user/update/Assign-Lists-Admin',
+//   async ({projectId, updatedAssignedArr, updatedUnassignedArr}, thunkAPI) => {
+//     try {
+//       return await userService.updateAssignmentListsAdmin(projectId, updatedAssignedArr, updatedUnassignedArr);
+//     } catch (err) {
+//       const message =
+//         (err.response &&
+//           err.response.data &&
+//           err.response.data.message) ||
+//         err.message ||
+//         err.toString()
+//       toast.error("Failed to list users.", {theme: "colored", toastId: "getUsersToastId"});
+//       return thunkAPI.rejectWithValue(message);
+//     }
+//   }
+// );
 // none of the below actions are currently being used:
 export const getUserProfile = createAsyncThunk(
   'user/get/profile',
@@ -166,6 +184,18 @@ export const userSlice = createSlice({
       state.loading = action.payload.loading;
       state.error = action.payload.error;
     },
+    updateAssignmentListsAdmin: (state, { payload }) => {
+      console.log(payload)
+      state.assignedUsers = [...state.assignedUsers, ...payload.updatedAssignedArr];
+      // state.unassignedUsers = [...state.unassignedUsers, ...payload.updatedUnassignedArr];
+      state.unassignedUsers = payload.updatedUnassignedArr;
+    },
+    updateUnassignmentListsAdmin: (state, { payload }) => {
+      console.log(payload)
+      state.assignedUsers = payload.updatedAssignedArr;
+      state.unassignedUsers = [...state.unassignedUsers, ...payload.updatedUnassignedArr];
+      // state.unassignedUsers = [...state.unassignedUsers, ...payload.updatedUnassignedArr];
+    },
     userReset: (state) => initialState,
   },
   extraReducers: {
@@ -191,6 +221,22 @@ export const userSlice = createSlice({
       state.loading = false;
       state.error = 'failed';
     },
+    // [updateAssignmentListsAdmin.pending]: (state) => {
+    //   state.error = '';
+    //   state.loading = true;
+    // },
+    // [updateAssignmentListsAdmin.fulfilled]: (state, { payload }) => {
+    //   // state.users = payload;
+    //   state.users = payload.users,
+    //   state.assignedUsers = payload.assignedUsers,
+    //   state.unassignedUsers = payload.unassignedUsers,
+    //   state.loading = false;
+    // },
+    // [updateAssignmentListsAdmin.rejected]: (state) => {
+    //   state.loading = false;
+    //   state.error = 'failed';
+    // },
+    // ++++++++++++++++++++++
     [getUserProfile.pending]: (state) => {
       state.error = '';
       state.loading = true;
@@ -258,5 +304,5 @@ export const userSlice = createSlice({
   }
 });
 
-export const { rehydrate, userReset } = userSlice.actions;
+export const { rehydrate, userReset, updateAssignmentListsAdmin, updateUnassignmentListsAdmin } = userSlice.actions;
 export default userSlice.reducer;

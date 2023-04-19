@@ -11,6 +11,7 @@ import { Typography } from '@mui/material';
 import ButtonUI from '@/components/UI/ButtonUI';
 import DetailLayout from '@/components/layouts/DetailLayout';
 import NewTicketModal from '@/components/modals/NewTicketModal';
+import ManagePersonnelModal from '@/components/modals/ManagePersonnelModal';
 import MyTicketsList from '@/components/lists/MyTicketsList';
 import UsersList from '@/components/lists/UsersList';
 import Description from '@/components/details/Description';
@@ -22,7 +23,9 @@ const Project = ({initialState, token}) => {
   const dispatch = useDispatch();
   const { isAuthenticated, user } = useSelector(state => state.auth);
   const { project, tickets, loading: projectLoading } = useSelector(state => state.project); // ---
+  const { assignedUsers, unassignedUsers } = useSelector(state => state.user);
   const [ticketModal, setTicketModal] = useState(false);
+  const [managePersonnelModal, setManagePersonnelModal] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
@@ -50,6 +53,10 @@ const Project = ({initialState, token}) => {
     setTicketModal(ticketModal = true);
   };
 
+  const openManagePersonnelModal = () => {
+    setManagePersonnelModal(managePersonnelModal => managePersonnelModal = true);
+  };
+
   // const openDescriptionModal = () => {
   //   console.log("editing description of porject")
   // }
@@ -58,6 +65,9 @@ const Project = ({initialState, token}) => {
     <section className="detail detail__container">
       {ticketModal && (
         <NewTicketModal setTicketModal={setTicketModal} />
+      )}
+      {managePersonnelModal && (
+        <ManagePersonnelModal projectId={project.id} setManagePersonnelModal={setManagePersonnelModal} assignedUsers={assignedUsers} unassignedUsers={unassignedUsers}/>
       )}
       <div className="detail__header">
         <div className="detail__info-box left">
@@ -125,7 +135,7 @@ const Project = ({initialState, token}) => {
           </div>
           {user.role === "Admin" && isAuthenticated ? (
             <div className="detail__users section">
-              <UsersList projectId={project.id} />
+              <UsersList projectId={project.id} openModal={openManagePersonnelModal} assignedUsers={assignedUsers} unassignedUsers={unassignedUsers}/>
             </div>
           ) : (
             null

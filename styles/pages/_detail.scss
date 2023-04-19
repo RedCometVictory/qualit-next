@@ -118,6 +118,9 @@
     }
   }
   &__users {
+    &.management-modal {
+      
+    }
     .header-container {
       margin: 0 0 1rem 0;
     }
@@ -125,6 +128,13 @@
     //   background-color: orange;
     //   text-decoration: none;
     // }
+    .users-list {
+      margin: 0.75rem 0;
+    }
+    .list.sub-header {
+      width: 100%;
+      text-align: start;
+    }
     .user-name {
       // background-color: orange;
       text-decoration: none;
@@ -133,10 +143,12 @@
     .paper {
       padding: 0.56rem 0;
       background-color: var(--primary-color);
+      width: 100%;
       .header {
         text-align: center;
       }
       &.list-container {
+        @include flex(column, flex-start, center);
         padding: 0.56rem;
       }
     }
