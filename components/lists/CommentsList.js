@@ -30,20 +30,9 @@ const CommentsList = ({comments, loading, page, pages}) => {
   };
   
   const itemCountChange = (e) => {
-    // setIsLoading(true);
     let newCount = e.target.value;
     if (newCount > itemsPerPage) {
       setCurrentPage(currentPage = 1);
-      // setCurrentPage(currentPage = currentPage - 1);  // old ver
-      // TODO: consider improvement on maths
-      // if (currentPage < newCount) {
-      //   let modulo = newCount % currentPage;
-      //   setCurrentPage(currentPage = modulo / 2);
-      //   // setCurrentPage(currentPage = currentPage - 1);        
-      // } else {
-      //   // currentPage = currentPage / 2;
-      //   setCurrentPage(currentPage = (currentPage / 2) - 1);
-      // }
     }
     if (currentPage === 0 || currentPage < 0) setCurrentPage(1);
     setItemsPerPage(itemsPerPage = Number(e.target.value)); // 12 or 20, dropdown
