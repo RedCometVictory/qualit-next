@@ -10,31 +10,7 @@ const initUserState = {
   username: '',
   email: ''
 };
-// const initUserState = {
-//   user: {
-//     id: '',
-//     f_name: '',
-//     l_name: '',
-//     username: '',
-//     email: ''
-//   },
-//   users: [],
-//   unassignedUsers: [],
-//   assignedUsers: [],
-//     id: '',
-//     f_name: '',
-//     l_name: '',
-//     username: '',
-//     email: ''
-//   }
-// };
-
 let initialState = {
-  // id: '',
-  // f_name: '',
-  // l_name: '',
-  // username: '',
-  // email: ''
   users: [],
   unassignedUsers: [],
   assignedUsers: [],
@@ -62,6 +38,31 @@ export const getUsersAdmin = createAsyncThunk(
   }
 );
 
+export const updateAndSaveProjectPersonnelList = createAsyncThunk(
+  'user/update/Project-Personnel/user-assignments',
+  async ({projectId, assignedUsers, unassignedUsers}, thunkAPI) => {
+    try {
+      console.log("UPDATE-USER SERVICE");
+      console.log(projectId)
+      console.log("- - - - -")
+      // console.log(cookie)
+      console.log("UPDATE-USER SERVICE END");
+      return await userService.updateAndSaveProjectPersonnelList(projectId, assignedUsers, unassignedUsers);
+    } catch (err) {
+      const message =
+        (err.response &&
+          err.response.data &&
+          err.response.data.message) ||
+        err.message ||
+        err.toString()
+      toast.error("Failed to update project personnel list regarding users assigned to project.", {theme: "update-personnel", toastId: "UpdateProjectPersonnelError"});
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+
+
 // export const updateAssignmentListsAdmin = createAsyncThunk(
 //   'user/update/Assign-Lists-Admin',
 //   async ({projectId, updatedAssignedArr, updatedUnassignedArr}, thunkAPI) => {
@@ -79,6 +80,11 @@ export const getUsersAdmin = createAsyncThunk(
 //     }
 //   }
 // );
+
+
+
+
+
 // none of the below actions are currently being used:
 export const getUserProfile = createAsyncThunk(
   'user/get/profile',
@@ -221,21 +227,20 @@ export const userSlice = createSlice({
       state.loading = false;
       state.error = 'failed';
     },
-    // [updateAssignmentListsAdmin.pending]: (state) => {
-    //   state.error = '';
-    //   state.loading = true;
-    // },
-    // [updateAssignmentListsAdmin.fulfilled]: (state, { payload }) => {
-    //   // state.users = payload;
-    //   state.users = payload.users,
-    //   state.assignedUsers = payload.assignedUsers,
-    //   state.unassignedUsers = payload.unassignedUsers,
-    //   state.loading = false;
-    // },
-    // [updateAssignmentListsAdmin.rejected]: (state) => {
-    //   state.loading = false;
-    //   state.error = 'failed';
-    // },
+    [updateAndSaveProjectPersonnelList.pending]: (state) => {
+      state.error = '';
+      state.loading = true;
+    },
+    [updateAndSaveProjectPersonnelList.fulfilled]: (state, { payload }) => {
+      // state.users = payload.users,
+      state.assignedUsers = payload.assignedUsers,
+      state.unassignedUsers = payload.unassignedUsers,
+      state.loading = false;
+    },
+    [updateAndSaveProjectPersonnelList.rejected]: (state) => {
+      state.loading = false;
+      state.error = 'failed';
+    },
     // ++++++++++++++++++++++
     [getUserProfile.pending]: (state) => {
       state.error = '';

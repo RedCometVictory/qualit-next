@@ -33,8 +33,7 @@ handler.get(async (req, res) => {
   const { id, role } = req.user;
   let projectDetails;
   let assignedUsers;
-  let 
-  // paginate tickets
+  // let paginate tickets
   let projectTickets;
   let totalTickets;
   let count;

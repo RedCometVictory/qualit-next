@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Cookies from 'js-cookie';
 import store from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
-import { getProjectAndUserAssignments, updateProject, rehydrate } from "@/redux/features/project/projectSlice";
+import { getProject, updateProject, rehydrate } from "@/redux/features/project/projectSlice";
 import { Divider, FormControl, FormControlLabel, FormLabel, InputLabel, Radio, RadioGroup, TextareaAutosize, TextField, Typography } from "@mui/material";
 import PaperUI from "@/components/UI/PaperUI";
 import ButtonUI from "@/components/UI/ButtonUI";

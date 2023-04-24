@@ -39,7 +39,7 @@ handler.get(async (req, res) => {
     throw new Error("You must be an administrator to manage users / project personnel.");
   }
   allUsers = await pool.query("SELECT * FROM users;");
-  assignedPersonnel = await pool.query("SELECT U.id, U.f_name, U.l_name, U.email, U.username, U.role FROM users AS U JOIN members AS M ON U.id = M.user_id WHERE M.project_id = $1;", [projectId])
+  assignedPersonnel = await pool.query("SELECT U.id, U.f_name, U.l_name, U.email, U.username, U.role, U.created_at FROM users AS U JOIN members AS M ON U.id = M.user_id WHERE M.project_id = $1;", [projectId])
   // select all users that do not match as members
   unassignedPersonnel = await pool.query("SELECT U.id, U.f_name, U.l_name, U.email, U.username, U.role FROM users AS U WHERE NOT EXISTS (SELECT M.user_id FROM members AS M WHERE M.user_id = U.id AND M.project_id = $1);", [projectId])
 

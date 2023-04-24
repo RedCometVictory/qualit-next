@@ -37,21 +37,6 @@ const getTickets = async (keyword, status, priority, type, submitter, pageNumber
   return result;
 };
 
-const getProjectAndUserAssignments = async (project_id, cookie) => {
-  // TODO: get project detail and all tickets belonging to this project, place into tickets [] and project into {}
-  console.log("***Project Service for SSR***");
-  console.log("project_id")
-  console.log(project_id)
-  console.log("cookie")
-  console.log(cookie)
-  const res = await getDataSSR(`/projects/${project_id}/edit`, cookie);
-  const result = res.data;
-  // localStorage.setItem("qual__project", JSON.stringify(result));
-  console.log("result")
-  console.log(result)
-  console.log("----- END project service -----")
-  return result;
-};
 
 const getProject = async (project_id, cookie) => {
   // TODO: get project detail and all tickets belonging to this project, place into tickets [] and project into {}
@@ -283,7 +268,6 @@ const projectService = {
   getDashboardInfo,
   getProjects,
   getTickets,
-  getProjectAndUserAssignments,
   getProject,
   getTicket,
   createProject,

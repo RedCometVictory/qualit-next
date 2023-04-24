@@ -75,29 +75,6 @@ export const getTickets = createAsyncThunk(
   }
 );
 
-export const getProjectAndUserAssignments = createAsyncThunk(
-  'project/get/Project-By-Id/user-assignments',
-  async ({project_id, cookie}, thunkAPI) => {
-    try {
-      console.log("GET-PROJECT SERVICE");
-      console.log(project_id)
-      console.log("- - - - -")
-      console.log(cookie)
-      console.log("GET-PROJECT SERVICE END");
-      return await projectService.getProject(project_id, cookie);
-    } catch (err) {
-      const message =
-        (err.response &&
-          err.response.data &&
-          err.response.data.message) ||
-        err.message ||
-        err.toString()
-      toast.error("Failed to get project details.", {theme: "colored", toastId: "GetProjectError"});
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
-
 export const getProject = createAsyncThunk(
   'project/get/Project-By-Id',
   async ({project_id, cookie}, thunkAPI) => {
