@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { FaRegWindowClose } from "react-icons/fa";
 import { TiUser } from "react-icons/ti";
 import Spinner from "../Spinner";
-import { updateAssignmentListsAdmin, updateUnassignmentListsAdmin } from "@/redux/features/user/userSlice";
+import { updateAssignmentListsAdmin, updateUnassignmentListsAdmin, updateAndSaveProjectPersonnelList } from "@/redux/features/user/userSlice";
 import { ListItem, ListItemText, ListItemIcon, Typography } from "@mui/material";
 import ButtonUI from "../UI/ButtonUI";
 import PaperUI from "../UI/PaperUI";
@@ -13,6 +13,7 @@ const ManagePersonnelModal = ({projectId, setManagePersonnelModal, assignedUsers
   // const [selectedUser, setSelectedUser] = useState("");
   const [selectedUser, setSelectedUser] = useState([]);
   const [loadingUsers, setLoadingUsers] = useState(false);
+  const [userListChanged, setUserListChanged] = useState(true);
   // const [assignedArr, setAssignedArr] = useState(assignedUsers);
   // const [unassignedArr, setUnassignedArr] = useState(unassignedUsers);
   
@@ -43,7 +44,7 @@ const ManagePersonnelModal = ({projectId, setManagePersonnelModal, assignedUsers
   };
 
   const assigningUserToProjectHandler = () => {
-    if (selectedUser === [] || !selectedUser) return;
+    if (selectedUser.length === 0 || !selectedUser) return;
     setLoadingUsers(true);
     // filter through unassigned personnel array using selected user value, if match found remove match from unassigned personnel array and then place that filtered value into the assigned user array - using dispatches
     let assignedArr = assignedUsers;
@@ -66,16 +67,19 @@ const ManagePersonnelModal = ({projectId, setManagePersonnelModal, assignedUsers
     console.log("updatedunassignedArr")
     console.log(updatedUnassignedArr)
     dispatch(updateAssignmentListsAdmin({projectId, updatedAssignedArr, updatedUnassignedArr}));
+    setUserListChanged(userListChanged = false);
     setLoadingUsers(false);
     assignedArr = undefined;
     unassignedArr = undefined;
     updatedUnassignedArr = undefined;
     updatedAssignedArr = undefined;
     setSelectedUser(selectedUser = []);
+    console.log("user list changed")
+    console.log(userListChanged)
   };
 
   const unassigningUserFromProjectHandler = () => {
-    if (selectedUser === [] || !selectedUser) return;
+    if (selectedUser.length === 0 || !selectedUser) return;
     setLoadingUsers(false);
     let assignedArr = assignedUsers;
     let unassignedArr = unassignedUsers;
@@ -97,12 +101,21 @@ const ManagePersonnelModal = ({projectId, setManagePersonnelModal, assignedUsers
     console.log("updatedunassignedArr")
     console.log(updatedUnassignedArr)
     dispatch(updateUnassignmentListsAdmin({projectId, updatedAssignedArr, updatedUnassignedArr}));
+    setUserListChanged(userListChanged = false);
     setLoadingUsers(false);
     assignedArr = undefined;
     unassignedArr = undefined;
     updatedUnassignedArr = undefined;
     updatedAssignedArr = undefined;
     setSelectedUser(selectedUser = []);
+    console.log("user list changed")
+    console.log(userListChanged)
+  };
+
+  const updateAndSavePersonnelHandler = (e) => {
+    dispatch(updateAndSaveProjectPersonnelList({projectId, assignedUsers, unassignedUsers}));
+    setUserListChanged(userListChanged = true);
+    closeModalHandler();
   };
   console.log("+++++++++++++++++++++++++")
   console.log("+++++++++++++++++++++++++")
@@ -217,7 +230,15 @@ const ManagePersonnelModal = ({projectId, setManagePersonnelModal, assignedUsers
           </ButtonUI>
         </div>
         <div className="modal__users btn-container">
-          <ButtonUI variant="contained" >Save Changes</ButtonUI>
+          <ButtonUI
+            variant="contained"
+            // disabled={`${userListChanged ? true : false}`}
+            // disabled={`${userListChanged}`}
+            disabled={userListChanged}
+            onClick={e => updateAndSavePersonnelHandler(e)}
+          >
+            Save Changes
+          </ButtonUI>
         </div>
       </div>
       <div className="modal__footer"></div>

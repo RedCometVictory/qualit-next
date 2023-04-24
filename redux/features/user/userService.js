@@ -16,6 +16,24 @@ const updateAssignmentListsAdmin = async (projectId,) => {
   console.log(result)
   return result;
 };
+
+const updateAndSaveProjectPersonnelList = async (projectId, assignedUsers, unassignedUsers) => {
+  // TODO: get project detail and all tickets belonging to this project, place into tickets [] and project into {}
+  console.log("***Project Service for SSR***");
+  let formData = {assignedUsers, unassignedUsers};
+  console.log("project_id")
+  console.log(projectId)
+  console.log("formData")
+  console.log(formData)
+  const res = await postData(`/users/${projectId}/update-personnel`, formData);
+  const result = res.data;
+  // localStorage.setItem("qual__project", JSON.stringify(result));
+  console.log("result")
+  console.log(result)
+  console.log("----- END user service -----")
+  return result;
+};
+
 // ==============================
 
 const getUserProfile = async (card) => {
@@ -57,6 +75,7 @@ const updateUserAdmin = async (user_id, userForm) => {
 const userService = {
   getUsersAdmin,
   updateAssignmentListsAdmin,
+  updateAndSaveProjectPersonnelList,
   // ++++++++++++++++++
   getUserProfile,
   getUserProfileAdmin,
