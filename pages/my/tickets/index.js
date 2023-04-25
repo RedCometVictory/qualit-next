@@ -124,7 +124,7 @@ const MyTickets = ({initialState, token}) => {
     <section className="ticket detail detail__container">
       <div className="detail__header">
         <div className="detail__info-box left">
-          <h3>My Tickets</h3>
+          <Typography variant="h2">My Tickets</Typography>
         </div>
         <div className="detail__info-box right">
         </div>

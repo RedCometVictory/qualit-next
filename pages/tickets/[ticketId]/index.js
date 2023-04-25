@@ -6,6 +6,7 @@ import store from '@/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { FaPlusCircle, FaRegEdit } from 'react-icons/fa';
+import { Typography } from '@mui/material';
 import { logout } from "@/redux/features/auth/authSlice";
 import { getTicket, rehydrate } from "@/redux/features/project/projectSlice";
 import ButtonUI from '@/components/UI/ButtonUI';
@@ -53,7 +54,7 @@ const Ticket = ({initialState, token}) => {
     <section className="ticket detail detail__container">
       <div className="detail__header">
         <div className="detail__info-box left">
-          Ticket Details
+          <Typography variant="h2">Ticket Details</Typography>
           <div className="buttons">
             <Link
               href={`/tickets/${ticket.id}/edit`}

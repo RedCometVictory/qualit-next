@@ -141,9 +141,9 @@ export const createProject = createAsyncThunk(
 
 export const createTicket = createAsyncThunk(
   'project/post/Ticket',
-  async (formData, thunkAPI) => {
+  async ({formData, projectId, router}, thunkAPI) => {
     try {
-      return await projectService.createTicket(formData);
+      return await projectService.createTicket(formData, projectId, router);
     } catch (err) {
       const message =
         (err.response &&
@@ -583,7 +583,7 @@ const projectSlice = createSlice({
     },
     [createTicket.fulfilled]: (state, { payload }) => {
       // add ticket to top
-      state.tickets = [payload, ...state.tickets];
+      // state.tickets = [payload, ...state.tickets];
       state.loading = false;
     },
     [createTicket.rejected]: (state) => {

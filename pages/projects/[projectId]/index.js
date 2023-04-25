@@ -64,14 +64,14 @@ const Project = ({initialState, token}) => {
   return (
     <section className="detail detail__container">
       {ticketModal && (
-        <NewTicketModal setTicketModal={setTicketModal} />
+        <NewTicketModal projectId={project.id} setTicketModal={setTicketModal} />
       )}
       {managePersonnelModal && (
         <ManagePersonnelModal projectId={project.id} setManagePersonnelModal={setManagePersonnelModal} assignedUsers={assignedUsers} unassignedUsers={unassignedUsers}/>
       )}
       <div className="detail__header">
         <div className="detail__info-box left">
-          Project Details
+          <Typography variant="h2">Project Details</Typography>
           <div className="buttons">
             <Link
               href={`/projects/${project.id}/edit`}

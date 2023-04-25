@@ -4,7 +4,7 @@ import { verifAuth, authRoleDev } from '@/utils/verifAuth';
 import { pool } from '@/config/db';
 
 export const config = {
-  api: { bodyParser: false }
+  api: { bodyParser: true }
 };
 
 const handler = nc({onError, onNoMatch});
@@ -44,37 +44,30 @@ handler.get(async (req, res) => {
   });
 });
 
-
 // create ticket
 handler.post(async (req, res) => {
   const { id, role } = req.user;
-  const { slug } = req.query;
-  const { title, description, status, priority, type, deadline } = req.body;
+  const { projectId } = req.query;
+  const { title, description, status, priority, type, deadline } = req.body; // ---
   
-  if (role !== "Admin" || role !== "Project Manager") {
+  if (role === "Developer") {
     throw new Error("Need sufficient authroization to create a ticket.")
   };
 
-  let notes = [];
+  let notes = [''];
   let submitter = id; // user id
 
-  let newTicket = pool.query('INSERT INTO tickets (title, description, notes, status, priority, type, submitter, deadline) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *;', [title, description, notes, status, priority, type, submitter, deadline]);
+  let newTicket = await pool.query('INSERT INTO tickets (title, description, notes, status, priority, type, submitter, deadline, project_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *;', [title, description, notes, status, priority, type, submitter, deadline, projectId]);
 
-  if (newTicket.rowCount === 0 || newTicket === null) {
+  if (newTicket?.rowCount === 0 || newTicket === null) {
     throw new Error('Failed to create new ticket.');
   }
 
   return res.status(201).json({
     status: "Success! Created new ticket.",
     data: {
-      column: newTicket.rows[0]
+      tickets: newTicket.rows[0]
     }
   });
 });
-
-
-// EXAMPLE of CREATING A TICKET
-/*
-INSERT INTO tickets (title, description, status, priority, type, user_id, project_id) VALUES ('Video Game Purchase', 'Many users have requested the ability to digitally donload the video game they rent. Consider building the link and the support for a download to take place once payment is collected.', 'On Hold', 'Low', 'Feature Request', '5179087c-68c0-4a9a-82bd-5fcb9c3e5f0e', '3af1df59-822c-495c-af9b-f5f7ed2d3772');
-*/
 export default handler;

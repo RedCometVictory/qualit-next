@@ -111,7 +111,8 @@ CREATE TABLE tickets(
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   title VARCHAR(120),
   description TEXT,
-  notes TEXT,
+  -- alter table tickets alter notes type text[] using array[notes];
+  notes TEXT ARRAY DEFAULT NULL,
   -- ['New','Open','On Hold','In Progress','Closed','Unconfirmed']
   status VARCHAR(100) NOT NULL DEFAULT 'New',
   -- ['Urgent','High','Medium','Low','None']

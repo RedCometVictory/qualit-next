@@ -70,7 +70,7 @@ const EditProject = ({initialState, token}) => {
         className="form__header" 
         variant="body1"
       >
-        <Typography className="form__heading" variant="h3">
+        <Typography className="form__heading" variant="h2">
           Edit Project & Assign Members
         </Typography>
       </Typography>
