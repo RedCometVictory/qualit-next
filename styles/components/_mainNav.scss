@@ -337,7 +337,12 @@
         }
       }
     }
+    &__link-group {
+      pointer-events: initial;
+    }
+    // &__link-icon {}
     &__link {
+      pointer-events: initial;
       opacity: 1;
       cursor: pointer;
     }
