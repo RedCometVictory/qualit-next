@@ -205,7 +205,7 @@
   // ------------------
   // ------------------
   &__option-container {
-    // width: 100%;
+    width: 100%;
     // background-color: var(--bg-card-primary);
     // padding: 0 1rem 0 1rem;
     // @include flex(row, flex-end, center); // ---
@@ -283,6 +283,9 @@
         }
         .item-count {
           margin: 0 0 0 10px;
+          &.my-projects-list {
+            margin: initial;
+          }
         }
         // .item-group {
         //   padding: 0 20px 0 0;
@@ -578,6 +581,13 @@
         .right-container {
           max-width: 35.5rem;
         }
+      }
+    }
+    &__users {
+      .users-list {
+        overflow-y: scroll;
+        scrollbar-width: none;
+        max-height: 9.275rem;
       }
     }
   }
