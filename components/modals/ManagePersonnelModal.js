@@ -84,6 +84,15 @@ const ManagePersonnelModal = ({projectId, setManagePersonnelModal, assignedUsers
             >
               <ListItemIcon>
                 <TiUser />
+                <span className="">
+                  {assigned.role === "Admin" ? (
+                    <span className="">[A]</span>
+                  ) : assigned.role === "Project Manager" ? (
+                    <span className="">[PM]</span>
+                  ) : (
+                    <span className="">[D]</span>
+                  )}
+                </span>
               </ListItemIcon>
               <ListItemText
                 primary={
@@ -117,6 +126,15 @@ const ManagePersonnelModal = ({projectId, setManagePersonnelModal, assignedUsers
             >
               <ListItemIcon>
                 <TiUser />
+                <span className="">
+                  {unassigned.role === "Admin" ? (
+                    <span className="">[A]</span>
+                  ) : unassigned.role === "Project Manager" ? (
+                    <span className="">[PM]</span>
+                  ) : (
+                    <span className="">[D]</span>
+                  )}
+                </span>
               </ListItemIcon>
               <ListItemText
                 primary={
