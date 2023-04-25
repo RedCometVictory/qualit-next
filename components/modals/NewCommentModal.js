@@ -36,7 +36,7 @@ const NewCommentModal = ({setCommentModal}) => {
       ...formData,
       [e.target.name]: e.target.files[0],
     });
-    // TODO: set up image preview, if valid
+
     if (fileToUpload) {
       const reader = new FileReader();
       reader.addEventListener("load", () => {

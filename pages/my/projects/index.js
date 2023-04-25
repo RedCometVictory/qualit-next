@@ -81,7 +81,6 @@ const MyProjects = ({initialState, token}) => {
 
   const itemCountChange = (e) => {
     // setIsLoading(true);
-    // todo: errs when changing from high item count to lower item count
     if (e.target.value > itemsPerPage) {
       setCurrentPage(currentPage = 1);
     }
@@ -175,7 +174,7 @@ const MyProjects = ({initialState, token}) => {
             </span>
           </div>
           <div className='option-group two'>
-            <div className="item-count">Comments: {pages}</div>          
+            <div className="item-count my-projects-list">Projects: {pages}</div>          
           </div>
           <div className="option-group three">
             <Paginate
@@ -254,7 +253,7 @@ const MyProjects = ({initialState, token}) => {
                         href={`/projects/${project.id}/edit`}
                         passHref
                       >
-                        Edit / Assign
+                        Edit
                       </Link>
                     </Typography>
                     <Typography
@@ -265,7 +264,7 @@ const MyProjects = ({initialState, token}) => {
                         href={`/projects/${project.id}`}
                         passHref
                       >
-                        View Details
+                        View / Assign
                       </Link>
                     </Typography>
                   </div>
