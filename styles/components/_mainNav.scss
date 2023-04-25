@@ -280,8 +280,14 @@
         }
       }
     }
-    &__link {
+    &__link-group {
+      pointer-events: none;
+    }
+    &__link-icon {
       pointer-events: initial;
+    }
+    &__link {
+      // pointer-events: initial;
       opacity: 0; // ---
       // color: #1975d2;
     }

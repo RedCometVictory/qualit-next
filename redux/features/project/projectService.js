@@ -76,37 +76,19 @@ const createProject = async (formData, router) => {
   return result;
 };
 
-const createTicket = async (formData) => {
-  const res = await postData(`/tickets`, formData);
+const createTicket = async (formData, projectId, router) => {
+  const res = await postData(`/tickets?projectId=${projectId}`, formData);
   const result = res.data;
   // localStorage.setItem("qual__project", JSON.stringify(result.project));
-  // TODO: place newly created ticket ointo tickets [] and save new state into LS qual__project
-  console.log("***Project Service***");
-  console.log(result)
-  console.log("----- END project service -----")
+  router.push('/my/tickets');
   return result;
 };
 
 const createTicketComment = async (ticket_id, formData) => {
-  console.log("[[[SERVICE _FROMDATA]]]")
   let servicedData = createUpdateTicketCommentForm(formData);
-  console.log(ticket_id)
-  console.log(formData)
-  console.log("======servicedData======")
-  console.log(servicedData)
-  console.log(servicedData.getAll("message"))
-  console.log(servicedData.getAll("upload"))
   const res = await postFileData(`/tickets/${ticket_id}/comment`, servicedData); // ----
   const result = res.data;
   // localStorage.setItem("qual__project", JSON.stringify(result.project));
-  console.log("_+_+_+_+_+_+_+_+_")
-  console.log("result")
-  console.log(result)
-  console.log("_+_+_+_+_+_+_+_+_")
-  // TODO: place newly created ticket comment ointo comments [] and save new state into LS qual__project
-  console.log("***Project Service***");
-  console.log(result)
-  console.log("----- END project service -----")
   return result;
 };
 // TODO: need to implement for my projects page

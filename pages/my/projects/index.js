@@ -99,7 +99,7 @@ const MyProjects = ({initialState, token}) => {
     <section className="ticket detail detail__container">
       <div className="detail__header">
         <div className="detail__info-box left">
-          <h3>My Projects</h3>
+          <Typography variant="h2">My Projects</Typography>
         </div>
         <div className="detail__info-box right">
         </div>

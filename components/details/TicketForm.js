@@ -1,15 +1,20 @@
 import { useState } from "react";
+import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
 import dayjs from "dayjs";
 import { TextareaAutosize, TextField, Divider, Radio, RadioGroup, FormControl, FormControlLabel, FormLabel } from "@mui/material";
 import { MobileDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
+import { createTicket } from "@/redux/features/project/projectSlice";
 import ButtonUI from "../UI/ButtonUI";
 import PaperUI from "../UI/PaperUI";
 import Upload from "./Upload";
 
-const initialState = {title: "", description: "", notes: [], status: "New", priority: "High", type: "Bug", submitter: "", deadline: dayjs()};
-// TODO: submitter is assigned via backend upon form submission - additionally notes are created later (on the ticket details page)
-const TicketForm = () => {
+const initialState = {title: "", description: "", status: "New", priority: "High", type: "Bug", deadline: dayjs()};
+
+const TicketForm = ({projectId}) => {
+  const dispatch = useDispatch();
+  const router = useRouter();
   let [formData, setFormData] = useState(initialState);
 
   let {title, description, notes, status, priority, type, submitter, deadline} = formData;
@@ -26,13 +31,7 @@ const TicketForm = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    // dispatch(createTicket(formData));
-    // try {
-    //   // dispatch(createTicket(formData));
-    // } catch (err) {
-    //   console.error(err);
-    //   toast?.error("Failed to create new ticket.");
-    // }
+    dispatch(createTicket({formData, projectId, router}));
   };
 
   return (<>

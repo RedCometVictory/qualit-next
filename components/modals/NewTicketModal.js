@@ -2,7 +2,7 @@ import { FaRegWindowClose } from "react-icons/fa";
 import TicketForm from "../details/TicketForm";
 import PaperUI from "../UI/PaperUI";
 
-const NewTicketModal = ({setTicketModal}) => {
+const NewTicketModal = ({projectId, setTicketModal}) => {
   const closeModalHandler = () => {
     setTicketModal(false);
   };
@@ -13,7 +13,7 @@ const NewTicketModal = ({setTicketModal}) => {
         <div className="close" onClick={closeModalHandler}><FaRegWindowClose/></div>
       </div>
       <div className="modal__content">
-        <TicketForm />
+        <TicketForm projectId={projectId}/>
       </div>
       <div className="modal__footer"></div>
     </PaperUI>
