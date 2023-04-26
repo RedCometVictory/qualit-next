@@ -216,6 +216,7 @@
     }
   }
   &__link {
+    width: 0; // * may delete
     transition: 0.3s ease-in-out;
     text-decoration: none;
     font-weight: 600;

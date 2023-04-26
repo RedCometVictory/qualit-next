@@ -58,7 +58,8 @@
     @include flex(column, space-evenly, flex-start); // ---
     // height: 100%;
     // height: 70vh;
-    padding: 1.5rem 1rem 0.275rem;
+    // padding: 1.5rem 1rem 0.275rem; // ---
+    padding: 1.5rem 1rem 1.275rem;
     &.my-content {
       // background-color: var(--primary-color);
       // padding: 0 1rem 0.275rem; // ---
@@ -162,6 +163,23 @@
     // max-width: 420px;
     // height: 100%;
     &.paper {
+      background-color: var(--primary-color);
+    }
+  }
+  &__notes {
+    padding: 0.56rem 0;
+    width: 100%;
+    &.paper {
+      background-color: var(--primary-color);
+    }
+    .sub-header {
+      text-align: center;
+    }
+    .list-item {
+      margin: 0.56rem 0.56rem 0 0.56rem;
+      padding: 0.56rem 0;
+    }
+    .paper {
       background-color: var(--primary-color);
     }
   }

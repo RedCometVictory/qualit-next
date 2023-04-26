@@ -104,7 +104,7 @@ const Project = ({initialState, token}) => {
           </div>
         </div>
         <div className="detail__info-box right">
-          Tickets: {tickets.length} / Members: 09
+          Tickets: {tickets.length} / Members: {assignedUsers.length}
         </div>
       </div>
       <div className="detail__sub-header">
