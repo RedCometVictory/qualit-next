@@ -54,7 +54,7 @@ handler.post(async (req, res) => {
     throw new Error("Need sufficient authroization to create a ticket.")
   };
 
-  let notes = [''];
+  let notes = [];
   let submitter = id; // user id
 
   let newTicket = await pool.query('INSERT INTO tickets (title, description, notes, status, priority, type, submitter, deadline, project_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *;', [title, description, notes, status, priority, type, submitter, deadline, projectId]);

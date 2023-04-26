@@ -12,6 +12,7 @@ import { getTicket, rehydrate } from "@/redux/features/project/projectSlice";
 import ButtonUI from '@/components/UI/ButtonUI';
 import PaperUI from '@/components/UI/PaperUI';
 import DetailLayout from '@/components/layouts/DetailLayout';
+import AddNoteModal from '@/components/modals/AddNoteModal';
 import NewCommentModal from '@/components/modals/NewCommentModal';
 import CommentsList from '@/components/lists/CommentsList';
 import Description from '@/components/details/Description';
@@ -21,6 +22,7 @@ const Ticket = ({initialState, token}) => {
   const dispatch = useDispatch();
   const { ticket, comments, history, loading: projectLoading, page, pages } = useSelector(state => state.project);
   const { user } = useSelector(state => state.auth);
+  const [addNoteModal, setAddNoteModal] = useState(false);
   const [commentModal, setCommentModal] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
 
@@ -37,8 +39,7 @@ const Ticket = ({initialState, token}) => {
   }, [dispatch, initialState])
     
   const openNoteModal = () => {
-    console.log("adding a new note to list")
-    // setCommentModal(true);
+    setAddNoteModal(true);
   };
   const openNewCommentModal = () => {
     setCommentModal(true);
@@ -87,7 +88,7 @@ const Ticket = ({initialState, token}) => {
           </div>
         </div>
         <div className="detail__info-box right">
-          Comments: {pages} / Members: ?
+          Comments: {pages}
         </div>
       </div>
       <div className="detail__sub-header">
@@ -119,13 +120,28 @@ const Ticket = ({initialState, token}) => {
               <FaPlusCircle className='btn-icon'/> New Comment
             </ButtonUI>
           </div>
-          {commentModal ? (
-            <NewCommentModal
-              setCommentModal={setCommentModal}
-            />
+          {addNoteModal ? (
+            <AddNoteModal setAddNoteModal={setAddNoteModal} />
           ) : (
             null
           )}
+          {commentModal ? (
+            <NewCommentModal setCommentModal={setCommentModal} />
+          ) : (
+            null
+          )}
+          <PaperUI className="detail__notes list-container paper">
+            <Typography variant="h3" class="sub-header">Ticket Notes</Typography>
+            {ticket.notes.length < 0 ? (<>
+              {ticket.notes.map((note, index) => (
+                <PaperUI className="list-item paper" key={index}>
+                  <Typography variant='body2'>{note}</Typography>
+                </PaperUI>
+              ))}</>
+            ) : (
+              null
+            )}
+          </PaperUI>
         </section>
         <section className="right ticket-detail">
           <PaperUI className="right-container paper">
