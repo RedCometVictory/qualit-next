@@ -84,6 +84,12 @@ const createTicket = async (formData, projectId, router) => {
   return result;
 };
 
+const createTicketNote = async (ticket_id, formData) => {
+  const res = await postData(`/tickets/${ticket_id}/note`, formData);
+  const result = res.data;
+  return result;
+};
+
 const createTicketComment = async (ticket_id, formData) => {
   let servicedData = createUpdateTicketCommentForm(formData);
   const res = await postFileData(`/tickets/${ticket_id}/comment`, servicedData); // ----
@@ -254,6 +260,7 @@ const projectService = {
   getTicket,
   createProject,
   createTicket,
+  createTicketNote,
   createTicketComment,
   paginateMyProjects,
   paginateMyTickets,

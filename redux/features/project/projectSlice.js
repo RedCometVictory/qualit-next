@@ -23,9 +23,7 @@ export const getDashboardInfo = createAsyncThunk(
   'project/get/dashboard',
   async (_, thunkAPI) => {
     try {
-      console.log("$$$$$$ project SLCIE $$$$$");
       return await projectService.getDashboardInfo();
-      console.log("failed to return data")
     } catch (err) {
       const message =
         (err.response &&
@@ -69,7 +67,7 @@ export const getTickets = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to get projects list.", {theme: "colored", toastId: "GetProjectsError"});
+      toast.error("Failed to get projects list.", {theme: "colored", toastId: "GetTicketsError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -79,11 +77,6 @@ export const getProject = createAsyncThunk(
   'project/get/Project-By-Id',
   async ({project_id, cookie}, thunkAPI) => {
     try {
-      console.log("GET-PROJECT SERVICE");
-      console.log(project_id)
-      console.log("- - - - -")
-      console.log(cookie)
-      console.log("GET-PROJECT SERVICE END");
       return await projectService.getProject(project_id, cookie);
     } catch (err) {
       const message =
@@ -102,11 +95,6 @@ export const getTicket = createAsyncThunk(
   'project/get/Ticket-By-Id',
   async ({ticket_id, cookie}, thunkAPI) => {
     try {
-      console.log("GET-PROJECT SERVICE");
-      console.log(ticket_id)
-      console.log("- - - - -")
-      console.log(cookie)
-      console.log("GET-PROJECT SERVICE END");
       return await projectService.getTicket(ticket_id, cookie);
     } catch (err) {
       const message =
@@ -115,7 +103,7 @@ export const getTicket = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to get ticket details.", {theme: "colored", toastId: "TicketError"});
+      toast.error("Failed to get ticket details.", {theme: "colored", toastId: "GetTicketError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -157,12 +145,28 @@ export const createTicket = createAsyncThunk(
   }
 );
 
+export const createTicketNote = createAsyncThunk(
+  'project/post/Ticket-Note',
+  async ({ticket_id, formData}, thunkAPI) => {
+    try {
+      return await projectService.createTicketNote(ticket_id, formData);
+    } catch (err) {
+      const message =
+        (err.response &&
+          err.response.data &&
+          err.response.data.message) ||
+        err.message ||
+        err.toString()
+      toast.error("Failed to create new ticket note.", {theme: "colored", toastId: "CreateTicketNoteError"});
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const createTicketComment = createAsyncThunk(
   'project/post/Ticket-Comment',
   async ({ticket_id, formData}, thunkAPI) => {
     try {
-      // console.log(formData.getAll("message"))
-      // console.log(formData.getAll("upload"))
       return await projectService.createTicketComment(ticket_id, formData);
     } catch (err) {
       const message =
@@ -177,17 +181,10 @@ export const createTicketComment = createAsyncThunk(
   }
 );
 
-// START Pagination Section
-// TODO: ticket id may not be needed
 export const paginateMyProjects = createAsyncThunk(
   'project/get/Paginate-Project',
   async ({keyword, pageNumber, itemsPerPage, orderBy}, thunkAPI) => {
     try {
-      console.log("{{{SLICE - PAGINATE}}}")
-      console.log(keyword)
-      console.log(pageNumber)
-      console.log(itemsPerPage)
-      console.log(orderBy)
       return await projectService.paginateMyProjects(keyword, pageNumber, itemsPerPage, orderBy);
     } catch (err) {
       const message =
@@ -196,27 +193,16 @@ export const paginateMyProjects = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to paginate through comments.", {theme: "colored", toastId: "PaginateCommentError"});
+      toast.error("Failed to paginate through projects.", {theme: "colored", toastId: "PaginateProjectsError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
 );
-// TODO: ticket id may not be needed
+
 export const paginateMyTickets = createAsyncThunk(
   'project/get/Paginate-Ticket',
-  // add submitter after type when in use
   async ({keyword, status, priority, type, submitter = '', pageNumber, itemsPerPage, orderBy, orderChoice}, thunkAPI) => {
     try {
-      console.log("{{{SLICE - PAGINATE}}}")
-      console.log(keyword)
-      console.log(status)
-      console.log(priority)
-      console.log(type)
-      console.log(submitter)
-      console.log(pageNumber)
-      console.log(itemsPerPage)
-      console.log(orderBy)
-      console.log(orderChoice)
       return await projectService.paginateMyTickets(keyword, status, priority, type, submitter, pageNumber, itemsPerPage, orderBy, orderChoice);
     } catch (err) {
       const message =
@@ -225,7 +211,7 @@ export const paginateMyTickets = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to paginate through comments.", {theme: "colored", toastId: "PaginateCommentError"});
+      toast.error("Failed to paginate through tickets.", {theme: "colored", toastId: "PaginateTicketsError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -235,11 +221,6 @@ export const paginateTicketComments = createAsyncThunk(
   'project/get/Ticket-Paginate-Comment',
   async ({ticket_id, pageNumber, itemsPerPage, orderBy}, thunkAPI) => {
     try {
-      console.log("{{{SLICE - PAGINATE}}}")
-      console.log(ticket_id)
-      console.log(pageNumber)
-      console.log(itemsPerPage)
-      console.log(orderBy)
       return await projectService.paginateTicketComments(ticket_id, pageNumber, itemsPerPage, orderBy);
     } catch (err) {
       const message =
@@ -253,8 +234,6 @@ export const paginateTicketComments = createAsyncThunk(
     }
   }
 );
-
-// END Pagination Section
 
 export const createTicketUpload = createAsyncThunk(
   'project/post/Ticket-Upload',
