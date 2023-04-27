@@ -131,6 +131,19 @@ CREATE TABLE tickets(
   updated_at TIMESTAMP DEFAULT NULL
 );
 
+
+  -- user_id of user who made note
+CREATE TABLE ticket_notes(
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  note TEXT DEFAULT NULL,
+  user_id UUID,
+  ticket_id UUID,
+  FOREIGN KEY(user_id) REFERENCES users(id),
+  FOREIGN KEY(ticket_id) REFERENCES tickets(id),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT NULL
+);
+
 -- create projects table first
 -- ALTER TABLE "messages" ALTER COLUMN message DROP NOT NULL;
 CREATE TABLE messages(
