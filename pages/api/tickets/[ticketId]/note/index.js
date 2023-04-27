@@ -1,0 +1,1 @@
+// create note for ticket; copy code from tickets/[ticketId]/comment/index
