@@ -174,13 +174,21 @@
     }
     .sub-header {
       text-align: center;
+      margin: 0 0 0.56rem 0;
     }
     .list-item {
       margin: 0.56rem 0.56rem 0 0.56rem;
-      padding: 0.56rem 0;
+      // padding: 0.56rem 0;
+    }
+    .item {
+      // margin: 0 0.56rem 0 0.56rem;
+      padding: 0.56rem;
     }
     .paper {
       background-color: var(--primary-color);
+    }
+    .statement {
+      padding: 0 0 0 0.56rem;
     }
   }
   &__description {

@@ -9,7 +9,7 @@ export const config = {
 
 const handler = nc({onError, onNoMatch});
 handler.use(verifAuth, authRoleDev);
-
+/*
 // get a list of tickets for dashboard
 // TODO: this route may not be used
 handler.get(async (req, res) => {
@@ -43,7 +43,7 @@ handler.get(async (req, res) => {
     }
   });
 });
-
+*/
 // create ticket
 handler.post(async (req, res) => {
   const { id, role } = req.user;

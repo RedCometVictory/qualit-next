@@ -10,6 +10,7 @@ const initialState = {
   project: {},
   tickets: [],
   ticket: {},
+  notes: [],
   comments: [],
   history: [],
   error: '',
@@ -426,6 +427,7 @@ const projectSlice = createSlice({
       state.project = action.payload.project;
       state.tickets = action.payload.tickets;
       state.ticket = action.payload.ticket;
+      state.notes = action.payload.notes;
       state.comments = action.payload.comments;
       state.history = action.payload.history;
       state.allowReset = action.payload.allowReset;
@@ -533,6 +535,7 @@ const projectSlice = createSlice({
     },
     [getTicket.fulfilled]: (state, { payload }) => {
       state.ticket = payload.ticket;
+      state.notes = payload.notes;
       state.comments = payload.comments;
       state.history = payload.history;
       state.page = payload.page;
@@ -566,6 +569,18 @@ const projectSlice = createSlice({
       state.loading = false;
     },
     [createTicket.rejected]: (state) => {
+      state.loading = false;
+      state.error = 'failed';
+    },
+    [createTicketNote.pending]: (state) => {
+      state.error = '';
+      state.loading = true;
+    },
+    [createTicketNote.fulfilled]: (state, { payload }) => {
+      state.notes = [payload, ...state.notes];
+      // state.loading = false;
+    },
+    [createTicketNote.rejected]: (state) => {
       state.loading = false;
       state.error = 'failed';
     },

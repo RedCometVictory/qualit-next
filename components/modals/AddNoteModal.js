@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { FaFileUpload } from "react-icons/fa";
 import { TextareaAutosize } from "@mui/material";
-import { createTicketComment } from '@/redux/features/project/projectSlice';
+import { createTicketNote} from '@/redux/features/project/projectSlice';
 import PaperUI from '../UI/PaperUI';
 import ButtonUI from "../UI/ButtonUI";
 
@@ -29,7 +29,7 @@ const AddNoteModal = ({setAddNoteModal}) => {
     setSubmitted(true);
     console.log("note")
     console.log(note)
-    // await dispatch(createTicketComment({ticket_id: ticketID, formData}));
+    await dispatch(createTicketNote({ticket_id: ticketID, formData}));
     setSubmitted(false);
     setAddNoteModal(false);
   };
