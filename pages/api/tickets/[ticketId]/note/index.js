@@ -10,8 +10,7 @@ import { singleISODate } from '@/utils/toISODate';
 
 // bodyParser needs to be set to true in order to properly post info to the backend
 export const config = {
-  // api: { bodyParser: true }
-  api: { bodyParser: false }
+  api: { bodyParser: true }
 };
 
 const handler = nc({onError, onNoMatch});
@@ -94,55 +93,38 @@ handler.get(async (req, res) => {
 */
 
 // TODO: move this code block to correct api route, this is the route only for getting and creating new tickets
-// create ticket comment
+// create ticket note
 handler.post(async (req, res) => {
 // handler.post(async (req, res) => {
   const { id, role } = req.user;
-  const { ticket_id } = req.query;
+  const { ticketId } = req.query;
   // const { ticketId } = req.params;
 
+  console.log("=========CREATING NOTE==========")
   console.log("=========USER==========")
   console.log(req.user)
   console.log("===========TICKET========")
-  console.log(ticket_id)
+  console.log(ticketId)
   console.log("==========BODY=========")
   console.log(req.body)
   let { note } = req.body;
-  
+  console.log(note.length)
   if (note.length === 0) {
     throw new Error("Note must have content!"); 
   };
-
-  const newComment = await pool.query('INSERT INTO tickets (notes) VALUES ($1) WHERE id = $2 RETURNING *;', [note, ticket_id]);
-
-  
-
-  // const newComment = {...comment.rows[0], ...commentFileUpload.rows[0]};
-
-  // let newComment = await pool.query('INSERT INTO messages (message, user_id, ticket_id) VALUES ($1, $2, $3) RETURNING *;', [message, id, ticketId]);
-
-  // if (newComment.rowCount === 0 || newComment === null) {
-  //   throw new Error('Failed to create new comment.');
-  // }
-
-  // get comment and all potential uploads belonging to it,
-  // todo: example
-  // products = await pool.query(
-  //         'SELECT P.*, I.* FROM products AS P JOIN images AS I ON P.id = I.product_id WHERE P.category = $1 GROUP BY I.id, P.id LIMIT $2 OFFSET $3;', [category, limit, offset]
-  //       );
-
-  // res.status(201).json({
-  //   status: "Ticket comment created.",
-  //   data: {
-  //     comment
-  //   }
-  // });
+  console.log("inserting note into table")
+  const newNote = await pool.query('INSERT INTO ticket_notes (note, user_id, ticket_id) VALUES ($1, $2, $3) RETURNING *;', [note, id, ticketId]);
+  console.log("result")
+  console.log(newNote.rows)
+  console.log("result - end")
+  if (newNote.rowCount === 0 || newNote === null) {
+    throw new Error('Failed to create new note.');
+  }
 
   return res.status(201).json({
     status: "Success! Created new comment.",
     data: {
-      ...newComment.rows[0],
-      ...commentFileUpload.rows[0]
+      ...newNote.rows[0],
     }
   });
 });

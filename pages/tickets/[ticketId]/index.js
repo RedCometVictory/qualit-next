@@ -20,7 +20,7 @@ import Description from '@/components/details/Description';
 const Ticket = ({initialState, token}) => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { ticket, comments, history, loading: projectLoading, page, pages } = useSelector(state => state.project);
+  const { ticket, notes, comments, history, loading: projectLoading, page, pages } = useSelector(state => state.project);
   const { user } = useSelector(state => state.auth);
   const [addNoteModal, setAddNoteModal] = useState(false);
   const [commentModal, setCommentModal] = useState(false);
@@ -131,15 +131,17 @@ const Ticket = ({initialState, token}) => {
             null
           )}
           <PaperUI className="detail__notes list-container paper">
-            <Typography variant="h3" class="sub-header">Ticket Notes</Typography>
-            {ticket.notes.length < 0 ? (<>
-              {ticket.notes.map((note, index) => (
-                <PaperUI className="list-item paper" key={index}>
-                  <Typography variant='body2'>{note}</Typography>
-                </PaperUI>
+            <Typography variant="h3" className="sub-header">Ticket Notes</Typography>
+            {notes.length > 0 ? (<>
+              {notes.map((item, index) => (
+                <div className="list-item" key={index}>
+                  <PaperUI className="item paper" >
+                    <Typography variant='body2'>{item.note}</Typography>
+                  </PaperUI>
+                </div>
               ))}</>
             ) : (
-              null
+              <Typography variant="body2" className='statement'>No notes available...</Typography>
             )}
           </PaperUI>
         </section>

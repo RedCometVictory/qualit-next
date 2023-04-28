@@ -132,7 +132,7 @@ CREATE TABLE tickets(
 );
 
 
-  -- user_id of user who made note
+-- user_id of user who made note
 CREATE TABLE ticket_notes(
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   note TEXT DEFAULT NULL,

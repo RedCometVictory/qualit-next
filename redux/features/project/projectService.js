@@ -85,6 +85,11 @@ const createTicket = async (formData, projectId, router) => {
 };
 
 const createTicketNote = async (ticket_id, formData) => {
+  console.log("++++ PROJECT SERVICE ++++")
+  console.log(ticket_id)
+  console.log("++++++++++")
+  console.log(formData)
+  console.log("+++++ END +++++")
   const res = await postData(`/tickets/${ticket_id}/note`, formData);
   const result = res.data;
   return result;

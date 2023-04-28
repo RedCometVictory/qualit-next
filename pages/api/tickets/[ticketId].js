@@ -12,13 +12,14 @@ const handler = nc({onError, onNoMatch});
 // handler.use(verifAuth, authRoleDev);
 handler.use(verifAuth);
 
-// get a list of tickets for dashboard
+// get ticket details
 handler.get(async (req, res) => {
   const { ticketId } = req.query;
   const { id, role } = req.user;
 
   let ticketDetails;
   // paginate comments and uploads
+  let ticketNotes;
   let ticketComments;
   let totalComments;
   let ticketUploads;
@@ -38,6 +39,8 @@ handler.get(async (req, res) => {
   };
 
   ticketDetails = await pool.query("SELECT * FROM tickets WHERE id = $1;", [ticketId]);
+
+  ticketNotes = await pool.query("SELECT * FROM ticket_notes WHERE ticket_id = $1;", [ticketId]);
   
   // TODO: test this code using jest
   if (ticketDetails.rowCount > 0) {
@@ -78,11 +81,15 @@ handler.get(async (req, res) => {
     };
     ticketComments.rows[i] = { ...ticketComments.rows[i], ...uploadInfo };
   }
-
+  console.log("^^^^^^^^^^ BACKEND ^^^^^^^^^^")
+  console.log("^^^^^^^^^^ BACKEND ^^^^^^^^^^")
+  console.log(ticketNotes.rows)
+  console.log("^^^^^^^^^^ BACKEND ^^^^^^^^^^")
   return res.status(200).json({
-    status: "Retrieved dashboard information.",
+    status: "Retrieved ticket information.",
     data: {
-      ticket: ticketDetails.rows[0],
+      ticket: ticketDetails.rows[0], // --- original
+      notes: ticketNotes.rows,
       comments: ticketComments.rows,
       history: ticketHistory.rows,
       page: 1,
