@@ -165,6 +165,17 @@ const updateProject = async (project_id, formData) => {
   return result;
 };
 
+const deleteTicketNote = async (ticket_id, note_id) => {
+  const res = await deleteData(`/tickets/${ticket_id}/note?noteId=${note_id}`);
+  const result = res.data;
+  // localStorage.setItem("qual__project", JSON.stringify(result.project));
+  return result;
+};
+
+// * Below functions have not been implemented
+// * Below functions have not been implemented
+// * Below functions have not been implemented
+
 const updateTicket = async (ticket_id, formData) => {
   const res = await putData(`/tickets/${ticket_id}`, formData);
   const result = res.data;
@@ -224,6 +235,7 @@ const deleteTicket = async (ticket_id) => {
   return result;
 };
 
+// * not yet implemented
 const deleteTicketComment = async (ticket_id, comment_id) => {
   const res = await deleteData(`/projects/${ticket_id}/comment/${comment_id}/delete`);
   const result = res.data;
@@ -272,6 +284,7 @@ const projectService = {
   paginateTicketComments,
   createTicketUpload,
   updateProject,
+  deleteTicketNote,
   updateTicket,
   updateTicketComment,
   updateTicketUpload,

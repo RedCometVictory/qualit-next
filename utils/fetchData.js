@@ -43,7 +43,7 @@ export const getData = async (url) => {
   return data;
 };
 
-export const postData = async (url, putData) => {
+export const postData = async (url, postData) => {
   const res = await fetch(`${baseUrl}/api/${url}`, {
     method: 'POST',
     mode: 'cors',
@@ -53,7 +53,7 @@ export const postData = async (url, putData) => {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(putData)
+    body: JSON.stringify(postData)
   });
   const data = await res.json();
   return data;
@@ -114,7 +114,7 @@ export const patchData = async (url, patchData) => {
   const data = await res.json();
   return data;
 };
-
+/* ORIGINAL
 export const deleteData = async (url, token) => {
   const res = await fetch(`${baseUrl}/api/${url}`, {
     method: 'DELETE',
@@ -126,6 +126,23 @@ export const deleteData = async (url, token) => {
       'Content-Type': 'application/json',
       Authorization: token,
     },
+  });
+  const data = await res.json();
+  return data;
+};
+*/
+
+export const deleteData = async (url) => {
+  const res = await fetch(`${baseUrl}/api/${url}`, {
+    method: 'DELETE',
+    mode: 'cors',
+    // cache: 'no-cache',
+    credentials: 'include',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
+    // body: JSON.stringify(deleteData)
   });
   const data = await res.json();
   return data;

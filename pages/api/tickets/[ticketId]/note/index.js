@@ -128,4 +128,23 @@ handler.post(async (req, res) => {
     }
   });
 });
+
+handler.delete(async (req, res) => {
+  const { id, role } = req.user;
+  const { ticketId, noteId } = req.query;
+
+  if (role === "Admin") {
+    await pool.query('DELETE FROM ticket_notes WHERE id = $1 AND ticket_id = $2;', [noteId, ticketId]);
+  } else {
+    // id not admin, must show ownership
+    await pool.query('DELETE FROM ticket_notes WHERE id = $1 AND ticket_id = $2 AND user_id = $3;', [noteId, ticketId, id]);
+  };
+
+  return res.status(201).json({
+    status: "Success! Ticket note removed.",
+    data: {
+      noteId: noteId
+    }
+  });
+});
 export default handler;
