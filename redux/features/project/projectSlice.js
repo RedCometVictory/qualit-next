@@ -272,6 +272,28 @@ export const updateProject = createAsyncThunk(
   }
 );
 
+export const deleteTicketNote = createAsyncThunk(
+  'project/delete/Ticket-Note-Delete',
+  async ({ticket_id, note_id}, thunkAPI) => {
+    try {
+      return await projectService.deleteTicketNote(ticket_id, note_id);
+    } catch (err) {
+      const message =
+        (err.response &&
+          err.response.data &&
+          err.response.data.message) ||
+        err.message ||
+        err.toString()
+      toast.error("Failed to delete ticket note.", {theme: "colored", toastId: "DeleteTicketNoteError"});
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+// * Below functions have not been implemented
+// * Below functions have not been implemented
+// * Below functions have not been implemented
+
 export const updateTicket = createAsyncThunk(
   'project/put/Ticket-Update',
   async ({ticket_id, formData}, thunkAPI) => {
@@ -461,7 +483,19 @@ const projectSlice = createSlice({
       state.comments = []
       state.uploads = []
       state.upload = {}
-    }
+    },
+    /*
+    updateUnassignmentListsAdmin: (state, { payload }) => {
+      console.log(payload)
+      state.assignedUsers = payload.updatedAssignedArr;
+      state.unassignedUsers = [...state.unassignedUsers, ...payload.updatedUnassignedArr];
+      // state.unassignedUsers = [...state.unassignedUsers, ...payload.updatedUnassignedArr];
+    },
+    */
+    // deleteTicketNote: (state, {payload}) => {
+    //   // state.notes = [payload, ...state.notes];
+    //   state.notes = state.notes.filter(note => note.id !== payload.noteId);
+    // },
   },
   extraReducers: {
     // [HYDRATE]: (state, action) => {
@@ -643,6 +677,17 @@ const projectSlice = createSlice({
       state.page = payload.page;
     },
     [paginateTicketComments.rejected]: (state) => {
+      state.loading = false;
+      state.error = 'failed';
+    },
+    [deleteTicketNote.pending]: (state) => {
+      state.error = '';
+      state.loading = true;
+    },
+    [deleteTicketNote.fulfilled]: (state, { payload }) => {
+      state.notes = state.notes.filter(note => note.id !== payload.noteId);
+    },
+    [deleteTicketNote.rejected]: (state) => {
       state.loading = false;
       state.error = 'failed';
     },

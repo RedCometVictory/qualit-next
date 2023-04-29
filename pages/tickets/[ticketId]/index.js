@@ -1,14 +1,15 @@
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import store from '@/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import { FaRegWindowClose } from "react-icons/fa";
 import { FaPlusCircle, FaRegEdit } from 'react-icons/fa';
 import { Typography } from '@mui/material';
 import { logout } from "@/redux/features/auth/authSlice";
-import { getTicket, rehydrate } from "@/redux/features/project/projectSlice";
+import { getTicket, deleteTicketNote, rehydrate } from "@/redux/features/project/projectSlice";
 import ButtonUI from '@/components/UI/ButtonUI';
 import PaperUI from '@/components/UI/PaperUI';
 import DetailLayout from '@/components/layouts/DetailLayout';
@@ -50,6 +51,11 @@ const Ticket = ({initialState, token}) => {
   }, []);
   
   if (!hasMounted) return null;
+
+  const deleteNoteHandler = (ticket_id, note_id) => {
+    // dispatch, can only delete if admin or owner of note
+    dispatch(deleteTicketNote({ticket_id, note_id}));
+  };
 
   return (
     <section className="ticket detail detail__container">
@@ -132,17 +138,24 @@ const Ticket = ({initialState, token}) => {
           )}
           <PaperUI className="detail__notes list-container paper">
             <Typography variant="h3" className="sub-header">Ticket Notes</Typography>
-            {notes.length > 0 ? (<>
-              {notes.map((item, index) => (
-                <div className="list-item" key={index}>
-                  <PaperUI className="item paper" >
-                    <Typography variant='body2'>{item.note}</Typography>
-                  </PaperUI>
-                </div>
-              ))}</>
-            ) : (
-              <Typography variant="body2" className='statement'>No notes available...</Typography>
-            )}
+            <div className="notes-list">
+              {notes.length > 0 ? (<>
+                {notes.map((item, index) => (
+                  <div className="list-item" key={index}>
+                    <PaperUI className="item paper" >
+                      <Typography variant='body2'>{item.note}</Typography>
+                        {user.id === item.user_id || user.role === "Admin" ? (
+                          <FaRegWindowClose className='item-icon' onClick={() => deleteNoteHandler(ticket.id, item.id)}/>
+                        ) : (
+                          null
+                        )}
+                    </PaperUI>
+                  </div>
+                ))}</>
+              ) : (
+                <Typography variant="body2" className='statement'>No notes available...</Typography>
+              )}
+            </div>
           </PaperUI>
         </section>
         <section className="right ticket-detail">

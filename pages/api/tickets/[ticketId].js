@@ -40,7 +40,7 @@ handler.get(async (req, res) => {
 
   ticketDetails = await pool.query("SELECT * FROM tickets WHERE id = $1;", [ticketId]);
 
-  ticketNotes = await pool.query("SELECT * FROM ticket_notes WHERE ticket_id = $1;", [ticketId]);
+  ticketNotes = await pool.query("SELECT * FROM ticket_notes WHERE ticket_id = $1 ORDER BY created_at DESC;", [ticketId]);
   
   // TODO: test this code using jest
   if (ticketDetails.rowCount > 0) {
