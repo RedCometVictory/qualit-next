@@ -272,6 +272,24 @@ export const updateProject = createAsyncThunk(
   }
 );
 
+export const updateDevAssignedTicket = createAsyncThunk(
+  'project/put/Dev-Assigned-Ticket-Update',
+  async ({ticketId, developer}, thunkAPI) => {
+    try {
+      return await projectService.updateDevAssignedTicket(ticketId, developer);
+    } catch (err) {
+      const message =
+        (err.response &&
+          err.response.data &&
+          err.response.data.message) ||
+        err.message ||
+        err.toString()
+      toast.error("Failed to update developer assigned to this ticket.", {theme: "colored", toastId: "UpdateAssignedDevError"});
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const deleteTicketNote = createAsyncThunk(
   'project/delete/Ticket-Note-Delete',
   async ({ticket_id, note_id}, thunkAPI) => {
@@ -680,6 +698,21 @@ const projectSlice = createSlice({
       state.loading = false;
       state.error = 'failed';
     },
+
+    [updateDevAssignedTicket.pending]: (state) => {
+      state.error = '';
+      state.loading = true;
+    },
+    [updateDevAssignedTicket.fulfilled]: (state, { payload }) => {
+      state.ticket.user_id = payload.user_id;
+      state.ticket.assignedUser = payload.assignedUser;
+      state.loading = false;
+    },
+    [updateDevAssignedTicket.rejected]: (state) => {
+      state.loading = false;
+      state.error = 'failed';
+    },
+
     [deleteTicketNote.pending]: (state) => {
       state.error = '';
       state.loading = true;

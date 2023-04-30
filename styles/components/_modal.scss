@@ -79,6 +79,15 @@
       scrollbar-width: none;
       padding: initial;
     }
+    &.ticket-assign {
+      @include flex(column, center, center);
+      .desc {
+        width: 100%;
+      }
+      .items {
+        margin: 0.56rem 0 0 0;
+      }
+    }
   }
   &__footer {
     height: 2rem;

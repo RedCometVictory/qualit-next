@@ -179,6 +179,23 @@
     &.paper {
       background-color: var(--primary-color);
     }
+    &.list-devs {
+      margin: 0 0 1rem 0;
+      .notes-username {
+        position: relative;
+        @include flex(row, center, center);
+        .edit-icon {
+          cursor: pointer;
+          position: absolute;
+          right: 10px;
+          font-size: 1.26rem;
+          transition: color 0.3s ease-in-out;
+          &:hover {
+            color: var(--body-text-hover);
+          }
+        }
+      }
+    }
     .sub-header {
       text-align: center;
       margin: 0 0 0.56rem 0;

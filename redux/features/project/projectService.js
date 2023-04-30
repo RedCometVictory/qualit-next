@@ -165,6 +165,12 @@ const updateProject = async (project_id, formData) => {
   return result;
 };
 
+const updateDevAssignedTicket = async (ticketId, developer) => {
+  const res = await putData(`/tickets/${ticketId}/assignedDev`, {developer});
+  const result = res.data;
+  return result;
+};
+
 const deleteTicketNote = async (ticket_id, note_id) => {
   const res = await deleteData(`/tickets/${ticket_id}/note?noteId=${note_id}`);
   const result = res.data;
@@ -284,6 +290,7 @@ const projectService = {
   paginateTicketComments,
   createTicketUpload,
   updateProject,
+  updateDevAssignedTicket,
   deleteTicketNote,
   updateTicket,
   updateTicketComment,
