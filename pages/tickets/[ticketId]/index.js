@@ -5,7 +5,7 @@ import Link from 'next/link';
 import store from '@/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { FaRegWindowClose } from "react-icons/fa";
+import { FaRegWindowClose, FaUserEdit } from "react-icons/fa";
 import { FaPlusCircle, FaRegEdit } from 'react-icons/fa';
 import { Typography } from '@mui/material';
 import { logout } from "@/redux/features/auth/authSlice";
@@ -15,6 +15,7 @@ import PaperUI from '@/components/UI/PaperUI';
 import DetailLayout from '@/components/layouts/DetailLayout';
 import AddNoteModal from '@/components/modals/AddNoteModal';
 import NewCommentModal from '@/components/modals/NewCommentModal';
+import AssignUserTicketModal from '@/components/modals/AssignUserTicketModal';
 import CommentsList from '@/components/lists/CommentsList';
 import Description from '@/components/details/Description';
 
@@ -25,6 +26,7 @@ const Ticket = ({initialState, token}) => {
   const { user } = useSelector(state => state.auth);
   const [addNoteModal, setAddNoteModal] = useState(false);
   const [commentModal, setCommentModal] = useState(false);
+  const [assignModal, setAssignModal] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
@@ -57,8 +59,17 @@ const Ticket = ({initialState, token}) => {
     dispatch(deleteTicketNote({ticket_id, note_id}));
   };
 
+  const editAssignedUserHandler = () => {
+    setAssignModal(assignModal = true);
+  };
+
   return (
     <section className="ticket detail detail__container">
+      {assignModal && (user.role === "Admin" || user.role === "Project Manager") ? (
+        <AssignUserTicketModal ticketId={ticket.id} projectId={ticket.project_id} setAssignModal={setAssignModal} />
+      ) : (
+        null
+      )}
       <div className="detail__header">
         <div className="detail__info-box left">
           <Typography variant="h2">Ticket Details</Typography>
@@ -136,6 +147,15 @@ const Ticket = ({initialState, token}) => {
           ) : (
             null
           )}
+          <PaperUI className="detail__notes list-devs paper">
+            <Typography variant='h3' className='sub-header'>
+              Assigned Developer
+            </Typography>
+            <div className="notes-username">
+              <span className="username">{ticket.assignedUser}</span>
+              <FaUserEdit className='edit-icon' onClick={() => editAssignedUserHandler()}/>
+            </div>
+          </PaperUI>
           <PaperUI className="detail__notes list-container paper">
             <Typography variant="h3" className="sub-header">Ticket Notes</Typography>
             <div className="notes-list">

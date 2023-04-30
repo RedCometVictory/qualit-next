@@ -131,7 +131,6 @@ CREATE TABLE tickets(
   updated_at TIMESTAMP DEFAULT NULL
 );
 
-
 -- user_id of user who made note
 CREATE TABLE ticket_notes(
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),

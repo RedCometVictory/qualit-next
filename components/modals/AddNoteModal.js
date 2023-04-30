@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
-import { FaFileUpload } from "react-icons/fa";
 import { TextareaAutosize } from "@mui/material";
 import { createTicketNote} from '@/redux/features/project/projectSlice';
 import PaperUI from '../UI/PaperUI';
@@ -27,8 +26,6 @@ const AddNoteModal = ({setAddNoteModal}) => {
   const submitNewNoteHandler = async (e) => {
     e.preventDefault();
     setSubmitted(true);
-    console.log("note")
-    console.log(note)
     await dispatch(createTicketNote({ticket_id: ticketID, formData}));
     setSubmitted(false);
     setAddNoteModal(false);

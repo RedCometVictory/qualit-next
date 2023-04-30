@@ -20,6 +20,7 @@ handler.get(async (req, res) => {
   let ticketDetails;
   // paginate comments and uploads
   let ticketNotes;
+  let ticketAssignedDev;
   let ticketComments;
   let totalComments;
   let ticketUploads;
@@ -46,6 +47,10 @@ handler.get(async (req, res) => {
   if (ticketDetails.rowCount > 0) {
     ticketDetails.rows[0].created_at = singleISODate(ticketDetails.rows[0].created_at);
   };
+
+  if (ticketDetails.rows[0].user_id) {
+    ticketAssignedDev = await pool.query("SELECT f_name, l_name FROM users WHERE id = $1;", [ticketDetails.rows[0].user_id]);
+  }
   
   totalComments = await pool.query('SELECT COUNT(id) FROM messages WHERE ticket_id = $1;', [ticketId]);
 
@@ -81,14 +86,13 @@ handler.get(async (req, res) => {
     };
     ticketComments.rows[i] = { ...ticketComments.rows[i], ...uploadInfo };
   }
-  console.log("^^^^^^^^^^ BACKEND ^^^^^^^^^^")
-  console.log("^^^^^^^^^^ BACKEND ^^^^^^^^^^")
-  console.log(ticketNotes.rows)
-  console.log("^^^^^^^^^^ BACKEND ^^^^^^^^^^")
+
   return res.status(200).json({
     status: "Retrieved ticket information.",
     data: {
-      ticket: ticketDetails.rows[0], // --- original
+      // ticket: ticketDetails.rows[0], // --- original
+      ticket: {...ticketDetails.rows[0], assignedUser: ticketAssignedDev.rows[0].f_name + " " + ticketAssignedDev.rows[0].l_name}, // --- original
+      // assignedUser: ticketAssignedDev.rows[0],
       notes: ticketNotes.rows,
       comments: ticketComments.rows,
       history: ticketHistory.rows,

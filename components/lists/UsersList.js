@@ -37,6 +37,15 @@ const UsersList = ({projectId, openModal, assignedUsers, unassignedUsers}) => {
             >
               <ListItemIcon>
                 <TiUser />
+                <span className="">
+                  {assigned.role === "Admin" ? (
+                    <span className="">[A]</span>
+                  ) : assigned.role === "Project Manager" ? (
+                    <span className="">[PM]</span>
+                  ) : (
+                    <span className="">[D]</span>
+                  )}
+                </span>
               </ListItemIcon>
               <ListItemText
                 primary={
