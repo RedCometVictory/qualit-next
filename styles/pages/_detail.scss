@@ -141,6 +141,9 @@
       text-decoration: none;
       cursor: pointer;
     }
+    .list-msg {
+      margin: 0 0 0 0.56rem;
+    }
     .paper {
       padding: 0.56rem 0;
       background-color: var(--primary-color);
@@ -655,7 +658,8 @@
       .users-list {
         overflow-y: scroll;
         scrollbar-width: none;
-        max-height: 9.275rem;
+        // max-height: 9.275rem; // ----
+        max-height: 11.45rem; // ----
       }
     }
   }

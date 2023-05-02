@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { TiUser } from "react-icons/ti";
 import { Box, Drawer, Divider, Input, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
-import { getUsersAdmin } from '@/redux/features/user/userSlice';
+import { userReset, getUsersAdmin } from '@/redux/features/user/userSlice';
 import ButtonUI from '../UI/ButtonUI';
 import PaperUI from '../UI/PaperUI';
 import Spinner from '../Spinner';
@@ -11,10 +11,8 @@ import Spinner from '../Spinner';
 const UsersList = ({projectId, openModal, assignedUsers, unassignedUsers}) => {
   const dispatch = useDispatch();
 
-  // const { assignedUsers, unassignedUsers } = useSelector(state => state.user);
-
   useEffect(() => {
-    console.log("finding users")
+    // dispatch(userReset()) // could be causing wierd reset interactions
     dispatch(getUsersAdmin({projectId}));
   }, []);
 
@@ -30,39 +28,43 @@ const UsersList = ({projectId, openModal, assignedUsers, unassignedUsers}) => {
           Users assigned to this project.
         </Typography>
         <PaperUI className="paper users-list">
-          {assignedUsers.map((assigned, index) => (
-            <ListItem
-              className={`users-list-item`}
-              key={index}
-            >
-              <ListItemIcon>
-                <TiUser />
-                <span className="">
-                  {assigned.role === "Admin" ? (
-                    <span className="">[A]</span>
-                  ) : assigned.role === "Project Manager" ? (
-                    <span className="">[PM]</span>
-                  ) : (
-                    <span className="">[D]</span>
-                  )}
-                </span>
-              </ListItemIcon>
-              <ListItemText
-                primary={
-                  <span className='user-name'>
-                    <Typography
-                      variant='body2'
-                      // passHref
-                      // href={`/users/${assigned.id}`}
-                    >
-                      {`${assigned.l_name}, ${assigned.f_name}`}
-                    </Typography>
-                  </span>
-                }
+          {assignedUsers.length > 0 ? (<>
+            {assignedUsers.map((assigned, index) => (
+              <ListItem
+                className={`users-list-item`}
+                key={index}
               >
-              </ListItemText>
-            </ListItem>
-          ))}
+                <ListItemIcon>
+                  <TiUser />
+                  <span className="">
+                    {assigned.role === "Admin" ? (
+                      <span className="">[A]</span>
+                    ) : assigned.role === "Project Manager" ? (
+                      <span className="">[PM]</span>
+                    ) : (
+                      <span className="">[D]</span>
+                    )}
+                  </span>
+                </ListItemIcon>
+                <ListItemText
+                  primary={
+                    <span className='user-name'>
+                      <Typography
+                        variant='body2'
+                        // passHref
+                        // href={`/users/${assigned.id}`}
+                      >
+                        {`${assigned.l_name}, ${assigned.f_name}`}
+                      </Typography>
+                    </span>
+                  }
+                >
+                </ListItemText>
+              </ListItem>
+            ))}
+          </>) : (
+            <div className="list-msg">No assigned personnel found...</div>
+          )}
         </PaperUI>
         <ButtonUI
           variant="outlined"
