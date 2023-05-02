@@ -19,7 +19,7 @@ const updateAssignmentListsAdmin = async (projectId,) => {
 
 const updateAndSaveProjectPersonnelList = async (projectId, assignedUsers, unassignedUsers) => {
   // TODO: get project detail and all tickets belonging to this project, place into tickets [] and project into {}
-  console.log("***Project Service for SSR***");
+  console.log("***Project Service for POSTDATA***");
   let formData = {assignedUsers, unassignedUsers};
   console.log("project_id")
   console.log(projectId)

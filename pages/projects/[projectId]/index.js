@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import store from '@/redux/store';
 import { logout } from "@/redux/features/auth/authSlice";
+import { getProject, rehydrate } from '@/redux/features/project/projectSlice';
 import { toast } from 'react-toastify';
 import { FaPlusCircle } from 'react-icons/fa';
 import { Typography } from '@mui/material';
@@ -15,7 +16,6 @@ import ManagePersonnelModal from '@/components/modals/ManagePersonnelModal';
 import MyTicketsList from '@/components/lists/MyTicketsList';
 import UsersList from '@/components/lists/UsersList';
 import Description from '@/components/details/Description';
-import { getProject, rehydrate } from '@/redux/features/project/projectSlice';
 import PaperUI from '@/components/UI/PaperUI';
 
 const Project = ({initialState, token}) => {
