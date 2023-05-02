@@ -12,7 +12,7 @@ const UsersList = ({projectId, openModal, assignedUsers, unassignedUsers}) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // dispatch(userReset()) // could be causing wierd reset interactions
+    dispatch(userReset()); // could be causing wierd reset interactions
     dispatch(getUsersAdmin({projectId}));
   }, []);
 
