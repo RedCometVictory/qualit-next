@@ -36,11 +36,12 @@
     }
   }
   &__sub-header {
-    // background-color: lightcoral;
+    line-height: normal;
     @include flex(row, space-between, center);
     max-width: 1280px;
     // padding: 0.275rem;
     padding: 0.275rem 1rem;
+    flex-wrap: wrap;
     .title {
       // background-color: yellowgreen;
     }
@@ -89,6 +90,7 @@
     }
     .right {
       width: 100%;
+      margin: 1rem 0 0 0;
       // margin: 0 0 0 0.75rem;
       flex-shrink: 3;
       @include flex(row, flex-end, center);

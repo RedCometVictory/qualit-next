@@ -1,18 +1,16 @@
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from 'react';
+import { useDispatch } from "react-redux";
 import { TiUser } from "react-icons/ti";
-import { Box, Drawer, Divider, Input, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
+import { ListItem, ListItemIcon, ListItemText, Typography } from '@mui/material';
 import { userReset, getUsersAdmin } from '@/redux/features/user/userSlice';
 import ButtonUI from '../UI/ButtonUI';
 import PaperUI from '../UI/PaperUI';
-import Spinner from '../Spinner';
 
 const UsersList = ({projectId, openModal, assignedUsers, unassignedUsers}) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(userReset()); // could be causing wierd reset interactions
+    dispatch(userReset());
     dispatch(getUsersAdmin({projectId}));
   }, []);
 
@@ -51,8 +49,6 @@ const UsersList = ({projectId, openModal, assignedUsers, unassignedUsers}) => {
                     <span className='user-name'>
                       <Typography
                         variant='body2'
-                        // passHref
-                        // href={`/users/${assigned.id}`}
                       >
                         {`${assigned.l_name}, ${assigned.f_name}`}
                       </Typography>
