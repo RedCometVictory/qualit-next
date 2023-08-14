@@ -1,3 +1,4 @@
+// TODO: consider deleting this file as it isi not used
 import nc from 'next-connect';
 import { onError, onNoMatch } from '@/utils/ncOptions';
 import { verifAuth, authRoleDev } from '@/utils/verifAuth';

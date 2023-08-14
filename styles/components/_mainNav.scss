@@ -45,6 +45,7 @@
   &__content-group {
     &.upper {
       margin: 1rem 0 0 0;
+      pointer-events: none;
       &.desktop {
         display: none;
       }

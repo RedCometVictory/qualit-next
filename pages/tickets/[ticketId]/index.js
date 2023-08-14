@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { FaRegWindowClose, FaUserEdit } from "react-icons/fa";
 import { FaPlusCircle, FaRegEdit } from 'react-icons/fa';
-import { Typography } from '@mui/material';
+import { Divider, Typography } from '@mui/material';
 import { logout } from "@/redux/features/auth/authSlice";
 import { getTicket, deleteTicketNote, rehydrate } from "@/redux/features/project/projectSlice";
 import ButtonUI from '@/components/UI/ButtonUI';
@@ -61,6 +61,18 @@ const Ticket = ({initialState, token}) => {
 
   const editAssignedUserHandler = () => {
     setAssignModal(assignModal = true);
+  };
+
+  const TicketStatsBox = (title, value) => {
+    return (
+      <PaperUI
+      className="detail__description paper"
+    >
+      <Typography variant="h4">{title}</Typography>
+      <Divider />
+      <Typography variant="body1">{value}</Typography>
+    </PaperUI>
+    )
   };
 
   return (

@@ -140,7 +140,8 @@ const paginateTicketComments = async (ticket_id, pageNumber, itemsPerPage, order
 };
 
 
-
+/*
+TODO: createTicketaComment does the desired action; consider deleting this block
 const createTicketUpload = async (ticket_id, formData) => {
   // TODO: extract the form data image into via multipart/form
   let servicedData = await createUpdateUploadForm(formData);
@@ -153,12 +154,26 @@ const createTicketUpload = async (ticket_id, formData) => {
   console.log("----- END project service -----")
   return result;
 };
+*/
 
-const updateProject = async (project_id, formData) => {
-  const res = await putData(`/projects/${project_id}`, formData);
+const updateProject = async (formData, projectId, router) => {
+  const res = await putData(`/projects/${projectId}`, formData);
   const result = res.data;
+  router.push(`/projects/${projectId}`);
   // localStorage.setItem("qual__project", JSON.stringify(result.project));
   // TODO: place updated project data into project {} and save new state into LS qual__project
+  console.log("***Project Service***");
+  console.log(result)
+  console.log("----- END project service -----")
+  return result;
+};
+
+const updateTicket = async (formData, ticketId, router) => {
+  const res = await putData(`/tickets/${ticketId}`, formData);
+  const result = res.data;
+  router.push(`/tickets/${ticketId}`);
+  // localStorage.setItem("qual__project", JSON.stringify(result.project));
+  // TODO: place updated ticket data into ticket {} and save new state into LS qual__project
   console.log("***Project Service***");
   console.log(result)
   console.log("----- END project service -----")
@@ -181,17 +196,6 @@ const deleteTicketNote = async (ticket_id, note_id) => {
 // * Below functions have not been implemented
 // * Below functions have not been implemented
 // * Below functions have not been implemented
-
-const updateTicket = async (ticket_id, formData) => {
-  const res = await putData(`/tickets/${ticket_id}`, formData);
-  const result = res.data;
-  // localStorage.setItem("qual__project", JSON.stringify(result.project));
-  // TODO: place updated ticket data into ticket {} and save new state into LS qual__project
-  console.log("***Project Service***");
-  console.log(result)
-  console.log("----- END project service -----")
-  return result;
-};
 
 const updateTicketComment = async (ticket_id, comment_id, formData) => {
   const res = await putData(`/tickets/${ticket_id}/comment/${comment_id}`, formData);
@@ -288,8 +292,9 @@ const projectService = {
   paginateMyProjects,
   paginateMyTickets,
   paginateTicketComments,
-  createTicketUpload,
+  // createTicketUpload,
   updateProject,
+  updateTicket,
   updateDevAssignedTicket,
   deleteTicketNote,
   updateTicket,

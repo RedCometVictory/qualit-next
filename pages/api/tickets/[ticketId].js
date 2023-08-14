@@ -5,7 +5,7 @@ import { pool } from '@/config/db';
 import { singleISODate } from '@/utils/toISODate';
 
 export const config = {
-  api: { bodyParser: false }
+  api: { bodyParser: true }
 };
 
 const handler = nc({onError, onNoMatch});
@@ -98,6 +98,25 @@ handler.get(async (req, res) => {
       history: ticketHistory.rows,
       page: 1,
       pages: count
+    }
+  });
+});
+
+handler.put(async (req, res) => {
+  const { ticketId } = req.query;
+  const { title, description, status, priority, type, deadline } = req.body;
+
+  let updatedByTimeStamp = new Date();
+  let updatedTicket = await pool.query('UPDATE tickets SET title = $1, description = $2, status = $3, priority = $4, type = $5, deadline = $6, updated_at = $7 WHERE id = $8;', [title, description, status, priority, type, deadline, updatedByTimeStamp, ticketId]);
+
+  if (updatedTicket.rowCount === 0 || updatedTicket === null) {
+    throw new Error('Failed to update ticket.');
+  };
+
+  return res.status(201).json({
+    status: "Success! Updated ticket.",
+    data: {
+      ticket: updatedTicket.rows[0]
     }
   });
 });
