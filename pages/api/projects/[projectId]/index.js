@@ -5,14 +5,28 @@ import { pool } from '@/config/db';
 import { singleISODate } from '@/utils/toISODate';
 
 export const config = {
-  api: { bodyParser: false }
+  api: { bodyParser: true }
 };
 
 const handler = nc({onError, onNoMatch});
 // handler.use(verifAuth, authRoleDev);
 handler.use(verifAuth);
 
-// * get list of tickets for dashboard and for project details
+/*
+CREATE TABLE members(
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  -- active BOOLEAN DEFAULT true NOT NULL,
+  -- ['assigned','reassigned','removed']
+  status VARCHAR(120),
+  user_id UUID,
+  project_id UUID,
+  FOREIGN KEY(user_id) REFERENCES users(id),
+  FOREIGN KEY(project_id) REFERENCES projects(id),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT NULL
+);
+*/
+// * get list of tickets for dashboard and get project details
 handler.get(async (req, res) => {
   const { projectId } = req.query;
   const { id, role } = req.user;
@@ -76,6 +90,25 @@ handler.get(async (req, res) => {
       tickets: projectTickets.rows,
       page: 1,
       pages: count
+    }
+  });
+});
+
+handler.put(async (req, res) => {
+  // const { id } = req.user;
+  const { projectId } = req.query;
+  const { title, description, github_url, site_url } = req.body;
+
+  let updatedByTimeStamp = new Date();
+  let updatedProject = await pool.query('UPDATE projects SET title = $1, description = $2, github_url = $3, site_url = $4, updated_at = $5 WHERE id = $6;', [title, description, github_url, site_url, updatedByTimeStamp, projectId]);
+
+  if (updatedProject.rowCount === 0 || updatedProject === null) {
+    throw new Error('Failed to update project.');
+  }
+  return res.status(201).json({
+    status: "Success! Updated project.",
+    data: {
+      project: updatedProject.rows[0]
     }
   });
 });

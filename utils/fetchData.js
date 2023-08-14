@@ -86,8 +86,8 @@ export const postFileData = async (url, postData) => {
 export const putData = async (url, putData) => {
   const res = await fetch(`${baseUrl}/api/${url}`, {
     method: 'PUT',
-    mode: 'cors',
-    cache: 'no-cache',
+    // mode: 'cors',
+    // cache: 'no-cache',
     credentials: 'include',
     headers: {
       'Accept': 'application/json',

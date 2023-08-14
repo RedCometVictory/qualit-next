@@ -1,8 +1,10 @@
 import { useRouter } from "next/router";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import Cookies from 'js-cookie';
 import store from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
+import { logout } from "@/redux/features/auth/authSlice";
 import { getProject, updateProject, rehydrate } from "@/redux/features/project/projectSlice";
 import { Divider, FormControl, FormControlLabel, FormLabel, InputLabel, Radio, RadioGroup, TextareaAutosize, TextField, Typography } from "@mui/material";
 import PaperUI from "@/components/UI/PaperUI";
@@ -13,14 +15,11 @@ import DetailLayout from "@/components/layouts/DetailLayout";
 const initialProjectState = {title: "", description: "", github_url: "", site_url: "", owner: ""};
 
 const EditProject = ({initialState, token}) => {
-  // ability to read from a list of employees, select one PM (and multiple devs to be assigned to this project)
-  // title, description (limit 360 characters), github_url, site_url, owner (auto created as the person who creates the project, via their own user id), created_at
-  //TODO: slug should either say "project" or "ticket" to decide which is to be edited, instead if index.js this file should be named [id].js so the url reads "/edit/project-or-ticket/project-or-ticket-id"
   const router = useRouter();
   const dispatch = useDispatch();
   const { id } = useSelector(state => state.auth);
   const { project } = useSelector(state => state.project);
-  let [formData, setFormData] = useState(project || initialProjectState || {});
+  let [formData, setFormData] = useState(initialProjectState);
   const [hasMounted, setHasMounted] = useState(false);
 
   let { title, description, github_url, site_url, owner } = formData;
@@ -35,11 +34,22 @@ const EditProject = ({initialState, token}) => {
   
   useEffect(() => {
     dispatch(rehydrate(initialState.project))
-  }, [dispatch, initialState])
+  }, [dispatch, initialState]);
   
   useEffect(() => {
     setHasMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (project) {
+      setFormData({
+        title: project.title || "",
+        description: project.description || "",
+        github_url: project.github_url || "",
+        site_url: project.site_url || ""
+      })
+    }
+  }, [project]);
   
   if (!hasMounted) {
     return null;
@@ -57,97 +67,125 @@ const EditProject = ({initialState, token}) => {
 
   const submitProjectHandler = (e) => {
     e.preventDefault();
+    const projectId = project.id;
     console.log("submitting info for new project")
-    setFormData(formData.owner = id);
-    owner = id // use state may need to be let not const
-    return console.log(formData);
-    // dispatch(editProject({formData, router}));
+    // setFormData(formData.owner = id);
+
+    // owner = id; // use state may need to be let not const
+    console.log(formData);
+    // return console.log(formData);
+    dispatch(updateProject({formData, projectId, router}));
   };
 
   return (
     <section className="form__container edit">
-      <Typography
-        className="form__header" 
-        variant="body1"
-      >
-        <Typography className="form__heading" variant="h2">
-          Edit Project & Assign Members
-        </Typography>
-      </Typography>
-      <PaperUI
-        className="form__content my-form"
-      >
-        <form onSubmit={submitProjectHandler} className="form create-form">
-          <FormControl
-            className="form-control"
-            sx={{ m: 1, minWidth: 120 }}
-            size='small'
-          >
-            <Typography variant="body1" className="form__group set one">
-              <TextField
-                className="search-input"
-                type="text"
-                label="Title"
-                name="title"
-                value={title}
-                onChange={e => onChange(e)}
-                onKeyDown={e => textFieldHandler(e)}
-                size="small"
-                id="outlined-search-label"
-                required
-              />
-              <PaperUI
-                className="description-box box"
+      <div className="form__header">
+        <div className="form__info-box left">
+          <Typography variant="h2">Edit Project Details</Typography>
+          <div className="buttons">
+            <Link
+              href={`/my/projects`}
+              passHref
+            >
+              <ButtonUI
+                className="btn-one"
+                variant="contained"
+                color="primary"
               >
-                <TextareaAutosize
-                  className="project-description"
-                  minRows={3}
-                  maxRows={18}
-                  maxLength={720}
-                  placeholder="Add project description."
-                  name="description"
-                  value={description}
+                My Projects
+              </ButtonUI>
+            </Link>
+            <Link
+              href={`/projects/${project.id}`}
+              passHref
+            >
+              <ButtonUI
+                className="btn-one"
+                variant="contained"
+                color="primary"
+              >
+                Project Detail
+              </ButtonUI>
+            </Link>
+          </div>
+        </div>
+      </div>
+      <div className="form__content">
+        <PaperUI className="my-form">
+          <form onSubmit={submitProjectHandler} className="form create-form">
+            <FormControl
+              className="form-control"
+              sx={{ m: 1, minWidth: 120 }}
+              size='small'
+            >
+              <Typography variant="body1" className="form__group set one">
+                <TextField
+                  className="search-input"
+                  type="text"
+                  label="Title"
+                  name="title"
+                  value={title}
                   onChange={e => onChange(e)}
+                  onKeyDown={e => textFieldHandler(e)}
+                  size="small"
+                  id="outlined-search-label"
                   required
                 />
-              </PaperUI>
-            </Typography>
-            <Typography variant="body1" className="form__group set two">
-              <TextField
-                className="search-input"
-                type="text"
-                label="Github Url"
-                name="github_url"
-                value={github_url}
-                onChange={e => onChange(e)}
-                onKeyDown={e => textFieldHandler(e)}
-                size="small"
-                id="outlined-search-label"
-              />
-              <TextField
-                className="search-input"
-                type="text"
-                label="Website Url"
-                name="site_url"
-                value={site_url}
-                onChange={e => onChange(e)}
-                onKeyDown={e => textFieldHandler(e)}
-                size="small"
-                id="outlined-search-label"
-              />
-            </Typography>
-            <Typography variant="body1" className="form_group submit-btn">
-              <ButtonUI
-                variant='contained'
-                size="small"
-                type="submit"
-              >
-                Submit
-              </ButtonUI>
-            </Typography>
-          </FormControl>
-        </form>
-      </PaperUI>
+                <PaperUI
+                  className="description-box box"
+                >
+                  <TextareaAutosize
+                    className="project-description"
+                    minRows={3}
+                    maxRows={18}
+                    maxLength={720}
+                    placeholder="Add project description."
+                    name="description"
+                    value={description}
+                    onChange={e => onChange(e)}
+                    required
+                  />
+                </PaperUI>
+              </Typography>
+              <Typography variant="body1" className="form__group set two">
+                <TextField
+                  className="search-input"
+                  type="text"
+                  label="Github Url"
+                  name="github_url"
+                  value={github_url}
+                  // value={project.github_url}
+                  onChange={e => onChange(e)}
+                  onKeyDown={e => textFieldHandler(e)}
+                  size="small"
+                  id="outlined-search-label"
+                />
+                <TextField
+                  className="search-input"
+                  type="text"
+                  label="Website Url"
+                  name="site_url"
+                  value={site_url}
+                  // value={project.site_url}
+                  onChange={e => onChange(e)}
+                  onKeyDown={e => textFieldHandler(e)}
+                  size="small"
+                  id="outlined-search-label"
+                />
+              </Typography>
+              <Typography variant="body1" className="form_group submit-btn">
+                <ButtonUI
+                  variant='contained'
+                  size="small"
+                  type="submit"
+                >
+                  Submit
+                </ButtonUI>
+              </Typography>
+            </FormControl>
+          </form>
+        </PaperUI>
+      </div>
     </section>
   )
 };

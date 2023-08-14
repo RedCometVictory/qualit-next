@@ -111,7 +111,7 @@ export const getTicket = createAsyncThunk(
 );
 
 export const createProject = createAsyncThunk(
-  'project/post/Project',
+  'project/post/Project-Create',
   async ({formData, router}, thunkAPI) => {
     try {
       return await projectService.createProject(formData, router);
@@ -236,6 +236,8 @@ export const paginateTicketComments = createAsyncThunk(
   }
 );
 
+/*
+TODO: this action is not used (instead create ticket comment does the desired operation); consider deleting.
 export const createTicketUpload = createAsyncThunk(
   'project/post/Ticket-Upload',
   async ({ticket_id, formData}, thunkAPI) => {
@@ -253,12 +255,13 @@ export const createTicketUpload = createAsyncThunk(
     }
   }
 );
+*/
 
 export const updateProject = createAsyncThunk(
   'project/put/Project-Update',
-  async ({project_id, formData}, thunkAPI) => {
+  async ({formData, projectId, router}, thunkAPI) => {
     try {
-      return await projectService.updateProject(project_id, formData);
+      return await projectService.updateProject(formData, projectId, router);
     } catch (err) {
       const message =
         (err.response &&
@@ -267,6 +270,24 @@ export const updateProject = createAsyncThunk(
         err.message ||
         err.toString()
       toast.error("Failed to update project details.", {theme: "colored", toastId: "UpdateProjectError"});
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const updateTicket = createAsyncThunk(
+  'project/put/Ticket-Update',
+  async ({formData, ticketId, router}, thunkAPI) => {
+    try {
+      return await projectService.updateTicket(formData, ticketId, router);
+    } catch (err) {
+      const message =
+        (err.response &&
+          err.response.data &&
+          err.response.data.message) ||
+        err.message ||
+        err.toString()
+      toast.error("Failed to update ticket details.", {theme: "colored", toastId: "UpdateTicketError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -311,24 +332,6 @@ export const deleteTicketNote = createAsyncThunk(
 // * Below functions have not been implemented
 // * Below functions have not been implemented
 // * Below functions have not been implemented
-
-export const updateTicket = createAsyncThunk(
-  'project/put/Ticket-Update',
-  async ({ticket_id, formData}, thunkAPI) => {
-    try {
-      return await projectService.updateTicket(ticket_id, formData);
-    } catch (err) {
-      const message =
-        (err.response &&
-          err.response.data &&
-          err.response.data.message) ||
-        err.message ||
-        err.toString()
-      toast.error("Failed to update ticket details.", {theme: "colored", toastId: "UpdateTicketError"});
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
 
 export const updateTicketComment = createAsyncThunk(
   'project/put/Ticket-Update',

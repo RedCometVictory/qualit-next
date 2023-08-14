@@ -1,10 +1,14 @@
 import { useRouter } from "next/router";
+import Link from "next/link";
 import { useEffect, useState } from "react";
-import dayjs from "dayjs";
+import Cookies from "js-cookie";
+import store from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
+import dayjs from "dayjs";
 import { MobileDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { getTicket, editTicket } from "@/redux/features/project/projectSlice";
+import { logout } from "@/redux/features/auth/authSlice";
+import { getTicket, updateTicket, rehydrate } from "@/redux/features/project/projectSlice";
 import { Divider, FormControl, FormControlLabel, FormLabel, InputLabel, Radio, RadioGroup, TextareaAutosize, TextField, Typography } from "@mui/material";
 import PaperUI from "@/components/UI/PaperUI";
 import ButtonUI from "@/components/UI/ButtonUI";
@@ -86,14 +90,11 @@ const initialTicketState = {title: "", description: "", notes: [], status: "", p
   we can then safely use this to construct our profileData
  */
 const EditTicket = ({initialState, token}) => {
-  // ability to read from a list of employees, select one PM (and multiple devs to be assigned to this project)
-  // title, description (limit 360 characters), github_url, site_url, owner (auto created as the person who creates the project, via their own user id), created_at
-  //TODO: slug should either say "project" or "ticket" to decide which is to be edited, instead if index.js this file should be named [id].js so the url reads "/edit/project-or-ticket/project-or-ticket-id"
   const router = useRouter();
   const dispatch = useDispatch();
   const { id } = useSelector(state => state.auth);
   const { ticket } = useSelector(state => state.project);
-  let [formData, setFormData] = useState(ticket || initialTicketState || {});
+  let [formData, setFormData] = useState(initialTicketState);
   const [value, setValue] = useState(dayjs("2023-08-12T21:11:54"));
   const [hasMounted, setHasMounted] = useState(false);
 
@@ -114,15 +115,33 @@ const EditTicket = ({initialState, token}) => {
   useEffect(() => {
     setHasMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (ticket) {
+      setFormData({
+        title: ticket.title || "",
+        description: ticket.description || "",
+        status: ticket.status || "",
+        priority: ticket.priority || "",
+        type: ticket.type || "",
+        deadline: ticket.deadline || ""
+      })
+    }
+  }, [ticket]);
   
   if (!hasMounted) return null;
 
+  // const dateChangeHandler = (newValue) => {
+  //   setValue(newValue);
+  // };
   const dateChangeHandler = (newValue) => {
-    setValue(newValue);
+    setFormData(formData = {...formData, deadline: newValue.$d.toISOString()});
+    console.log(formData);
   };
   
   const onChange = e => setFormData({...formData, [e.target.name]: e.target.value})
-
+  // console.log(formData);
+  
   const textFieldHandler = (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -131,134 +150,227 @@ const EditTicket = ({initialState, token}) => {
     // return;
   };
 
-  const submitTicketHandler = (e) => {
+  const submitEditTicketHandler = (e) => {
     e.preventDefault();
-    console.log("submitting info for new project")
-    setFormData(formData.owner = id);
-    owner = id // use state may need to be let not const
-    return console.log(formData);
-    // dispatch(editTicket({formData, router}));
+    const ticketId = ticket.id;
+    // console.log("submitting info for new project")
+    // setFormData(formData.owner = id);
+    // owner = id // use state may need to be let not const
+    // return console.log(formData);
+    dispatch(updateTicket({formData, ticketId, router}));
   };
 
   return (
-    <section className="edit">
-      <FormControl style={{width: '100%'}}>
-        <div className="modal__ticket">
-          <div className="modal__ticket--container">
-            <PaperUI
-              className="ticket-paper box"
+    <section className="form__container edit">
+      <div className="form__header">
+        <div className="form__info-box left">
+          <Typography variant="h2">Edit Ticket Details</Typography>
+          <div className="buttons">
+            <Link
+              href={`/my/tickets`}
+              passHref
             >
-              <div className="sub-box one">
-                <TextField
-                  className='ticket-title'
-                  variant="standard"
-                  label="Ticket Title"
-                />
-                <TextareaAutosize
-                  className='ticket-description'
-                  maxRows={6}
-                  minRows={3}
-                  placeholder="Ticket description."
-                />
-              </div>
-              <div className="sub-box two">
-                <Upload />
-              </div>
-            </PaperUI>
-          </div>
-          <div className="modal__radio-selects">
-            <div className="modal__radio-group status">
-              <FormLabel
-                aria-label="status-radio-buttons-group"
-                defaultValue="new"
-                name="status-radio-buttons-group"
+              <ButtonUI
+                className="btn-one"
+                variant="contained"
+                color="primary"
               >
-                Status
-              </FormLabel>
-              <RadioGroup
-                row
-                defaultValue="New"
+                My Tickets
+              </ButtonUI>
+            </Link>
+            <Link
+              href={`/tickets/${ticket.id}`}
+              passHref
+            >
+              <ButtonUI
+                className="btn-one"
+                variant="contained"
+                color="primary"
               >
-                <FormControlLabel value="New" control={<Radio />} label="New"/>
-                <FormControlLabel value="Open" control={<Radio />} label="Open"/>
-                <FormControlLabel value="On Hold" control={<Radio />} label="On Hold"/>
-                <FormControlLabel value="In Progress" control={<Radio />} label="In Progress"/>
-                <FormControlLabel value="Closed" control={<Radio />} label="Closed"/>
-                <FormControlLabel value="Unconfirmed" control={<Radio />} label="Unconfirmed"/>
-              </RadioGroup>
-            </div>
-            <Divider />
-            <div className="modal__radio-group priority">
-              <FormLabel
-                aria-label="status-radio-buttons-group"
-                defaultValue="new"
-                name="status-radio-buttons-group"
-              >
-                Priority
-              </FormLabel>
-              <RadioGroup
-                row
-                defaultValue="High"
-              >
-                <FormControlLabel value="Urgent" control={<Radio />} label="Urgent"/>
-                <FormControlLabel value="High" control={<Radio />} label="High"/>
-                <FormControlLabel value="Medium" control={<Radio />} label="Medium"/>
-                <FormControlLabel value="Low" control={<Radio />} label="Low"/>
-                <FormControlLabel value="None" control={<Radio />} label="None"/>
-              </RadioGroup>
-            </div>
-            <Divider />
-            <div className="modal__radio-group type">
-              <FormLabel
-                aria-label="status-radio-buttons-group"
-                defaultValue="new"
-                name="status-radio-buttons-group"
-              >
-                Type
-              </FormLabel>
-              <RadioGroup
-                row
-                defaultValue="Bug"
-              >
-                <FormControlLabel value="Bug" control={<Radio />} label="Bug"/>
-                <FormControlLabel value="Breaking Change" control={<Radio />} label="Breaking Change"/>
-                <FormControlLabel value="Discussion" control={<Radio />} label="Discussion"/>
-                <FormControlLabel value="Error" control={<Radio />} label="Error"/>
-                <FormControlLabel value="Enhancement" control={<Radio />} label="Enhancement"/>
-                <FormControlLabel value="Feature Request" control={<Radio />} label="Feature Request"/>
-                <FormControlLabel value="Needs Investigation" control={<Radio />} label="Needs Investigation"/>
-                <FormControlLabel value="Question" control={<Radio />} label="Question"/>
-                <FormControlLabel value="Release" control={<Radio />} label="Release"/>
-                <FormControlLabel value="Regression" control={<Radio />} label="Regression"/>
-                <FormControlLabel value="Security" control={<Radio />} label="Security"/>
-                <FormControlLabel value="Misc" control={<Radio />} label="Misc"/>
-              </RadioGroup>
-            </div>
-          </div>
-          <Divider />
-          <div className="modal__date-picker">
-            <h4 className="date-picker-header">Date Deadline (Optional):</h4>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <MobileDatePicker
-                label="Date Deadline"
-                inputFormat="MM/DD/YYYY"
-                value={value}
-                onChange={dateChangeHandler}
-                renderInput={(params) => <TextField {...params}/>}
-              />
-            </LocalizationProvider>
+                Ticket Detail
+              </ButtonUI>
+            </Link>
           </div>
         </div>
-        <div className="modal__actions">
-          <ButtonUI
-            variant="contained"
-          >
-            Submit
-          </ButtonUI>
-        </div>
-      </FormControl>
+      </div>
+      <div className="form__content">
+        <PaperUI className="my-form">
+          <form onSubmit={submitEditTicketHandler} className="form create-form">
+            <FormControl
+              className="form-control"
+              sx={{ m: 1, minWidth: 120 }}
+              size='small'
+            >
+              <div className="modal__ticket">
+                <div className="modal__ticket--container">
+                  <PaperUI className="ticket-paper box">
+                    <div className="sub-box one">
+                      <TextField
+                        className='ticket-title'
+                        variant="standard"
+                        // label="Ticket Title"
+
+
+                        // className="search-input"
+                        type="text"
+                        label="Title"
+                        name="title"
+                        value={title}
+                        onChange={e => onChange(e)}
+                        onKeyDown={e => textFieldHandler(e)}
+                        size='small'
+                        id="outlined-search-label"
+                        required
+                      />
+                      <TextareaAutosize
+                        className='ticket-description'
+                        // maxRows={6}
+                        // minRows={3}
+                        // placeholder="Ticket description."
+
+                        // className="project-description"
+                        minRows={3}
+                        maxRows={18}
+                        maxLength={720}
+                        placeholder="Add ticket description."
+                        name="description"
+                        value={description}
+                        onChange={e => onChange(e)}
+                        required
+                      />
+                    </div>
+                  </PaperUI>
+                </div>
+                <div className="modal__radio-selects">
+                  <div className="modal__radio-group status">
+                    <FormLabel
+                      aria-label="status-radio-buttons-group"
+                      defaultValue="new"
+                      name="status-radio-buttons-group"
+                    >
+                      Status
+                    </FormLabel>
+                    <RadioGroup
+                      row
+                      name="status"
+                      value={status}
+                      // defaultValue={status}
+                      // defaultValue="New"
+
+
+                      // label="Github Url"
+                      onChange={e => onChange(e)}
+                      // onKeyDown={e => textFieldHandler(e)}
+                      // size="small"
+                      // id="outlined-search-label"
+                    >
+                      <FormControlLabel value="New" control={<Radio />} label="New"/>
+                      <FormControlLabel value="Open" control={<Radio />} label="Open"/>
+                      <FormControlLabel value="On Hold" control={<Radio />} label="On Hold"/>
+                      <FormControlLabel value="In Progress" control={<Radio />} label="In Progress"/>
+                      <FormControlLabel value="Closed" control={<Radio />} label="Closed"/>
+                      <FormControlLabel value="Unconfirmed" control={<Radio />} label="Unconfirmed"/>
+                    </RadioGroup>
+                  </div>
+                  <Divider />
+                  <div className="modal__radio-group priority">
+                    <FormLabel
+                      aria-label="status-radio-buttons-group"
+                      defaultValue="new"
+                      name="status-radio-buttons-group"
+                    >
+                      Priority
+                    </FormLabel>
+                    <RadioGroup
+                      row
+                      // defaultValue="High"
+                      name="priority"
+                      value={priority}
+                      // defaultValue={priority}
+
+
+                      // label="Github Url"
+                      onChange={e => onChange(e)}
+                      // onKeyDown={e => textFieldHandler(e)}
+                      // size="small"
+                      // id="outlined-search-label"
+                    >
+                      <FormControlLabel value="Urgent" control={<Radio />} label="Urgent"/>
+                      <FormControlLabel value="High" control={<Radio />} label="High"/>
+                      <FormControlLabel value="Medium" control={<Radio />} label="Medium"/>
+                      <FormControlLabel value="Low" control={<Radio />} label="Low"/>
+                      <FormControlLabel value="None" control={<Radio />} label="None"/>
+                    </RadioGroup>
+                  </div>
+                  <Divider />
+                  <div className="modal__radio-group type">
+                    <FormLabel
+                      aria-label="status-radio-buttons-group"
+                      // defaultValue="new"
+                      name="status-radio-buttons-group"
+                    >
+                      Type
+                    </FormLabel>
+                    <RadioGroup
+                      row
+                      // defaultValue="Bug"
+                      name="type"
+                      value={type}
+                      // defaultValue={type}
+
+
+                      // label="Github Url"
+                      onChange={e => onChange(e)}
+                      // onKeyDown={e => textFieldHandler(e)}
+                      // size="small"
+                      // id="outlined-search-label"
+                    >
+                      <FormControlLabel value="Bug" control={<Radio />} label="Bug"/>
+                      <FormControlLabel value="Breaking Change" control={<Radio />} label="Breaking Change"/>
+                      <FormControlLabel value="Discussion" control={<Radio />} label="Discussion"/>
+                      <FormControlLabel value="Error" control={<Radio />} label="Error"/>
+                      <FormControlLabel value="Enhancement" control={<Radio />} label="Enhancement"/>
+                      <FormControlLabel value="Feature Request" control={<Radio />} label="Feature Request"/>
+                      <FormControlLabel value="Needs Investigation" control={<Radio />} label="Needs Investigation"/>
+                      <FormControlLabel value="Question" control={<Radio />} label="Question"/>
+                      <FormControlLabel value="Release" control={<Radio />} label="Release"/>
+                      <FormControlLabel value="Regression" control={<Radio />} label="Regression"/>
+                      <FormControlLabel value="Security" control={<Radio />} label="Security"/>
+                      <FormControlLabel value="Misc" control={<Radio />} label="Misc"/>
+                    </RadioGroup>
+                  </div>
+                </div>
+                <Divider />
+                <div className="modal__date-picker">
+                  <h4 className="date-picker-header">Date Deadline (Optional):</h4>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <MobileDatePicker
+                      label="Date Deadline"
+                      inputFormat="MM/DD/YYYY"
+                      // value={value}
+                      name='deadline'
+                      value={deadline}
+                      onChange={dateChangeHandler}
+                      renderInput={(params) => <TextField {...params}/>}
+                    />
+                  </LocalizationProvider>
+                </div>
+              </div>
+              <div className="modal__actions">
+                <ButtonUI
+                  variant="contained"
+                  type="submit"
+                  sx={{ color: 'primary.text' }}
+                >
+                  Submit
+                </ButtonUI>
+              </div>
+            </FormControl>
+          </form>
+        </PaperUI>
+      </div>
     </section>
-  )
+  );
 };
 export default EditTicket;
 export const getServerSideProps = async (context) => {
@@ -297,6 +409,7 @@ export const getServerSideProps = async (context) => {
     }
   } catch (err) {
     console.error(err);
+    console.log("attempting redirect edit ticket")
     return {
       redirect: {
         destination: "/signin",

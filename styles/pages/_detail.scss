@@ -28,7 +28,7 @@
     .buttons {
       margin: 1rem 0 0 0;
       // cursor: pointer;
-      @include flex(row, space-evenly, center);
+      @include flex(row, flex-start, center);
       .btn-one {
         // cursor: pointer;
         margin: 0 0.75rem 0 0;

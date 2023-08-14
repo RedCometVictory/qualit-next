@@ -14,8 +14,14 @@
   }
   &__container {
     // margin: 0 auto;
-    padding: 0 1rem 0 1rem;
+    // padding: 0 1rem 0 1rem;
+    // padding: 1.5rem 0 1.275rem;
+    // padding: 1rem 0 1.275rem;
+    padding: 0rem 0 3.275rem 0;
     width: 100%;
+    overflow-y: scroll;
+    // scrollbar-width: none;
+    scrollbar-width: thin;
   }
   &__new-construct {
     width: 100%;
@@ -27,16 +33,27 @@
     width: 100%;
     max-width: 1280px;
     // max-width: 60vw;
-    padding: 1rem 1rem;
+    // padding: 1rem 1rem;
     margin: 0;
+    // padding: 1rem;
   }
-  &__heading {
+  &__info-box {
+    padding: 1rem 1rem;
+    .buttons {
+      margin: 1rem 0 0 0;
+      @include flex(row, flex-start, center);
+      .btn-one {
+        margin: 0 0.75rem 0 0;
+      }
+    }
   }
   &__content {
     width: 100%;
     // max-width: 60vw;
     // margin: 0 auto;
-    &.my-form {
+    padding: 1.5rem 1rem 1.275rem;
+    
+    .my-form {
       margin: 0 auto;
       background-color: var(--primary-color);
     }
@@ -75,16 +92,24 @@
   .form {
     &__container {
       padding: 0 0 0 62px;
-      margin: 0 0 0 2rem;
+      // padding: 0rem 0 1.275rem 62px;
+      // margin: 0 0 0 2rem;
     }
     &__header {
-      padding: 1rem 0 1rem 0;
+      // padding: 1rem 0 1rem 0;
     }
     &__content {
-      max-width: 60vw;
+      max-width: 100vw;
       &.my-form {
         margin: initial;
       }
+    }
+  }
+}
+@media (min-width: 1080px) {
+  .form {
+    &__content {
+      max-width: 60vw;
     }
   }
 }

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { createProject } from "@/redux/features/project/projectSlice";
 import { FormControl, InputLabel, TextareaAutosize, TextField, Typography } from "@mui/material";
@@ -49,88 +50,101 @@ const NewProject = () => {
 
   return (
     <section className="form__container">
-      <Typography
-        className="form__header" 
-        variant="body1"
-      >
-        <Typography className="form__heading" variant="h3">
+    <div className="form__header">
+      <div className="form__info-box">
+        <Typography variant="h2">
           New Project
         </Typography>
-      </Typography>
-      <PaperUI
-        className="form__content my-form"
-      >
-        <form onSubmit={submitProjectHandler} className="form create-form">
-          <FormControl
-            className="form-control"
-            sx={{ m: 1, minWidth: 120 }}
-            size='small'
+        <div className="buttons">
+          <Link
+            href={`/my/projects`}
+            passHref
           >
-            <Typography variant="body1" className="form__group set one">
-              <TextField
-                className="search-input"
-                type="text"
-                label="Title"
-                name="title"
-                value={title}
-                onChange={e => onChange(e)}
-                onKeyDown={e => textFieldHandler(e)}
-                size="small"
-                id="outlined-search-label"
-                required
-              />
-              <PaperUI
-                className="description-box box"
-              >
-                <TextareaAutosize
-                  className="project-description"
-                  minRows={3}
-                  maxRows={18}
-                  maxLength={720}
-                  placeholder="Add project description."
-                  name="description"
-                  value={description}
+            <ButtonUI
+              className="btn-one"
+              variant="contained"
+              color="primary"
+            >
+              My Projects
+            </ButtonUI>
+          </Link>
+        </div>
+      </div>
+    </div>
+      <div className="form__content">
+        <PaperUI className="my-form">
+          <form onSubmit={submitProjectHandler} className="form create-form">
+            <FormControl
+              className="form-control"
+              sx={{ m: 1, minWidth: 120 }}
+              size='small'
+            >
+              <Typography variant="body1" className="form__group set one">
+                <TextField
+                  className="search-input"
+                  type="text"
+                  label="Title"
+                  name="title"
+                  value={title}
                   onChange={e => onChange(e)}
+                  onKeyDown={e => textFieldHandler(e)}
+                  size="small"
+                  id="outlined-search-label"
                   required
                 />
-              </PaperUI>
-            </Typography>
-            <Typography variant="body1" className="form__group set two">
-              <TextField
-                className="search-input"
-                type="text"
-                label="Github Url"
-                name="github_url"
-                value={github_url}
-                onChange={e => onChange(e)}
-                onKeyDown={e => textFieldHandler(e)}
-                size="small"
-                id="outlined-search-label"
-              />
-              <TextField
-                className="search-input"
-                type="text"
-                label="Website Url"
-                name="site_url"
-                value={site_url}
-                onChange={e => onChange(e)}
-                onKeyDown={e => textFieldHandler(e)}
-                size="small"
-                id="outlined-search-label"
-              />
-            </Typography>
-            <Typography variant="body1" className="form_group submit-btn">
-              <ButtonUI
-                variant='contained'
-                size="small"
-                type="submit"
-              >
-                Submit
-              </ButtonUI>
-            </Typography>
-          </FormControl>
-        </form>
-      </PaperUI>
+                <PaperUI
+                  className="description-box box"
+                >
+                  <TextareaAutosize
+                    className="project-description"
+                    minRows={3}
+                    maxRows={18}
+                    maxLength={720}
+                    placeholder="Add project description."
+                    name="description"
+                    value={description}
+                    onChange={e => onChange(e)}
+                    required
+                  />
+                </PaperUI>
+              </Typography>
+              <Typography variant="body1" className="form__group set two">
+                <TextField
+                  className="search-input"
+                  type="text"
+                  label="Github Url"
+                  name="github_url"
+                  value={github_url}
+                  onChange={e => onChange(e)}
+                  onKeyDown={e => textFieldHandler(e)}
+                  size="small"
+                  id="outlined-search-label"
+                />
+                <TextField
+                  className="search-input"
+                  type="text"
+                  label="Website Url"
+                  name="site_url"
+                  value={site_url}
+                  onChange={e => onChange(e)}
+                  onKeyDown={e => textFieldHandler(e)}
+                  size="small"
+                  id="outlined-search-label"
+                />
+              </Typography>
+              <Typography variant="body1" className="form_group submit-btn">
+                <ButtonUI
+                  variant='contained'
+                  size="small"
+                  type="submit"
+                >
+                  Submit
+                </ButtonUI>
+              </Typography>
+            </FormControl>
+          </form>
+        </PaperUI>
+      </div>
     </section>
   )
 };
