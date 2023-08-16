@@ -102,7 +102,7 @@ const createTicketComment = async (ticket_id, formData) => {
   // localStorage.setItem("qual__project", JSON.stringify(result.project));
   return result;
 };
-// TODO: need to implement for my projects page
+// TODO: need to implement for my projects page - currently not being used - instead getProject() does the operation
 const paginateMyProjects = async (keyword, pageNumber, itemsPerPage, orderBy) => {
   console.log("pagination service")
   const res = await getData(`/projects/search?keyword=${keyword}&pageNumber=${pageNumber}&itemsPerPage=${itemsPerPage}&orderBy=${orderBy}`); // ----

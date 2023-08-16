@@ -46,6 +46,8 @@ handler.get(async (req, res) => {
   // TODO: test this code using jest
   if (ticketDetails.rowCount > 0) {
     ticketDetails.rows[0].created_at = singleISODate(ticketDetails.rows[0].created_at);
+    ticketDetails.rows[0].deadline = singleISODate(ticketDetails.rows[0].deadline);
+    ticketDetails.rows[0].updated_at = singleISODate(ticketDetails.rows[0].updated_at);
   };
 
   if (ticketDetails.rows[0].user_id) {
@@ -112,6 +114,16 @@ handler.put(async (req, res) => {
   if (updatedTicket.rowCount === 0 || updatedTicket === null) {
     throw new Error('Failed to update ticket.');
   };
+
+  // if (updatedTicket.rowCount > 0) {
+  //   updatedTicket.rows[0].created_at = singleISODate(updatedTicket.rows[0].created_at);
+  // };
+
+  // if (updatedTicket.rowCount > 0) {
+  //   let updated_at = updatedTicket.rows[0].updated_at;
+  //   let newDate = singleISODate(updated_at);
+  //   updatedTicket.rows[0].updated_at = newDate;
+  // };
 
   return res.status(201).json({
     status: "Success! Updated ticket.",

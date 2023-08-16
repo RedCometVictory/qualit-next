@@ -17,7 +17,9 @@ let initialState = {
   // users: typeof window !== "undefined" && localStorage.getItem('qual__users') ? JSON.parse(localStorage.getItem('qual__users')) : [],
   user: typeof window !== "undefined" && localStorage.getItem('qual__user') ? JSON.parse(localStorage.getItem('qual__user')) : initUserState,
   loading: false,
-  error: ""
+  error: "",
+  page: null,
+  pages: null
 };
 
 export const getUsersAdmin = createAsyncThunk(
@@ -25,6 +27,24 @@ export const getUsersAdmin = createAsyncThunk(
   async ({projectId}, thunkAPI) => {
     try {
       return await userService.getUsersAdmin(projectId);
+    } catch (err) {
+      const message =
+        (err.response &&
+          err.response.data &&
+          err.response.data.message) ||
+        err.message ||
+        err.toString()
+      toast.error("Failed to list users.", {theme: "colored", toastId: "getUsersToastId"});
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const getUsersListAdmin = createAsyncThunk(
+  'user/get/List-All-Admin',
+  async ({keyword, pageNumber, itemsPerPage, orderBy, cookie}, thunkAPI) => {
+    try {
+      return await userService.getUsersListAdmin(keyword, pageNumber, itemsPerPage, orderBy, cookie);
     } catch (err) {
       const message =
         (err.response &&
@@ -189,6 +209,8 @@ export const userSlice = createSlice({
       state.user = action.payload.user;
       state.loading = action.payload.loading;
       state.error = action.payload.error;
+      state.page = action.payload.page;
+      state.pages = action.payload.pages;
     },
     updateAssignmentListsAdmin: (state, { payload }) => {
       console.log(payload)
@@ -227,6 +249,21 @@ export const userSlice = createSlice({
       state.loading = false;
       state.error = 'failed';
     },
+    [getUsersListAdmin.pending]: (state) => {
+      state.error = '';
+      state.loading = true;
+    },
+    [getUsersListAdmin.fulfilled]: (state, { payload }) => {
+      state.users = payload.users;
+      state.page = payload.page;
+      state.pages = payload.pages;
+      state.loading = false;
+    },
+    [getUsersListAdmin.rejected]: (state) => {
+      state.loading = false;
+      state.error = 'failed';
+    },
+
     [updateAndSaveProjectPersonnelList.pending]: (state) => {
       state.error = '';
       state.loading = true;

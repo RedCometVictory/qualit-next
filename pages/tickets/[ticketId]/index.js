@@ -63,15 +63,17 @@ const Ticket = ({initialState, token}) => {
     setAssignModal(assignModal = true);
   };
 
-  const TicketStatsBox = (title, value) => {
+  const TicketStatsBox = ({title, value}) => {
     return (
-      <PaperUI
-      className="detail__description paper"
-    >
-      <Typography variant="h4">{title}</Typography>
-      <Divider />
-      <Typography variant="body1">{value}</Typography>
-    </PaperUI>
+      <div className="status-column">
+        <PaperUI
+          className="detail__description paper"
+        >
+          <Typography variant="h4">{title}</Typography>
+          <Divider />
+          <Typography variant="body1">{value ? value : "N/A"}</Typography>
+        </PaperUI>
+      </div>
     )
   };
 
@@ -135,6 +137,20 @@ const Ticket = ({initialState, token}) => {
       <div className="detail__content detail-page ticket-page">
         <section className="left">
           <Description description={ticket.description} />
+          <div className="detail__status-container">
+            <div className="status-group one">
+              <TicketStatsBox title={"Status:"} value={ticket.status}/>
+              <TicketStatsBox title={"Priority:"} value={ticket.priority}/>
+            </div>
+            <div className="status-group two">
+              <TicketStatsBox title={"Type:"} value={ticket.type}/>
+              <TicketStatsBox title={"Submitter:"} value={ticket.submitter}/>
+            </div>
+            <div className="status-group three">
+              <TicketStatsBox title={"Deadline:"} value={ticket.deadline}/>
+              <TicketStatsBox title={"Last Updated On:"} value={ticket.updated_at}/>
+            </div>
+          </div>
           <div className="detail__actions">
             <ButtonUI
               variant='contained'

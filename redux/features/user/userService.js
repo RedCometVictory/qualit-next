@@ -1,8 +1,16 @@
-import { getData, postData, putData, deleteData } from '@/utils/fetchData';
+import { getData, getDataSSR, postData, putData, deleteData } from '@/utils/fetchData';
 
 
 const getUsersAdmin = async (projectId) => {
   const res = await getData(`/users?projectId=${projectId}`);
+  const result = res.data;
+  // localStorage.setItem('qual__users', JSON.stringify(result));
+  console.log(result)
+  return result;
+};
+
+const getUsersListAdmin = async (keyword, pageNumber, itemsPerPage, orderBy, cookie) => {
+  const res = await getDataSSR(`/users/list-all?keyword=${keyword}&pageNumber=${pageNumber}&itemsPerPage=${itemsPerPage}&orderBy=${orderBy}`, cookie);
   const result = res.data;
   // localStorage.setItem('qual__users', JSON.stringify(result));
   console.log(result)
@@ -74,6 +82,7 @@ const updateUserAdmin = async (user_id, userForm) => {
 
 const userService = {
   getUsersAdmin,
+  getUsersListAdmin,
   updateAssignmentListsAdmin,
   updateAndSaveProjectPersonnelList,
   // ++++++++++++++++++
