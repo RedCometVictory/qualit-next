@@ -1,24 +1,23 @@
-import { useRouter } from 'next/router';
-import Cookies from 'js-cookie';
-import Link from 'next/link';
+import { useRouter } from "next/router";
+import Link from "next/link";
+import Cookies from "js-cookie";
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
-import { FaGithub } from 'react-icons/fa';
+import {useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import { BsSearch } from "react-icons/bs";
-import store from '@/redux/store';
+import store from "@/redux/store";
 import { logout } from "@/redux/features/auth/authSlice";
-import { getProjects, rehydrate } from '@/redux/features/project/projectSlice';
-import DetailLayout from "@/components/layouts/DetailLayout";
+import { getUsersListAdmin, rehydrate } from "@/redux/features/user/userSlice";
 import { Typography, TextField, Select, MenuItem } from '@mui/material';
 import PaperUI from '@/components/UI/PaperUI';
-import ButtonUI from "@/components/UI/ButtonUI";
+import ButtonUI from '@/components/UI/ButtonUI';
 import Paginate from '@/components/nav/Paginate';
+import DetailLayout from '@/components/layouts/DetailLayout';
 
-const MyProjects = ({initialState, token}) => {
+const UsersList = ({initialState, token}) => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { projects, page, pages, loading: projectLoading } = useSelector(state => state.project); // ---
+  const { users, page, pages, loading: userLoading } = useSelector(state => state.user);
   const [keyword, setKeyword] = useState(initialState.keyword || '');
   let [orderBy, setOrderBy] = useState(true);
   let [currentPage, setCurrentPage] = useState(page || 1);
@@ -35,7 +34,7 @@ const MyProjects = ({initialState, token}) => {
   }, []);
   
   useEffect(() => {
-    dispatch(rehydrate(initialState.project))
+    dispatch(rehydrate(initialState.user))
   }, [dispatch, initialState])
 
   useEffect(() => {
@@ -44,8 +43,8 @@ const MyProjects = ({initialState, token}) => {
 
   if (!hasMounted) return null;
 
-  const paginatingTickets = () => {
-    dispatch(getProjects({keyword, pageNumber: currentPage, itemsPerPage, orderBy}));
+  const paginatingUsers = () => {
+    dispatch(getUsersListAdmin({keyword, pageNumber: currentPage, itemsPerPage, orderBy}));
   };
 
   const updateText = (e) => {
@@ -65,9 +64,9 @@ const MyProjects = ({initialState, token}) => {
       if (keyword.length > 0) {
         setKeyword(keyword = e.target.value);
         // resetInput(e);
-        paginatingTickets();
+        paginatingUsers();
       } else {
-        paginatingTickets();
+        paginatingUsers();
       }
     }
   }
@@ -76,7 +75,7 @@ const MyProjects = ({initialState, token}) => {
     // setIsLoading(true);
     if (!value) setOrderBy(orderBy = false);
     if (value) setOrderBy(orderBy = true);
-    paginatingTickets();
+    paginatingUsers();
   };
 
   const itemCountChange = (e) => {
@@ -86,22 +85,22 @@ const MyProjects = ({initialState, token}) => {
     }
     if (currentPage === 0 || currentPage < 0) setCurrentPage(1);
     setItemsPerPage(Number(e.target.value)); // 12 or 20, dropdown
-    paginatingTickets();
+    paginatingUsers();
   };
 
   const pageChange = (chosenPage) => {
     setCurrentPage(currentPage = chosenPage);
-    paginatingTickets();
+    paginatingUsers();
   };
 
   return (
-    <section className="ticket detail detail__container">
+    <section className='ticket detail detail__container'>
       <div className="detail__header">
         <div className="detail__info-box left">
-          <Typography variant="h2">My Projects</Typography>
+          <Typography variant="h2">Users List</Typography>
           <div className="buttons">
             <Link
-              href={`/projects/new-project`}
+              href={`/my/account`}
               passHref
             >
               <ButtonUI
@@ -109,26 +108,9 @@ const MyProjects = ({initialState, token}) => {
                 variant="contained"
                 color="primary"
               >
-                New Project
+                My Account
               </ButtonUI>
             </Link>
-            {/* additional button should be for editing users information */}
-            {/* {user?.role === "Admin" ? (
-              <Link
-                // href={`/projects/${project.id}/delete`}
-                href={`/projects/${project.id}/edit`}
-                passHref
-              >
-                <ButtonUI
-                  variant="contained"
-                  color="primary"
-                >
-                  Delete
-                </ButtonUI>
-              </Link>
-            ) : (
-              null
-            )} */}
           </div>
         </div>
         <div className="detail__info-box right">
@@ -185,7 +167,7 @@ const MyProjects = ({initialState, token}) => {
                 <TextField
                   type="text"
                   className="search-input"
-                  label="search title..."
+                  label="search for user..."
                   // placeholder="search title..."
                   value={keyword}
                   onChange={e => updateText(e)}
@@ -205,7 +187,7 @@ const MyProjects = ({initialState, token}) => {
             </span>
           </div>
           <div className='option-group two'>
-            <div className="item-count my-projects-list">Projects: {pages}</div>          
+            <div className="item-count my-projects-list">Users: {pages}</div>          
           </div>
           <div className="option-group three">
             <Paginate
@@ -219,83 +201,88 @@ const MyProjects = ({initialState, token}) => {
           </div>
         </div>
         <div className="detail__roster-slide">
-          <section className="detail__roster-header my-ticket">
-            <h4>Title</h4>
-            {/* <h4>Description</h4> */}
-            <h4>Github</h4>
-            <h4>Owner</h4>
-            <h4>Website</h4>
-            <h4>Tickets</h4>
+          <section className="detail__roster-header users-list">
+            <h4>Full Name</h4>
+            <h4>Username</h4>
+            <h4>E-mail</h4>
+            <h4>Role</h4>
             <h4>Created On</h4>
-            <h4>Options</h4>
           </section>
           <section className="detail__roster">
-            {projects.map((project, index) => (
-              <PaperUI className="detail__roster-row my-ticket" key={project.id}>            
+            {users.map((user, index) => (
+              <PaperUI className="detail__roster-row users-list" key={user.id}>            
                 <div className="detail__roster-item-group">
                   <div className="detail__roster-item">
-                    {project.title}
-                  </div>
-                </div>
-                {/* <div className="detail__roster-item-group">
-                  <div className="detail__roster-item">
-                    {project.description}
-                  </div>
-                </div> */}
-                <div className="detail__roster-item-group">
-                  <div className="detail__roster-item">
-                    <a
-                      className='github-icon'
-                      href={project.github_url}
-                    >
-                      <FaGithub />
-                    </a>
-                  </div>
-                </div>
-                <div className="detail__roster-item-group">
-                  <div className="detail__roster-item">
-                    <span className="full-name">
-                      {project.f_name}{" "}{project.l_name}
+                    <span className="item">
+                      {/* <Link></Link> */}
+                      {user.f_name}{" "}{user.l_name}
                     </span>
                   </div>
                 </div>
                 <div className="detail__roster-item-group">
                   <div className="detail__roster-item">
-                    {project.site_url}
+                    <span className="item">
+                      {user.username}
+                    </span>
+                  </div>
+                </div>
+                {/* <div className="detail__roster-item-group">
+                  <div className="detail__roster-item">
+                    <a
+                      className='github-icon'
+                      href={"#"}
+                    >
+                    </a>
+                  </div>
+                </div> */}
+                <div className="detail__roster-item-group">
+                  <div className="detail__roster-item">
+                    <span className="item email">
+                      {user.email}
+                    </span>
                   </div>
                 </div>
                 <div className="detail__roster-item-group">
+                  <div className="detail__roster-item">
+                    <span className="item">
+                      {user.role}
+                    </span>
+                  </div>
+                </div>
+                {/* <div className="detail__roster-item-group">
                   <div className="detail__roster-item">
                     {project.ticket_count}
                   </div>
-                </div>
+                </div> */}
                 <div className="detail__roster-item-group">
                   <div className="detail__roster-item">
-                    {project.created_at}
+                    <span className="item">
+                      {user.created_at}
+                    </span>
                   </div>
                 </div>
                 <div className="detail__roster-item-group">
                   <div className="detail__roster-item">
-                    <Typography
+                    {/* <Typography
                       className="option-link"
                       variant='body2'
                     >
                       <Link
-                        href={`/projects/${project.id}/edit`}
+                        href={`/#`}
                         passHref
                       >
                         Edit
                       </Link>
-                    </Typography>
+                    </Typography> */}
                     <Typography
                       className="option-link"
                       variant='body2'
                     >
                       <Link
-                        href={`/projects/${project.id}`}
+                        href={`/users/${user.id}/view`}
                         passHref
                       >
-                        View / Assign
+                        View
                       </Link>
                     </Typography>
                   </div>
@@ -307,9 +294,9 @@ const MyProjects = ({initialState, token}) => {
         </div>
       </div>
     </section>
-  );
+  )
 };
-export default MyProjects;
+export default UsersList;
 export const getServerSideProps = async (context) => {
   try {
     let token = context.req.cookies.qual__token;
@@ -333,7 +320,7 @@ export const getServerSideProps = async (context) => {
     // let userInfo = context.req.cookies.qual__user;
     // let ticketID = context.params.ticketId;
     let validCookieAuth = context.req ? { cookie: context.req.headers.cookie } : undefined;
-    await store.dispatch(getProjects({keyword: '', pageNumber: 1, itemsPerPage: 20, orderBy: true, cookie: validCookieAuth}));
+    await store.dispatch(getUsersListAdmin({keyword: '', pageNumber: 1, itemsPerPage: 20, orderBy: true, cookie: validCookieAuth}));
 
     return {
       props: {
@@ -354,6 +341,6 @@ export const getServerSideProps = async (context) => {
     }
   }
 };
-MyProjects.getLayout = function getLayout(MyProjects) {
-  return <DetailLayout>{MyProjects}</DetailLayout>
+UsersList.getLayout = function getLayout(UsersList) {
+  return <DetailLayout>{UsersList}</DetailLayout>
 };

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
-import { FaPlus, FaChevronRight } from 'react-icons/fa';
+import { FaPlus, FaChevronRight, FaUser, FaUsers } from 'react-icons/fa';
 import { AiOutlineProject } from 'react-icons/ai';
 import { ImTicket, ImExit, ImEnter } from 'react-icons/im';
 import { MdDashboard } from 'react-icons/md';
@@ -21,6 +21,8 @@ const MainNav = ({openMenu, setOpenMenu}) => {
   const [hasMounted, setHasMounted] = useState(false);
 
   const isAdmin = "Admin";
+  const isProjMgr = "Project Manager";
+  const isDev = "Developer";
 
   useEffect(() => {
     setHasMounted(true);
@@ -39,13 +41,44 @@ const MainNav = ({openMenu, setOpenMenu}) => {
     }
   };
 
+  // TODO: consider re-using this block elsewhere
+  // const adminLinks = (
+  //   <li className="nav__link-item">
+  //     <div className="nav__link-group">
+  //       <div className="nav__link-icon">
+  //         <Link passHref href="/projects/new-project">
+  //           <Typography variant="body1">
+  //             <FaPlus />
+  //             <div className="tooltip">
+  //               <div className="right">
+  //                 <div className="text-content">
+  //                   <Typography
+  //                     variant="h3"
+  //                     color={'primary.tooltipText'}
+  //                     noWrap
+  //                   >
+  //                     New Project
+  //                   </Typography>
+  //                 </div>
+  //               </div>
+  //             </div>
+  //           </Typography>
+  //         </Link>
+  //       </div>
+  //       <Link passHref href="/projects/new-project">
+  //         <Typography className='nav__link' variant='h4' color={'primary.mainMenuText'}>New Project</Typography>
+  //       </Link>
+  //     </div>
+  //   </li>
+  // );
+
   const adminLinks = (
     <li className="nav__link-item">
       <div className="nav__link-group">
         <div className="nav__link-icon">
-          <Link passHref href="/projects/new-project">
+          <Link passHref href="/users">
             <Typography variant="body1">
-              <FaPlus />
+              <FaUsers />
               <div className="tooltip">
                 <div className="right">
                   <div className="text-content">
@@ -54,7 +87,7 @@ const MainNav = ({openMenu, setOpenMenu}) => {
                       color={'primary.tooltipText'}
                       noWrap
                     >
-                      New Project
+                      Users
                     </Typography>
                   </div>
                 </div>
@@ -62,8 +95,68 @@ const MainNav = ({openMenu, setOpenMenu}) => {
             </Typography>
           </Link>
         </div>
-        <Link passHref href="/projects/new-project">
-          <Typography className='nav__link' variant='h4' color={'primary.mainMenuText'}>New Project</Typography>
+        <Link passHref href="/users">
+          <Typography className='nav__link' variant='h4' color={'primary.mainMenuText'}>Users</Typography>
+        </Link>
+      </div>
+    </li>
+  );
+
+  const projectManagerLinks = (
+    <li className="nav__link-item">
+      <div className="nav__link-group">
+        <div className="nav__link-icon">
+          <Link passHref href="/users/teams">
+            <Typography variant="body1">
+              <FaUsers />
+              <div className="tooltip">
+                <div className="right">
+                  <div className="text-content">
+                    <Typography
+                      variant="h3"
+                      color={'primary.tooltipText'}
+                      noWrap
+                    >
+                      My Teams
+                    </Typography>
+                  </div>
+                </div>
+              </div>
+            </Typography>
+          </Link>
+        </div>
+        <Link passHref href="/users/teams">
+          <Typography className='nav__link' variant='h4' color={'primary.mainMenuText'}>My Teams</Typography>
+        </Link>
+      </div>
+    </li>
+  );
+
+  const devLinks = (
+    <li className="nav__link-item">
+      <div className="nav__link-group">
+        <div className="nav__link-icon">
+          <Link passHref href="/my/account">
+            <Typography variant="body1">
+              <FaUser />
+              <div className="tooltip">
+                <div className="right">
+                  <div className="text-content">
+                    <Typography
+                      variant="h3"
+                      color={'primary.tooltipText'}
+                      noWrap
+                    >
+                      My Account
+                    </Typography>
+                  </div>
+                </div>
+              </div>
+            </Typography>
+          </Link>
+        </div>
+        <Link passHref href="/my/account">
+          <Typography className='nav__link' variant='h4' color={'primary.mainMenuText'}>My Account</Typography>
         </Link>
       </div>
     </li>
@@ -224,6 +317,8 @@ const MainNav = ({openMenu, setOpenMenu}) => {
           <ul className={`nav__links ${openMenu ? "active" : ""}`}>
             {isAuthenticated && authLinks}
             {isAuthenticated && user.role === isAdmin && adminLinks}
+            {isAuthenticated && user.role === isProjMgr && projectManagerLinks}
+            {isAuthenticated && user.role === isDev && devLinks}
             {isAuthenticated ? (
               <li className="nav__link-item">
                 <div className="nav__link-group">

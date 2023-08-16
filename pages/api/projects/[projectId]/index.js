@@ -56,6 +56,11 @@ handler.get(async (req, res) => {
     projectDetails.rows[0].created_at = newDate;
   };
 
+  if (projectDetails.rowCount > 0) {
+    // projectDetails.rows[0].created_at = singleISODate(projectDetails.rows[0].created_at);
+    projectDetails.rows[0].updated_at = singleISODate(projectDetails.rows[0].updated_at);
+  };
+
   totalTickets = await pool.query('SELECT COUNT(id) FROM tickets WHERE project_id = $1;', [projectId]);
 
   count = totalTickets.rows[0].count;
@@ -105,6 +110,13 @@ handler.put(async (req, res) => {
   if (updatedProject.rowCount === 0 || updatedProject === null) {
     throw new Error('Failed to update project.');
   }
+
+  // if (updatedProject.rowCount > 0) {
+  //   let updated_at = updatedProject.rows[0].updated_at;
+  //   let newDate = singleISODate(updated_at);
+  //   updatedProject.rows[0].updated_at = newDate;
+  // };
+
   return res.status(201).json({
     status: "Success! Updated project.",
     data: {

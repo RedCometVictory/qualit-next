@@ -120,6 +120,24 @@
       }
     }
   }
+  &__status-container {
+    margin: 0.75rem 0 0;
+    .status-column {
+      width: 48%;
+      word-break: break-word;
+      // column-gap: 10px;
+      // row-gap: 10px;
+    }
+    .status-group {
+      @include flex(row, space-between, center);
+      &.one {
+        margin: 0 0 0.75rem;
+      }
+      &.two {
+        margin: 0 0 0.75rem;
+      }
+    }
+  }
   &__users {
     &.management-modal {
       
@@ -428,12 +446,28 @@
       width: 100%;
       justify-items: center;
     }
+    &.users-list {
+      min-width: 820px;
+      // background-color: var(--bg-card-primary);
+      display: grid;
+      // grid-template-columns: repeat(8, 1fr);
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      // grid-template-rows: repeat(2, 1fr);
+      padding: 0 0 8px 0;
+      border-bottom: 2px solid black;
+      grid-template-rows: 1fr;
+      grid-column-gap: 0px;
+      grid-row-gap: 0px;
+      width: 100%;
+      justify-items: center;
+    }
   }
   &__roster-row {
     &.my-project {
       padding: 1rem 0;
       display: grid;
-      grid-template-columns: repeat(8, 1fr);
+      grid-template-columns: repeat(8, 1fr); // ---
+      // grid-template-columns: repeat(6, minmax(0, 1fr));
       grid-template-rows: repeat(2, 1fr);
       grid-template-rows: 1fr;
       grid-column-gap: 0px;
@@ -452,6 +486,19 @@
       width: 100%;
       justify-items: center;
     }
+    &.users-list {
+      background-color: var(--primary-color);
+      padding: 1rem 0;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      // grid-template-columns: repeat(6, minmax(0, 1fr));
+      grid-template-rows: repeat(2, 1fr);
+      grid-template-rows: 1fr;
+      grid-column-gap: 0px;
+      grid-row-gap: 0px;
+      width: 100%;
+      justify-items: center;
+    }
   }
   // &__roster-item-group {}
   &__roster-item {
@@ -459,6 +506,10 @@
     text-align: center;
     white-space: break-spaces;
     word-break: break-word;
+    .item {
+      width: initial;
+    }
+    .email {}
     .option-link {
       &:first-child {
         margin: 0 0 0.4rem 0;
