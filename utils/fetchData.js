@@ -10,6 +10,8 @@ export const getDataSSR = async (url, header) => {
     headers: header
   });
   const data = await res.json();
+  console.log("my ~~~~~~~~~~~~~~~~~~~ dafta")
+  console.log(data)
   return data;
 };
 

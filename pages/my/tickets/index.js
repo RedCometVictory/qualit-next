@@ -344,7 +344,7 @@ const MyTickets = ({initialState, token}) => {
                 </div>
                 <div className="detail__roster-item-group">
                   <div className="detail__roster-item">
-                    {ticket.submitter}
+                    {ticket.f_name && ticket.l_name ? `${ticket.f_name} ${ticket.l_name}` : "N/A"}
                   </div>
                 </div>
                 <div className="detail__roster-item-group">
@@ -382,7 +382,7 @@ const MyTickets = ({initialState, token}) => {
                         href={`/tickets/${ticket.id}/edit`}
                         passHref
                       >
-                        Edit / Assign
+                        Edit
                       </Link>
                     </Typography>
                     <Typography

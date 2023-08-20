@@ -65,6 +65,18 @@ handler.get(async (req, res) => {
   // TODO: can switch order of tickets by deadline, to see which tickets need to be finished in order of first or last addistionally you can fllip a switch for the search bar in order to search for submitter instead of keyword in title
   let mainSearchQuery, keywordQuery, orderQuery, statusQuery, priorityQuery, typeQuery, submittedQuery, deadlineQuery;
   
+  const queryPromise = (query, ...values) => {
+    return new Promise((resolve, reject) => {
+      pool.query(query, values, (err, res) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(res);
+        }
+      })
+    })
+  };
+
   console.log("beginning queries")
   if (role === "Developer" || role === "Project Manager") {
     parametersUsed.push(id);
@@ -256,6 +268,13 @@ handler.get(async (req, res) => {
     totalTickets = await pool.query("SELECT COUNT(id) FROM tickets AS WHERE user_id = $1;", [id]);
   };
   if (role === "Admin") totalTickets = await pool.query("SELECT COUNT(id) FROM tickets;");
+
+  for (let i = 0; i < myTickets.rows.length; i++) {
+    const projectOwnerQuery = "SELECT f_name, l_name FROM users WHERE id = $1;";
+    const projectOwnerPromise = await queryPromise(projectOwnerQuery, myTickets.rows[i].submitter);
+    myTickets.rows[i] = { ...myTickets.rows[i], ...projectOwnerPromise.rows[0]}
+  };
+
   count = totalTickets.rows[0].count;
   Number(count);
   return res.status(200).json({

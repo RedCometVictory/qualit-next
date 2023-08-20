@@ -180,7 +180,7 @@ const Ticket = ({initialState, token}) => {
               Assigned Developer
             </Typography>
             <div className="notes-username">
-              <span className="username">{ticket.assignedUser}</span>
+              <span className="username">{ticket?.assignedUser ? ticket.assignedUser : "None"}</span>
               <FaUserEdit className='edit-icon' onClick={() => editAssignedUserHandler()}/>
             </div>
           </PaperUI>
