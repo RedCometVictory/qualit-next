@@ -15,7 +15,8 @@ let initialState = {
   unassignedUsers: [],
   assignedUsers: [],
   // users: typeof window !== "undefined" && localStorage.getItem('qual__users') ? JSON.parse(localStorage.getItem('qual__users')) : [],
-  user: typeof window !== "undefined" && localStorage.getItem('qual__user') ? JSON.parse(localStorage.getItem('qual__user')) : initUserState,
+  // user: typeof window !== "undefined" && localStorage.getItem('qual__user') ? JSON.parse(localStorage.getItem('qual__user')) : initUserState,
+  user: initUserState,
   loading: false,
   error: "",
   page: null,
@@ -58,6 +59,41 @@ export const getUsersListAdmin = createAsyncThunk(
   }
 );
 
+export const getUserAccount = createAsyncThunk(
+  'user/get/account',
+  async ({cookie}, thunkAPI) => {
+    try {
+      return await userService.getUserAccount(cookie);
+    } catch (err) {
+      const message =
+        (err.response &&
+          err.response.data &&
+          err.response.data.message) ||
+        err.message ||
+        err.toString()
+      toast.error("Failed to get user account.", {theme: "colored", toastId: "getUserToastId"});
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+export const getUserProfile = createAsyncThunk(
+  'user/get/profile',
+  async ({user_id, cookie}, thunkAPI) => {
+    try {
+      return await userService.getUserProfile(user_id, cookie);
+    } catch (err) {
+      const message =
+        (err.response &&
+          err.response.data &&
+          err.response.data.message) ||
+        err.message ||
+        err.toString()
+      toast.error("Failed to get user profile.", {theme: "colored", toastId: "getUserToastId"});
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const updateAndSaveProjectPersonnelList = createAsyncThunk(
   'user/update/Project-Personnel/user-assignments',
   async ({projectId, assignedUsers, unassignedUsers}, thunkAPI) => {
@@ -81,6 +117,23 @@ export const updateAndSaveProjectPersonnelList = createAsyncThunk(
   }
 );
 
+export const updateUserProfile = createAsyncThunk(
+  'user/put/update-profile',
+  async ({formData, userId, router}, thunkAPI) => {
+    try {
+      return await userService.updateUserProfile(formData, userId, router);
+    } catch (err) {
+      const message =
+        (err.response &&
+          err.response.data &&
+          err.response.data.message) ||
+        err.message ||
+        err.toString()
+      toast.error("Failed to update user information.", {theme: "colored", toastId: "updateUserToastId"});
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 
 
 // export const updateAssignmentListsAdmin = createAsyncThunk(
@@ -103,26 +156,11 @@ export const updateAndSaveProjectPersonnelList = createAsyncThunk(
 
 
 
-
-
+// ******************************
+// ******************************
+// ******************************
 // none of the below actions are currently being used:
-export const getUserProfile = createAsyncThunk(
-  'user/get/profile',
-  async (_, thunkAPI) => {
-    try {
-      return await userService.getUserProfile();
-    } catch (err) {
-      const message =
-        (err.response &&
-          err.response.data &&
-          err.response.data.message) ||
-        err.message ||
-        err.toString()
-      toast.error("Failed to get user profile.", {theme: "colored", toastId: "getUserToastId"});
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
+
 
 export const getUserProfileAdmin = createAsyncThunk(
   'user/get/profile-admin',
@@ -143,7 +181,7 @@ export const getUserProfileAdmin = createAsyncThunk(
 );
 
 
-
+// TODO: consider deleting
 export const updateUserInfo = createAsyncThunk(
   'user/put/info-update',
   async (userForm, thunkAPI) => {
@@ -278,19 +316,31 @@ export const userSlice = createSlice({
       state.loading = false;
       state.error = 'failed';
     },
-    // ++++++++++++++++++++++
+    [getUserAccount.pending]: (state) => {
+      state.error = '';
+      state.loading = true;
+    },
+    [getUserAccount.fulfilled]: (state, { payload }) => {
+      state.user = payload.user;
+      state.loading = false;
+    },
+    [getUserAccount.rejected]: (state) => {
+      state.loading = false;
+      state.error = 'failed';
+    },
     [getUserProfile.pending]: (state) => {
       state.error = '';
       state.loading = true;
     },
     [getUserProfile.fulfilled]: (state, { payload }) => {
-      state.userById = payload;
+      state.user = payload.user;
       state.loading = false;
     },
     [getUserProfile.rejected]: (state) => {
       state.loading = false;
       state.error = 'failed';
     },
+    // ++++++++++++++++++++++
     [getUserProfileAdmin.pending]: (state) => {
       state.error = '';
       state.loading = true;

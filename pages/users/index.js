@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import Cookies from "js-cookie";
 import { useEffect, useState } from 'react';
-import {useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { BsSearch } from "react-icons/bs";
 import store from "@/redux/store";

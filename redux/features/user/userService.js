@@ -17,6 +17,23 @@ const getUsersListAdmin = async (keyword, pageNumber, itemsPerPage, orderBy, coo
   return result;
 };
 
+const getUserAccount = async (cookie) => {
+  const res = await getDataSSR(`/users/user/my-account`, cookie);
+  let result = res.data;
+  console.log("my ^^^^^^^^^^^^ result")
+  console.log(result)
+  return result;
+};
+
+const getUserProfile = async (user_id, cookie) => {
+  const res = await getDataSSR(`/users/user/${user_id}`, cookie);
+  // localStorage.setItem('qual__user', JSON.stringify(result));
+  let result = res.data;
+  console.log("my ^^^^^^^^^^^^ result")
+  console.log(result)
+  return result;
+};
+
 const updateAssignmentListsAdmin = async (projectId,) => {
   // const res = await getData(`/users?projectId=${projectId}`);
   // const result = res.data;
@@ -42,14 +59,17 @@ const updateAndSaveProjectPersonnelList = async (projectId, assignedUsers, unass
   return result;
 };
 
-// ==============================
-
-const getUserProfile = async (card) => {
-  const res = await getData(`/users/me`);
-  localStorage.setItem('qual__user', JSON.stringify(result));
+const updateUserProfile = async (formData, userId, router) => {
+  const res = await putData(`/users/user/${userId}`, formData);
   let result = res;
+  localStorage.setItem('qual__user', JSON.stringify(result));
+  router.push(`/users/${userId}/view`);
   return result;
 };
+
+// ==============================
+
+
 
 const getUserProfileAdmin = async (user_id) => {
   const res = await getData(`/users/${user_id}`);
@@ -58,7 +78,7 @@ const getUserProfileAdmin = async (user_id) => {
   return result;
 };
 
-
+// TODO: consider deleting
 const updateUserInfo = async (userForm) => {
   const res = await putData(`/users/info`, userForm);
   let result = res;
@@ -85,8 +105,10 @@ const userService = {
   getUsersListAdmin,
   updateAssignmentListsAdmin,
   updateAndSaveProjectPersonnelList,
-  // ++++++++++++++++++
+  updateUserProfile,
+  getUserAccount,
   getUserProfile,
+  // ++++++++++++++++++
   getUserProfileAdmin,
   updateUserInfo,
   createUserProfile,

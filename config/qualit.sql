@@ -69,7 +69,7 @@ CREATE TABLE projects(
   -- owner is admin / submitter (user_id)
   owner UUID NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT NULL
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE users(
@@ -104,7 +104,7 @@ CREATE TABLE members(
   FOREIGN KEY(user_id) REFERENCES users(id),
   FOREIGN KEY(project_id) REFERENCES projects(id),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT NULL
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE tickets(
@@ -128,7 +128,7 @@ CREATE TABLE tickets(
   FOREIGN KEY(user_id) REFERENCES users(id),
   FOREIGN KEY(project_id) REFERENCES projects(id),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT NULL
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- user_id of user who made note
@@ -140,7 +140,7 @@ CREATE TABLE ticket_notes(
   FOREIGN KEY(user_id) REFERENCES users(id),
   FOREIGN KEY(ticket_id) REFERENCES tickets(id),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT NULL
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- create projects table first
@@ -158,7 +158,7 @@ CREATE TABLE messages(
   -- FOREIGN KEY(upload_id) REFERENCES uploads(id),
   -- FOREIGN KEY(notification_id) REFERENCES products(id) ON DELETE CASCADE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT NULL
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- attach to message table, user_id attached to user who receives the notif
@@ -189,7 +189,7 @@ CREATE TABLE histories(
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (ticket_id) REFERENCES tickets(id) ON DELETE CASCADE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT NULL
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- ALTER TABLE images DROP CONSTRAINT files_id_fkey;
@@ -216,7 +216,7 @@ CREATE TABLE boards(
   user_id UUID,
   FOREIGN KEY (user_id) REFERENCES users(id),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT NULL
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE columns(
@@ -229,7 +229,7 @@ CREATE TABLE columns(
   FOREIGN KEY (board_id) REFERENCES boards(id),
   FOREIGN KEY (user_id) REFERENCES users(id),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT NULL
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE cards(
@@ -246,5 +246,5 @@ CREATE TABLE cards(
   FOREIGN KEY (column_id) REFERENCES columns(id),
   FOREIGN KEY (user_id) REFERENCES users(id),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT NULL
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
