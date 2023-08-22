@@ -17,6 +17,7 @@ import Paginate from '@/components/nav/Paginate';
 const MyTickets = ({initialState, token}) => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const { user } = useSelector(state => state.auth); // ---
   const { tickets, page, pages, loading: projectLoading } = useSelector(state => state.project); // ---
   const [keyword, setKeyword] = useState(initialState.keyword || '');
   const [status, setStatus] = useState(initialState.status || '');
@@ -374,6 +375,7 @@ const MyTickets = ({initialState, token}) => {
                 </div>
                 <div className="detail__roster-item-group">
                   <div className="detail__roster-item">
+                  {user?.role === "Admin" || user?.role === "Project Manager" ? (
                     <Typography
                       className="option-link"
                       variant='body2'
@@ -385,6 +387,9 @@ const MyTickets = ({initialState, token}) => {
                         Edit
                       </Link>
                     </Typography>
+                  ) : (
+                    null
+                  )}
                     <Typography
                       className="option-link"
                       variant='body2'
@@ -393,7 +398,7 @@ const MyTickets = ({initialState, token}) => {
                         href={`/tickets/${ticket.id}`}
                         passHref
                       >
-                        View Details
+                        View
                       </Link>
                     </Typography>
                   </div>

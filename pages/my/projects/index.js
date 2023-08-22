@@ -18,6 +18,7 @@ import Paginate from '@/components/nav/Paginate';
 const MyProjects = ({initialState, token}) => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const { user } = useSelector(state => state.auth); // ---
   const { projects, page, pages, loading: projectLoading } = useSelector(state => state.project); // ---
   const [keyword, setKeyword] = useState(initialState.keyword || '');
   let [orderBy, setOrderBy] = useState(true);
@@ -100,21 +101,20 @@ const MyProjects = ({initialState, token}) => {
         <div className="detail__info-box left">
           <Typography variant="h2">My Projects</Typography>
           <div className="buttons">
-            <Link
-              href={`/projects/new-project`}
-              passHref
-            >
-              <ButtonUI
-                className="btn-one"
-                variant="contained"
-                color="primary"
-              >
-                New Project
-              </ButtonUI>
-            </Link>
-            {/* additional button should be for editing users information */}
-            {/* {user?.role === "Admin" ? (
+            {user?.role === "Admin" ? (<>
               <Link
+                href={`/projects/new-project`}
+                passHref
+              >
+                <ButtonUI
+                  className="btn-one"
+                  variant="contained"
+                  color="primary"
+                >
+                  New Project
+                </ButtonUI>
+              </Link>
+              {/* <Link
                 // href={`/projects/${project.id}/delete`}
                 href={`/projects/${project.id}/edit`}
                 passHref
@@ -125,10 +125,10 @@ const MyProjects = ({initialState, token}) => {
                 >
                   Delete
                 </ButtonUI>
-              </Link>
-            ) : (
+              </Link> */}
+            </>) : (
               null
-            )} */}
+            )}
           </div>
         </div>
         <div className="detail__info-box right">
@@ -276,17 +276,21 @@ const MyProjects = ({initialState, token}) => {
                 </div>
                 <div className="detail__roster-item-group">
                   <div className="detail__roster-item">
-                    <Typography
-                      className="option-link"
-                      variant='body2'
-                    >
-                      <Link
-                        href={`/projects/${project.id}/edit`}
-                        passHref
+                    {user?.role === "Admin" ? (
+                      <Typography
+                        className="option-link"
+                        variant='body2'
                       >
-                        Edit
-                      </Link>
-                    </Typography>
+                        <Link
+                          href={`/projects/${project.id}/edit`}
+                          passHref
+                        >
+                          Edit
+                        </Link>
+                      </Typography>
+                    ) : (
+                      null
+                    )}
                     <Typography
                       className="option-link"
                       variant='body2'
@@ -295,7 +299,7 @@ const MyProjects = ({initialState, token}) => {
                         href={`/projects/${project.id}`}
                         passHref
                       >
-                        View / Assign
+                        {user?.role === "Admin" ? ('View / Assign') : ('View')}
                       </Link>
                     </Typography>
                   </div>

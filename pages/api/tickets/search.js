@@ -114,7 +114,7 @@ handler.get(async (req, res) => {
     parametersUsed.push(limit);
     parametersUsed.push(offset);
 
-    console.log(mainSearchQuery);
+    // console.log(mainSearchQuery);
     console.log(parametersUsed);
     // if searching by order of ticket creation date
     // orderchoice date = true
@@ -134,8 +134,8 @@ handler.get(async (req, res) => {
     //   mainSearchQuery = mainSearchQuery.replace('$X', `$${i}`);
     // };
     // myTickets = await pool.query(mainSearchQuery, parametersUsed);
-    // console.log("mainSearchQuery");
-    // console.log(mainSearchQuery);
+    console.log("mainSearchQuery");
+    console.log(mainSearchQuery);
     // console.log("parametersUsed");
     // console.log(parametersUsed);
   };
@@ -256,7 +256,8 @@ handler.get(async (req, res) => {
   
   myTickets = await pool.query(mainSearchQuery, parametersUsed);
   console.log("my found tickets")
-  console.log(myTickets.rows[0])
+  // console.log(myTickets.rows[0])
+  console.log(myTickets.rows)
   console.log(myTickets.rows.length)
 
   for (let i = 0; i < myTickets.rows.length; i++) {
@@ -265,7 +266,7 @@ handler.get(async (req, res) => {
   };
 
   if (role === "Developer" || role === "Project Manager") {
-    totalTickets = await pool.query("SELECT COUNT(id) FROM tickets AS WHERE user_id = $1;", [id]);
+    totalTickets = await pool.query("SELECT COUNT(id) FROM tickets WHERE user_id = $1;", [id]);
   };
   if (role === "Admin") totalTickets = await pool.query("SELECT COUNT(id) FROM tickets;");
 

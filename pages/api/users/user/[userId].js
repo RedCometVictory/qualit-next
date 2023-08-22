@@ -12,6 +12,7 @@ const handler = nc({onError, onNoMatch});
 // handler.use(verifAuth, authRoleDev);
 handler.use(verifAuth);
 
+// accessed via getUserProfile()
 handler.get(async (req, res) => {
   const { id, role } = req.user;
   const { userId } = req.query;
@@ -40,8 +41,12 @@ handler.get(async (req, res) => {
     })
   };
 
+  console.log("3333333333333333333333333")
   userDetail = await pool.query("SELECT id, f_name, l_name, username, email, role, created_at FROM users WHERE id = $1;", [userId]);
 
+  console.log("44444444444444444444444")
+  console.log(userDetail.rows[0])
+  console.log("44444444444444444444444")
   if (userDetail.rowCount === 0 || userDetail === null) {
     throw new Error("Failed to find user information.");
   };
@@ -70,12 +75,48 @@ handler.get(async (req, res) => {
   return res.status(200).json({
     status: "Retrieved user information.",
     data: {
-      // user: userDetail.rows[0]
       user: {
         detail: userDetail.rows[0] ?? [],
         tickets: userTickets.rows ?? [],
         projects: userProjects.rows ?? []
       }
+    }
+  });
+});
+
+handler.put(async (req,res) => {
+  const { id, role: mySetRole} = req.user;
+  const { userId } = req.query;
+  const { f_name, l_name, username, email, role } = req.body;
+
+  let userDetail;
+  let userFound;
+  let updatedByTimeStamp = new Date();
+
+  userFound = await pool.query("SELECT id FROM users WHERE id = $1;", [id]);
+
+  if (mySetRole !== "Admin" && userFound.rowCount === 0) {
+    throw new Error("Failed to find your account.");
+  };
+
+  // if user is admin or owner of their own account then they can edit their account profile
+  if (mySetRole === "Admin") {
+    userDetail = await pool.query("UPDATE users SET f_name = $1, l_name = $2, username = $3, email = $4, role = $5, updated_at = $6 WHERE id = $7;", [f_name, l_name, username, email, role, updatedByTimeStamp, userId]);
+  };
+
+  // if not admin then updating own account, thus cannot change own role (unless admin)
+  if (userFound.rows[0].length > 0 && mySetRole !== "Admin") {
+    userDetail = await pool.query("UPDATE users SET f_name = $1, l_name = $2, username = $3, email = $4, updated_at = $5 WHERE id = $6;", [f_name, l_name, username, email, updatedByTimeStamp, userId]);
+  };
+
+  if (userDetail.rowCount === 0 || userDetail === null) {
+    throw new Error("Failed to find an account.");
+  };
+
+  return res.status(201).json({
+    status: "Updated user account information.",
+    data: {
+      user: userDetail.rows[0]
     }
   });
 });

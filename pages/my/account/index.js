@@ -70,18 +70,35 @@ const Account = ({initialState, token}) => {
                 Edit
               </ButtonUI>
             </Link>
-            <Link
-              href={`/users`}
-              passHref
-            >
-              <ButtonUI
-                className="btn-one"
-                variant="contained"
-                color="primary"
+
+            {user?.role === "Admin" ? (
+              <Link
+                href={`/users`}
+                passHref
               >
-                User List
-              </ButtonUI>
-            </Link>
+                <ButtonUI
+                  className="btn-one"
+                  variant="contained"
+                  color="primary"
+                >
+                  User List
+                </ButtonUI>
+              </Link>
+            ) : (
+              <Link
+                href={`/users/${user.id}/view`}
+                passHref
+              >
+                <ButtonUI
+                  className="btn-one"
+                  variant="contained"
+                  color="primary"
+                >
+                  View My Details
+                </ButtonUI>
+              </Link>
+            )}
+
             {/* {user?.role === "Admin" ? (
               <Link
                 // href={`/tickets/${ticket.id}/delete`}

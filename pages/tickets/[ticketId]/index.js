@@ -88,18 +88,20 @@ const Ticket = ({initialState, token}) => {
         <div className="detail__info-box left">
           <Typography variant="h2">Ticket Details</Typography>
           <div className="buttons">
-            <Link
-              href={`/tickets/${ticket.id}/edit`}
-              passHref
-            >
-              <ButtonUI
-                className="btn-one"
-                variant="contained"
-                color="primary"
+            {user?.role === "Admin" || user?.role === "Project Manager" ? (
+              <Link
+                href={`/tickets/${ticket.id}/edit`}
+                passHref
               >
-                Edit
-              </ButtonUI>
-            </Link>
+                <ButtonUI
+                  className="btn-one"
+                  variant="contained"
+                  color="primary"
+                >
+                  Edit
+                </ButtonUI>
+              </Link>
+            ) : (null)}
             {/* {user?.role === "Admin" ? (
               <Link
                 // href={`/tickets/${ticket.id}/delete`}
@@ -181,7 +183,9 @@ const Ticket = ({initialState, token}) => {
             </Typography>
             <div className="notes-username">
               <span className="username">{ticket?.assignedUser ? ticket.assignedUser : "None"}</span>
-              <FaUserEdit className='edit-icon' onClick={() => editAssignedUserHandler()}/>
+              {user?.role === "Developer" ? (null) : (
+                <FaUserEdit className='edit-icon' onClick={() => editAssignedUserHandler()}/>
+              )}
             </div>
           </PaperUI>
           <PaperUI className="detail__notes list-container paper">
@@ -192,7 +196,7 @@ const Ticket = ({initialState, token}) => {
                   <div className="list-item" key={index}>
                     <PaperUI className="item paper" >
                       <Typography variant='body2'>{item.note}</Typography>
-                        {user.id === item.user_id || user.role === "Admin" ? (
+                        {user?.id === item.user_id || user?.role === "Admin" ? (
                           <FaRegWindowClose className='item-icon' onClick={() => deleteNoteHandler(ticket.id, item.id)}/>
                         ) : (
                           null

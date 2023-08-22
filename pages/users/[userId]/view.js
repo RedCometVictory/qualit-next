@@ -15,6 +15,7 @@ import PaperUI from "@/components/UI/PaperUI";
 const UserView = ({initialState, token}) => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const { auth } = useSelector(state => state.auth);
   const { user, loading: userLoading } = useSelector(state => state.user);
   const { detail, tickets, projects } = user;
   const [hasMounted, setHasMounted] = useState(false);
@@ -92,7 +93,7 @@ const UserView = ({initialState, token}) => {
           <Typography variant="h2">User Details</Typography>
           <div className="buttons">
             <Link
-              href={`/users/${user.id}/edit`}
+              href={`/users/${detail.id}/edit`}
               passHref
             >
               <ButtonUI
@@ -190,17 +191,17 @@ const UserView = ({initialState, token}) => {
             null
           )} */}
 
-          <PaperUI className="detail__notes list-devs paper">
+          {/* <PaperUI className="detail__notes list-devs paper">
             <Typography variant='h3' className='sub-header'>
               Assigned Tickets
             </Typography>
             <div className="notes-username">
-              {/* <span className="username">{ticket.assignedUser}</span> */}
-              {/* <FaUserEdit className='edit-icon' onClick={() => editAssignedUserHandler()}/> */}
+              <span className="username">{ticket.assignedUser}</span>
+              <FaUserEdit className='edit-icon' onClick={() => editAssignedUserHandler()}/>
             </div>
-          </PaperUI>
+          </PaperUI> */}
           <PaperUI className="detail__notes list-container paper">
-            <Typography variant="h3" className="sub-header">Ticket Notes</Typography>
+            <Typography variant="h3" className="sub-header">Assigned Tickets</Typography>
             <div className="notes-list">
               {tickets.length > 0 ? (<>
                 {tickets.map((ticket, index) => (
@@ -229,9 +230,12 @@ const UserView = ({initialState, token}) => {
         </section>
         <section className="right ticket-detail">
           <PaperUI className="right-container paper user-proj-list">
+            <Typography variant='h3' className='sub-header user-view-proj-header'>
+              Assigned Projects
+            </Typography>
             {projects.length > 0 ? (<>
               {projects.map((project, index) => (
-                <div className="" key={index}>
+                <div className="notes-list" key={index}>
                   <ProjectsList
                     // key={index}
                     id={project?.id}
