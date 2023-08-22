@@ -118,6 +118,10 @@
           background-color: var(--primary-color);
           &.user-proj-list {
             padding: 0.725rem;
+            .user-view-proj-header {
+              text-align: center;
+              margin: 0 0 0.56rem 0;
+            }
           }
           .user-proj-item {
             margin: 0 0 0.725rem 0;
@@ -232,6 +236,9 @@
     .sub-header {
       text-align: center;
       margin: 0 0 0.56rem 0;
+      // &.user-view-proj-header {
+      //   margin: 0 0 0.56rem 0;
+      // }
     }
     .notes-list {
       // overflow: hidden;

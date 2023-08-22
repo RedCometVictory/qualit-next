@@ -90,6 +90,7 @@ CREATE TABLE users(
   project_id UUID,
   FOREIGN KEY(project_id) REFERENCES projects(id),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- members assigned, reassigned, or for some other reason - removed

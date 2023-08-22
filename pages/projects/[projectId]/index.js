@@ -73,18 +73,20 @@ const Project = ({initialState, token}) => {
         <div className="detail__info-box left">
           <Typography variant="h2">Project Details</Typography>
           <div className="buttons">
-            <Link
-              href={`/projects/${project.id}/edit`}
-              passHref
-            >
-              <ButtonUI
-                className="btn-one"
-                variant="contained"
-                color="primary"
+            {user?.role === "Admin" || user?.role === "Project Manager" ? (
+              <Link
+                href={`/projects/${project.id}/edit`}
+                passHref
               >
-                Edit
-              </ButtonUI>
-            </Link>
+                <ButtonUI
+                  className="btn-one"
+                  variant="contained"
+                  color="primary"
+                >
+                  Edit
+                </ButtonUI>
+              </Link>
+            ) : (null)}
             {/* {user?.role === "Admin" ? (
               <Link
                 // href={`/projects/${project.id}/delete`}
@@ -126,12 +128,14 @@ const Project = ({initialState, token}) => {
             >
               <FaRegEdit className='btn-icon'/> Edit Description
             </ButtonUI> */}
-            <ButtonUI
-              variant='contained'
-              onClick={() => openNewTicketModal()}
-            >
-              <FaPlusCircle className='btn-icon'/> New Ticket
-            </ButtonUI>
+            {user?.role === "Admin" || user?.role === "Project Manager" ? (
+              <ButtonUI
+                variant='contained'
+                onClick={() => openNewTicketModal()}
+              >
+                <FaPlusCircle className='btn-icon'/> New Ticket
+              </ButtonUI>
+            ) : (null)}
           </div>
           {user.role === "Admin" && isAuthenticated ? (
             <div className="detail__users section">

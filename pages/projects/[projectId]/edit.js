@@ -17,7 +17,7 @@ const initialProjectState = {title: "", description: "", github_url: "", site_ur
 const EditProject = ({initialState, token}) => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { id } = useSelector(state => state.auth);
+  const { user } = useSelector(state => state.auth);
   const { project } = useSelector(state => state.project);
   let [formData, setFormData] = useState(initialProjectState);
   const [hasMounted, setHasMounted] = useState(false);
