@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import store from "@/redux/store";
+import { getDataSSR } from "@/utils/fetchData";
 import { logout } from "@/redux/features/auth/authSlice";
 import { getUserAccount, rehydrate } from "@/redux/features/user/userSlice";
 import { Divider, Typography } from "@mui/material";
@@ -12,7 +13,7 @@ import DetailLayout from "@/components/layouts/DetailLayout";
 import ButtonUI from "@/components/UI/ButtonUI";
 import PaperUI from "@/components/UI/PaperUI";
 
-const Account = ({initialState, token}) => {
+const Account = ({initialState, token, roleResult}) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { user, loading: userLoading } = useSelector(state => state.user);
@@ -71,7 +72,7 @@ const Account = ({initialState, token}) => {
               </ButtonUI>
             </Link>
 
-            {user?.role === "Admin" ? (
+            {roleResult === "Admin" ? (
               <Link
                 href={`/users`}
                 passHref
@@ -84,7 +85,9 @@ const Account = ({initialState, token}) => {
                   User List
                 </ButtonUI>
               </Link>
-            ) : (
+            ) : (null)}
+
+            {roleResult !== "Developer" ? (
               <Link
                 href={`/users/${user.id}/view`}
                 passHref
@@ -97,7 +100,7 @@ const Account = ({initialState, token}) => {
                   View My Details
                 </ButtonUI>
               </Link>
-            )}
+            ) : (null)}
 
             {/* {user?.role === "Admin" ? (
               <Link
@@ -167,12 +170,16 @@ export const getServerSideProps = async (context) => {
     };
 
     let validCookieAuth = context.req ? { cookie: context.req.headers.cookie } : undefined;
+    let userRole = await getDataSSR(`/auth/checkAuth`, validCookieAuth);
+    let roleResult = userRole?.data?.role;
+
     await store.dispatch(getUserAccount({cookie: validCookieAuth}));
 
     return {
       props: {
         initialState: store.getState(),
-        token
+        token,
+        roleResult
       }
     }
   } catch (err) {

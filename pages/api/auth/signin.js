@@ -57,7 +57,8 @@ handler.post(async (req, res) => {
   res.setHeader(
     "Set-Cookie", [
       cookie.serialize("qual__token", jwtAccessToken, cookieOptions),
-      cookie.serialize("qual__isLoggedIn", true, {path: "/"})
+      cookie.serialize("qual__isLoggedIn", true, {path: "/"}),
+      // cookie.serialize("qual__userRole", user.rows[0].role, {httpOnly: true, secure: true, path: "/"})
     ]
   );
 

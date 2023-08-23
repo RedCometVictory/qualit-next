@@ -9,6 +9,7 @@ import { getProject, rehydrate } from '@/redux/features/project/projectSlice';
 import { toast } from 'react-toastify';
 import { FaPlusCircle } from 'react-icons/fa';
 import { Typography } from '@mui/material';
+import { getDataSSR } from '@/utils/fetchData';
 import ButtonUI from '@/components/UI/ButtonUI';
 import DetailLayout from '@/components/layouts/DetailLayout';
 import NewTicketModal from '@/components/modals/NewTicketModal';
@@ -18,10 +19,10 @@ import UsersList from '@/components/lists/UsersList';
 import Description from '@/components/details/Description';
 import PaperUI from '@/components/UI/PaperUI';
 
-const Project = ({initialState, token}) => {
+const Project = ({initialState, token, roleResult}) => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { isAuthenticated, user } = useSelector(state => state.auth);
+  const { isAuthenticated } = useSelector(state => state.auth);
   const { project, tickets, loading: projectLoading } = useSelector(state => state.project); // ---
   const { assignedUsers, unassignedUsers } = useSelector(state => state.user);
   const [ticketModal, setTicketModal] = useState(false);
@@ -73,7 +74,7 @@ const Project = ({initialState, token}) => {
         <div className="detail__info-box left">
           <Typography variant="h2">Project Details</Typography>
           <div className="buttons">
-            {user?.role === "Admin" || user?.role === "Project Manager" ? (
+            {roleResult === "Admin" || roleResult === "Project Manager" ? (
               <Link
                 href={`/projects/${project.id}/edit`}
                 passHref
@@ -128,7 +129,7 @@ const Project = ({initialState, token}) => {
             >
               <FaRegEdit className='btn-icon'/> Edit Description
             </ButtonUI> */}
-            {user?.role === "Admin" || user?.role === "Project Manager" ? (
+            {roleResult === "Admin" || roleResult === "Project Manager" ? (
               <ButtonUI
                 variant='contained'
                 onClick={() => openNewTicketModal()}
@@ -137,7 +138,7 @@ const Project = ({initialState, token}) => {
               </ButtonUI>
             ) : (null)}
           </div>
-          {user.role === "Admin" && isAuthenticated ? (
+          {roleResult === "Admin" && isAuthenticated ? (
             <div className="detail__users section">
               <UsersList projectId={project.id} openModal={openManagePersonnelModal} assignedUsers={assignedUsers} unassignedUsers={unassignedUsers}/>
             </div>
@@ -191,12 +192,16 @@ export const getServerSideProps = async (context) => {
     // let userInfo = context.req.cookies.qual__user;
     let projectID = context.params.projectId;
     let validCookieAuth = context.req ? { cookie: context.req.headers.cookie } : undefined;
+    let userRole = await getDataSSR(`/auth/checkAuth`, validCookieAuth);
+    let roleResult = userRole?.data?.role;
+
     await store.dispatch(getProject({project_id: projectID, cookie: validCookieAuth}));
 
     return {
       props: {
         initialState: store.getState(),
-        token: token
+        token: token,
+        roleResult
       }
     }
   } catch (err) {

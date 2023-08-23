@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { FaGithub } from 'react-icons/fa';
 import { BsSearch } from "react-icons/bs";
 import store from '@/redux/store';
+import { getDataSSR } from '@/utils/fetchData';
 import { logout } from "@/redux/features/auth/authSlice";
 import { getProjects, rehydrate } from '@/redux/features/project/projectSlice';
 import DetailLayout from "@/components/layouts/DetailLayout";
@@ -15,10 +16,10 @@ import PaperUI from '@/components/UI/PaperUI';
 import ButtonUI from "@/components/UI/ButtonUI";
 import Paginate from '@/components/nav/Paginate';
 
-const MyProjects = ({initialState, token}) => {
+const MyProjects = ({initialState, token, roleResult}) => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { user } = useSelector(state => state.auth); // ---
+  // const { user } = useSelector(state => state.auth); // ---
   const { projects, page, pages, loading: projectLoading } = useSelector(state => state.project); // ---
   const [keyword, setKeyword] = useState(initialState.keyword || '');
   let [orderBy, setOrderBy] = useState(true);
@@ -101,7 +102,7 @@ const MyProjects = ({initialState, token}) => {
         <div className="detail__info-box left">
           <Typography variant="h2">My Projects</Typography>
           <div className="buttons">
-            {user?.role === "Admin" ? (<>
+            {roleResult === "Admin" ? (<>
               <Link
                 href={`/projects/new-project`}
                 passHref
@@ -276,7 +277,7 @@ const MyProjects = ({initialState, token}) => {
                 </div>
                 <div className="detail__roster-item-group">
                   <div className="detail__roster-item">
-                    {user?.role === "Admin" ? (
+                    {roleResult === "Admin" ? (
                       <Typography
                         className="option-link"
                         variant='body2'
@@ -299,7 +300,7 @@ const MyProjects = ({initialState, token}) => {
                         href={`/projects/${project.id}`}
                         passHref
                       >
-                        {user?.role === "Admin" ? ('View / Assign') : ('View')}
+                        {roleResult === "Admin" ? ('View / Assign') : ('View')}
                       </Link>
                     </Typography>
                   </div>
@@ -337,12 +338,16 @@ export const getServerSideProps = async (context) => {
     // let userInfo = context.req.cookies.qual__user;
     // let ticketID = context.params.ticketId;
     let validCookieAuth = context.req ? { cookie: context.req.headers.cookie } : undefined;
+    let userRole = await getDataSSR(`/auth/checkAuth`, validCookieAuth);
+    let roleResult = userRole?.data?.role;
+
     await store.dispatch(getProjects({keyword: '', pageNumber: 1, itemsPerPage: 20, orderBy: true, cookie: validCookieAuth}));
 
     return {
       props: {
         initialState: store.getState(),
-        token
+        token,
+        roleResult
       }
     }
   } catch (err) {

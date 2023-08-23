@@ -18,11 +18,20 @@ handler.get(async (req, res) => {
   const { userId } = req.query;
 
   console.log("00000000000000000000000000000")
+  console.log("11111111111111111111111111111")
   console.log("00000000000000000000000000000")
+  console.log("11111111111111111111111111111")
   console.log("00000000000000000000000000000")
+  console.log("11111111111111111111111111111")
   console.log("00000000000000000000000000000")
-  if (role !== 'Admin') {
-    throw new Error("You must be an administrator to view user information.");
+  // Labeled If Statement: Only Admin can edit unless you own your own acct you can edit
+  userEdit: {
+    if (role !== "Admin" && id === userId) {
+      break userEdit;
+    }
+    if (role !== "Admin" && id !== userId) {
+      throw new Error("You must be an administrator to view user information.");
+    }
   };
 
   let userDetail;
@@ -93,21 +102,51 @@ handler.put(async (req,res) => {
   let userFound;
   let updatedByTimeStamp = new Date();
 
-  userFound = await pool.query("SELECT id FROM users WHERE id = $1;", [id]);
-
-  if (mySetRole !== "Admin" && userFound.rowCount === 0) {
-    throw new Error("Failed to find your account.");
+  // if (mySetRole !== "Admin" && userFound.rowCount === 0) {
+  //   throw new Error("Failed to find your account.");
+  // };
+  userEdit: {
+    if (role === "Admin") {
+      userFound = await pool.query("SELECT id FROM users WHERE id = $1;", [id]);
+      break userEdit;
+    }
+    if (role !== "Admin" && id === userId) {
+      userFound = await pool.query("SELECT id FROM users WHERE id = $1;", [id]);
+      break userEdit;
+    }
+    if (mySetRole !== "Admin" && id !== userId) {
+      throw new Error("Failed to find your account.");
+      // throw new Error("You must be an administrator to view user information.");
+    }
   };
+  console.log("userFound")
+  console.log(userFound)
 
   // if user is admin or owner of their own account then they can edit their account profile
   if (mySetRole === "Admin") {
+    console.log("----------------ADMIN-------------------")
     userDetail = await pool.query("UPDATE users SET f_name = $1, l_name = $2, username = $3, email = $4, role = $5, updated_at = $6 WHERE id = $7;", [f_name, l_name, username, email, role, updatedByTimeStamp, userId]);
   };
 
+  console.log("0-0-0-0-0-0-0-0-0")
+  console.log("userFound")
+  console.log(userFound.rows[0])
+  console.log("____----____----____")
+  console.log(userFound.rowCount)
+  console.log("____----____----____")
+  console.log(userFound.rows[0].length)
+  console.log("0-0-0-0-0-0-0-0-0")
+  
   // if not admin then updating own account, thus cannot change own role (unless admin)
-  if (userFound.rows[0].length > 0 && mySetRole !== "Admin") {
+  if (userFound.rowCount > 0 && mySetRole !== "Admin") {
+    console.log("----------------USER-------------------")
     userDetail = await pool.query("UPDATE users SET f_name = $1, l_name = $2, username = $3, email = $4, updated_at = $5 WHERE id = $6;", [f_name, l_name, username, email, updatedByTimeStamp, userId]);
+    console.log("userDetail")
+    console.log(userDetail)
   };
+
+  console.log("userDetail")
+  console.log(userDetail)
 
   if (userDetail.rowCount === 0 || userDetail === null) {
     throw new Error("Failed to find an account.");

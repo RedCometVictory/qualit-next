@@ -80,14 +80,34 @@ handler.get(async (req, res) => {
     // only gets tickets for projects they manage. They can view all tikcets assigned to any/all developers they assigned to a project they manage
     // = pool.query('SELECT P.id, P.title, P.owner, P.created_at, T.id, T.title, T.type, T.created_at FROM projects AS P JOIN tickets AS T WHERE P.id = T.project_id AND  LIMIT 25;', [slug]);
     myProjects = await pool.query(
-      "SELECT P.id, P.title, P.owner, P.created_at FROM projects AS P JOIN members AS M ON P.id = M.project_id WHERE M.user_id = $1 ORDER BY created_by DESC LIMIT 25;", [id]
+      "SELECT P.id, P.title, P.owner, P.created_at FROM projects AS P JOIN members AS M ON P.id = M.project_id WHERE M.user_id = $1 ORDER BY created_at DESC LIMIT 25;", [id]
     );
-    myTicketsQuery = "SELECT T.id, T.title, T.type, T.priority, T.status, T.created_at FROM tickets AS T WHERE T.project_id = $1 LIMIT 25;";
+
+    console.log("POMPOMPOMPOMPOMPOMPOMPOMPOMPOMPOMPOMPOM")
+    console.log("myProjects")
+    console.log(myProjects)
+    console.log("<<<<<<<<<<<<<<<<<<")
+    console.log(myProjects.rows)
+
+    let myTicketsQuery = "SELECT id, title, type, priority, status, created_at FROM tickets WHERE project_id = $1 LIMIT 25;";
+    // let myTicketsQuery = "SELECT T.id, T.title, T.type, T.priority, T.status, T.created_at FROM tickets AS T WHERE T.project_id = $1 LIMIT 25;";
     // queryPromise, find tickets based in T.project_id
+    /* developer varsion
+    myProjects = await pool.query("SELECT P.id, P.title, P.owner, P.created_at, M.status FROM projects AS P JOIN members AS M ON P.id = M.project_id WHERE M.user_id = $1 AND M.status = 'assigned' LIMIT 25;", [id]);
+    */
+
+    console.log("*** searching for tickets assigned under PM")
     for (let i = 0; i < myProjects.rows.length; i++) {
+      console.log(`FOR LOOP ${i}`)
       const myTicketsPromise = await queryPromise(myTicketsQuery, myProjects.rows[i].id);
       myTickets[i] = {...myTickets[i], ...myTicketsPromise.rows[0]}
     };
+
+    console.log("PMPMPMPMPMPMPMPMPMPMPMMPMP")
+    console.log("myTickets")
+    console.log(myTickets)
+    console.log("- - - - - - - - - - - - -")
+    console.log(myTickets.rows)
     // myTickets = await pool.query(
     //   "SELECT T.id, T.title, T.type, T.priority, T.status, T.created_at FROM tickets AS T", [id]
     // );
