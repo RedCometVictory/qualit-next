@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Cookies from 'js-cookie';
 import store from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
+import { getDataSSR } from '@/utils/fetchData';
 import { logout } from "@/redux/features/auth/authSlice";
 import { getUserProfile, updateUserProfile, rehydrate } from "@/redux/features/user/userSlice";
 import { Divider, FormControl, FormControlLabel, FormLabel, InputLabel, Radio, RadioGroup, TextareaAutosize, TextField, Typography } from "@mui/material";
@@ -14,7 +15,7 @@ import DetailLayout from "@/components/layouts/DetailLayout";
 
 const initialProjectState = {f_name: "", l_name: "", username: "", email: "", role: ""};
 
-const EditUserAccount = ({initialState, token}) => {
+const EditUserAccount = ({initialState, token, roleResult}) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { id } = useSelector(state => state.auth);
@@ -82,18 +83,20 @@ const EditUserAccount = ({initialState, token}) => {
         <div className="form__info-box left">
           <Typography variant="h2">Edit User Details</Typography>
           <div className="buttons">
-            <Link
-              href={`/users`}
-              passHref
-            >
-              <ButtonUI
-                className="btn-one"
-                variant="contained"
-                color="primary"
+            {roleResult === "Admin" ? (
+              <Link
+                href={`/users`}
+                passHref
               >
-                User List
-              </ButtonUI>
-            </Link>
+                <ButtonUI
+                  className="btn-one"
+                  variant="contained"
+                  color="primary"
+                >
+                  User List
+                </ButtonUI>
+              </Link>
+            ) : (null)}
             <Link
               href={`/my/account`}
               passHref
@@ -143,39 +146,39 @@ const EditUserAccount = ({initialState, token}) => {
                   required
                 />
                 
-                
-                <Divider />
-                {/* TODO: this section only appears to admin users */}
-                <div className="modal__radio-group priority">
-                  <FormLabel
-                    aria-label="status-radio-buttons-group"
-                    defaultValue="new"
-                    name="status-radio-buttons-group"
-                  >
-                    User Role
-                  </FormLabel>
-                  <RadioGroup
-                    row
-                    // defaultValue="High"
-                    name="role"
-                    value={role}
-                    // defaultValue={priority}
+                {roleResult === "Admin" ? (<>
+                  <Divider />
+                  <div className="modal__radio-group priority">
+                    <FormLabel
+                      aria-label="status-radio-buttons-group"
+                      defaultValue="new"
+                      name="status-radio-buttons-group"
+                    >
+                      User Role
+                    </FormLabel>
+                    <RadioGroup
+                      row
+                      // defaultValue="High"
+                      name="role"
+                      value={role}
+                      // defaultValue={priority}
 
 
-                    // label="Github Url"
-                    onChange={e => onChange(e)}
-                    // onKeyDown={e => textFieldHandler(e)}
-                    // size="small"
-                    // id="outlined-search-label"
-                  >
-                    <FormControlLabel value="Developer" control={<Radio />} label="Developer"/>
-                    <FormControlLabel value="Project Manager" control={<Radio />} label="Project Manager"/>
-                    <FormControlLabel value="Admin" control={<Radio />} label="Administrator"/>
-                    <FormControlLabel value="Banned" control={<Radio />} label="Banned"/>
-                    <FormControlLabel value="Deleted" control={<Radio />} label="Deleted"/>
-                  </RadioGroup>
-                </div>
-                <Divider />
+                      // label="Github Url"
+                      onChange={e => onChange(e)}
+                      // onKeyDown={e => textFieldHandler(e)}
+                      // size="small"
+                      // id="outlined-search-label"
+                    >
+                      <FormControlLabel value="Developer" control={<Radio />} label="Developer"/>
+                      <FormControlLabel value="Project Manager" control={<Radio />} label="Project Manager"/>
+                      <FormControlLabel value="Admin" control={<Radio />} label="Administrator"/>
+                      <FormControlLabel value="Banned" control={<Radio />} label="Banned"/>
+                      <FormControlLabel value="Deleted" control={<Radio />} label="Deleted"/>
+                    </RadioGroup>
+                  </div>
+                  <Divider />
+                </>) : (null)}
 
 
                 {/* <PaperUI
@@ -262,11 +265,14 @@ export const getServerSideProps = async (context) => {
     let userId = context.params.userId;
     let validCookieAuth = context.req ? { cookie: context.req.headers.cookie } : undefined;
     await store.dispatch(getUserProfile({user_id: userId, cookie: validCookieAuth}));
+    let userRole = await getDataSSR(`/auth/checkAuth`, validCookieAuth);
+    let roleResult = userRole?.data?.role;
 
     return {
       props: {
         initialState: store.getState(),
-        token
+        token,
+        roleResult
       }
     }
   } catch (err) {

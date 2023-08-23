@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import dayjs from "dayjs";
 import { MobileDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { getDataSSR } from "@/utils/fetchData";
 import { logout } from "@/redux/features/auth/authSlice";
 import { getTicket, updateTicket, rehydrate } from "@/redux/features/project/projectSlice";
 import { Divider, FormControl, FormControlLabel, FormLabel, InputLabel, Radio, RadioGroup, TextareaAutosize, TextField, Typography } from "@mui/material";
@@ -376,16 +377,13 @@ export default EditTicket;
 export const getServerSideProps = async (context) => {
   try {
     let token = context.req.cookies.qual__token;
-    
     token ? token : null;
-    console.log("token")
-    console.log(token)
     if (!token) {
       console.log("session expired")
       context.res.setHeader(
         "Set-Cookie", [
           `qual__isLoggedIn=deleted; Max-Age=0`,
-          // `qual__user=deleted; Max-Age=0` // in LS
+          // `qual__userRole=deleted; Max-Age=0`,
         ]
       )
       return {
@@ -399,6 +397,19 @@ export const getServerSideProps = async (context) => {
 
     let ticketId = context.params.ticketId;
     let validCookieAuth = context.req ? { cookie: context.req.headers.cookie } : undefined;
+    let userRole = await getDataSSR(`/auth/checkAuth`, validCookieAuth);
+    let roleResult = userRole?.data?.role;
+
+    if (roleResult === "Developer" || !roleResult) {
+      return {
+        redirect: {
+          destination: `/403`,
+          permanent: false
+        },
+        props: {}
+      };
+    };
+
     await store.dispatch(getTicket({ticket_id: ticketId, cookie: validCookieAuth}));
 
     return {
@@ -417,10 +428,6 @@ export const getServerSideProps = async (context) => {
       },
       props: {
         token: ""
-        // data: "",
-        // initGeneral: [],
-        // initTrend: [],
-        // initFollow: [],
       }
     }
   }

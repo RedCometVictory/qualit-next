@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import { FaRegWindowClose, FaUserEdit } from "react-icons/fa";
 import { FaPlusCircle, FaRegEdit } from 'react-icons/fa';
 import { Divider, Typography } from '@mui/material';
+import { getDataSSR } from '@/utils/fetchData';
 import { logout } from "@/redux/features/auth/authSlice";
 import { getTicket, deleteTicketNote, rehydrate } from "@/redux/features/project/projectSlice";
 import ButtonUI from '@/components/UI/ButtonUI';
@@ -19,7 +20,7 @@ import AssignUserTicketModal from '@/components/modals/AssignUserTicketModal';
 import CommentsList from '@/components/lists/CommentsList';
 import Description from '@/components/details/Description';
 
-const Ticket = ({initialState, token}) => {
+const Ticket = ({initialState, token, roleResult}) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { ticket, notes, comments, history, loading: projectLoading, page, pages } = useSelector(state => state.project);
@@ -79,7 +80,7 @@ const Ticket = ({initialState, token}) => {
 
   return (
     <section className="ticket detail detail__container">
-      {assignModal && (user.role === "Admin" || user.role === "Project Manager") ? (
+      {assignModal && (roleResult === "Admin" || roleResult === "Project Manager") ? (
         <AssignUserTicketModal ticketId={ticket.id} projectId={ticket.project_id} setAssignModal={setAssignModal} />
       ) : (
         null
@@ -88,7 +89,7 @@ const Ticket = ({initialState, token}) => {
         <div className="detail__info-box left">
           <Typography variant="h2">Ticket Details</Typography>
           <div className="buttons">
-            {user?.role === "Admin" || user?.role === "Project Manager" ? (
+            {roleResult === "Admin" || roleResult === "Project Manager" ? (
               <Link
                 href={`/tickets/${ticket.id}/edit`}
                 passHref
@@ -183,7 +184,7 @@ const Ticket = ({initialState, token}) => {
             </Typography>
             <div className="notes-username">
               <span className="username">{ticket?.assignedUser ? ticket.assignedUser : "None"}</span>
-              {user?.role === "Developer" ? (null) : (
+              {roleResult === "Developer" ? (null) : (
                 <FaUserEdit className='edit-icon' onClick={() => editAssignedUserHandler()}/>
               )}
             </div>
@@ -196,7 +197,7 @@ const Ticket = ({initialState, token}) => {
                   <div className="list-item" key={index}>
                     <PaperUI className="item paper" >
                       <Typography variant='body2'>{item.note}</Typography>
-                        {user?.id === item.user_id || user?.role === "Admin" ? (
+                        {user?.id === item.user_id || roleResult === "Admin" ? (
                           <FaRegWindowClose className='item-icon' onClick={() => deleteNoteHandler(ticket.id, item.id)}/>
                         ) : (
                           null
@@ -255,12 +256,16 @@ export const getServerSideProps = async (context) => {
     // let userInfo = context.req.cookies.qual__user;
     let ticketID = context.params.ticketId;
     let validCookieAuth = context.req ? { cookie: context.req.headers.cookie } : undefined;
+    let userRole = await getDataSSR(`/auth/checkAuth`, validCookieAuth);
+    let roleResult = userRole?.data?.role;
+
     await store.dispatch(getTicket({ticket_id: ticketID, cookie: validCookieAuth}));
 
     return {
       props: {
         initialState: store.getState(),
-        token
+        token,
+        roleResult
       }
     }
   } catch (err) {

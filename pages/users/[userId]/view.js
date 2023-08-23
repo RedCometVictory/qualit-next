@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import store from "@/redux/store";
+import { getDataSSR } from "@/utils/fetchData";
 import { logout } from "@/redux/features/auth/authSlice";
 import { getUserProfile, rehydrate } from "@/redux/features/user/userSlice";
 import { Divider, Typography } from "@mui/material";
@@ -12,7 +13,7 @@ import DetailLayout from "@/components/layouts/DetailLayout";
 import ButtonUI from "@/components/UI/ButtonUI";
 import PaperUI from "@/components/UI/PaperUI";
 
-const UserView = ({initialState, token}) => {
+const UserView = ({initialState, token, roleResult}) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { auth } = useSelector(state => state.auth);
@@ -280,12 +281,26 @@ export const getServerSideProps = async (context) => {
     // let userInfo = context.req.cookies.qual__user;
     let userId = context.params.userId;
     let validCookieAuth = context.req ? { cookie: context.req.headers.cookie } : undefined;
+    let userRole = await getDataSSR(`/auth/checkAuth`, validCookieAuth);
+    let roleResult = userRole?.data?.role;
+
+    if (roleResult === "Developer" || !roleResult) {
+      return {
+        redirect: {
+          destination: `/my/account`,
+          permanent: false
+        },
+        props: {}
+      };
+    };
+
     await store.dispatch(getUserProfile({user_id: userId, cookie: validCookieAuth}));
 
     return {
       props: {
         initialState: store.getState(),
-        token
+        token,
+        roleResult
       }
     }
   } catch (err) {

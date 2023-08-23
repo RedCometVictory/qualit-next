@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Cookies from 'js-cookie';
 import store from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
+import { getDataSSR } from "@/utils/fetchData";
 import { logout } from "@/redux/features/auth/authSlice";
 import { getProject, updateProject, rehydrate } from "@/redux/features/project/projectSlice";
 import { Divider, FormControl, FormControlLabel, FormLabel, InputLabel, Radio, RadioGroup, TextareaAutosize, TextField, Typography } from "@mui/material";
@@ -216,12 +217,26 @@ export const getServerSideProps = async (context) => {
 
     let projectId = context.params.projectId;
     let validCookieAuth = context.req ? { cookie: context.req.headers.cookie } : undefined;
+    let userRole = await getDataSSR(`/auth/checkAuth`, validCookieAuth);
+    let roleResult = userRole?.data?.role;
+
+    if (roleResult === "Developer" || !roleResult) {
+      return {
+        redirect: {
+          destination: `/403`,
+          permanent: false
+        },
+        props: {}
+      };
+    };
+
     await store.dispatch(getProject({project_id: projectId, cookie: validCookieAuth}));
 
     return {
       props: {
         initialState: store.getState(),
-        token
+        token,
+        roleResult
       }
     }
   } catch (err) {
