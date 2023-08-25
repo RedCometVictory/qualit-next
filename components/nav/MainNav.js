@@ -317,7 +317,7 @@ const MainNav = ({openMenu, setOpenMenu}) => {
           <ul className={`nav__links ${openMenu ? "active" : ""}`}>
             {isAuthenticated && authLinks}
             {isAuthenticated && user.role === isAdmin && adminLinks}
-            {isAuthenticated && user.role === isProjMgr && projectManagerLinks}
+            {/* {isAuthenticated && user.role === isProjMgr && projectManagerLinks} */}
             {isAuthenticated && user.role === isDev && devLinks}
             {isAuthenticated ? (
               <li className="nav__link-item">
