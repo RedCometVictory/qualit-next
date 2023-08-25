@@ -257,6 +257,12 @@
       white-space: pre-line;
       // padding: 0.56rem 1.5rem 0.56rem 0.56rem;
       padding: 0.56rem 0.56rem 0.56rem 0.56rem;
+      a {
+        color: var(--body-text-link);
+        &:visited {
+          color: var(--body-text-visited);
+        }
+      }
     }
     .paper {
       background-color: var(--primary-color);
@@ -282,7 +288,14 @@
     scrollbar-width: none;
     &.paper {
       background-color: var(--primary-color);
-      
+    }
+    &.user-proj-list {
+      a {
+        color: var(--body-text-link);
+        &:visited {
+          color: var(--body-text-visited);
+        }
+      }
     }
   }
   &__actions {
