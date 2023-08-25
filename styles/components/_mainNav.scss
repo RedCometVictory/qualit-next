@@ -286,6 +286,9 @@
         }
       }
     }
+    &__theme-container {
+      pointer-events: initial;
+    }
     &__link-group {
       pointer-events: none;
     }
