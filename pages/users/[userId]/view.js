@@ -94,7 +94,7 @@ const UserView = ({initialState, token, roleResult}) => {
           <Typography variant="h2">User Details</Typography>
           <div className="buttons">
             <Link
-              href={`/users/${detail.id}/edit`}
+              href={`/users/${detail?.id}/edit`}
               passHref
             >
               <ButtonUI
