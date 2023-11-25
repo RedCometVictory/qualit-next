@@ -13,7 +13,7 @@ if(typeof window !== "undefined" && !currentTheme) {
 
 const initialState = {
   // theme: 'light',
-  theme: currentTheme ? currentTheme : false,
+  theme: currentTheme ? currentTheme : 'dark',
   drawer: false,
   backgroundImage: '',
   error: ''

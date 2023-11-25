@@ -209,6 +209,13 @@ const ThemeColor = ({ children }) => {
           }
         }
       },
+      // MuiCard: {
+      //   styleOverrides: {
+      //     root: {
+      //       color: `${theme === 'light' ? '#434343' : '#c5c1c1'}`
+      //     }
+      //   }
+      // },
       MuiTypography: {
         defaultProps: {
           variantMapping: {
