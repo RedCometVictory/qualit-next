@@ -1,6 +1,9 @@
+import MainLayout from "@/components/layouts/MainLayout";
 import BoardLayout from "@/components/layouts/BoardLayout";
 import Spinner from '@/components/Spinner';
-import { Card } from '@mui/material';
+import { Card, CardContent, Typography } from "@mui/material";
+// import CardUI from "@/components/UI/CardUI";
+import PaperUI from "@/components/UI/PaperUI";
 
 const boardList = [
   {
@@ -30,29 +33,37 @@ const boardList = [
 ];
 
 const Boards = () => {
-  
 
+  
   return (
     <section className="boards">
       <div className="boards__container">
         <div className="boards__list">
           {boardList.map((item, index) => (
-            <Card className="boards__item" key={item.id}>
-              <div className="boards__item-header">
-                <h3 className="boards__header">
-                  {item.title}
-                </h3>
-              </div>
-              <div className="boards__content">
-                <div className="boards__image">
-                  {item.img}
-                </div>
-                {/* <img src="" alt="" className="boards__img" /> */}
-                <div className="boards__description">
-                  {item.description}
-                </div>
-              </div>
-            </Card>
+            <div className="boards__item-content" key={index}>
+              <Card className="boards__item login__container">
+                <CardContent>
+                  <div className="boards__item-header">
+                    <Typography className="boards__header" variant="h3" component="h3">
+                      {item.title}
+                    </Typography>
+                  </div>
+                  <div className="boards__content">
+                    <Typography className="boards__header" variant="body1" component="div">
+                      {item.img}
+                    </Typography>
+                    {/* <div className="boards__image"> */}
+                      {/* <img src="" alt="" className="boards__img" /> */}
+                    {/* </div> */}
+                    <div className="boards__description">
+                      <Typography className="boards__header" variant="body1" component="div">
+                        {item.description}
+                      </Typography>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           ))}
         </div>
       </div>
@@ -60,6 +71,7 @@ const Boards = () => {
   )
 };
 export default Boards;
+// return <MainLayout>{Boards}</MainLayout>
 Boards.getLayout = function getLayout(Boards) {
   return <BoardLayout>{Boards}</BoardLayout>
 };

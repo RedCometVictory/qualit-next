@@ -1,19 +1,38 @@
 .boards {
   // @include grid(repeat(auto-fill, minmax(min-content, 625px));
-  padding: 0 1.125rem 0;
+  display: block;
+  width: 100%;
+  padding: 1rem 1.125rem 0;
+  // margin: 0 0 0 124px;
+  // margin: 0 0 0 7.75rem;
   &__container {
-    margin: 1.125rem 0 0 0;
+    background-color: var(--bg-panel) !important;
+    
   }
   &__list {
-    @include flex(column, center, center);
-  }
-  &__item {
-    @include flex(column, flex-start, center);
+    // @include flex(row, center, flex-start);
+    @include flex(row, flex-start, initial);
+    // @include flex(row, space-between, initial);
+    row-gap: 1rem;
+    column-gap: 1rem;
+    flex-wrap: wrap;
+    // div {
+      //   height: 100%;
+      // }
+    }
+    // &__item-content {
+      // width: 48%;
+    // }
+    &__item {
+      // @include flex(column, flex-start, center);
+      @include flex(column, flex-start, center);
+      width: 100%;
+      max-width: 360px;
+      border-radius: 6px;
+      height: 100%;
+      max-height: 500px;
+      padding: 0.4rem;
     // border: solid 1px black;
-    border-radius: 6px;
-    height: 100%;
-    max-height: 500px;
-    padding: 0.4rem;
   }
   &__item-header {
     margin: 0 0 0.4rem 0;
@@ -29,13 +48,73 @@
   &__content {}
   &__description {}
 }
-
+// --------------------
+// --------------------
+// --------------------
 @media (min-width: 260px) {
   .boards {
     &__list {
-      @include grid(repeat(2, 128px), 2, space-around, center);
-      column-gap: 1rem;
-      row-gap: 1rem;
+      // @include grid(repeat(2, 128px), 2, space-around, center);
+      // column-gap: 1rem;
+      // row-gap: 1rem;
+    }
+  }
+}
+
+@media (min-width: 420px) {
+// @media (min-width: 376px) {
+  .boards {
+    &__list {
+      // @include grid(repeat(2, 128px), 2, space-around, center);
+      // @include grid(repeat(2, 50%), 2, space-around, flex-start);
+      // column-gap: 1rem;
+      // row-gap: 1rem;
+    }
+    &__item-content {
+      // width: 48%;
+      flex-basis: 47%;
+    }
+    &__item {
+      // width: 180px;
+      // min-width: 174px;
+      // width: 100%;
+      width: 184px;
+      width: 100%;
+      // min-width: 184px;
+
+      // max-width: 360px;
+    }
+  }
+}
+
+@media (min-width: 440px) {
+  .boards {
+    &__list {
+      // @include grid(repeat(2, 128px), 2, space-around, center);
+    }
+    &__item-content {
+      // width: 48%;
+      flex-basis: 48%;
+    }
+    &__item {
+      // width: 184px;
+      // width: 100%;
+    }
+  }
+}
+
+@media (min-width: 560px) {
+  .boards {
+    padding: 0 1.125rem 0 62px;
+    &__container {
+      padding: 0 0 0 1rem;
+      margin: 1.125rem 0 0 0;
+    }
+    &__list {
+      // @include grid(repeat(3, 1fr), 2, center, center);
+    }
+    &__item-content {
+      flex-basis: 48%;
     }
   }
 }
@@ -43,7 +122,71 @@
 @media (min-width: 660px) {
   .boards {
     &__list {
-      @include grid(repeat(3, 1fr), 2, center, center);
+      // @include grid(repeat(3, 1fr), 2, center, center);
+    }
+    &__item-content {
+      flex-basis: 48%;
+    }
+  }
+}
+
+@media (min-width: 860px) {
+// @media (min-width: 880px) {
+  .boards {
+    // padding: 0 1.125rem 0 0;
+    &__list {
+      // @include grid(repeat(3, 1fr), 2, center, center);
+    }
+    &__item-content {
+      flex-basis: 31%;
+    }
+  }
+}
+
+@media (min-width: 1080px) {
+  .boards {
+    padding: 0 1.125rem 0 0;
+    &__list {
+      // @include grid(repeat(3, 1fr), 2, center, center);
+    }
+    &__item-content {
+      flex-basis: 32%;
+    }
+  }
+}
+
+@media (min-width: 1340px) {
+  .boards {
+    // padding: 0 1.125rem 0 0;
+    &__list {
+      // @include grid(repeat(3, 1fr), 2, center, center);
+    }
+    &__item-content {
+      flex-basis: 23%;
+    }
+  }
+}
+
+@media (min-width: 1480px) {
+  .boards {
+    // padding: 0 1.125rem 0 0;
+    &__list {
+      // @include grid(repeat(3, 1fr), 2, center, center);
+    }
+    &__item-content {
+      flex-basis: 24%;
+    }
+  }
+}
+
+@media (min-width: 1680px) {
+  .boards {
+    // padding: 0 1.125rem 0 0;
+    &__list {
+      // @include grid(repeat(3, 1fr), 2, center, center);
+    }
+    &__item-content {
+      flex-basis: 24%;
     }
   }
 }

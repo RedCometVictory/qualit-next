@@ -21,8 +21,10 @@ const MiniNav = () => {
   splitPath = splitPath[1].charAt(0).toUpperCase() + splitPath[1].slice(1);
   
   console.log("----------")
+  console.log("splitPath");
   console.log(splitPath);
   console.log("********")
+  console.log("paramPath")
   console.log(paramPath)
   console.log("----------")
   console.log("pathname");
@@ -49,26 +51,33 @@ const MiniNav = () => {
     setExpanded(!expanded);
     dispatch(unsplashTheme(value));
   };
-  
+
   return (
     <section className="miniNav">
       <div className="miniNav__pathname">
         <h2>{splitPath}</h2>
       </div>
       <header className="miniNav__header">
-        <ButtonUI
+        {/* <ButtonUI
           className='miniNav__btn'
           href={`${paramPath === 'profile' ? '/' : '/m/profile'}`}
           variant='contained'
         >
           {paramPath === 'profile' ? 'Home' : 'Profile'}
+        </ButtonUI> */}
+        <ButtonUI
+          className='miniNav__btn'
+          href={`${paramPath === 'boards' ? '/my/boards/new-board' : '/m/profile'}`}
+          variant='contained'
+        >
+          {paramPath === 'boards' ? 'Create Board' : 'Profile'}
         </ButtonUI>
         <ButtonUI
           className='miniNav__btn'
           href={`${paramPath === 'boards' ? '/' : '/m/boards'}`}
           variant='contained'
         >
-          {paramPath === "boards" ? 'Home' : 'Boards'}
+          {paramPath === "boards" ? 'Dashboard' : 'Boards'}
         </ButtonUI>
         <FaChevronCircleLeft
           aria-expanded={expanded}

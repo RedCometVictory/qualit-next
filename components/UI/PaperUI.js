@@ -8,7 +8,8 @@ const PaperUI = ({
 }) => {
   return (
     <Paper
-      color
+      // color
+      color={color ? color : 'secondary'}
       // sx={{ maxWidth: 345 }}
       elevation={elevation ? elevation : 0}
       className={className ? className : ''}

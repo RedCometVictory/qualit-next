@@ -168,7 +168,7 @@ const MainNav = ({openMenu, setOpenMenu}) => {
         <div className="nav__link-icon">
           <Link
             passHref
-            href={"/"}
+            href={"/my/boards"}
           >
             <Typography variant="body1">
               <MdDashboard />
@@ -186,9 +186,9 @@ const MainNav = ({openMenu, setOpenMenu}) => {
         </div>
         <Link
           passHref
-          href={"/"}
+          href={"/my/boards"}
         >
-          <Typography color={'primary.mainMenuText'} variant="h4" className='nav__link'>Dashboard</Typography>
+          <Typography color={'primary.mainMenuText'} variant="h4" className='nav__link'>My Boards</Typography>
         </Link>
       </div>
     </li>
