@@ -51,18 +51,28 @@ const registerUser = async (formRegData, thunkAPI) => {
   return result;
 };
 
-const loginUser = async (formData, thunkAPI) => {
+const loginUser = async (formData, router, thunkAPI) => {
   const res = await postData('/auth/signin', formData);
   let result = res.data;
   localStorage.setItem("qual__user", JSON.stringify(result.user));
+  router.push('/');
   return result;
 };
 
 const logout = async (_, thunkAPI) => {
+  console.log("55555555555555")
+  console.log("55555555555555")
+  console.log("logging out")
+  console.log("55555555555555")
+  console.log("55555555555555")
   // thunkAPI.dispatch(userReset());
-  thunkAPI.dispatch(clearAuth());
-  if (localStorage.getItem('qual__user')) localStorage.removeItem('qual__user');
+  // if (localStorage.getItem('qual__user')) localStorage.removeItem('qual__user');
+  // if (localStorage.getItem('qual__user')) localStorage.removeItem('qual__user');
   await postData('/auth/signout', _);
+  console.log("88888888888888888888")
+  console.log("clearin auth")
+  console.log("88888888888888888888")
+  thunkAPI.dispatch(clearAuth());
   return; 
 };
 

@@ -217,7 +217,7 @@ export const getServerSideProps = async (context) => {
     console.log("token")
     console.log(token)
     console.log("+++ context +++")
-    console.log(context)
+    // console.log(context)
     console.log("+++ end +++")
     if (!token) {
       // await authIsExpired();

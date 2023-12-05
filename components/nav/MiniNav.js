@@ -6,10 +6,12 @@ import { FaChevronCircleLeft } from 'react-icons/fa';
 // import { IconButton, styled } from "@mui/material";
 import ButtonUI from "../UI/ButtonUI";
 // import SideMenu from './SideMenu';
+// import { getBoard } from '@/redux/features/board/boardSlice';
 import { unsplashTheme } from '@/redux/features/theme/themeSlice';
 
 const MiniNav = () => {
   const { asPath, pathname, query } = useRouter();
+  const { board } = useSelector(state => state.board);
   console.log("asPath");
   console.log(asPath);
   let splitPath = asPath.split('/');
@@ -32,6 +34,10 @@ const MiniNav = () => {
   // pathname.
   console.log("query");
   console.log(query);
+  // %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  console.log("board")
+  console.log(board)
+  // %%%%%%%%%%%%%%%%%%%%%%%%%%%%
   const [expanded, setExpanded] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
   const dispatch = useDispatch();
@@ -55,7 +61,7 @@ const MiniNav = () => {
   return (
     <section className="miniNav">
       <div className="miniNav__pathname">
-        <h2>{splitPath}</h2>
+        <h2>{`${splitPath}`} {`${board?.name} ? ${board.name} : 'unkown title of board'`}</h2>
       </div>
       <header className="miniNav__header">
         {/* <ButtonUI
@@ -74,7 +80,7 @@ const MiniNav = () => {
         </ButtonUI>
         <ButtonUI
           className='miniNav__btn'
-          href={`${paramPath === 'boards' ? '/' : '/m/boards'}`}
+          href={`${paramPath === 'boards' ? '/' : '/my/boards'}`}
           variant='contained'
         >
           {paramPath === "boards" ? 'Dashboard' : 'Boards'}

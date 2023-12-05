@@ -69,9 +69,9 @@ export const registerUser = createAsyncThunk(
 
 export const loginUser = createAsyncThunk(
   'auth/login',
-  async (formData, thunkAPI) => {
+  async ({formData, router}, thunkAPI) => {
     try {
-      return await authService.loginUser(formData, thunkAPI);
+      return await authService.loginUser(formData, router, thunkAPI);
     } catch (err) {
       const message =
         (err.response &&
@@ -210,10 +210,12 @@ export const authSlice = createSlice({
     },
     clearAuth: (state) => {
       localStorage.removeItem('qual__token')
+      localStorage.removeItem('qual__user')
+      localStorage.removeItem('qual__theme')
       state.token = null
       state.isAuthenticated = false
       state.loading = false
-      state.user = null
+      state.user = {}
     }
   },
   extraReducers: {
@@ -290,6 +292,9 @@ export const authSlice = createSlice({
       state.loading = true;
     },
     [logout.fulfilled]: (state) => {
+      localStorage.removeItem('qual__token')
+      localStorage.removeItem('qual__user')
+      localStorage.removeItem('qual__theme')
       state.token = null;
       state.loading = false;
       state.isAuthenticated = false;

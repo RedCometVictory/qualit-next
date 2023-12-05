@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { useEffect, useState } from  'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from "next/router";
+import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
 import { loginUser } from '@/redux/features/auth/authSlice';
 import MainLayout from "@/components/layouts/MainLayout";
@@ -10,7 +11,7 @@ import { Card, Input, InputLabel, FormGroup, CardContent, Typography } from "@mu
 
 const initialState = {email: "", password: ""};
 
-const SignIn = () => {
+const SignIn = ({token}) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const [hasMounted, setHasMounted] = useState(false);
@@ -19,18 +20,23 @@ const SignIn = () => {
 
   const { email, password } = formData;
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      router.push('/');
-    }
-  }, [router, isAuthenticated]);
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     router?.push('/');
+  //   }
+  //   if (isAuthenticated) {
+  //     router?.push('/');
+  //   }
+  // }, [router, isAuthenticated]);
 
   useEffect(() => {
     setHasMounted(true);
   }, []);
   
   if (!hasMounted) return null;
-
+  // if (hasMounted && isAuthenticated) {
+  //     router?.push('http://localhost:3000/');
+  // }
   if (router.query.session_expired) {
     toast?.error("Session expired. Please login.", { toastId: "expiredAuthId" });
   };
@@ -42,10 +48,11 @@ const SignIn = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      dispatch(loginUser(formData));
+      dispatch(loginUser({formData, router}));
+      // if (Cookies.get("qual__token")) router.push('/');
     } catch (err) {
       console.error(err);
-      toast?.error("Failed to register. Check if email or password are valid.");
+      toast?.error("Failed to register. Check if email or password are valid.", {toastId: "signinErr"});
     }
   };
 
@@ -131,6 +138,89 @@ const SignIn = () => {
   )
 };
 export default SignIn;
+export const getServerSideProps = async (context) => {
+  try {
+    let token = context.req.cookies.qual__token;
+    token ? token : null;
+    /*
+    res.setHeader(
+    "Set-Cookie",
+    [
+      cookie.serialize("qual__token", '', {
+        sameSite: "strict",
+        secure: process.env.NODE_ENV !== 'development',
+        maxAge: -1,
+        path: '/',
+        httpOnly: true,
+        expires: new Date(0)
+      }),
+      cookie.serialize("qual__isLoggedIn", '', {
+        sameSite: "strict",
+        secure: process.env.NODE_ENV !== 'development',
+        maxAge: -1,
+        path: '/',
+        httpOnly: true,
+        expires: new Date(0)
+      }),
+      
+    ]
+    // cookie.serialize("ual__token", null, { expires: new Date(1), maxAge: 0, path: '/', httpOnly: false })
+  );
+    */
+    if (token) {
+      console.log("00000000000000000000")
+      console.log("00000000000000000000")
+      console.log("token")
+      console.log(token)
+      console.log("00000000000000000000")
+      console.log("00000000000000000000")
+      // token = JSON.stringify(token);
+      // context.res.setHeader(
+      //   "Set-Cookie", [
+      //     `qual__isLoggedIn=deleted; Max-Age=-1; Expires: new Date(0)`,
+      //     // `qual__isLoggedIn=deleted; Max-Age=0; Expires: new Date(0)`,
+      //     // `qual__isLoggedIn=deleted; Max-Age=0`,
+      //     // `qual__user=deleted; Max-Age=0`
+      //   ]
+      // )
+      // await store.dispatch(logout());
+      return {
+        redirect: {
+          destination: `/`,
+          permanent: false,
+        },
+        props: {},
+      };
+    };
+    
+    // let userInfo = context.req.cookies.qual__user;
+    // let ticketID = context.params.ticketId;
+    // let validCookieAuth = context.req ? { cookie: context.req.headers.cookie } : undefined;
+    // let userRole = await getDataSSR(`/auth/checkAuth`, validCookieAuth);
+    // let roleResult = userRole?.data?.role;
+
+    // await store.dispatch(getTicket({ticket_id: ticketID, cookie: validCookieAuth}));
+
+    return {
+      props: {
+        // initialState: store.getState(),
+        // token,
+        // roleResult
+      }
+    }
+  } catch (err) {
+    console.error(err);
+    return {
+      redirect: {
+        destination: "/signin",
+        permanent: false
+      },
+      props: {
+        token: ""
+      }
+    }
+  }
+};
 SignIn.getLayout = function getLayout(SignIn) {
   return <MainLayout>{SignIn}</MainLayout>
 };

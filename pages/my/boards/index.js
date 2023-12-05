@@ -1,9 +1,13 @@
-import MainLayout from "@/components/layouts/MainLayout";
-import BoardLayout from "@/components/layouts/BoardLayout";
-import Spinner from '@/components/Spinner';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllBoards } from '@/redux/features/board/boardSlice';
 import { Card, CardContent, Typography } from "@mui/material";
-// import CardUI from "@/components/UI/CardUI";
+import BoardLayout from "@/components/layouts/BoardLayout";
+import MainLayout from "@/components/layouts/MainLayout";
+import Spinner from '@/components/Spinner';
 import PaperUI from "@/components/UI/PaperUI";
+import ButtonUI from '@/components/UI/ButtonUI';
 
 const boardList = [
   {
@@ -49,6 +53,16 @@ const Boards = () => {
                     </Typography>
                   </div>
                   <div className="boards__content">
+                    <div className="boards__view-btn">
+                      <ButtonUI
+                        href={`/my/board/${item.id}`}
+                        variant='outlined'
+                        size='small'
+                        fontSize='small'
+                      >
+                        View
+                      </ButtonUI>
+                    </div>
                     <Typography className="boards__header" variant="body1" component="div">
                       {item.img}
                     </Typography>
