@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
+import { serialize } from 'cookie';
 import Link from 'next/link';
 import store from '@/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
@@ -236,14 +237,74 @@ export const getServerSideProps = async (context) => {
   try {
     let token = context.req.cookies.qual__token;
     token ? token : null;
-    
+    /*
+    res.setHeader(
+    "Set-Cookie",
+    [
+      cookie.serialize("qual__token", '', {
+        sameSite: "strict",
+        secure: process.env.NODE_ENV !== 'development',
+        maxAge: -1,
+        path: '/',
+        httpOnly: true,
+        expires: new Date(0)
+      }),
+      cookie.serialize("qual__isLoggedIn", '', {
+        sameSite: "strict",
+        secure: process.env.NODE_ENV !== 'development',
+        maxAge: -1,
+        path: '/',
+        httpOnly: true,
+        expires: new Date(0)
+      }),
+      
+    ]
+    // cookie.serialize("ual__token", null, { expires: new Date(1), maxAge: 0, path: '/', httpOnly: false })
+  );
+    */
     if (!token) {
-      context.res.setHeader(
-        "Set-Cookie", [
-          `qual__isLoggedIn=deleted; Max-Age=0`,
-          // `qual__user=deleted; Max-Age=0`
-        ]
-      )
+      // context.res.setHeader(
+      //   "Set-Cookie", [
+      //     `qual__isLoggedIn=deleted; Max-Age=-1; Expires: new Date(0)`,
+      //     // `qual__isLoggedIn=deleted; Max-Age=0; Expires: new Date(0)`,
+      //     // `qual__isLoggedIn=deleted; Max-Age=0`,
+      //     // `qual__user=deleted; Max-Age=0`
+      //   ]
+      // )
+
+      // serialize("qual__token", "", {
+      //   sameSite: "strict",
+      //   // secure: process.env.NODE_ENV !== 'development',
+      //   maxAge: -1,
+      //   path: '/',
+      //   httpOnly: true,
+      //   expires: new Date(0)
+      // })
+      
+      await store.dispatch(logout());
+      // context.
+      // cookie.serialize("qual__token", '', {
+      //   sameSite: "strict",
+      //   secure: process.env.NODE_ENV !== 'development',
+      //   maxAge: -1,
+      //   path: '/',
+      //   httpOnly: true,
+      //   expires: new Date(0)
+      // })
+
+      // !TODO! - interesting, current set up still redirects, but lacks initialstate, thus add to props? also it does remove localstorage and isLoggedIn cooke
+      // return {
+      //   // redirect: {
+      //     // destination: `/signin?session_expired=true`,
+      //     // permanent: false,
+      //   // },
+      //   // props: {},
+      //   props: {
+      //     initialState: store.getState(),
+      //     token: "",
+      //     roleResult: ''
+      //   },
+      // };
       return {
         redirect: {
           destination: `/signin?session_expired=true`,
