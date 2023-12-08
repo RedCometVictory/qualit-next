@@ -28,6 +28,10 @@ const SignIn = ({initialState}) => {
   }, []);
 
   useEffect(() => {
+    dispatch(rehydrate(initialState.project))
+  }, [dispatch, initialState]);
+
+  useEffect(() => {
     setHasMounted(true);
   }, []);
   
@@ -159,7 +163,7 @@ export const getServerSideProps = async (context) => {
         //   ]
         // );
 
-        // await store.dispatch(expiredTokenLogout());
+        await store.dispatch(expiredTokenLogout());
         // await store.dispatch(logout());
         
         context.res.setHeader(
@@ -240,7 +244,7 @@ export const getServerSideProps = async (context) => {
       // await store.dispatch(logout());
       return {
         redirect: {
-          // initialState: store.getState(),
+          initialState: store.getState(),
           destination: `/`,
           permanent: false,
         },
@@ -258,7 +262,7 @@ export const getServerSideProps = async (context) => {
 
     return {
       props: {
-        // initialState: store.getState(),
+        initialState: store.getState(),
         // token,
         // roleResult
       }

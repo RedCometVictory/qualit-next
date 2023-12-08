@@ -85,7 +85,7 @@ const expiredTokenLogout = async (_, thunkAPI) => {
   // thunkAPI.dispatch(userReset());
   // if (localStorage.getItem('qual__user')) localStorage.removeItem('qual__user');
   // if (localStorage.getItem('qual__user')) localStorage.removeItem('qual__user');
-  await postData('/auth/expiredSignout', _);
+  // await postData('/auth/expiredSignout', _);
   thunkAPI.dispatch(clearAuth());
   console.log("88888888888888888888")
   console.log("clearin auth - expiredauth")
