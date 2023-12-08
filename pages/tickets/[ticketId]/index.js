@@ -41,7 +41,7 @@ const Ticket = ({initialState, token, roleResult}) => {
 
   useEffect(() => {
     dispatch(rehydrate(initialState.project))
-  }, [dispatch, initialState])
+  }, [dispatch, initialState]);
     
   const openNoteModal = () => {
     setAddNoteModal(true);
