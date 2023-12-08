@@ -70,9 +70,26 @@ const logout = async (_, thunkAPI) => {
   // if (localStorage.getItem('qual__user')) localStorage.removeItem('qual__user');
   await postData('/auth/signout', _);
   console.log("88888888888888888888")
-  console.log("clearin auth")
+  console.log("clearin auth - logout")
   console.log("88888888888888888888")
   thunkAPI.dispatch(clearAuth());
+  return; 
+};
+
+const expiredTokenLogout = async (_, thunkAPI) => {
+  console.log("55555555555555")
+  console.log("55555555555555")
+  console.log("expired log out")
+  console.log("55555555555555")
+  console.log("55555555555555")
+  // thunkAPI.dispatch(userReset());
+  // if (localStorage.getItem('qual__user')) localStorage.removeItem('qual__user');
+  // if (localStorage.getItem('qual__user')) localStorage.removeItem('qual__user');
+  await postData('/auth/expiredSignout', _);
+  thunkAPI.dispatch(clearAuth());
+  console.log("88888888888888888888")
+  console.log("clearin auth - expiredauth")
+  console.log("88888888888888888888")
   return; 
 };
 
@@ -114,6 +131,7 @@ const authService = {
   registerUser,
   loginUser,
   logout,
+  expiredTokenLogout,
   deleteUser,
   forgotPassword,
   verifyPassword,

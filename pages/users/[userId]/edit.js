@@ -26,14 +26,14 @@ const EditUserAccount = ({initialState, token, roleResult}) => {
 
   let { f_name, l_name, username, email, role } = formData;
   
-  useEffect(() => {
-    if (!token || !Cookies.get("qual__isLoggedIn")) {
-      dispatch(logout());
-      toast.success("Token or authorization expired.")
-      return router.push("/");
-    }
-  }, []);
-  
+  // useEffect(() => {
+  //   if (!token || !Cookies.get("qual__isLoggedIn")) {
+  //     dispatch(logout());
+  //     toast.success("Token or authorization expired.")
+  //     return router.push("/");
+  //   }
+  // }, []);
+
   useEffect(() => {
     dispatch(rehydrate(initialState.user))
   }, [dispatch, initialState]);
@@ -240,19 +240,8 @@ const EditUserAccount = ({initialState, token, roleResult}) => {
 export default EditUserAccount;
 export const getServerSideProps = async (context) => {
   try {
-    let token = context.req.cookies.qual__token;
-    
-    token ? token : null;
-    console.log("token")
-    console.log(token)
+    let token = context.req.cookies.qual__token || null;
     if (!token) {
-      console.log("session expired")
-      context.res.setHeader(
-        "Set-Cookie", [
-          `qual__isLoggedIn=deleted; Max-Age=0`,
-          // `qual__user=deleted; Max-Age=0` // in LS
-        ]
-      )
       return {
         redirect: {
           destination: `/signin?session_expired=true`,
@@ -284,10 +273,6 @@ export const getServerSideProps = async (context) => {
       },
       props: {
         token: ""
-        // data: "",
-        // initGeneral: [],
-        // initTrend: [],
-        // initFollow: [],
       }
     }
   }

@@ -207,6 +207,32 @@ const SignUp = () => {
   )
 };
 export default SignUp;
+export const getServerSideProps = async (context) => {
+  try {
+    let token = context.req.cookies.qual__token || null;
+    if (token) {
+      return {
+        redirect: {
+          destination: `/`,
+          permanent: false,
+        },
+        props: {}
+      };
+    };
+    return {
+      props: {}
+    };
+  } catch (err) {
+    console.log(err);
+    return {
+      destination: "/signin",
+      permanent: false,
+      props: {
+        token: ""
+      }
+    };
+  }
+};
 SignUp.getLayout = function getLayout(SignUp) {
   return <MainLayout>{SignUp}</MainLayout>
 };

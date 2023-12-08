@@ -10,7 +10,7 @@ import { FaRegWindowClose, FaUserEdit } from "react-icons/fa";
 import { FaPlusCircle, FaRegEdit } from 'react-icons/fa';
 import { Divider, Typography } from '@mui/material';
 import { getDataSSR } from '@/utils/fetchData';
-import { logout } from "@/redux/features/auth/authSlice";
+import { logout, expiredTokenLogout } from "@/redux/features/auth/authSlice";
 import { getTicket, deleteTicketNote, rehydrate } from "@/redux/features/project/projectSlice";
 import ButtonUI from '@/components/UI/ButtonUI';
 import PaperUI from '@/components/UI/PaperUI';
@@ -31,13 +31,13 @@ const Ticket = ({initialState, token, roleResult}) => {
   const [assignModal, setAssignModal] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
 
-  useEffect(() => {
-    if (!token || !Cookies.get("qual__isLoggedIn")) {
-      dispatch(logout());
-      toast.success("Token or authorization expired.")
-      return router.push("/");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!token || !Cookies.get("qual__isLoggedIn")) {
+  //     dispatch(logout());
+  //     toast.success("Token or authorization expired.")
+  //     return router.push("/");
+  //   }
+  // }, []);
 
   useEffect(() => {
     dispatch(rehydrate(initialState.project))
@@ -235,8 +235,7 @@ const Ticket = ({initialState, token, roleResult}) => {
 export default Ticket;
 export const getServerSideProps = async (context) => {
   try {
-    let token = context.req.cookies.qual__token;
-    token ? token : null;
+    let token = context.req.cookies.qual__token || null;
     /*
     res.setHeader(
     "Set-Cookie",
@@ -263,6 +262,10 @@ export const getServerSideProps = async (context) => {
   );
     */
     if (!token) {
+      console.log("^^^^^^^^^^^^^^^^^^^^^^^^^")
+      console.log("^^^^^^^^^^^^^^^^^^^^^^^^^")
+      console.log("looks like token is expired")
+      console.log("^^^^^^^^^^^^^^^^^^^^^^^^^")
       // context.res.setHeader(
       //   "Set-Cookie", [
       //     `qual__isLoggedIn=deleted; Max-Age=-1; Expires: new Date(0)`,
@@ -271,6 +274,10 @@ export const getServerSideProps = async (context) => {
       //     // `qual__user=deleted; Max-Age=0`
       //   ]
       // )
+      // context.res.setHeader(
+      //   "Set-Cookie",
+      //   `qual__token=deleted; Max-Age=0; Expires=${new Date(0).toUTCString()}; Path=/;HttpOnly; Secure`
+      // );
 
       // serialize("qual__token", "", {
       //   sameSite: "strict",
@@ -281,7 +288,8 @@ export const getServerSideProps = async (context) => {
       //   expires: new Date(0)
       // })
       
-      await store.dispatch(logout());
+      // await store.dispatch(expiredTokenLogout({router}));
+      // await store.dispatch(logout());
       // context.
       // cookie.serialize("qual__token", '', {
       //   sameSite: "strict",
@@ -305,6 +313,144 @@ export const getServerSideProps = async (context) => {
       //     roleResult: ''
       //   },
       // };
+      // await store.dispatch(expiredTokenLogout());
+      console.log("Logging out")
+      // return {
+      //   props: {
+      //     initialState: store.getState(),
+      //     token: null,
+      //     roleResult: ''
+      //   }
+      // };
+      return {
+        redirect: {
+          destination: `/signin?session_expired=true`,
+          permanent: false,
+        },
+        props: {},
+      };
+    };
+
+    console.log("******************************")
+    console.log("******************************")
+    console.log("token is legit")
+    console.log("******************************")
+    
+    // let userInfo = context.req.cookies.qual__user;
+    let ticketID = context.params.ticketId;
+    let validCookieAuth = context.req ? { cookie: context.req.headers.cookie } : undefined;
+    let userRole = await getDataSSR(`/auth/checkAuth`, validCookieAuth);
+    let roleResult = userRole?.data?.role;
+
+    await store.dispatch(getTicket({ticket_id: ticketID, cookie: validCookieAuth}));
+
+    console.log("{{{initialState}}}")
+    // console.log(initialState)
+    console.log("{{{token}}}")
+    console.log(token)
+    console.log("{{{roleResult}}}")
+    console.log(roleResult)
+    return {
+      props: {
+        initialState: store.getState(),
+        token,
+        roleResult
+      }
+    }
+  } catch (err) {
+    console.error(err);
+    return {
+      redirect: {
+        destination: "/signin",
+        permanent: false
+      },
+      props: {
+        token: ""
+      }
+    }
+  }
+};
+Ticket.getLayout = function getLayout(Ticket) {
+  return <DetailLayout>{Ticket}</DetailLayout>
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+res.setHeader(
+"Set-Cookie",
+[
+  cookie.serialize("qual__token", '', {
+    sameSite: "strict",
+    secure: process.env.NODE_ENV !== 'development',
+    maxAge: -1,
+    path: '/',
+    httpOnly: true,
+    expires: new Date(0)
+  }),
+  cookie.serialize("qual__isLoggedIn", '', {
+    sameSite: "strict",
+    secure: process.env.NODE_ENV !== 'development',
+    maxAge: -1,
+    path: '/',
+    httpOnly: true,
+    expires: new Date(0)
+  }),
+  
+]
+// cookie.serialize("ual__token", null, { expires: new Date(1), maxAge: 0, path: '/', httpOnly: false })
+);
+*/
+
+// await store.dispatch(logout());
+/*
+export const getServerSideProps = async (context) => {
+  try {
+    let token = context.req.cookies.qual__token;
+    token ? token : null;
+    if (!token) { // token expired - thus remove cookie and redirect
+      context.res.setHeader(
+        "Set-Cookie", [
+          `qual__token=deleted; Max-Age=-1; Expires: new Date(0)`,
+          // `qual__isLoggedIn=deleted; Max-Age=-1; Expires: new Date(0)`,
+          // `qual__isLoggedIn=deleted; Max-Age=0; Expires: new Date(0)`,
+          // `qual__isLoggedIn=deleted; Max-Age=0`,
+          // `qual__user=deleted; Max-Age=0`
+        ]
+      )
+      
       return {
         redirect: {
           destination: `/signin?session_expired=true`,
@@ -342,6 +488,4 @@ export const getServerSideProps = async (context) => {
     }
   }
 };
-Ticket.getLayout = function getLayout(Ticket) {
-  return <DetailLayout>{Ticket}</DetailLayout>
-};
+*/
