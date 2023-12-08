@@ -16,80 +16,12 @@ import ButtonUI from "@/components/UI/ButtonUI";
 import Upload from "@/components/details/Upload";
 import DetailLayout from "@/components/layouts/DetailLayout";
 
-/* project
-id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  title VARCHAR(360) NOT NULL,
-  description TEXT NOT NULL,
-  github_url TEXT,
-  site_url TEXT,
-  -- owner is admin / submitter (user_id)
-  owner UUID NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT NULL
-*/
-
-/* users - for assigning to tickets and listing them for availability
-id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  f_name VARCHAR(60) NOT NULL,
-  l_name VARCHAR(60) NOT NULL,
-  username VARCHAR(120) NOT NULL UNIQUE,
-  email VARCHAR(60) NOT NULL UNIQUE,
-  password VARCHAR(660) NOT NULL,
-  -- ['Admin', 'Developer', 'Submitter', 'Project Manager', 'Banned', 'Deleted']
-  role VARCHAR(120) NOT NULL DEFAULT 'Developer',
-  -- user_avatar VARCHAR(300),
-  -- user_avatar_filename VARCHAR(600),
-  -- refresh_token TEXT,
-  -- treat status as 'active' or 'deleted' if false
-  -- status BOOLEAN DEFAULT true NOT NULL,
-  -- may not need project_id for this table as members relation between users and projects table would offer more sense in structure
-  project_id UUID,
-  FOREIGN KEY(project_id) REFERENCES projects(id),
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-*/
-
-/* members - assure assigned users are members of project
-id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  -- active BOOLEAN DEFAULT true NOT NULL,
-  -- ['assigned','reassigned','removed']
-  status VARCHAR(120),
-  user_id UUID,
-  project_id UUID,
-  FOREIGN KEY(user_id) REFERENCES users(id),
-  FOREIGN KEY(project_id) REFERENCES projects(id),
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT NULL
-*/
-
-/* ticket
-id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  title VARCHAR(120),
-  description TEXT,
-  notes TEXT,
-  -- ['New','Open','On Hold','In Progress','Closed','Unconfirmed']
-  status VARCHAR(100) NOT NULL DEFAULT 'New',
-  -- ['Urgent','High','Medium','Low','None']
-  priority VARCHAR(100) NOT NULL,
-  -- ['Bug','Breaking Change','Discussion','Error','Enhancement','Feature Request','Needs Investigation','Question','Release','Regression','Security','Misc']
-  type VARCHAR(100) NOT NULL,
-  -- user id of submitter
-  submitter UUID,
-  deadline TIMESTAMP DEFAULT NULL,
-  -- id of user ticket is assigned to
-  user_id UUID,
-  project_id UUID,
-  FOREIGN KEY(user_id) REFERENCES users(id),
-  FOREIGN KEY(project_id) REFERENCES projects(id),
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT NULL
-*/
-
 const initialTicketState = {title: "", description: "", notes: [], status: "", priority: "", type: "", submitter: "", deadline: ""};
 /*
   NOTE: declare initialState outside of component
   so that it doesn't trigger a useEffect
   we can then safely use this to construct our profileData
- */
+*/
 const EditTicket = ({initialState, token}) => {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -101,13 +33,13 @@ const EditTicket = ({initialState, token}) => {
 
   let {title, description, notes, status, priority, type, submitter, deadline} = formData;
 
-  useEffect(() => {
-    if (!token || !Cookies.get("qual__isLoggedIn")) {
-      dispatch(logout());
-      toast.success("Token or authorization expired.")
-      return router.push("/");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!token || !Cookies.get("qual__isLoggedIn")) {
+  //     dispatch(logout());
+  //     toast.success("Token or authorization expired.")
+  //     return router.push("/");
+  //   }
+  // }, []);
   
   useEffect(() => {
     dispatch(rehydrate(initialState.project))
@@ -376,16 +308,8 @@ const EditTicket = ({initialState, token}) => {
 export default EditTicket;
 export const getServerSideProps = async (context) => {
   try {
-    let token = context.req.cookies.qual__token;
-    token ? token : null;
+    let token = context.req.cookies.qual__token || null;
     if (!token) {
-      console.log("session expired")
-      context.res.setHeader(
-        "Set-Cookie", [
-          `qual__isLoggedIn=deleted; Max-Age=0`,
-          // `qual__userRole=deleted; Max-Age=0`,
-        ]
-      )
       return {
         redirect: {
           destination: `/signin?session_expired=true`,
@@ -420,7 +344,6 @@ export const getServerSideProps = async (context) => {
     }
   } catch (err) {
     console.error(err);
-    console.log("attempting redirect edit ticket")
     return {
       redirect: {
         destination: "/signin",

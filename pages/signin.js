@@ -3,41 +3,37 @@ import { useEffect, useState } from  'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from "next/router";
 import Cookies from 'js-cookie';
+import store from '@/redux/store';
 import { toast } from 'react-toastify';
-import { loginUser } from '@/redux/features/auth/authSlice';
+import { loginUser, logout, expiredTokenLogout, rehydrate } from '@/redux/features/auth/authSlice';
 import MainLayout from "@/components/layouts/MainLayout";
 import ButtonUI from '@/components/UI/ButtonUI';
 import { Card, Input, InputLabel, FormGroup, CardContent, Typography } from "@mui/material";
 
-const initialState = {email: "", password: ""};
+const initialSignInState = {email: "", password: ""};
 
-const SignIn = ({token}) => {
+const SignIn = ({initialState}) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const [hasMounted, setHasMounted] = useState(false);
-  const [formData, setFormData] = useState(initialState);
+  const [formData, setFormData] = useState(initialSignInState);
   const { isAuthenticated } = useSelector(state => state.auth);
 
   const { email, password } = formData;
 
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //     router?.push('/');
-  //   }
-  //   if (isAuthenticated) {
-  //     router?.push('/');
-  //   }
-  // }, [router, isAuthenticated]);
+  useEffect(() => {
+    if (!Cookies.get("qual__isLoggedIn")) {
+      localStorage.removeItem('qual__user');
+    }
+  }, []);
 
   useEffect(() => {
     setHasMounted(true);
   }, []);
   
   if (!hasMounted) return null;
-  // if (hasMounted && isAuthenticated) {
-  //     router?.push('http://localhost:3000/');
-  // }
-  if (router.query.session_expired) {
+
+  if (router?.query?.session_expired) {
     toast?.error("Session expired. Please login.", { toastId: "expiredAuthId" });
   };
 
@@ -49,7 +45,6 @@ const SignIn = ({token}) => {
     e.preventDefault();
     try {
       dispatch(loginUser({formData, router}));
-      // if (Cookies.get("qual__token")) router.push('/');
     } catch (err) {
       console.error(err);
       toast?.error("Failed to register. Check if email or password are valid.", {toastId: "signinErr"});
@@ -140,8 +135,66 @@ const SignIn = ({token}) => {
 export default SignIn;
 export const getServerSideProps = async (context) => {
   try {
-    let token = context.req.cookies.qual__token;
-    token ? token : null;
+    let token = context.req.cookies.qual__token || null;
+    console.log("signin page -- token value")
+    console.log(token)
+    let { query } = context;
+    let hasQueryParams = Object.keys(query).length > 0;
+    if (hasQueryParams) {
+      let { session_expired } = query;
+      
+      if (session_expired === 'true') {
+        // context.res.setHeader(
+        //   "Set-Cookie",
+        //   [
+        //     `qual__token=deleted; Max-Age=0; Expires=${new Date(0).toUTCString()}; Path=/; HttpOnly; Secure`,
+        //     `qual__isLoggedIn=deleted; Max-Age=0; Expires=${new Date(0).toUTCString()}; Path=/; HttpOnly; Secure`
+        //   ].join('; ')
+        // );
+        // context.res.setHeader(
+        //   "Set-Cookie",
+        //   [
+        //     `qual__token=deleted; Max-Age=0; Path=/; HttpOnly; Secure`,
+        //     `qual__isLoggedIn=deleted; Max-Age=0; Path=/; HttpOnly; Secure`
+        //   ]
+        // );
+
+        // await store.dispatch(expiredTokenLogout());
+        // await store.dispatch(logout());
+        
+        context.res.setHeader(
+          "Set-Cookie",
+          // `qual__token=; Max-Age=0; Path=/; HttpOnly; Secure; SameSite=Strict`
+          `qual__token=deleted; Max-Age=0; Path=/; HttpOnly; Secure; SameSite=Strict`
+        );
+        context.res.setHeader(
+          "Set-Cookie",
+          `qual__isLoggedIn=deleted; Max-Age=0; Path=/; HttpOnly; Secure`  
+        );
+
+        // let cookiesToDelete = [
+        //   `qual__token=deleted; Max-Age=0; Path=/; HttpOnly; Secure`,
+        //   `qual__isLoggedIn=deleted; Max-Age=0; Path=/; HttpOnly; Secure`
+        // ];
+        // context.res.setHeader("Set-Cookie", cookiesToDelete);
+
+        // context.res.setHeader(
+        //   "Set-Cookie",
+        //   `qual__token=deleted; Max-Age=0; Expires=${new Date(0).toUTCString()}; Path=/; HttpOnly; Secure`
+        // );
+        // context.res.setHeader(
+        //   "Set-Cookie",
+        //   `qual__isLoggedIn=deleted; Max-Age=0; Expires=${new Date(0).toUTCString()}; Path=/; HttpOnly; Secure`  
+        // );
+      }
+
+    };
+    
+    console.log("++++++++++++++++++++++++++++")
+    console.log("this da query")
+    console.log(query)
+    console.log("++++++++++++++++++++++++++++")
+    console.log("++++++++++++++++++++++++++++")
     /*
     res.setHeader(
     "Set-Cookie",
@@ -167,6 +220,7 @@ export const getServerSideProps = async (context) => {
     // cookie.serialize("ual__token", null, { expires: new Date(1), maxAge: 0, path: '/', httpOnly: false })
   );
     */
+    // if (token && Object.keys(query).length === 0) {
     if (token) {
       console.log("00000000000000000000")
       console.log("00000000000000000000")
@@ -186,6 +240,7 @@ export const getServerSideProps = async (context) => {
       // await store.dispatch(logout());
       return {
         redirect: {
+          // initialState: store.getState(),
           destination: `/`,
           permanent: false,
         },

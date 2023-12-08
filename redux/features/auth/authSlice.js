@@ -102,6 +102,23 @@ export const logout = createAsyncThunk(
   }
 );
 
+export const expiredTokenLogout = createAsyncThunk(
+  'auth/expiredTokenLogout',
+  async (_, thunkAPI) => {
+    try {
+      return await authService.expiredTokenLogout(_, thunkAPI);
+    } catch (err) {
+      const message =
+        (err.response &&
+          err.response.data &&
+          err.response.data.message) ||
+        err.message ||
+        err.toString()
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const deleteUser = createAsyncThunk(
   'auth/delete',
   async (navigate, thunkAPI) => {
@@ -301,6 +318,24 @@ export const authSlice = createSlice({
       state.user = null;
     },
     [logout.rejected]: (state) => {
+      state.loading = false;
+      state.isAuthenticated = false;
+      state.user = null;
+      state.error = true;
+    },
+    [expiredTokenLogout.pending]: (state) => {
+      state.loading = true;
+    },
+    [expiredTokenLogout.fulfilled]: (state) => {
+      localStorage.removeItem('qual__token')
+      localStorage.removeItem('qual__user')
+      localStorage.removeItem('qual__theme')
+      state.token = null;
+      state.loading = false;
+      state.isAuthenticated = false;
+      state.user = null;
+    },
+    [expiredTokenLogout.rejected]: (state) => {
       state.loading = false;
       state.isAuthenticated = false;
       state.user = null;

@@ -211,50 +211,22 @@ const Home = () => {
 export default Home;
 export const getServerSideProps = async (context) => { 
   try {
-    // let cookies = new Cookie()
-    let token = context.req.cookies.qual__token;
-    token ? token : null;
-    console.log("token")
-    console.log(token)
-    console.log("+++ context +++")
-    // console.log(context)
-    console.log("+++ end +++")
+    let token = context.req.cookies.qual__token || null;
     if (!token) {
-      // await authIsExpired();
-      console.log("session expired")
-      // cookie.set("qual__isLoggedIn")
-      context.res.setHeader(
-        "Set-Cookie", [
-          `qual__isLoggedIn=deleted; Max-Age=0`,
-          // `qual__user=deleted; Max-Age=0`
-        ]
-      )
-      // context.res
-      // res.setHeader(
-      //   "Set-Cookie", [
-      //     cookie.serialize("qual__token", jwtAccessToken, cookieOptions),
-      //     cookie.serialize("qual__isLoggedIn", true, {path: "/"})
-      //   ]
-      // );
-      // Cookies.remove("qual__isLoggedIn");
-      // Cookies.set("qual__isLoggedIn", "false");
-      // localStorage.removeItem("qual__user");
       return {
         redirect: {
-          destination: `/signin`,
+          destination: `/signin?session_expired=true`,
           permanent: false,
         },
-        props: {
-          // authIsExpired: "Session expired. Please login."
-        },
+        props: {},
       };
     };
 
     let validCookieAuth = context.req ? { cookie: context.req.headers.cookie } : undefined;
-    console.log("~|~|~|~|~|~|~|~|~|~|~|~|~|~|~|~|~|~|~")
-    console.log("validCookieAuth")
-    console.log(validCookieAuth)
-    console.log("~|~|~|~|~|~|~|~|~|~|~|~|~|~|~|~|~|~|~")
+    // console.log("~|~|~|~|~|~|~|~|~|~|~|~|~|~|~|~|~|~|~")
+    // console.log("validCookieAuth")
+    // console.log(validCookieAuth)
+    // console.log("~|~|~|~|~|~|~|~|~|~|~|~|~|~|~|~|~|~|~")
 
     return {
       props: {

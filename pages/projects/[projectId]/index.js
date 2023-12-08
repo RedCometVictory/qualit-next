@@ -29,13 +29,13 @@ const Project = ({initialState, token, roleResult}) => {
   const [managePersonnelModal, setManagePersonnelModal] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
 
-  useEffect(() => {
-    if (!token || !Cookies.get("qual__isLoggedIn")) {
-      dispatch(logout());
-      toast.success("Token or authorization expired.")
-      return router.push("/");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!token || !Cookies.get("qual__isLoggedIn")) {
+  //     dispatch(logout());
+  //     toast.success("Token or authorization expired.")
+  //     return router.push("/");
+  //   }
+  // }, []);
   
   useEffect(() => {
     dispatch(rehydrate(initialState.project))
@@ -169,27 +169,17 @@ const Project = ({initialState, token, roleResult}) => {
 export default Project;
 export const getServerSideProps = async (context) => {
   try {
-    let token = context.req.cookies.qual__token;
-    token ? token : null;
-    
+    let token = context.req.cookies.qual__token || null;
     if (!token) {
-      context.res.setHeader(
-        "Set-Cookie", [
-          `qual__isLoggedIn=deleted; Max-Age=0`,
-          // `qual__user=deleted; Max-Age=0`
-        ]
-      )
       return {
         redirect: {
-          // url to init toast on signin page - on signin page search for param, if found init toast
           destination: `/signin?session_expired=true`,
           permanent: false,
         },
         props: {},
       };
     };
-    
-    // let userInfo = context.req.cookies.qual__user;
+
     let projectID = context.params.projectId;
     let validCookieAuth = context.req ? { cookie: context.req.headers.cookie } : undefined;
     let userRole = await getDataSSR(`/auth/checkAuth`, validCookieAuth);

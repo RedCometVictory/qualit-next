@@ -32,13 +32,13 @@ const MyTickets = ({initialState, token, roleResult}) => {
   const [hasMounted, setHasMounted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    if (!token || !Cookies.get("qual__isLoggedIn")) {
-      dispatch(logout());
-      toast.success("Token or authorization expired.")
-      return router.push("/");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!token || !Cookies.get("qual__isLoggedIn")) {
+  //     dispatch(logout());
+  //     toast.success("Token or authorization expired.")
+  //     return router.push("/");
+  //   }
+  // }, []);
   
   useEffect(() => {
     dispatch(rehydrate(initialState.project))
@@ -416,15 +416,8 @@ const MyTickets = ({initialState, token, roleResult}) => {
 export default MyTickets;
 export const getServerSideProps = async (context) => {
   try {
-    let token = context.req.cookies.qual__token;
-    token ? token : null;
+    let token = context.req.cookies.qual__token || null;
     if (!token) {
-      context.res.setHeader(
-        "Set-Cookie", [
-          `qual__isLoggedIn=deleted; Max-Age=0`,
-          // `qual__user=deleted; Max-Age=0`
-        ]
-      )
       return {
         redirect: {
           destination: `/signin?session_expired=true`,
@@ -433,9 +426,7 @@ export const getServerSideProps = async (context) => {
         props: {},
       };
     };
-    
-    // let userInfo = context.req.cookies.qual__user;
-    // let ticketID = context.params.ticketId;
+
     let validCookieAuth = context.req ? { cookie: context.req.headers.cookie } : undefined;
     let userRole = await getDataSSR(`/auth/checkAuth`, validCookieAuth);
     let roleResult = userRole?.data?.role;

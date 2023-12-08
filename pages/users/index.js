@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { BsSearch } from "react-icons/bs";
 import store from "@/redux/store";
+import { getDataSSR } from "@/utils/fetchData";
 import { logout } from "@/redux/features/auth/authSlice";
 import { getUsersListAdmin, rehydrate } from "@/redux/features/user/userSlice";
 import { Typography, TextField, Select, MenuItem } from '@mui/material';
@@ -25,13 +26,13 @@ const UsersList = ({initialState, token}) => {
   const [hasMounted, setHasMounted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    if (!token || !Cookies.get("qual__isLoggedIn")) {
-      dispatch(logout());
-      toast.success("Token or authorization expired.")
-      return router.push("/");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!token || !Cookies.get("qual__isLoggedIn")) {
+  //     dispatch(logout());
+  //     toast.success("Token or authorization expired.")
+  //     return router.push("/");
+  //   }
+  // }, []);
   
   useEffect(() => {
     dispatch(rehydrate(initialState.user))
@@ -299,16 +300,8 @@ const UsersList = ({initialState, token}) => {
 export default UsersList;
 export const getServerSideProps = async (context) => {
   try {
-    let token = context.req.cookies.qual__token;
-    token ? token : null;
+    let token = context.req.cookies.qual__token || null;
     if (!token) {
-      context.res.setHeader(
-        "Set-Cookie", [
-          `qual__isLoggedIn=deleted; Max-Age=0`,
-          // `qual__user=deleted; Max-Age=0`
-        ]
-      )
-
       return {
         redirect: {
           destination: `/signin?session_expired=true`,
@@ -317,9 +310,21 @@ export const getServerSideProps = async (context) => {
         props: {},
       };
     };
-    // let userInfo = context.req.cookies.qual__user;
-    // let ticketID = context.params.ticketId;
+
     let validCookieAuth = context.req ? { cookie: context.req.headers.cookie } : undefined;
+    let userRole = await getDataSSR(`/auth/checkAuth`, validCookieAuth);
+    let roleResult = userRole?.data?.role;
+
+    if (roleResult === "Developer" || !roleResult) {
+      return {
+        redirect: {
+          destination: `/my/account`,
+          permanent: false
+        },
+        props: {}
+      };
+    };
+
     await store.dispatch(getUsersListAdmin({keyword: '', pageNumber: 1, itemsPerPage: 20, orderBy: true, cookie: validCookieAuth}));
 
     return {
