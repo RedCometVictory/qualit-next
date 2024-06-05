@@ -20,9 +20,9 @@ const initialState = {
 
 export const fetchColumns = createAsyncThunk(
   'columns/get/fetch-All-Columns',
-  async (_, thunkAPI) => {
+  async (boardId, thunkAPI) => {
     try {
-      return await columnService.fetchColumns();
+      return await columnService.fetchColumns(boardId);
     } catch (err) {
       const message =
         (err.response &&
@@ -38,9 +38,9 @@ export const fetchColumns = createAsyncThunk(
 
 export const addColumn = createAsyncThunk(
   'columns/post/column-add',
-  async (formData, thunkAPI) => {
+  async ({boardId, formData}, thunkAPI) => {
     try {
-      return await columnService.addColumn(formData, thunkAPI);
+      return await columnService.addColumn(boardId, formData, thunkAPI);
     } catch (err) {
       const message =
         (err.response &&
@@ -56,9 +56,9 @@ export const addColumn = createAsyncThunk(
 
 export const updateColumn = createAsyncThunk(
   'columns/put/update-column',
-  async (formData, thunkAPI) => {
+  async ({formData, boardId, columnId}, thunkAPI) => {
     try {
-      return await columnService.updateColumn(formData, thunkAPI);
+      return await columnService.updateColumn(boardId, columnId, formData, thunkAPI);
     } catch (err) {
       const message =
         (err.response &&
@@ -74,9 +74,9 @@ export const updateColumn = createAsyncThunk(
 
 export const updateColumnSequence = createAsyncThunk(
   'columns/put/column-update-sequence',
-  async (formData, thunkAPI) => {
+  async ({formData, boardId, columnId}, thunkAPI) => {
     try {
-      return await columnService.updateColumnSequence(formData, thunkAPI);
+      return await columnService.updateColumnSequence(columnId, boardId, formData, thunkAPI);
     } catch (err) {
       const message =
         (err.response &&
@@ -92,9 +92,9 @@ export const updateColumnSequence = createAsyncThunk(
 
 export const deleteColumn = createAsyncThunk(
   'columns/delete',
-  async (formData, thunkAPI) => {
+  async ({boardId, columnId}, thunkAPI) => {
     try {
-      return await columnService.deleteColumn(formData, thunkAPI);
+      return await columnService.deleteColumn(boardId, columnId, thunkAPI);
     } catch (err) {
       const message =
         (err.response &&

@@ -4,111 +4,67 @@ const getAllBoards = async (userData) => {
   // const res = await api.get();
   // get all boards belonging to logged in user, as these are their tasks
   const id = userData.id;
-  const res = await getData(`/boards/all?userid=${id}`);
-  return res;
+  // const res = await getData(`/boards/all?userid=${id}`);
+  const res = await getData(`/boards?userId=${id}`);
+  const result = res.data;
+  // localStorage.setItem("qual__project", JSON.stringify(result.project));
+  // TODO: place updated project data into project {} and save new state into LS qual__project
+  console.log("***Board Service***");
+  console.log(result)
+  console.log("----- END Board service -----")
+  return result;
 };
 
 const getBoard = async (formData) => {
-
   // const res = await getData(`/boards/board?boardid=${boardId}`);
-  const res = await getData(`/boards/board/${boardId}`);
+  // const res = await getData(`/boards/board/${boardId}`);
+  const res = await getData(`/boards/${boardId}`);
+  const result = res.data;
+
+  // localStorage.setItem("qual__project", JSON.stringify(result.project));
+  // TODO: place updated project data into project {} and save new state into LS qual__project
+  console.log("***Board Service***");
+  console.log(result)
+  console.log("----- END Board service -----")
+  return result;
 };
 
 const createBoard = async (formData) => {
-  const res = await postData(`/boards/new`, formData);
-
-  /*
-    const { board } = getState() as { board: BoardSlice };
-  const { user } = getState() as { user: SingleUser };
-
-  const data = {
-    _id: board.board._id,
-    name: board.board.name,
-    dateCreated: board.board.dateCreated,
-    createdBy: user.id,
-    backgroundImage: '/boards/board-background.jpg'
-  };
-
-  const url = `${host}/api/boards`;
-
-  const response = await fetch(url, {
-    method: 'POST',
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    redirect: 'follow',
-    referrerPolicy: 'no-referrer',
-    body: JSON.stringify(data)
-  });
-
-  const inJSON = await response.json();
-  return inJSON;
-  */
+  // const res = await postData(`/boards/new`, formData);
+  const res = await postData(`/boards`, formData);
+  const result = res.data;
+  //! TODO: work in a redirect from the creation form page to the noards page
+  // localStorage.setItem("qual__project", JSON.stringify(result.project));
+  // TODO: place updated project data into project {} and save new state into LS qual__project
+  console.log("***Board Service***");
+  console.log(result)
+  console.log("----- END Board service -----")
+  return result;
 };
 
-const saveBoard = async (formData) => {
-  const res = await putData(`/boards/save`);
-  /*
-  const { board } = getState() as { board: BoardSlice };
+const saveBoard = async (boardFormData, boardId) => {
+  const res = await putData(`/boards/${boardId}`, boardFormData);
+  const result = res.data;
 
-  const data = {
-    _id: board.board._id,
-    name: board.board.name,
-    dateCreated: board.board.dateCreated,
-    createdBy: board.board.createdBy,
-    backgroundImage: board.board.backgroundImage
-  };
-
-  const url = `${host}/api/boards/${data._id}`;
-
-  const response = await fetch(url, {
-    method: 'PATCH',
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    redirect: 'follow',
-    referrerPolicy: 'no-referrer',
-    body: JSON.stringify(data)
-  });
-
-  const json = await response.json();
-
-  return json;
-  */
+  // localStorage.setItem("qual__project", JSON.stringify(result.project));
+  // TODO: place updated project data into project {} and save new state into LS qual__project
+  console.log("***Board Service***");
+  console.log(result)
+  console.log("----- END Board service -----")
+  return result;
 };
 
-const deleteBoard = async (formData) => {
-  const id = formData.id;
-  const res = await deleteData(`/boards/board/delete?boardid=${id}`);
-  /*
-  const { board } = getState() as { board: BoardSlice };
+const deleteBoard = async (boardId) => {
+  // const res = await deleteData(`/boards/board/delete?boardid=${id}`);
+  const res = await deleteData(`/boards/${boardId}`);
 
-  const _id = board.board._id;
-
-  const url = `${host}/api/boards/${_id}`;
-
-  const response = await fetch(url, {
-    method: 'DELETE',
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    redirect: 'follow',
-    referrerPolicy: 'no-referrer'
-  });
-
-  const json = await response.json();
-
-  return json;
-  */
+  const result = res.data;
+  // localStorage.setItem("qual__project", JSON.stringify(result.project));
+  // TODO: place updated project data into project {} and save new state into LS qual__project
+  console.log("***Board Service***");
+  console.log(result)
+  console.log("----- END Board service -----")
+  return result;
 };
 
 const boardService = {

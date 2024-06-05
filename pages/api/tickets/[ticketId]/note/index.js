@@ -129,6 +129,7 @@ handler.post(async (req, res) => {
   });
 });
 
+// delete ticket note
 handler.delete(async (req, res) => {
   const { id, role } = req.user;
   const { ticketId, noteId } = req.query;
