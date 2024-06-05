@@ -10,21 +10,27 @@ export const config = {
 const handler = nc({onError, onNoMatch});
 handler.use(verifAuth, authRoleDev);
 
-// update column, sequence is '' if its not to be updated
+// update column data or sequence, sequence is '' if its not to be updated
+// TODO: apply sequence to column to reflect change
 handler.put(async (req, res) => {
-  const { slug, columnId } = req.query;
+  const { boardId, columnId } = req.query;
   const { name, sequence } = req.body;
+
+  //! TODO: Check if there is a name, then update if there is a change, else skip the name update
 
   let updatedByTimeStamp = new Date();
   let updatedColumn;
-  if (!sequence) {
+  
+  updatedColumn = await pool.query('UPDATE columns SET name = $1, updated_at = $2 WHERE id = $3 RETURNING *;', [name, updatedByTimeStamp, columnId]);
+  /*
+  if (sequence.length === 0 || (!sequence || sequence === null)) {
     // update name of column
     updatedColumn = await pool.query('UPDATE columns SET name = $1, updated_at = $2 WHERE id = $3 RETURNING *;', [name, updatedByTimeStamp, columnId]);
   } else {
     // update sequence of column
     updatedColumn = await pool.query('UPDATE columns SET sequence = $1, updated_at = $2 WHERE id = $3 RETURNING *;', [sequence, updatedByTimeStamp, columnId]);
   };
-
+  */
   if (updatedColumn.rowCount === 0 || updatedColumn === null) {
     throw new Error('Failed to update column.');
   }
@@ -38,8 +44,9 @@ handler.put(async (req, res) => {
 });
 
 // delete a column and its respective cards
+// TODO: set admin to delete any board and user to only delete user owned boards and content
 handler.delete(async (req, res) => {
-  const { columnId } = req.query;
+  const { boardId, columnId } = req.query;
 
   await pool.query('DELETE FROM cards WHERE column_id = $1;', [columnId]);
   await pool.query('DELETE FROM columns WHERE id = $1;', [columnId]);

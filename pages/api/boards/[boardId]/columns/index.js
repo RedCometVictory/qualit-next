@@ -10,9 +10,10 @@ export const config = {
 const handler = nc({onError, onNoMatch});
 handler.use(verifAuth, authRoleDev);
 
+// fetch all columns belonging to board
 handler.get(async (req, res) => {
-  const { slug } = req.query;
-  const columns = await pool.query('SELECT * FROM columns WHERE board_id = $1;', [slug]);
+  const { boardId } = req.query;
+  const columns = await pool.query('SELECT * FROM columns WHERE board_id = $1;', [boardId]);
   if (columns.rowCount === 0 || columns === null) {
     throw new Error("Failed to get all columns belonging to this board.");
   }
@@ -25,12 +26,13 @@ handler.get(async (req, res) => {
   });
 });
 
+// add column to board
 handler.post(async (req, res) => {
   const { id } = req.user;
-  const { slug } = req.query;
+  const { boardId } = req.query;
   const { name, sequence } = req.body;
   
-  let newColumn = await pool.query('INSERT INTO columns (name, sequence, board_id, user_id) VALUES ($1, $2, $3, $4) RETURNING *;', [name, sequence, slug, id]);
+  let newColumn = await pool.query('INSERT INTO columns (name, sequence, board_id, user_id) VALUES ($1, $2, $3, $4) RETURNING *;', [name, sequence, boardId, id]);
 
   if (newColumn.rowCount === 0 || newColumn === null) {
     throw new Error('Failed to create new column.');

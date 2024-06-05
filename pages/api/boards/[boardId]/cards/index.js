@@ -10,9 +10,11 @@ export const config = {
 const handler = nc({onError, onNoMatch});
 handler.use(verifAuth, authRoleDev);
 
+// fetch cards belonging to column & board
 handler.get(async (req, res) => {
-  const { slug } = req.query;
-  const cards = await pool.query('SELECT * FROM cards WHERE id = $1;', [slug]);
+  const { boardId } = req.query;
+  // const cards = await pool.query('SELECT * FROM cards WHERE id = $1;', [slug]);
+  const cards = await pool.query('SELECT * FROM cards WHERE board_id = $1;', [boardId]);
   if (cards.rowCount === 0 || cards === null) {
     throw new Error("Failed to retrieve board information.");
   }
@@ -25,15 +27,16 @@ handler.get(async (req, res) => {
 });
 
 // slug = board_id
+// TODO: set admin to delete any board and user to only delete user owned boards and content
 // delete all cards & columns
-// handler.delete(async (req, res) => {
-//   const { id } = req.user;
-//   const { slug } = req.query;
+handler.delete(async (req, res) => {
+  const { id } = req.user;
+  const { boardId } = req.query;
   
-//   await pool.query('Delete FROM cards WHERE board_id = $1;', [slug]);
+  await pool.query('Delete FROM cards WHERE board_id = $1;', [boardId]);
   
-//   return res.status(200).json({
-//     status: "Deleted all cards and thus columns of a board."
-//   })
-// });
+  return res.status(200).json({
+    status: "Deleted all cards and thus columns of a board."
+  })
+});
 export default handler;

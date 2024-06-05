@@ -6,7 +6,7 @@ import boardService from './boardService';
 let initBoardState = {
   id: '',
   name: '',
-  columns: '',
+  columns: [],
   createdBy: '',
   dateCreated: '',
   backgroundImage: '',
@@ -61,9 +61,9 @@ export const createBoard = createAsyncThunk(
 // create | update board by id
 export const saveBoard = createAsyncThunk(
   'board/put/save-board',
-  async (boardFormData, thunkAPI) => {
+  async ({boardFormData, boardId}, thunkAPI) => {
     try {
-      return await boardService.saveBoard(boardFormData, thunkAPI);
+      return await boardService.saveBoard(boardFormData, boardId);
     } catch (err) {
       const message =
         (err.response &&
@@ -159,8 +159,9 @@ const boardSlice = createSlice({
       state.status = 'failed';
       state.requestingNew = false;
     },
-    [saveBoard.pending]: (state) => {
+    [saveBoard.pending]: (state, { payload }) => {
       state.status = 'pending';
+      // state.board = payload;
       state.loading = true;
     },
     [saveBoard.fulfilled]: (state) => {

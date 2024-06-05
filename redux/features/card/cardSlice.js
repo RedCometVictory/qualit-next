@@ -26,9 +26,9 @@ const initialState = {
 
 export const fetchCards = createAsyncThunk(
   'cards/get/fetch-All-Cards',
-  async (_, thunkAPI) => {
+  async (boardId, thunkAPI) => {
     try {
-      return await cardService.fetchCards();
+      return await cardService.fetchCards(boardId);
     } catch (err) {
       const message =
         (err.response &&
@@ -44,9 +44,9 @@ export const fetchCards = createAsyncThunk(
 
 export const addCard = createAsyncThunk(
   'cards/post/add-card',
-  async (formData, thunkAPI) => {
+  async ({boardId, columnId, formData}, thunkAPI) => {
     try {
-      return await cardService.addCard(formData, thunkAPI);
+      return await cardService.addCard(boardId, columnId, formData, thunkAPI);
     } catch (err) {
       const message =
         (err.response &&
@@ -62,9 +62,9 @@ export const addCard = createAsyncThunk(
 
 export const updateCard = createAsyncThunk(
   'cards/put/update-Card',
-  async (formData, thunkAPI) => {
+  async ({boardId, cardId, formData}, thunkAPI) => {
     try {
-      return await cardService.updateCard(formData, thunkAPI);
+      return await cardService.updateCard(boardId, cardId, formData, thunkAPI);
     } catch (err) {
       const message =
         (err.response &&
@@ -80,9 +80,9 @@ export const updateCard = createAsyncThunk(
 
 export const updateCardSequence = createAsyncThunk(
   'cards/put/card-update-sequence',
-  async (formData, thunkAPI) => {
+  async ({boardId, columnId, formData}, thunkAPI) => {
     try {
-      return await cardService.updateCardSequence(formData, thunkAPI);
+      return await cardService.updateCardSequence(boardId, columnId, formData, thunkAPI);
     } catch (err) {
       const message =
         (err.response &&
