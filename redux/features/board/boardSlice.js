@@ -25,9 +25,17 @@ const initialState = {
 // ########## Boards ##########
 export const getAllBoards = createAsyncThunk(
   'boards/get/All-Boards',
-  async (userData, thunkAPI) => {
+  async (cookie, thunkAPI) => {
     try {
-      return await boardService.getAllBoards(userData, thunkAPI);
+      console.log("DDDDDDDDDDDDDDDDDDDDDD")
+      console.log("DDDDDDDDDDDDDDDDDDDDDD")
+      console.log("DDDDDDDDDDDDDDDDDDDDDD")
+      console.log("cookie")
+      console.log(cookie)
+      console.log("DDDDDDDDDDDDDDDDDDDDDD")
+      console.log("DDDDDDDDDDDDDDDDDDDDDD")
+      console.log("DDDDDDDDDDDDDDDDDDDDDD")
+      return await boardService.getAllBoards(cookie, thunkAPI);
     } catch (err) {
       const message =
         (err.response &&
@@ -42,9 +50,9 @@ export const getAllBoards = createAsyncThunk(
 
 export const createBoard = createAsyncThunk(
   'board/post/create-board',
-  async (boardFormData, thunkAPI) => {
+  async (formData, thunkAPI) => {
     try {
-      return await boardService.createBoard(boardFormData, thunkAPI);
+      return await boardService.createBoard(formData, thunkAPI);
     } catch (err) {
       const message =
         (err.response &&
@@ -78,9 +86,9 @@ export const saveBoard = createAsyncThunk(
 
 export const getBoard = createAsyncThunk(
   'board/get/Board-By-Id',
-  async (boardId, thunkAPI) => {
+  async ({boardId, cookie}, thunkAPI) => {
     try {
-      return await boardService.getBoard(boardId, thunkAPI);
+      return await boardService.getBoard(boardId, cookie, thunkAPI);
     } catch (err) {
       const message =
         (err.response &&
@@ -140,7 +148,9 @@ const boardSlice = createSlice({
       state.loading = true;
     },
     [getAllBoards.fulfilled]: (state, { payload }) => {
-      state.boards = payload;
+      // state.boards = [...payload.boards];
+      // state.boards = [state.boards, ...payload.boards];
+      state.boards = payload.boards;
       state.status = 'success';
       state.loading = false;
     },
@@ -151,8 +161,10 @@ const boardSlice = createSlice({
       state.pending = 'pending';
       state.requestingNew = true;
     },
-    [createBoard.fulfilled]: (state) => {
+    [createBoard.fulfilled]: (state, { payload }) => {
       state.status = 'success';
+      // todo: ensure order is from newest first to oldest
+      state.boards = [payload, ...state.boards];
       state.requestingNew = false;
     },
     [createBoard.rejected]: (state) => {

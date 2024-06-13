@@ -1,81 +1,105 @@
 .board {
-  width: 100%;
-  height: 100%;
-  max-height: calc(100% - 70px);
-  background: url(../../img/43056.jpg) no-repeat center center/cover;
-
-  &__col-container {
-    padding: 1rem 0.575rem;
+  // max-height: calc(100% - 70px);
+  &__layout {
+    width: 100%;
     height: 100%;
+    position: relative;
+    background: url(../../img/43056.jpg) no-repeat center center/cover;
+    @include flex(column, flex-start, center);
   }
-
+  &__container {
+    width: 100%;
+    height: 100%;
+    // padding: 16px 0 0 16px;
+    padding: 16px 0 0 8px;
+  }
+  // &__inner-container {}
   &__lanes {
     @include flex(row, flex-start, center);
     height: 100%;
   }
+  // &__col-container {
+  //   padding: 1rem 0.575rem;
+  //   height: 100%;
+  // }
 
-  &__lane {
-    @include flex(column, center, center);
-    background-color: var(--bg-primary-a-4);
-    align-self: flex-start;
-    border-radius: 6px;
-    margin: 0 0.5rem 0 0;
-    padding: 1rem 1rem 0;
-    max-width: 21.5625rem;
-    height: auto;
-    max-height: 100%;
-    transition: height 500ms ease-in-out;
-  }
 
-  &__lane-header {
-    padding: 1.275rem 1rem;
-    font-weight: 700;
-    background-color: var(--bg-panel);
-    color: var(--body-text);
-    border-radius: 6px;
-    margin: 0 0 0.75rem 0;
-  }
+  // &__lane {
+  //   @include flex(column, center, center);
+  //   background-color: var(--bg-primary-a-4);
+  //   align-self: flex-start;
+  //   border-radius: 6px;
+  //   margin: 0 0.5rem 0 0;
+  //   padding: 1rem 1rem 0;
+  //   max-width: 21.5625rem;
+  //   height: auto;
+  //   max-height: 100%;
+  //   transition: height 500ms ease-in-out;
+  // }
 
-  &__lane-content {
-    @include flex(column, space-between, center);
-    height: auto;
-    transition: height 500ms ease-in-out;
-    overflow-y: scroll;
-    -ms-overflow-style: none;
-    /* Internet Explorer 10+ */
-    scrollbar-width: none;
 
-    /* Firefox */
-    &::-webkit-scrollbar {
-      height: 0;
-      width: 0; // remove scrollbar space
-      background: transparent; // make scrollbar invisible
-    }
+  // &__col-lane {
+  //   @include flex(column, center, center);
+  //   background-color: var(--bg-primary-a-4);
+  //   align-self: flex-start;
+  //   border-radius: 6px;
+  //   margin: 0 0.5rem 0 0;
+  //   padding: 1rem 1rem 0;
+  //   max-width: 21.5625rem;
+  //   height: auto;
+  //   max-height: 100%;
+  //   transition: height 500ms ease-in-out;
+  // }
 
-    /* Optional: show position indicator in red */
-    // &::-webkit-scrollbar-thumb {
-    //   baackground: #FF0000;
-    // }
-  }
+  // &__lane-header {
+  //   padding: 1.275rem 1rem;
+  //   font-weight: 700;
+  //   background-color: var(--bg-panel);
+  //   color: var(--body-text);
+  //   border-radius: 6px;
+  //   margin: 0 0 0.75rem 0;
+  // }
 
-  &__lane-scroll {
-    overflow-y: scroll;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+  // &__lane-content {
+  //   @include flex(column, space-between, center);
+  //   height: auto;
+  //   transition: height 500ms ease-in-out;
+  //   overflow-y: scroll;
+  //   -ms-overflow-style: none;
+  //   /* Internet Explorer 10+ */
+  //   scrollbar-width: none;
 
-    &::-webkit-scrollbar {
-      height: 0;
-      width: 0; // remove scrollbar space
-      background: transparent; // make scrollbar invisible
-    }
-  }
+  //   /* Firefox */
+  //   &::-webkit-scrollbar {
+  //     height: 0;
+  //     width: 0; // remove scrollbar space
+  //     background: transparent; // make scrollbar invisible
+  //   }
 
-  &__new-lane {
-    align-self: flex-start;
-    margin: 0 0 0 1rem;
+  //   /* Optional: show position indicator in red */
+  //   // &::-webkit-scrollbar-thumb {
+  //   //   baackground: #FF0000;
+  //   // }
+  // }
 
-    .icon {
-      margin: 0 0.425rem 0 0;
-    }
-  }
+  // &__lane-scroll {
+  //   overflow-y: scroll;
+  //   -ms-overflow-style: none;
+  //   scrollbar-width: none;
+
+  //   &::-webkit-scrollbar {
+  //     height: 0;
+  //     width: 0; // remove scrollbar space
+  //     background: transparent; // make scrollbar invisible
+  //   }
+  // }
+
+  // &__new-lane {
+  //   align-self: flex-start;
+  //   margin: 0 0 0 1rem;
+
+  //   .icon {
+  //     margin: 0 0.425rem 0 0;
+  //   }
+  // }
 }

@@ -20,9 +20,9 @@ const initialState = {
 
 export const fetchColumns = createAsyncThunk(
   'columns/get/fetch-All-Columns',
-  async (boardId, thunkAPI) => {
+  async ({boardId, cookie}, thunkAPI) => {
     try {
-      return await columnService.fetchColumns(boardId);
+      return await columnService.fetchColumns(boardId, cookie);
     } catch (err) {
       const message =
         (err.response &&
@@ -38,9 +38,10 @@ export const fetchColumns = createAsyncThunk(
 
 export const addColumn = createAsyncThunk(
   'columns/post/column-add',
-  async ({boardId, formData}, thunkAPI) => {
+  // async ({boardId, formData}, thunkAPI) => {
+  async (boardId, thunkAPI) => {
     try {
-      return await columnService.addColumn(boardId, formData, thunkAPI);
+      return await columnService.addColumn(boardId, thunkAPI);
     } catch (err) {
       const message =
         (err.response &&
@@ -141,8 +142,14 @@ const columnSlice = createSlice({
     },
     [fetchColumns.fulfilled]: (state, { payload }) => {
       // state.columns = payload;
-      const sortedColumns = payload.sort((a, b) => a.sequence - b.sequence);
-      state.columns = sortedColumns;
+      // const sortedColumns = payload.sort((a, b) => a.sequence - b.sequence);
+      // state.columns = sortedColumns;
+
+      if (Array.isArray(payload) && payload.length > 1) {
+        state.columns = payload.sort((a, b) => a.sequence - b.sequence);
+      } else {
+        state.columns = payload.columns; // Either an empty array or a single item array
+      }
       state.status = 'success';
       state.isRequested = false;
       state.loading = false;
