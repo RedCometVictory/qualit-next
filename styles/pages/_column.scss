@@ -1,0 +1,108 @@
+.column {
+  &__container {
+    padding: 1rem 0.575rem;
+    height: 100%;
+    // background-color: var(--bg-panel-a-4);
+    // test only
+    background-color: brown;
+    backdrop-filter: blur(1px);
+    width: 280px;
+    margin: 0 8px 0;
+  }
+  &__header {
+    padding: 1.275rem 1rem;
+    font-weight: 700;
+    background-color: var(--bg-panel);
+    color: var(--body-text);
+    border-radius: 6px;
+    margin: 0 0 0.75rem 0;
+    position: relative;
+  }
+  &__header-menu {
+    position: relative;
+  }
+  &__menu {
+    position: relative;
+  }
+  &__drag-icon {
+    cursor: grab;
+  }
+  &__title {
+    // background-color: var(--bg-primary);
+    background-color: var(--primary-color);
+    width: 100%;
+    // @include flex(row, center, center);
+    @include flex(row, flex-start, center);
+    margin: 0 0 12px 0;
+  }
+  &__title--form {
+    // background-color: aqua;
+    width: 100%;
+    &--form {
+      // @include flex(row, center, center);
+    }
+  }
+  
+  &__options-menu .MuiPaper-root {
+    border: solid 1px green !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+  }
+
+  &__col-lane {
+    @include flex(column, center, center);
+    background-color: var(--bg-primary-a-4);
+    align-self: flex-start;
+    border-radius: 6px;
+    margin: 0 0.5rem 0 0;
+    padding: 1rem 1rem 0;
+    max-width: 21.5625rem;
+    height: auto;
+    max-height: 100%;
+    transition: height 500ms ease-in-out;
+  }
+
+  &__lane-content {
+    @include flex(column, space-between, center);
+    height: auto;
+    transition: height 500ms ease-in-out;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    /* Internet Explorer 10+ */
+    scrollbar-width: none;
+
+    /* Firefox */
+    &::-webkit-scrollbar {
+      height: 0;
+      width: 0; // remove scrollbar space
+      background: transparent; // make scrollbar invisible
+    }
+
+    /* Optional: show position indicator in red */
+    // &::-webkit-scrollbar-thumb {
+    //   baackground: #FF0000;
+    // }
+  }
+
+  &__lane-scroll {
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      height: 0;
+      width: 0; // remove scrollbar space
+      background: transparent; // make scrollbar invisible
+    }
+  }
+
+  &__new-lane {
+    align-self: flex-start;
+    margin: 0 0 0 1rem;
+
+    .icon {
+      margin: 0 0.425rem 0 0;
+    }
+  }
+}

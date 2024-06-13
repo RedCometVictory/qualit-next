@@ -14,7 +14,9 @@ handler.use(verifAuth, authRoleDev);
 // TODO: apply sequence to column to reflect change
 handler.put(async (req, res) => {
   const { boardId, columnId } = req.query;
-  const { name, sequence } = req.body;
+  // const { boardId } = req.query;
+  // const { columnId, name } = req.body;
+  const { name } = req.body;
 
   //! TODO: Check if there is a name, then update if there is a change, else skip the name update
 

@@ -1,7 +1,7 @@
-import { getData, postData, putData, deleteData } from '@/utils/fetchData';
+import { getData, postData, putData, deleteData, getDataSSR } from '@/utils/fetchData';
 
-const fetchCards = async (boardId) => {
-  const res = await getData(`/boards/${boardId}/cards`);
+const fetchCards = async ({boardId, cookie}) => {
+  const res = await getDataSSR(`/boards/${boardId}/cards`, cookie);
   const result = res.data;
   // localStorage.setItem("qual__project", JSON.stringify(result.project));
   // TODO: place updated project data into project {} and save new state into LS qual__project

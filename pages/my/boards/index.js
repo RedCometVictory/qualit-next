@@ -1,55 +1,70 @@
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllBoards } from '@/redux/features/board/boardSlice';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { getDataSSR } from '@/utils/fetchData';
+import store from '@/redux/store';
+// import { rehydrate } from '@/redux/features/theme/themeSlice';
+import { getAllBoards, createBoard, saveBoard, resetBoard, rehydrate } from '@/redux/features/board/boardSlice';
 import { Card, CardContent, Typography } from "@mui/material";
+import MiniNav from '@/components/nav/MiniNav';
 import BoardLayout from "@/components/layouts/BoardLayout";
 import MainLayout from "@/components/layouts/MainLayout";
 import Spinner from '@/components/Spinner';
 import PaperUI from "@/components/UI/PaperUI";
 import ButtonUI from '@/components/UI/ButtonUI';
+import AddBoardModal from '@/components/modals/AddBoardModal';
 
-const boardList = [
-  {
-    id: 1,
-    title: 'First Board',
-    img: '***',
-    description: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis nihil amet repellendus quisquam ipsa rerum, ratione corrupti cum iste, iusto, illo vel? Sequi ex assumenda magnam, earum dicta tempore facilis.`
-  },
-  {
-    id: 2,
-    title: 'Second Task',
-    img: '***',
-    description: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel totam repudiandae molestiae ad commodi incidunt quia non eaque, expedita adipisci fugit quis magnam labore harum sunt aliquam sit eius ea rerum laborum quasi nobis illo quidem.`
-  },
-  {
-    id: 3,
-    title: 'My Third Task',
-    img: '***',
-    description: `Omnis animi mollitia nulla alias ipsum beatae optio inventore dolores, voluptatem veritatis qui magnam ad natus, sequi veniam magni quaerat facere enim, expedita vel? Quasi veritatis inventore reiciendis excepturi blanditiis sunt. Doloribus nobis veritatis placeat sed reiciendis.`
-  },
-  {
-    id: 4,
-    title: 'Fourth Project',
-    img: '***',
-    description: `Pariatur architecto natus quos aut, necessitatibus ipsa aperiam? Nulla nobis atque quas. Sed facere dolorem veniam eum est! Beatae consequuntur temporibus sunt quasi id quaerat. Est, minima!`
-  }
-];
+const Boards = ({initialState, token, roleResult}) => {
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const { boards: allBoards, board: currentBoard, status: boardStatus, requestingNew: newBoardReqStatus } = useSelector(state => state.board);
+  const [addBoardModal, setAddBoardModal] = useState(false);
+  const [hasMounted, setHasMounted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-const Boards = () => {
+  useEffect(() => {
+    dispatch(rehydrate(initialState.board));
+  }, [dispatch, initialState]);
+  
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
 
+  if (!hasMounted) return null;
+
+  const openBoardModal = () => {
+    setAddBoardModal(true)
+  };
+
+  const updateBoard = () => {
+    
+  };
   
   return (
-    <section className="boards">
+    <>
+    <MiniNav setAddBoardModal={setAddBoardModal}/>
+    {/* <section className="boards"> */}
+    <section className="">
+      {addBoardModal ? (
+        <AddBoardModal setAddBoardModal={setAddBoardModal}/>
+      ) : (
+        null
+      )}
       <div className="boards__container">
         <div className="boards__list">
-          {boardList.map((item, index) => (
+          {allBoards.length === 0 ? (
+            <Typography className="boards__header" variant="h3" component="h3">
+              No boards found. Please create a board.
+            </Typography>
+          ) : (            
+            allBoards.map((item, index) => (
             <div className="boards__item-content" key={index}>
               <Card className="boards__item login__container">
                 <CardContent>
                   <div className="boards__item-header">
                     <Typography className="boards__header" variant="h3" component="h3">
-                      {item.title}
+                      {item.name}
                     </Typography>
                   </div>
                   <div className="boards__content">
@@ -64,27 +79,71 @@ const Boards = () => {
                       </ButtonUI>
                     </div>
                     <Typography className="boards__header" variant="body1" component="div">
-                      {item.img}
+                      {/* {item.img} */}
                     </Typography>
                     {/* <div className="boards__image"> */}
                       {/* <img src="" alt="" className="boards__img" /> */}
                     {/* </div> */}
                     <div className="boards__description">
                       <Typography className="boards__header" variant="body1" component="div">
-                        {item.description}
+                        {/* {item.description} */}
                       </Typography>
                     </div>
                   </div>
                 </CardContent>
               </Card>
             </div>
-          ))}
+          )))}
         </div>
       </div>
     </section>
+    </>
   )
 };
 export default Boards;
+export const getServerSideProps = async (context) => {
+  try {
+    let token = context.req.cookies.qual__token || null;
+    if (!token) {
+      return {
+        redirect: {
+          destination: `/signin?session_expired=true`,
+          permanent: false,
+        },
+        props: {},
+      }
+    };
+
+    let validCookieAuth = context.req ? { cookie: context.req.headers.cookie } : undefined;
+    let userRole = await getDataSSR(`/auth/checkAuth`, validCookieAuth);
+    console.log("***USER ROLE***")
+    console.log(userRole)
+    console.log("***USER ROLE END***")
+    let roleResult = userRole?.data?.role;
+
+    // await store.dispatch(getAllBoards({cookie: validCookieAuth}));
+    await store.dispatch(getAllBoards(validCookieAuth));
+
+    return {
+      props: {
+        initialState: store.getState(),
+        token,
+        roleResult
+      }
+    }
+  } catch (err) {
+    console.error(err);
+    return {
+      redirect: {
+        destination: "/signin",
+        permanent: false
+      },
+      props: {
+        token: ""
+      }
+    }
+  }
+};
 // return <MainLayout>{Boards}</MainLayout>
 Boards.getLayout = function getLayout(Boards) {
   return <BoardLayout>{Boards}</BoardLayout>

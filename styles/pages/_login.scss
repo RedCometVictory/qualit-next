@@ -2,10 +2,48 @@
   @include flex(row, center, center);
   width: 100%;
   height: 100%;
-  // background-color: yellow;
+  &__background {
+    &--vector {
+      background-image:  linear-gradient(30deg, #818181 12%, transparent 12.5%, transparent 87%, #818181 87.5%, #818181), linear-gradient(150deg, #818181 12%, transparent 12.5%, transparent 87%, #818181 87.5%, #818181), linear-gradient(30deg, #818181 12%, transparent 12.5%, transparent 87%, #818181 87.5%, #818181), linear-gradient(150deg, #818181 12%, transparent 12.5%, transparent 87%, #818181 87.5%, #818181), linear-gradient(60deg, #81818177 25%, transparent 25.5%, transparent 75%, #81818177 75%, #81818177), linear-gradient(60deg, #81818177 25%, transparent 25.5%, transparent 75%, #81818177 75%, #81818177);
+      background-size: 80px 140px;
+      background-position: 0 0, 0 0, 40px 70px, 40px 70px, 0 0, 40px 70px;
+    }
+    &--paper {
+      background-image:  linear-gradient(#818181 2.6px, transparent 2.6px), linear-gradient(90deg, #818181 2.6px, transparent 2.6px), linear-gradient(#818181 1.3px, transparent 1.3px), linear-gradient(90deg, #818181 1.3px, #e5e5f7 1.3px);
+      background-size: 65px 65px, 65px 65px, 13px 13px, 13px 13px;
+      background-position: -2.6px -2.6px, -2.6px -2.6px, -1.3px -1.3px, -1.3px -1.3px;
+    }
+    &--cross {
+      background: radial-gradient(circle, transparent 20%, #e5e5f7 20%, #e5e5f7 80%, transparent 80%, transparent), radial-gradient(circle, transparent 20%, #e5e5f7 20%, #e5e5f7 80%, transparent 80%, transparent) 30px 30px, linear-gradient(#818181 2.4000000000000004px, transparent 2.4000000000000004px) 0 -1.2000000000000002px, linear-gradient(90deg, #818181 2.4000000000000004px, #e5e5f7 2.4000000000000004px) -1.2000000000000002px 0;
+      background-size: 60px 60px, 60px 60px, 30px 30px, 30px 30px;
+    }
+    &--circles {
+      // background-image: radial-gradient(circle at center center, #818181, #e5e5f7), repeating-radial-gradient(circle at center center, #818181, #818181, 40px, transparent 80px, transparent 40px);
+      background-image: radial-gradient(circle at center center, rgba(129, 129, 129, 0.95), rgba(229, 229, 247, 0.8)), repeating-radial-gradient(circle at center center, rgba(129, 129, 129, 0.65), rgba(129, 129, 129, 0.45), 40px, transparent 80px, transparent 40px);
+      background-blend-mode: multiply;
+    }
+    &--zigzag3d {
+      // background: linear-gradient(135deg, #81818155 25%, transparent 25%) -40px 0/ 80px 80px, linear-gradient(225deg, #818181 25%, transparent 25%) -40px 0/ 80px 80px, linear-gradient(315deg, #81818155 25%, transparent 25%) 0px 0/ 80px 80px, linear-gradient(45deg, #818181 25%, #e5e5f7 25%) 0px 0/ 80px 80px;
+      background: linear-gradient(135deg, rgba(129, 129, 129, 0.333) 25%, transparent 25%) -40px 0/ 80px 80px, linear-gradient(225deg, rgba(129, 129, 129, 0.8) 25%, transparent 25%) -40px 0/ 80px 80px, linear-gradient(315deg, rgba(129, 129, 129, 0.333) 25%, transparent 25%) 0px 0/ 80px 80px, linear-gradient(45deg, rgba(129, 129, 129, 0.8) 25%, rgba(229, 229, 247, 0.1) 25%) 0px 0/ 80px 80px;
+    }
+    &--wavy {
+      // background-color: rgba(129, 129, 129, 0.2);
+      // background-image:  repeating-radial-gradient( circle at 0 0, transparent 0, #e5e5f7 40px ), repeating-linear-gradient( #81818155, #818181 );
+      background-image:  repeating-radial-gradient( circle at 0 0, transparent 0, rgba(229, 229, 247, 0.25) 40px ), repeating-linear-gradient( rgba(129, 129, 129, 0.4), rgba(129, 129, 129, 0.4) );
+    }
+  }
   &__container {
-    background-color: var(--bg-panel-a-2) !important;
-    // opacity: 0.2;
+    // --------------------------------
+    background-color: var(--bg-panel-a-8) !important;
+    // background-color: var(--bg-panel) !important;
+    // todo: add a light drop shadow
+    // box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(2px);
+    // -webkit-box-shadow: 0px 6px 15px -4px rgba(0,0,0,0.7); 
+    // box-shadow: 0px 6px 15px -4px rgba(0,0,0,0.7) !important;
+    border: 1px solid var(--btn-primary-active);
+    // border-radius: 16px;
+    // opacity: 0.2; xxxxx no use xxxxx
     color: var(--body-text) !important;
     max-height: 80vh;
     &.signup {
@@ -56,7 +94,17 @@
   }
 }
 
-
+// ##############################################
+// ########## login background ##########
+// ##############################################
+// TODO: create a light and dark theme friendly version
+// background-color: #000000;
+// opacity: 0.3;
+// background-image: radial-gradient(circle at center center, #818181, #000000), repeating-radial-gradient(circle at center center, #818181, #818181, 40px, transparent 80px, transparent 40px);
+// background-blend-mode: multiply;
+// ##############################################
+// ##############################################
+// ##############################################
 /* ORIGINAL LOGIN STYLINGS - No DELETE!!!
 
 .login {

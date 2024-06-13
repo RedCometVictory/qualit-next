@@ -27,10 +27,13 @@ const BoardLayout = ({children}) => {
   return (<>
     <main className='container'>
       <MainNav openMenu={openAsideMenu} setOpenMenu={openMenuHandler} />
-      <div className="routes routes__container">
-        <MiniNav />
+      <section className="board board__layout">
+        
+      {/* <div className="routes routes__container"> */}
+        {/* <MiniNav /> */}
         {children}
-      </div>
+      {/* </div> */}
+      </section>
       <MobileNav openMenu={openAsideMenu} setOpenMenu={openMenuHandler} />
     </main>
   </>);

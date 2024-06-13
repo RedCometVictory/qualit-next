@@ -26,9 +26,9 @@ const initialState = {
 
 export const fetchCards = createAsyncThunk(
   'cards/get/fetch-All-Cards',
-  async (boardId, thunkAPI) => {
+  async ({boardId, cookie}, thunkAPI) => {
     try {
-      return await cardService.fetchCards(boardId);
+      return await cardService.fetchCards(boardId, cookie);
     } catch (err) {
       const message =
         (err.response &&

@@ -12,11 +12,17 @@ import { Card, Input, InputLabel, FormGroup, CardContent, Typography } from "@mu
 
 const initialSignInState = {email: "", password: ""};
 
+const cssThemesList = ['vector', 'paper', 'cross', 'circles', 'zigzag3d', 'wavy'];
+const cssSelectedTheme = () => {
+  const randomIndex = Math.floor(Math.random() * cssThemesList.length);
+  return cssThemesList[randomIndex];
+};
 const SignIn = ({initialState}) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const [hasMounted, setHasMounted] = useState(false);
   const [formData, setFormData] = useState(initialSignInState);
+  const [theme, setTheme] = useState('');
   const { isAuthenticated } = useSelector(state => state.auth);
 
   const { email, password } = formData;
@@ -25,6 +31,9 @@ const SignIn = ({initialState}) => {
     if (!Cookies.get("qual__isLoggedIn")) {
       localStorage.removeItem('qual__user');
     }
+
+    const selectTheme = cssSelectedTheme();
+    setTheme(selectTheme);
   }, []);
 
   useEffect(() => {
@@ -56,8 +65,11 @@ const SignIn = ({initialState}) => {
   };
 
   return (
-    <section className="login">
-      <Card className="login__container">
+    <section className={`login login__background--${theme}`}>
+      <Card
+        className="login__container"
+        sx={{ boxShadow: `0px 6px 15px -4px rgba(0,0,0,0.7)`, borderRadius: `16px` }}
+      >
         <CardContent>
           <Typography
             variant='h4'

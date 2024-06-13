@@ -1,5 +1,6 @@
 import React from 'react';
 import 'react-quill/dist/quill.snow.css';
+// const ReactQuill = typeof window === 'object' ? require('react-quill') : () => false;
 const ReactQuill = typeof window === 'object' ? require('react-quill') : () => false;
 
 const QuillEditor = ({value, onChange}) => {
