@@ -14,10 +14,10 @@ handler.use(verifAuth, authRoleDev);
 handler.put(async (req, res) => {
   // const { id } = req.user;
   const { boardId, cardId } = req.query;
-  const { sequence } = req.body;
+  const { id: unusedPatchedCardId , sequence, columnId } = req.body;
 
   let updatedByTimeStamp = new Date();
-  let updatedCardSeq = await pool.query('UPDATE cards SET sequence = $1, updated_at = $2 WHERE id = $3 AND board_id = $4;', [sequence, updatedByTimeStamp, cardId, boardId]);
+  let updatedCardSeq = await pool.query('UPDATE cards SET sequence = $1, column_id = $2, updated_at = $3 WHERE id = $4 AND board_id = $5;', [sequence, columnId, updatedByTimeStamp, cardId, boardId]);
 
   if (updatedCardSeq.rowCount === 0 || updatedCardSeq === null) {
     throw new Error('Failed to update card.');

@@ -45,6 +45,7 @@ export const fetchCards = createAsyncThunk(
 export const addCard = createAsyncThunk(
   'cards/post/add-card',
   async ({boardId, columnId, formData}, thunkAPI) => {
+  // async ({boardId, columnId}, thunkAPI) => {
     try {
       return await cardService.addCard(boardId, columnId, formData, thunkAPI);
     } catch (err) {
@@ -80,9 +81,9 @@ export const updateCard = createAsyncThunk(
 
 export const updateCardSequence = createAsyncThunk(
   'cards/put/card-update-sequence',
-  async ({boardId, columnId, formData}, thunkAPI) => {
+  async ({boardId, cardId, formData}, thunkAPI) => {
     try {
-      return await cardService.updateCardSequence(boardId, columnId, formData, thunkAPI);
+      return await cardService.updateCardSequence(boardId, cardId, formData, thunkAPI);
     } catch (err) {
       const message =
         (err.response &&
@@ -98,9 +99,10 @@ export const updateCardSequence = createAsyncThunk(
 
 export const deleteCard = createAsyncThunk(
   'cards/delete',
-  async (formData, thunkAPI) => {
+  // async (formData, thunkAPI) => {
+  async (cardId, thunkAPI) => {
     try {
-      return await cardService.deleteCard(formData, thunkAPI);
+      return await cardService.deleteCard(cardId, thunkAPI);
     } catch (err) {
       const message =
         (err.response &&
@@ -147,7 +149,7 @@ const cardSlice = createSlice({
       state.loading = true;
     },
     [fetchCards.fulfilled]: (state, { payload }) => {
-      state.cards = payload;
+      state.cards = payload.cards;
       state.status = 'success';
       state.isRequested = false;
       state.loading = false;

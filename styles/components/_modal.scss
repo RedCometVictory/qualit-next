@@ -42,6 +42,25 @@
     width: 100%;
     padding: 1rem 1rem 0;
   }
+  &.card {
+    max-height: 80%;
+    max-width: 80%;
+    // margin: 0 auto;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    // overflow-y: scroll;
+    // scrollbar-width: thin;
+    // background-color: var(--primary-color);
+    // position: absolute;
+    // padding: 2rem;
+    // top: 1%;
+    // right: 1%;
+    // bottom: 1%;
+    // left: 1%;
+  }
   &__header {
     @include flex(row, space-between, center);
     width: 100%;
@@ -315,5 +334,20 @@
       @include flex(row, flex-end, center);
       padding: 0 0.5rem 0 0;
     }
+  }
+}
+@media (min-width: 1080px) {
+  .modal {
+    // position: absolute;
+    &.ticket {
+      left: 0px;
+    }
+    &.card {
+      left: 0px;
+    }
+    left: 0px;
+    // width: 92%;
+    // left: 50%;
+    // transform: translateX(-50%);
   }
 }

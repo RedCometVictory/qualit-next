@@ -237,7 +237,9 @@ CREATE TABLE cards(
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   title VARCHAR(320),
   description TEXT,
+  -- ['Urgent','High','Medium','Low','None']
   priority VARCHAR(100),
+  -- ['Bug','Breaking Change','Discussion','Error','Enhancement','Feature Request','Needs Investigation','Question','Release','Regression','Security','Misc']
   type VARCHAR(100),
   sequence INTEGER,
   board_id UUID,

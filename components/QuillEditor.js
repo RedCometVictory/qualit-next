@@ -3,7 +3,7 @@ import 'react-quill/dist/quill.snow.css';
 // const ReactQuill = typeof window === 'object' ? require('react-quill') : () => false;
 const ReactQuill = typeof window === 'object' ? require('react-quill') : () => false;
 
-const QuillEditor = ({value, onChange}) => {
+const QuillEditor = ({value, name, onChange}) => {
   const modules = {
     toolbar: [
       [{ header: [1,2,false] }],
@@ -31,6 +31,7 @@ const QuillEditor = ({value, onChange}) => {
       <ReactQuill
         theme="snow"
         style={{ height: '120px' }}
+        name={name}
         value={value}
         onChange={value => onChange(value)}
         modules={modules}

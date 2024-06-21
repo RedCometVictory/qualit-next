@@ -75,7 +75,7 @@ export const updateColumn = createAsyncThunk(
 
 export const updateColumnSequence = createAsyncThunk(
   'columns/put/column-update-sequence',
-  async ({formData, boardId, columnId}, thunkAPI) => {
+  async ({boardId, columnId, formData}, thunkAPI) => {
     try {
       return await columnService.updateColumnSequence(columnId, boardId, formData, thunkAPI);
     } catch (err) {
@@ -95,6 +95,15 @@ export const deleteColumn = createAsyncThunk(
   'columns/delete',
   async ({boardId, columnId}, thunkAPI) => {
     try {
+      console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+      console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+      console.log("columnSlice")
+      console.log("boardId")
+      console.log(boardId)
+      console.log("columnId")
+      console.log(columnId)
+      console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+      console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
       return await columnService.deleteColumn(boardId, columnId, thunkAPI);
     } catch (err) {
       const message =
@@ -137,7 +146,8 @@ const columnSlice = createSlice({
     // },
     [fetchColumns.pending]: (state) => {
       state.status = 'pending';
-      state.isRequested = true;
+      // state.isRequested = true;
+      state.isRequested = false;
       state.loading = true;
     },
     [fetchColumns.fulfilled]: (state, { payload }) => {
@@ -206,7 +216,8 @@ const columnSlice = createSlice({
     },
     [deleteColumn.pending]: (state) => {
       state.status = 'pending';
-      state.isRequested = true;
+      // state.isRequested = true;
+      state.isRequested = false;
       state.loading = true;
     },
     [deleteColumn.fulfilled]: (state) => {
