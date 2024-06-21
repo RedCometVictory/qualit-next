@@ -1,4 +1,4 @@
-import React, {  useState } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { Card } from '@mui/material'
@@ -14,7 +14,9 @@ import CardUI from '../UI/CardUI';
 const initialCardState = {
   id: '',
   title: '',
-  description: ''
+  description: '',
+  priority: '',
+  type: '',
 }
 
 const Columns = () => {
@@ -34,9 +36,8 @@ const Columns = () => {
   const showCardDetail = (cardId) => {
     const card = cards.filter(card => card.id === cardId);
     setCardDetail(card[0]);
-    // setModalOpen(true); // ? card modal
-    // onOpen();
-    // setTriggerCond(triggerCond = 'onOpen');
+    setModalOpen(true); // ? card modal
+    // onOpen(); // isOpen, onOpen, onClose
   };
 
   const addColumnToBoard = async (e) => {
@@ -45,12 +46,11 @@ const Columns = () => {
     console.log("adding a new column!s");
     // await dispatch(addColumn(columnId));
     await dispatch(addColumn(id));
-    await dispatch(fetchColumns(id));
+    await dispatch(fetchColumns({boardId: id}));
   };
 
   const filterCards = (columnId) => {
-    const filteredCards = cards.filter((card) => card.columnId === columnId);
-
+    const filteredCards = cards.filter((card) => card.column_id === columnId);
     return filteredCards;
   };
 
@@ -70,7 +70,7 @@ const Columns = () => {
     // await dispatch(updateCardSequenceToLocalState(patchCard));
     // await dispatch(updateCardSequence(patchCard));
     await dispatch(updateCardSequence(patchCard));
-    await dispatch(updateCard(patchCard));
+    // await dispatch(updateCard(patchCard));
     for (let i = destinationIndex; i < sortedCards.length; i++) {
       const card = sortedCards[i];
       sequence += 1;
@@ -82,8 +82,8 @@ const Columns = () => {
       };
       // await dispatch(updateCardSequenceToLocalState(patchCard));
       // await dispatch(updateCardSequence(patchCard));
-      await dispatch(updateCardSequence(patchCard));
-      await dispatch(updateCard(patchCard));
+      await dispatch(updateCardSequence({boardId: id, cardId: card.id, patchCard}));
+      // await dispatch(updateCard(patchCard));
     };
     // return console.log('savingCardSequence')
   };
@@ -102,8 +102,8 @@ const Columns = () => {
     };
     
     // Update local state to avoid lag when changing sequence and saving change
-    await dispatch(updateColumnSequence(patchColumn));
-    await dispatch(updateColumn(patchColumn));
+    await dispatch(updateColumnSequence({boardId: id, columnId, patchColumn}));
+    // await dispatch(updateColumn(patchColumn));
     // await dispatch(updateColumnSequenceToLocalState(patchColumn));
     // await dispatch(updateColumnSequence(patchColumn));
   
@@ -115,8 +115,8 @@ const Columns = () => {
         id: column.id,
         sequence
       };
-      await dispatch(updateColumnSequence(patchColumn));
-      await dispatch(updateColumn(patchColumn));
+      await dispatch(updateColumnSequence({boardId: id, columnId, patchColumn}));
+      // await dispatch(updateColumn(patchColumn));
       // await dispatch(updateColumnSequenceToLocalState(patchColumn));
       // await dispatch(updateColumnSequence(patchColumn));
     };
@@ -155,14 +155,8 @@ const Columns = () => {
 
   return (
     <section className="board__inner-container">
-      <DragDropContext
-        onDragEnd={onDragEnd}
-      >
-        <Droppable
-          droppableId='all-columns'
-          direction='horizontal'
-          type='column'
-        >
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId='all-columns' direction='horizontal' type='column'>
         {(provided) => (
           <div
             className="board__lanes"
@@ -177,6 +171,7 @@ const Columns = () => {
                 index={index}
                 cards={filterCards(column.id)}
                 showCardDetail={showCardDetail}
+                setModalOpen={setModalOpen}
               />
             ))}
             {provided.placeholder}
@@ -185,7 +180,7 @@ const Columns = () => {
         )}
         </Droppable>
       </DragDropContext>
-      {/* {isModalOpen && <CardDetailModal setModalOpen={setModalOpen} card={cardDetail} />} */}
+      {isModalOpen && <CardDetailModal setModalOpen={setModalOpen} card={cardDetail} />}
     </section>
   )
 };

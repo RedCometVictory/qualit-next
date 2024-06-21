@@ -14,7 +14,7 @@ const AddColumn = ({ addColumnToBoard }) => {
         onClick={(e) => addColumnToBoard(e)}
         disabled={columnRequest}
       >
-        <FaPlus className='icon'/>
+        <FaPlus className='board__add-column-icon'/>
         <h3 className="board__new-header">
           {columnRequest ? `Creating Column` : `Add New Lane`}
         </h3>

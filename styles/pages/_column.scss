@@ -1,15 +1,22 @@
 .column {
   &__container {
-    padding: 1rem 0.575rem;
-    height: 100%;
-    // background-color: var(--bg-panel-a-4);
+    @include flex(column, flex-start, center);
+    // width: 100%;
+    // padding: 1rem 0.575rem;
+    padding: 1rem 0.575rem 0.2rem;
+    // height: 100%;
+    background-color: var(--bg-panel-a-4);
     // test only
-    background-color: brown;
+    // background-color: brown;
     backdrop-filter: blur(1px);
     width: 280px;
     margin: 0 8px 0;
+    // *** 
+    max-height: 100%;
+    
   }
   &__header {
+    width: 100%;
     padding: 1.275rem 1rem;
     font-weight: 700;
     background-color: var(--bg-panel);
@@ -50,27 +57,33 @@
     left: 50%;
   }
 
-  &__col-lane {
-    @include flex(column, center, center);
-    background-color: var(--bg-primary-a-4);
-    align-self: flex-start;
-    border-radius: 6px;
-    margin: 0 0.5rem 0 0;
-    padding: 1rem 1rem 0;
-    max-width: 21.5625rem;
-    height: auto;
-    max-height: 100%;
-    transition: height 500ms ease-in-out;
-  }
+  // &__col-lane {
+  //   @include flex(column, center, center);
+  //   background-color: var(--bg-primary-a-4);
+  //   align-self: flex-start;
+  //   border-radius: 6px;
+  //   margin: 0 0.5rem 0 0;
+  //   padding: 1rem 1rem 0;
+  //   max-width: 21.5625rem;
+  //   height: auto;
+  //   max-height: 100%;
+  //   transition: height 500ms ease-in-out;
+  // }
 
   &__lane-content {
     @include flex(column, space-between, center);
-    height: auto;
+    // padding: 0 0 8px 0;
+    margin: 0 0 8px 0;
+    // height: auto;
+    // height: 75vh; // may need to do calc as it does not work we;ll for various heights
     transition: height 500ms ease-in-out;
-    overflow-y: scroll;
-    -ms-overflow-style: none;
+    // overflow-y: scroll;
+    overflow-y: auto;
+    // -ms-overflow-style: none;
     /* Internet Explorer 10+ */
-    scrollbar-width: none;
+    scrollbar-width: thin;
+    // scrollbar-width: none;
+    flex-grow: 1;
 
     /* Firefox */
     &::-webkit-scrollbar {
@@ -86,17 +99,28 @@
   }
 
   &__lane-scroll {
-    overflow-y: scroll;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-
+    // overflow-y: scroll;
+    // overflow-y: auto;
+    // -ms-overflow-style: none;
+    // scrollbar-width: none;
+    // scrollbar-width: thin;
+    width: 100%;
+    // flex-grow: 1;
+    // overflow-y: auto;
     &::-webkit-scrollbar {
       height: 0;
       width: 0; // remove scrollbar space
       background: transparent; // make scrollbar invisible
+      // ***
     }
   }
+  &__add-card-btn-section {
+    // padding: 12px 0;
+    margin-top: auto;
+  }
+  &__add-card-btn {
 
+  }
   &__new-lane {
     align-self: flex-start;
     margin: 0 0 0 1rem;

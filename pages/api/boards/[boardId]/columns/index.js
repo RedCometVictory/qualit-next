@@ -12,10 +12,12 @@ handler.use(verifAuth, authRoleDev);
 
 // fetch all columns belonging to board
 handler.get(async (req, res) => {
+  // const { boardId } = req.query;
   const { boardId } = req.query;
   console.log("888888888888888888888888888")
   console.log("888888888888888888888888888")
   console.log("fetching columnz")
+  console.log(boardId)
   console.log("888888888888888888888888888")
   console.log("888888888888888888888888888")
   const columns = await pool.query('SELECT * FROM columns WHERE board_id = $1;', [boardId]);
@@ -41,7 +43,13 @@ handler.post(async (req, res) => {
   const { id } = req.user;
   const { boardId } = req.query;
   // const { name, sequence } = req.body;
-  
+  console.log("333333333333333333333333333")
+  console.log("333333333333333333333333333")
+  console.log("adding column to board")
+  console.log("boardId")
+  console.log(boardId)
+  console.log("333333333333333333333333333")
+  console.log("333333333333333333333333333")
   // let newColumn = await pool.query('INSERT INTO columns (name, sequence, board_id, user_id) VALUES ($1, $2, $3, $4) RETURNING *;', [name, sequence, boardId, id]);
   let newColumn = await pool.query('INSERT INTO columns (board_id, user_id) VALUES ($1, $2) RETURNING *;', [boardId, id]);
 

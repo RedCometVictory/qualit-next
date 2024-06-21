@@ -1,29 +1,30 @@
 import React, { useState, useCallback } from 'react';
+import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
-import { Collapse, CardHeader, CardActions, CardMedia, CardContent, Divider, IconButton, Paper, Menu, MenuItem, MenuList, ListItemIcon, ListItemText, TextField, Typography, styled, cardHeaderClasses } from '@mui/material';
+import { CardActions, Divider, Menu, MenuItem, MenuList, ListItemText, TextField } from '@mui/material';
 import { FaPlus, FaRegEdit } from 'react-icons/fa';
 import { AiOutlineDelete } from 'react-icons/ai';
-import { FaChevronCircleDown, FaRegHeart, FaShare } from 'react-icons/fa';
 import { GrDrag } from 'react-icons/gr';
-import { HiDotsVertical } from 'react-icons/hi';
 import { fetchColumns, updateColumn, deleteColumn } from '@/redux/features/column/columnSlice';
 import { fetchCards, addCard } from '@/redux/features/card/cardSlice';
-import CardUI from '../UI/CardUI';
 import ButtonUI from '../UI/ButtonUI';
 import Cards from '../cards/Cards';
 // from slice: delete, fetch and update columns
 
-const Column = ({ showCardDetail, column, index, id, cards }) => {
-// const Column = ({ showCardDetail = true, cards }) => {
-// const Column = ({ isModalOpen }) => {
+// column is all details of column, id is the id of the column
+const Column = ({ showCardDetail, setModalOpen, column, index, id, cards }) => {
+  const router = useRouter();
   const dispatch = useDispatch();
+  const { id: boardId } = router.query;
   const [editArea, setEditArea] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [showColMenu, setShowColMenu] = useState(false);
-  const [columnName, setColumnName] = useState(column.columnName);
-  const [expanded, setExpanded] = useState(false);
-  const cardRequest = useSelector(state => state.card.isRequested);
+  const [columnName, setColumnName] = useState(column.name);
+  const { board } = useSelector(state => state.board);
+  const { user } = useSelector(state => state.user);
+  const { cards: cardsFromCardSlice, isRequested: cardRequest } = useSelector(state => state.card);
+
   const sortedCards = cards.sort(
     (cardA, cardB) => cardA.sequence - cardB.sequence
   );
@@ -40,47 +41,66 @@ const Column = ({ showCardDetail, column, index, id, cards }) => {
   const handleKeyDown = (e) => {
     if (e.keyCode === 13) {
       e.preventDefault();
-      setEditBoxArea(false);
+      setEditArea(false);
+      // updateColumnNameHandler(e.target.value);
+      updateColumnNameHandler();
     }
   };
 
-  const addCardHandler = async () => {
-    await dispatch(addCard(column._id));
-    await dispatch(fetchCards());
+  const addCardHandler = async (columnIdValue) => {
+    // check via column id if any cards have a matching column id
+    const filteredCards = cardsFromCardSlice.filter((card) => card.id === columnIdValue);
+
+    let sequence = 1;
+
+    // if cards match id, they belong to this column. Thus if any exist... change value of the sequence
+    if (filteredCards.length > 0) {
+      // so if length is 9 (then the max / last value is index [8]), the index is length of 9 - 1 = [8] as the first value is the index of 0 the last is 8 in this instance
+      // each value in the array is a card object, one of the values that each object shares is "sequence". thus [].value syntax accesses the sequence property value of the object in the indicated index
+      // * if there is one value in the array the max value is [0], thus length - 1 = 0. set the current sequence value (current value + 1). Here we are always editing the sequence value of the last value in the array.
+      sequence = filteredCards[filteredCards.length - 1].sequence + 1;
+    }
+
+    let formData = {
+      title: "Add Title",
+      description: '',
+      priority: '',
+      type: '',
+      sequence
+    };
+
+    await dispatch(addCard({boardId, columnId: column.id, formData}));
+    await dispatch(fetchCards({boardId}));
   };
 
   const updateColumnTitleHandler = (e) => {
     setColumnName(e.target.value);
-    updateColumnHandler(e.target.value);
+    // only use this func if ssaving to localstorage
+    // updateColumnHandler(e.target.value);
   };
 
   const deleteColumnHandler = async () => {
-    await dispatch(deleteColumn(id)); // id of column
-    await dispatch(fetchColumns());
+    await dispatch(deleteColumn({boardId, columnId: id})); // id of column
+    await dispatch(fetchColumns({boardId}));
   };
 
-  const updateColumnHandler = useCallback(
-    debounce((value) => updateColumnNameHandler(value), 800),
-    []
-  );
+  // use this function only if saving column name value to localstorage. I saving to backend, then disable this func
+  // const updateColumnHandler = useCallback(
+  //   debounce((value) => updateColumnNameHandler(value), 800),
+  //   []
+  // );
 
   const updateColumnNameHandler = async (value) => {
     const formData = {
       // columnName: value,
       // columnId: column._id
       // columnId: column._id,
-      name: value
+      name: columnName
+      // name: value
     };
 
-    await dispatch(updateColumn(formData));
-  };
 
-  // const colMenuHandler = () => {
-  //   setShowColMenu(!showColMenu)
-  // };
-
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
+    await dispatch(updateColumn({boardId, columnId: id,formData}));
   };
 
   const openColEditHandler = () => {
@@ -100,33 +120,14 @@ const Column = ({ showCardDetail, column, index, id, cards }) => {
     setAnchorEl(e.currentTarget); // anchor menu below button
   };
 
-  // const menuClickHandler = () => {
-  //   if (editArea) {
-  //     setEditArea(false);
-  //   } else {
-  //     setShowColMenu(!showColMenu);
-  //   }
-  // };
-
   const menuCloseHandler = () => {
     setAnchorEl(null);
     setShowColMenu(false);
   };
 
-  const closeColMenuHandler = () => {
-    setShowColMenu(false);
-  };
-
-  const ExpandMore = styled((props) => {
-    const { expand, ...other } = props;
-    return <IconButton {...other} />;
-  })(({ theme, expand }) => ({
-    transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-    }),
-  }));
+  // const closeColMenuHandler = () => {
+  //   setShowColMenu(false);
+  // };
 
   const loadColumnTitle = (draggableProps) => {
     if (editArea) {
@@ -155,25 +156,12 @@ const Column = ({ showCardDetail, column, index, id, cards }) => {
     );
   };
 
-  // <Menu
-  //   // menuButton={({open}) => (
-  //     <ButtonUI
-  //       variant={"contained"}
-  //       // onClick={colMenuHandler}
-  //       // onClick={colMenuHandler}
-  //     >
-  //       {showEditBox ? "Open Options" : "Close"}
-  //     </ButtonUI>
-  //   // )}
-  // >
-
   const columnHeader = (dragHandleProps) => {
     return (<>
       <h2 className="column__title">{loadColumnTitle(dragHandleProps)}</h2>
       <div className="column__menu">
         <ButtonUI
           variant={"contained"}
-          // onClick={() => setShowColMenu(!editArea)}
           value={editArea ? `Cancel` : `Option`}
           onClick={menuClickHandler}
         >
@@ -209,7 +197,7 @@ const Column = ({ showCardDetail, column, index, id, cards }) => {
               Custom: 1.2
             </MenuItem> */}
             <Divider />
-            <MenuItem onClick={() => deleteColumnHandler()}>
+            <MenuItem onClick={deleteColumnHandler}>
               <AiOutlineDelete />
               <ListItemText inset>Delete</ListItemText>
             </MenuItem>
@@ -227,119 +215,6 @@ const Column = ({ showCardDetail, column, index, id, cards }) => {
     </>);
   };
 
-  const cardContent = () => {
-    return (<>
-        {/* {card.label && (
-          <Badge bg={card.label.type} color="white">
-            {card.label.type}
-          </Badge>
-        )}
-        <p>{card.title}</p> */}
-        {/* {loadAssignedToUser()} */}
-      {/* {children || label || text} */}
-      <CardHeader
-        className="card__header"
-        // style={{ color: "var(--body-text)" }}
-        // avatar={
-        //   <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-        //     R
-        //   </Avatar>
-        // }
-        action={
-          <IconButton
-            aria-label="settings"
-            sx={{ color: `var(--body-text)` }}
-            onClick={() => isModalOpen(true)}
-          >
-            <HiDotsVertical />
-          </IconButton>
-        }
-        title="Shrimp and Chorizo Paella"
-        titleTypographyProps={{variant: 'h6'}}
-        subheader={<Typography className="card__sub-header" sx={{ fontSize: '0.7rem' }} component='div'>September 14, 2016</Typography>}
-      />
-      <CardMedia
-        component="img"
-        // height="194"
-        image="/static/images/cards/paella.jpg"
-        alt="Paella dish"
-      />
-      <CardContent
-        className="card__content"
-      >
-        <Typography
-          variant="body2"
-          component='div'
-          // color="text.secondary"
-        >
-          This impressive paella is a perfect party dish and a fun meal to cook
-          together with your guests. Add 1 cup of frozen peas along with the mussels,
-          if you like.
-        </Typography>
-      </CardContent>
-      <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites" sx={{ color: `var(--body-text)` }}>
-          <FaRegHeart classname="card__icon"/>
-        </IconButton>
-        <IconButton aria-label="share" sx={{ color: `var(--body-text)` }}>
-          <FaShare/>
-        </IconButton>
-        <ExpandMore
-          expand={expanded}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-          sx={{ color: `var(--body-text)` }}
-        >
-          <FaChevronCircleDown/>
-        </ExpandMore>
-      </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>
-          <Typography
-            // paragraph
-            component='div'
-          >
-            Method:
-          </Typography>
-          <Typography
-            // paragraph
-            component='div'
-          >
-            Heat 1/2 cup of the broth in a pot until simmering, add saffron and set
-            aside for 10 minutes.
-          </Typography>
-          <Typography
-            // paragraph
-            component='div'
-          >
-            Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over
-            medium-high heat. Add chicken, shrimp and chorizo, and cook, stirring
-            occasionally until lightly browned, 6 to 8 minutes. Transfer shrimp to a
-            large plate and set aside, leaving chicken and chorizo in the pan. Add
-            pimentón, bay leaves, garlic, tomatoes, onion, salt and pepper, and cook,
-            stirring often until thickened and fragrant, about 10 minutes. Add
-            saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil.
-          </Typography>
-          <Typography
-            // paragraph
-            component='div'
-          >
-            Add rice and stir very gently to distribute. Top with artichokes and
-            peppers, and cook without stirring, until most of the liquid is absorbed,
-            15 to 18 minutes. Reduce heat to medium-low, add reserved shrimp and
-            mussels, tucking them down into the rice, and cook again without
-            stirring, until mussels have opened and rice is just tender, 5 to 7
-            minutes more. (Discard any mussels that don&apos;t open.)
-          </Typography>
-          <Typography component='div'>
-            Set aside off of the heat to let rest for 10 minutes, and then serve.
-          </Typography>
-        </CardContent>
-      </Collapse>
-    </>);
-  };
-
   return (
     <Draggable draggableId={column.id} index={index} key={column.id}>
       {(provided) => (
@@ -351,7 +226,7 @@ const Column = ({ showCardDetail, column, index, id, cards }) => {
             {...provided.draggableProps}
             ref={provided.innerRef}
           >
-            {/* <h3>Subject Header for lane goes here</h3> */}
+            {/* <h3></h3> */}
             <div className="column__header-menu">
               {/* {columnHeader(provided.dragHandleProps)} */}
               {columnHeader()}
@@ -377,14 +252,13 @@ const Column = ({ showCardDetail, column, index, id, cards }) => {
                     raised='true'
                     cards={sortedCards}
                     showCardDetail={showCardDetail}
-                  >
-                    {/* {cardContent()} */}
-                  </Cards>
+                    setModalOpen={setModalOpen}
+                  />
                   {providedDroppable.placeholder}
                 </div>
               )}
             </Droppable>
-            <CardActions>
+            {/* <CardActions>
               <ButtonUI
                 size="small"
                 my="10px"
@@ -396,12 +270,35 @@ const Column = ({ showCardDetail, column, index, id, cards }) => {
                 isLoading={cardRequest}
                 display="flex"
                 loadingText="Adding card"
-                onClick={addCardHandler}
+                // onClick={addCardHandler}
+                onClick={() => addCardHandler(column.id)}
               >
-                <FaPlus/> Add New Card
+                <FaPlus className='board__add-column-icon'/> Add New Card
+              </ButtonUI>
+            </CardActions> */}
+          </div>
+          <CardActions className='column__add-card-btn-section'>
+              <ButtonUI
+                className={"column__add-card-btn"}
+                // size="small"
+                // my="10px"
+                // mx="auto"
+                // width="80%"
+                color="primary"
+                // color="secondary"
+                // color=""
+                variant="outlined"
+                // variant="contained"
+                disabled={cardRequest}
+                isLoading={cardRequest}
+                // display="flex"
+                // loadingText="Adding card"
+                // onClick={addCardHandler}
+                onClick={() => addCardHandler(column.id)}
+              >
+                <FaPlus className='board__add-column-icon'/> Add New Card
               </ButtonUI>
             </CardActions>
-          </div>
         </div>
       )}
     </Draggable>
@@ -443,398 +340,3 @@ export default Column;
   //     duration: theme.transitions.duration.shortest,
   //   }),
   // }));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // const cardContent = () => {
-  //   return (<>
-  //       {/* {card.label && (
-  //         <Badge bg={card.label.type} color="white">
-  //           {card.label.type}
-  //         </Badge>
-  //       )}
-  //       <p>{card.title}</p> */}
-  //       {/* {loadAssignedToUser()} */}
-  //     {/* {children || label || text} */}
-  //     <CardHeader
-  //       className="card__header"
-  //       // style={{ color: "var(--body-text)" }}
-  //       // avatar={
-  //       //   <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-  //       //     R
-  //       //   </Avatar>
-  //       // }
-  //       action={
-  //         <IconButton
-  //           aria-label="settings"
-  //           sx={{ color: `var(--body-text)` }}
-  //           onClick={() => isModalOpen(true)}
-  //         >
-  //           <HiDotsVertical />
-  //         </IconButton>
-  //       }
-  //       title="Shrimp and Chorizo Paella"
-  //       titleTypographyProps={{variant: 'h6'}}
-  //       subheader={<Typography className="card__sub-header" sx={{ fontSize: '0.7rem' }} component='div'>September 14, 2016</Typography>}
-  //     />
-  //     <CardMedia
-  //       component="img"
-  //       // height="194"
-  //       image="/static/images/cards/paella.jpg"
-  //       alt="Paella dish"
-  //     />
-  //     <CardContent
-  //       className="card__content"
-  //     >
-  //       <Typography
-  //         variant="body2"
-  //         component='div'
-  //         // color="text.secondary"
-  //       >
-  //         This impressive paella is a perfect party dish and a fun meal to cook
-  //         together with your guests. Add 1 cup of frozen peas along with the mussels,
-  //         if you like.
-  //       </Typography>
-  //     </CardContent>
-  //     <CardActions disableSpacing>
-  //       <IconButton aria-label="add to favorites" sx={{ color: `var(--body-text)` }}>
-  //         <FaRegHeart classname="card__icon"/>
-  //       </IconButton>
-  //       <IconButton aria-label="share" sx={{ color: `var(--body-text)` }}>
-  //         <FaShare/>
-  //       </IconButton>
-  //       <ExpandMore
-  //         expand={expanded}
-  //         onClick={handleExpandClick}
-  //         aria-expanded={expanded}
-  //         aria-label="show more"
-  //         sx={{ color: `var(--body-text)` }}
-  //       >
-  //         <FaChevronCircleDown/>
-  //       </ExpandMore>
-  //     </CardActions>
-  //     <Collapse in={expanded} timeout="auto" unmountOnExit>
-  //       <CardContent>
-  //         <Typography
-  //           // paragraph
-  //           component='div'
-  //         >
-  //           Method:
-  //         </Typography>
-  //         <Typography
-  //           // paragraph
-  //           component='div'
-  //         >
-  //           Heat 1/2 cup of the broth in a pot until simmering, add saffron and set
-  //           aside for 10 minutes.
-  //         </Typography>
-  //         <Typography
-  //           // paragraph
-  //           component='div'
-  //         >
-  //           Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over
-  //           medium-high heat. Add chicken, shrimp and chorizo, and cook, stirring
-  //           occasionally until lightly browned, 6 to 8 minutes. Transfer shrimp to a
-  //           large plate and set aside, leaving chicken and chorizo in the pan. Add
-  //           pimentón, bay leaves, garlic, tomatoes, onion, salt and pepper, and cook,
-  //           stirring often until thickened and fragrant, about 10 minutes. Add
-  //           saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil.
-  //         </Typography>
-  //         <Typography
-  //           // paragraph
-  //           component='div'
-  //         >
-  //           Add rice and stir very gently to distribute. Top with artichokes and
-  //           peppers, and cook without stirring, until most of the liquid is absorbed,
-  //           15 to 18 minutes. Reduce heat to medium-low, add reserved shrimp and
-  //           mussels, tucking them down into the rice, and cook again without
-  //           stirring, until mussels have opened and rice is just tender, 5 to 7
-  //           minutes more. (Discard any mussels that don&apos;t open.)
-  //         </Typography>
-  //         <Typography component='div'>
-  //           Set aside off of the heat to let rest for 10 minutes, and then serve.
-  //         </Typography>
-  //       </CardContent>
-  //     </Collapse>
-  //   </>);
-  // };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//   const cardExampleContent = () => {
-//     return (<>
-//         {/* {card.label && (
-//           <Badge bg={card.label.type} color="white">
-//             {card.label.type}
-//           </Badge>
-//         )}
-//         <p>{card.title}</p> */}
-//         {/* {loadAssignedToUser()} */}
-//       {/* {children || label || text} */}
-//       <CardHeader
-//         className="card__header"
-//         // style={{ color: "var(--body-text)" }}
-//         // avatar={
-//         //   <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-//         //     R
-//         //   </Avatar>
-//         // }
-//         action={
-//           <IconButton
-//             aria-label="settings"
-//             sx={{ color: `var(--body-text)` }}
-//             onClick={() => isModalOpen(true)}
-//           >
-//             <HiDotsVertical />
-//           </IconButton>
-//         }
-//         title="Shrimp and Chorizo Paella"
-//         titleTypographyProps={{variant: 'h6'}}
-//         subheader={<Typography className="card__sub-header" sx={{ fontSize: '0.7rem' }} component='div'>September 14, 2016</Typography>}
-//       />
-//       <CardMedia
-//         component="img"
-//         // height="194"
-//         image="/static/images/cards/paella.jpg"
-//         alt="Paella dish"
-//       />
-//       <CardContent
-//         className="card__content"
-//       >
-//         <Typography
-//           variant="body2"
-//           component='div'
-//           // color="text.secondary"
-//         >
-//           This impressive paella is a perfect party dish and a fun meal to cook
-//           together with your guests. Add 1 cup of frozen peas along with the mussels,
-//           if you like.
-//         </Typography>
-//       </CardContent>
-//       <CardActions disableSpacing>
-//         <IconButton aria-label="add to favorites" sx={{ color: `var(--body-text)` }}>
-//           <FaRegHeart classname="card__icon"/>
-//         </IconButton>
-//         <IconButton aria-label="share" sx={{ color: `var(--body-text)` }}>
-//           <FaShare/>
-//         </IconButton>
-//         <ExpandMore
-//           expand={expanded}
-//           onClick={handleExpandClick}
-//           aria-expanded={expanded}
-//           aria-label="show more"
-//           sx={{ color: `var(--body-text)` }}
-//         >
-//           <FaChevronCircleDown/>
-//         </ExpandMore>
-//       </CardActions>
-//       <Collapse in={expanded} timeout="auto" unmountOnExit>
-//         <CardContent>
-//           <Typography
-//             // paragraph
-//             component='div'
-//           >
-//             Method:
-//           </Typography>
-//           <Typography
-//             // paragraph
-//             component='div'
-//           >
-//             Heat 1/2 cup of the broth in a pot until simmering, add saffron and set
-//             aside for 10 minutes.
-//           </Typography>
-//           <Typography
-//             // paragraph
-//             component='div'
-//           >
-//             Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over
-//             medium-high heat. Add chicken, shrimp and chorizo, and cook, stirring
-//             occasionally until lightly browned, 6 to 8 minutes. Transfer shrimp to a
-//             large plate and set aside, leaving chicken and chorizo in the pan. Add
-//             pimentón, bay leaves, garlic, tomatoes, onion, salt and pepper, and cook,
-//             stirring often until thickened and fragrant, about 10 minutes. Add
-//             saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil.
-//           </Typography>
-//           <Typography
-//             // paragraph
-//             component='div'
-//           >
-//             Add rice and stir very gently to distribute. Top with artichokes and
-//             peppers, and cook without stirring, until most of the liquid is absorbed,
-//             15 to 18 minutes. Reduce heat to medium-low, add reserved shrimp and
-//             mussels, tucking them down into the rice, and cook again without
-//             stirring, until mussels have opened and rice is just tender, 5 to 7
-//             minutes more. (Discard any mussels that don&apos;t open.)
-//           </Typography>
-//           <Typography component='div'>
-//             Set aside off of the heat to let rest for 10 minutes, and then serve.
-//           </Typography>
-//         </CardContent>
-//       </Collapse>
-//     </>);
-//   };
-
-//   let index = '009';
-//   return (
-//     // <Draggable draggableId={column.id} index={index} key={column.id}>
-//     <Draggable draggableId='123' index={index} key={'123'}>
-//       {(provided) => (
-//         <div className="board__lane"
-//           // bg={column.columnName === 'addName' ? '' : '#F6F6F6'}
-//         >
-//           <div className="board__lane-header">
-//             <h3>Subject Header for lane goes here</h3>
-//           </div>
-//           <div
-//             className="board__lane-content"
-            
-//           >
-//             <Droppable
-//               droppableId='123'
-//               // droppableId={Column.id}
-//               type="card"
-//             >
-//               {(provided) => (
-//                 <div
-//                   className="board__lane-scroll"
-//                   ref={provided.innerRef}
-//                   {...provided.droppableProps}
-//                 >
-//                   <Cards
-//                     key={index}
-//                     className="card"
-//                     variant=''
-//                     raised='true'
-//                     // cards={cards}
-//                     // showCardDetail={showCardDetail}
-//                   >
-//                     {cardExampleContent()}
-//                   </Cards>
-//                   {/* <Cards
-//                     // showCardDetail={showCardDetail}
-//                     // cards={sortedCards}
-//                   // /> */}
-//                   {provided.placeholder}
-//                 </div>
-//               )}
-//             </Droppable>
-//             <CardActions>
-//               <ButtonUI
-//                 size="small"
-//                 onClick={addCardHandler}
-//               >
-//                 <FaPlus/> Add New Card
-//               </ButtonUI>
-//             </CardActions>
-//           </div>
-//         </div>
-//       )}
-//     </Draggable>
-//   )
-// };
-
-{/* <CardUI
-  // className="card__column-container"
-  raised='true'
->
-  <h2>Column Title</h2>
-  <p>Sub-Title</p>
-  <hr />
-  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat illum eaque, deleniti sequi asperiores similique laudantium, possimus molestiae laborum voluptatibus nam animi vel aliquid nihil et quibusdam vitae a totam.</p>
-</CardUI> */}

@@ -2,6 +2,7 @@ import nc from 'next-connect';
 import { onError, onNoMatch } from '@/utils/ncOptions';
 import { verifAuth, authRoleDev } from '@/utils/verifAuth';
 import { pool } from '@/config/db';
+import { singleISODate } from '@/utils/toISODate';
 
 export const config = {
   api: { bodyParser: false }
@@ -17,7 +18,15 @@ handler.get(async (req, res) => {
   const cards = await pool.query('SELECT * FROM cards WHERE board_id = $1;', [boardId]);
   if (cards.rowCount === 0 || cards === null) {
     throw new Error("Failed to retrieve board information.");
-  }
+  };
+
+  for (let i = 0; i < cards.rows.length; i++) {
+    cards.rows[i].created_at = singleISODate(cards.rows[i].created_at);
+    if (cards.rows[i].updated_at) {
+      cards.rows[i].updated_at = singleISODate(cards.rows[i].updated_at);
+    }
+  };
+
   return res.status(200).json({
     status: "Retrieved board.",
     data: {
