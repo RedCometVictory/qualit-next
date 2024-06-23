@@ -31,8 +31,13 @@ const fetchColumns = async (boardId, cookie = null) => {
   return result;
 };
 
-const addColumn = async (boardId) => {
-  const res = await postData(`/boards/${boardId}/columns`)
+const addColumn = async (boardId, formData) => {
+  console.log("FFFFFFFFFFFFFFFFFFFFFFFFFF")
+  console.log("formData")
+  console.log(formData)
+  console.log("FFFFFFFFFFFFFFFFFFFFFFFFFF")
+  console.log("FFFFFFFFFFFFFFFFFFFFFFFFFF")
+  const res = await postData(`/boards/${boardId}/columns`, formData);
   const result = res.data;
   //! TODO: work in a redirect from the creation form page to the noards page -- may not be needed
   // localStorage.setItem("qual__project", JSON.stringify(result.project));
@@ -61,7 +66,8 @@ const updateColumn = async (boardId, columnId, formData) => {
 };
 
 const updateColumnSequence = async (boardId, columnId, formData) => {
-  const res= await putData(`/boards/${boardId}/columns/${columnId}/sequence`, formData);
+  // const res= await putData(`/boards/${boardId}/columns/${columnId}/sequence`, formData);
+  const res= await putData(`/boards/${boardId}/columns/${formData.id}/sequence`, formData);
   const result = res.data;
   // localStorage.setItem("qual__project", JSON.stringify(result.project));
   // TODO: place updated project data into project {} and save new state into LS qual__project

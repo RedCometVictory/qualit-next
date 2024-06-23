@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
-import { Draggable } from 'react-beautiful-dnd';
+// import { Draggable } from 'react-beautiful-dnd';
+import { Draggable } from '@hello-pangea/dnd';
 import { Card, CardHeader, CardMedia, CardContent, CardActions, Collapse, Divider, Avatar, Menu, MenuItem, MenuList, ListItemText, IconButton, Typography, styled } from '@mui/material';
 import { FaChevronCircleDown, FaRegHeart, FaShare } from 'react-icons/fa';
 import { AiOutlineDelete } from 'react-icons/ai';
@@ -113,7 +114,7 @@ const CardItem = ({ className, variant, raised, card, cardIndex, showCardDetail,
         </>}
         // title="Shrimp and Chorizo Paella"
         title={card.title ?? "No title"}
-        title={card.id ?? "No title"}
+        // title={card.id ?? "No title"}
         titleTypographyProps={{variant: 'h4'}}
         subheader={<Typography className="card__sub-header" sx={{ fontSize: '0.7rem' }} component='div'>{card.created_at ?? "No created at date"}</Typography>}
       />
@@ -175,11 +176,7 @@ const CardItem = ({ className, variant, raised, card, cardIndex, showCardDetail,
   };
 
   return (
-    <Draggable
-      draggableId={card.id}
-      index={cardIndex}
-      key={card.id}
-    >
+    <Draggable draggableId={card.id} index={cardIndex} key={card.id}>
     {(provided) => (
       <Card
         {...provided.draggableProps}

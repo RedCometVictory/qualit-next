@@ -1,7 +1,8 @@
 import React, { useState, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
-import { Draggable, Droppable } from 'react-beautiful-dnd';
+// import { Draggable, Droppable } from 'react-beautiful-dnd';
+import { Draggable, Droppable } from '@hello-pangea/dnd';
 import { CardActions, Divider, Menu, MenuItem, MenuList, ListItemText, TextField } from '@mui/material';
 import { FaPlus, FaRegEdit } from 'react-icons/fa';
 import { AiOutlineDelete } from 'react-icons/ai';
@@ -156,9 +157,9 @@ const Column = ({ showCardDetail, setModalOpen, column, index, id, cards }) => {
     );
   };
 
-  const columnHeader = (dragHandleProps) => {
+  const columnHeader = (dragHandleProps = null) => {
     return (<>
-      <h2 className="column__title">{loadColumnTitle(dragHandleProps)}</h2>
+      {/* <h2 className="column__title">{loadColumnTitle(dragHandleProps)}</h2> */}
       <div className="column__menu">
         <ButtonUI
           variant={"contained"}
@@ -219,31 +220,27 @@ const Column = ({ showCardDetail, setModalOpen, column, index, id, cards }) => {
     <Draggable draggableId={column.id} index={index} key={column.id}>
       {(provided) => (
         <div className="column__container"
-          // bg={column.columnName === 'addName' ? '' : '#F6F6F6'}
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          // {...provided.dragHandleProps}
         >
           <div
             className="column__header"
-            {...provided.draggableProps}
-            ref={provided.innerRef}
           >
             {/* <h3></h3> */}
             <div className="column__header-menu">
-              {/* {columnHeader(provided.dragHandleProps)} */}
+              <h2 className="column__title">{loadColumnTitle(provided.dragHandleProps)}</h2>
               {columnHeader()}
             </div>
           </div>
-          <div
-            className="column__lane-content"
-          >
-            <Droppable
-              droppableId={column.id}
-              type="card"
-            >
-              {(providedDroppable) => (
+          <div className="column__lane-content">
+            <Droppable droppableId={column.id} type="card">
+              {(provided) => (
                 <div
                   className="column__lane-scroll"
-                  ref={providedDroppable.innerRef}
-                  {...providedDroppable.droppableProps}
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  // {...provided.dragHandleProps}
                 >
                   <Cards
                     key={index}
@@ -254,46 +251,20 @@ const Column = ({ showCardDetail, setModalOpen, column, index, id, cards }) => {
                     showCardDetail={showCardDetail}
                     setModalOpen={setModalOpen}
                   />
-                  {providedDroppable.placeholder}
+                  {provided.placeholder}
                 </div>
               )}
             </Droppable>
-            {/* <CardActions>
-              <ButtonUI
-                size="small"
-                my="10px"
-                mx="auto"
-                width="80%"
-                color="black"
-                variant="ghost"
-                disabled={cardRequest}
-                isLoading={cardRequest}
-                display="flex"
-                loadingText="Adding card"
-                // onClick={addCardHandler}
-                onClick={() => addCardHandler(column.id)}
-              >
-                <FaPlus className='board__add-column-icon'/> Add New Card
-              </ButtonUI>
-            </CardActions> */}
           </div>
           <CardActions className='column__add-card-btn-section'>
               <ButtonUI
                 className={"column__add-card-btn"}
-                // size="small"
-                // my="10px"
-                // mx="auto"
-                // width="80%"
                 color="primary"
                 // color="secondary"
-                // color=""
                 variant="outlined"
                 // variant="contained"
                 disabled={cardRequest}
                 isLoading={cardRequest}
-                // display="flex"
-                // loadingText="Adding card"
-                // onClick={addCardHandler}
                 onClick={() => addCardHandler(column.id)}
               >
                 <FaPlus className='board__add-column-icon'/> Add New Card
@@ -305,38 +276,3 @@ const Column = ({ showCardDetail, setModalOpen, column, index, id, cards }) => {
   )
 };
 export default Column;
-
-
-
-
-
-
-
-
-
-  // return (
-  //   <article className="card__column-container">
-  //     <h2>Column Title</h2>
-  //     <p>Sub-Title</p>
-  //     <hr />
-  //     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat illum eaque, deleniti sequi asperiores similique laudantium, possimus molestiae laborum voluptatibus nam animi vel aliquid nihil et quibusdam vitae a totam.</p>
-  //   </article>
-  // )
-
-  // TODO: the current cartui element is a placeholder
-  // const [expanded, setExpanded] = useState(false);
-
-  // const handleExpandClick = () => {
-  //   setExpanded(!expanded);
-  // };
-
-  // const ExpandMore = styled((props) => {
-  //   const { expand, ...other } = props;
-  //   return <IconButton {...other} />;
-  // })(({ theme, expand }) => ({
-  //   transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-  //   marginLeft: 'auto',
-  //   transition: theme.transitions.create('transform', {
-  //     duration: theme.transitions.duration.shortest,
-  //   }),
-  // }));

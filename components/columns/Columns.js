@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+// import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 import { Card } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchColumns, addColumn, updateColumn, updateColumnSequence } from '@/redux/features/column/columnSlice';
@@ -23,7 +24,8 @@ const Columns = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { id } = router.query;
-  const columns = useSelector((state) => state.column.columns);
+  // const columns = useSelector((state) => state.column.columns);
+  const { columns } = useSelector((state) => state.column);
   const cards = useSelector((state) => state.card.cards);
   const [isModalOpen, setModalOpen] = useState(false);
   const [cardDetail, setCardDetail] = useState(initialCardState);
@@ -42,10 +44,29 @@ const Columns = () => {
 
   const addColumnToBoard = async (e) => {
     const columnId = uuidv4();
+
+    console.log("7777777777777777777")
+    console.log("7777777777777777777")
+    console.log("columns")
+    console.log(columns)
+    console.log("7777777777777777777")
+    console.log("7777777777777777777")
+    let totalColumnsArr = columns ?? [];
+    let sequence = 1;
+
+    if (columns > 0) {
+      sequence = totalColumnsArr[totalColumnsArr.length - 1].sequence + 1;
+    }
+
+    const formData = {
+      name: "Add Title",
+      sequence
+    };
+
     // TODO set the creation of the column purely to the backend, then refetch all columns (data) or via redux add the new column to front end state
     console.log("adding a new column!s");
     // await dispatch(addColumn(columnId));
-    await dispatch(addColumn(id));
+    await dispatch(addColumn({boardId: id, formData}));
     await dispatch(fetchColumns({boardId: id}));
   };
 
@@ -96,13 +117,15 @@ const Columns = () => {
 
     let sequence = destinationIndex === 0 ? 1 : sortedColumns[destinationIndex - 1].sequence + 1;
   
-    const patchColumn = {
+    // const patchColumn = {
+    const formData = {
       id: columnId,
       sequence
     };
     
     // Update local state to avoid lag when changing sequence and saving change
-    await dispatch(updateColumnSequence({boardId: id, columnId, patchColumn}));
+    await dispatch(updateColumnSequence({boardId: id, columnId, formData}));
+    // await dispatch(updateColumnSequence({boardId: id, columnId, patchColumn}));
     // await dispatch(updateColumn(patchColumn));
     // await dispatch(updateColumnSequenceToLocalState(patchColumn));
     // await dispatch(updateColumnSequence(patchColumn));
@@ -129,6 +152,7 @@ const Columns = () => {
   
   const onDragEnd = async (placement) => {
     const { destination, source, draggableId, type } = placement;
+    console.log('Drag End:', { destination, source, draggableId, type });
     // Do nothing if placement is not determinable destination.
     if (!destination) return;
     // Do nothing if card is put back into current place.
@@ -162,6 +186,7 @@ const Columns = () => {
             className="board__lanes"
             ref={provided.innerRef}
             {...provided.droppableProps}
+            // {...provided.dragHandleProps}
           >
             {columns.map((column, index) => (
               <Column
