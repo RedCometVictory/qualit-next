@@ -4,7 +4,7 @@ import { verifAuth, authRoleDev } from '@/utils/verifAuth';
 import { pool } from '@/config/db';
 
 export const config = {
-  api: { bodyParser: false }
+  api: { bodyParser: true }
 };
 
 const handler = nc({onError, onNoMatch});
@@ -42,7 +42,7 @@ handler.get(async (req, res) => {
 handler.post(async (req, res) => {
   const { id } = req.user;
   const { boardId } = req.query;
-  // const { name, sequence } = req.body;
+  const { name, sequence } = req.body;
   console.log("333333333333333333333333333")
   console.log("333333333333333333333333333")
   console.log("adding column to board")
@@ -50,8 +50,8 @@ handler.post(async (req, res) => {
   console.log(boardId)
   console.log("333333333333333333333333333")
   console.log("333333333333333333333333333")
-  // let newColumn = await pool.query('INSERT INTO columns (name, sequence, board_id, user_id) VALUES ($1, $2, $3, $4) RETURNING *;', [name, sequence, boardId, id]);
-  let newColumn = await pool.query('INSERT INTO columns (board_id, user_id) VALUES ($1, $2) RETURNING *;', [boardId, id]);
+  let newColumn = await pool.query('INSERT INTO columns (name, sequence, board_id, user_id) VALUES ($1, $2, $3, $4) RETURNING *;', [name, sequence, boardId, id]);
+  // let newColumn = await pool.query('INSERT INTO columns (board_id, user_id) VALUES ($1, $2) RETURNING *;', [boardId, id]);
 
   if (newColumn.rowCount === 0 || newColumn === null) {
     throw new Error('Failed to create new column.');

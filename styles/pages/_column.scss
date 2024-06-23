@@ -5,11 +5,13 @@
     // padding: 1rem 0.575rem;
     padding: 1rem 0.575rem 0.2rem;
     // height: 100%;
-    background-color: var(--bg-panel-a-4);
+    // background-color: var(--bg-panel-a-4);
+    background-color: var(--bg-panel-a-6);
     // test only
     // background-color: brown;
     backdrop-filter: blur(1px);
-    width: 280px;
+    min-width: 280px;
+    // width: 280px;
     margin: 0 8px 0;
     // *** 
     max-height: 100%;
@@ -72,6 +74,7 @@
 
   &__lane-content {
     @include flex(column, space-between, center);
+    width: 100%;
     // padding: 0 0 8px 0;
     margin: 0 0 8px 0;
     // height: auto;
@@ -79,17 +82,33 @@
     transition: height 500ms ease-in-out;
     // overflow-y: scroll;
     overflow-y: auto;
-    // -ms-overflow-style: none;
+    -ms-overflow-style: scrollbar;
     /* Internet Explorer 10+ */
     scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-line) var(--scrollbar-bg);
     // scrollbar-width: none;
     flex-grow: 1;
 
     /* Firefox */
     &::-webkit-scrollbar {
-      height: 0;
-      width: 0; // remove scrollbar space
-      background: transparent; // make scrollbar invisible
+      height: 6;
+      width: 6; // remove scrollbar space
+      // background: transparent; // make scrollbar invisible
+      // background-color: var(--scrollbar-line);
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgb(34, 34, 34); /* Background of the track */
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background-color: rgb(54, 54, 54); /* Scrollbar thumb color */
+      border-radius: 10px; /* Rounded corners */
+    }
+    
+    /* Optional: to add some padding around the scrollbar thumb */
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgb(74, 74, 74); /* Hover color */
     }
 
     /* Optional: show position indicator in red */

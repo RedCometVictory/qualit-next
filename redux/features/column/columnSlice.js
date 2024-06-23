@@ -39,9 +39,9 @@ export const fetchColumns = createAsyncThunk(
 export const addColumn = createAsyncThunk(
   'columns/post/column-add',
   // async ({boardId, formData}, thunkAPI) => {
-  async (boardId, thunkAPI) => {
+  async ({boardId, formData}, thunkAPI) => {
     try {
-      return await columnService.addColumn(boardId, thunkAPI);
+      return await columnService.addColumn(boardId, formData, thunkAPI);
     } catch (err) {
       const message =
         (err.response &&

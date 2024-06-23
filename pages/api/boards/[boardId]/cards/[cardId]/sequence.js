@@ -4,7 +4,7 @@ import { verifAuth, authRoleDev } from '@/utils/verifAuth';
 import { pool } from '@/config/db';
 
 export const config = {
-  api: { bodyParser: false }
+  api: { bodyParser: true }
 };
 
 const handler = nc({onError, onNoMatch});
