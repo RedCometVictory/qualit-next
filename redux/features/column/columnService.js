@@ -66,8 +66,8 @@ const updateColumn = async (boardId, columnId, formData) => {
 };
 
 const updateColumnSequence = async (boardId, columnId, formData) => {
-  // const res= await putData(`/boards/${boardId}/columns/${columnId}/sequence`, formData);
-  const res= await putData(`/boards/${boardId}/columns/${formData.id}/sequence`, formData);
+  const res = await putData(`/boards/${boardId}/columns/${columnId}/sequence`, formData);
+  // const res = await putData(`/boards/${boardId}/columns/${formData.id}/sequence`, formData);
   const result = res.data;
   // localStorage.setItem("qual__project", JSON.stringify(result.project));
   // TODO: place updated project data into project {} and save new state into LS qual__project

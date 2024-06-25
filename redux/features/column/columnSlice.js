@@ -77,7 +77,7 @@ export const updateColumnSequence = createAsyncThunk(
   'columns/put/column-update-sequence',
   async ({boardId, columnId, formData}, thunkAPI) => {
     try {
-      return await columnService.updateColumnSequence(columnId, boardId, formData, thunkAPI);
+      return await columnService.updateColumnSequence(boardId, columnId, formData, thunkAPI);
     } catch (err) {
       const message =
         (err.response &&
