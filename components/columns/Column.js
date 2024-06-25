@@ -50,18 +50,27 @@ const Column = ({ showCardDetail, setModalOpen, column, index, id, cards }) => {
 
   const addCardHandler = async (columnIdValue) => {
     // check via column id if any cards have a matching column id
-    const filteredCards = cardsFromCardSlice.filter((card) => card.id === columnIdValue);
-
+    console.log("00000000000000000000000000000")
+    console.log("00000000000000000000000000000")
+    console.log("adding card to column")
+    console.log("cards from card slice")
+    console.log(cardsFromCardSlice)
+    const filteredCards = cardsFromCardSlice.filter((card) => card.column_id === columnIdValue);
+    console.log("filteredCards")
+    console.log(filteredCards)
+    
     let sequence = 1;
-
+    
     // if cards match id, they belong to this column. Thus if any exist... change value of the sequence
     if (filteredCards.length > 0) {
+      console.log("--- for loop ---")
       // so if length is 9 (then the max / last value is index [8]), the index is length of 9 - 1 = [8] as the first value is the index of 0 the last is 8 in this instance
       // each value in the array is a card object, one of the values that each object shares is "sequence". thus [].value syntax accesses the sequence property value of the object in the indicated index
       // * if there is one value in the array the max value is [0], thus length - 1 = 0. set the current sequence value (current value + 1). Here we are always editing the sequence value of the last value in the array.
       sequence = filteredCards[filteredCards.length - 1].sequence + 1;
+      console.log("--- for loop end ---")
     }
-
+    
     let formData = {
       title: "Add Title",
       description: '',
@@ -70,6 +79,11 @@ const Column = ({ showCardDetail, setModalOpen, column, index, id, cards }) => {
       sequence
     };
 
+    console.log("formData")
+    console.log(formData)
+    
+    console.log("000000000000000*END*00000000000000")
+    console.log("000000000000000*END*00009000000000")
     await dispatch(addCard({boardId, columnId: column.id, formData}));
     await dispatch(fetchCards({boardId}));
   };

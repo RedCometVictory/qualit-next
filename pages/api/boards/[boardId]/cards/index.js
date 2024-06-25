@@ -17,7 +17,7 @@ handler.get(async (req, res) => {
   // const cards = await pool.query('SELECT * FROM cards WHERE id = $1;', [slug]);
   const cards = await pool.query('SELECT * FROM cards WHERE board_id = $1;', [boardId]);
   if (cards.rowCount === 0 || cards === null) {
-    throw new Error("Failed to retrieve board information.");
+    throw new Error("Failed to retrieve all cards belonging to board.");
   };
 
   for (let i = 0; i < cards.rows.length; i++) {

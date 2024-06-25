@@ -14,7 +14,8 @@ handler.use(verifAuth, authRoleDev);
 // TODO: apply sequence to column to reflect change
 handler.put(async (req, res) => {
   const { boardId, columnId } = req.query;
-  const { id, sequence } = req.body;
+  // const { id, sequence } = req.body;
+  const { sequence } = req.body;
 
   console.log("()()()()()()()()()")
   console.log("req.query")
@@ -28,8 +29,8 @@ handler.put(async (req, res) => {
   let updatedByTimeStamp = new Date();
   let updatedColumnSeq;
   
-  // updatedColumnSeq = await pool.query('UPDATE columns SET sequence = $1, updated_at = $2 WHERE id = $3 RETURNING *;', [sequence, updatedByTimeStamp, columnId]);
-  updatedColumnSeq = await pool.query('UPDATE columns SET sequence = $1, updated_at = $2 WHERE id = $3 RETURNING *;', [sequence, updatedByTimeStamp, id]);
+  updatedColumnSeq = await pool.query('UPDATE columns SET sequence = $1, updated_at = $2 WHERE id = $3 RETURNING *;', [sequence, updatedByTimeStamp, columnId]);
+  // updatedColumnSeq = await pool.query('UPDATE columns SET sequence = $1, updated_at = $2 WHERE id = $3 RETURNING *;', [sequence, updatedByTimeStamp, id]);
   
   if (updatedColumnSeq.rowCount === 0 || updatedColumnSeq === null) {
     throw new Error('Failed to update column.');

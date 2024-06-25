@@ -17,6 +17,9 @@ const Board = ({ initialState }) => {
   const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
+    console.log("this use effect is active")
+    console.log("this use effect is active")
+    console.log("this use effect is active")
     dispatch(boardRehydrate(initialState.board));
     dispatch(columnRehydrate(initialState.column));
     dispatch(cardRehydrate(initialState.card));
