@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 // import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { DragDropContext, Droppable } from '@hello-pangea/dnd';
@@ -26,6 +26,8 @@ const Columns = () => {
   const cards = useSelector((state) => state.card.cards);
   const [isModalOpen, setModalOpen] = useState(false);
   const [cardDetail, setCardDetail] = useState(null);
+
+  
 
   const showCardDetail = (cardId) => {
     console.log("##### showCardDetail #####")
@@ -100,29 +102,48 @@ const Columns = () => {
     const sortedCards = cardsFromColumn.sort((a, b) => a.sequence - b.sequence);
     console.log("sortedCards")
     console.log(sortedCards)
+
+    // ! title: 1, seq: 1
     let sequence = destinationIndex === 0 ? 1 : sortedCards[destinationIndex - 1].sequence + 1;
     // const formData = {
     //   id: cardId,
     //   sequence,
     //   columnId: destinationColId
     // };
-
+    
     console.log("sequence")
     console.log(sequence)
-
+    console.log("------------------")
+    console.log("sortedCards again...")
+    console.log(sortedCards)
+    // ! title: 1, seq: 2
     
     // Update local state to avoid lag when changing sequence and saving change
     // await dispatch(updateCardSequence({boardId, cardId: cardId, formData}));
+
+    const formData = {
+      id: cardId,
+      sequence,
+      columnId: destinationColId
+    };
+    console.log("formData")
+    console.log(formData)
+    console.log("updating the dragged card's sequence?")
+    await dispatch(updateCardSequence({boardId: boardId, cardId: cardId, formData}));
+
+
+
     for (let i = destinationIndex; i < sortedCards.length; i++) {
       const card = sortedCards[i];
       sequence += 1;
+      // ! title: 1, seq: 3
       
       const formData = {
         id: card.id,
         sequence,
         columnId: destinationColId
       };
-      console.log("formData")
+      console.log("formData - vai form loop")
       console.log(formData)
       await dispatch(updateCardSequence({boardId: boardId, cardId: card.id, formData}));
     };
