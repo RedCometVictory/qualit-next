@@ -9,7 +9,7 @@ import SideMenu from '../SideMenu';
 import { unsplashTheme } from '@/redux/features/theme/themeSlice';
 import { sendStatusCode } from 'next/dist/server/api-utils';
 
-const BoardNav = ({setAddBoardModal}) => {
+const BoardNav = ({buttonText, setButtonText}) => {
   const dispatch = useDispatch();
   const { asPath, pathname, query } = useRouter();
   const { board } = useSelector(state => state.board);
@@ -24,18 +24,26 @@ const BoardNav = ({setAddBoardModal}) => {
 
   const [expanded, setExpanded] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
-  const [sequenceChange, setSequenceChange] = useState(true);
+  // const [sequenceChange, setSequenceChange] = useState(true);
 
-  useEffect(() => {
-    setHasMounted(true);
-  }, []);
+  // useEffect(() => {
+  //   setHasMounted(true);
+  // }, []);
   
-  if (!hasMounted) {
-    return null;
-  }
+  // if (!hasMounted) {
+  //   return null;
+  // }
   const saveSequenceToBE = (e) => {
-    setAddBoardModal(true);
-    setSequenceChange(false); // only if success saved
+    // if (!buttonText) {
+    if (buttonText === "Unsaved") {
+      // TODO: there is an unsaved change in card or column state. Things are saved locally in memory, but changed need to be saved in the BackEnd
+      //  TODO - dispatch BE api to save changes too cards and columns
+      // todo - then set button text to true so save biutton says "Save" again
+      // setButtonText(true);
+      setButtonText("Save");
+    }
+    // setAddBoardModal(true);
+    // setSequenceChange(false); // only if success saved
   };
   // this is to expand the unsplash side menu used for selecting new background themes
   const toggleDrawer = (value) => {
@@ -61,7 +69,8 @@ const BoardNav = ({setAddBoardModal}) => {
           variant='contained'
           onClick={(e) => saveSequenceToBE(e)}
         >
-          {sequenceChange ? `Unsaved` : `Save`}
+          {/* {buttonText ? `Save` : `Unsaved`} */}
+          {buttonText}
         </ButtonUI>
         <FaChevronCircleLeft
           aria-expanded={expanded}

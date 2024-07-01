@@ -16,6 +16,7 @@ const CardItem = ({ className, variant, raised, card, cardIndex, showCardDetail,
   const router = useRouter();
   const dispatch = useDispatch();
   const { id: boardId } = router.query;
+  const { cards: allCardsViaState } = useSelector(state => state.card);
   const [expanded, setExpanded] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [showCardMenu, setShowCardMenu] = useState(false);
@@ -30,8 +31,11 @@ const CardItem = ({ className, variant, raised, card, cardIndex, showCardDetail,
 
   const deleteCardHandler = async () => {
     await dispatch(deleteCard({boardId, cardId: card.id}));
-    await dispatch(fetchCards({boardId}));
-    setModalOpen(false);
+    if (allCardsViaState.length > 0) {
+      await dispatch(fetchCards({boardId}));
+    };
+    // setModalOpen(false);
+    menuCloseHandler();
   };
 
   const openCardEditHandler = async (value) => {

@@ -139,7 +139,7 @@ const cardSlice = createSlice({
     updateCardSequenceInLocalState: (state, { payload }) => {
       const cardIndex = state.cards.findIndex(card => card.id === payload.id);
       state.cards[cardIndex].sequence = payload.sequence;
-      state.cards[cardIndex].columnId = payload.columnId; 
+      state.cards[cardIndex].columnId = payload.columnId;
     }
   },
   extraReducers: {
@@ -201,7 +201,19 @@ const cardSlice = createSlice({
       state.isRequested = true;
       state.loading = true;
     },
-    [updateCardSequence.fulfilled]: (state) => {
+    [updateCardSequence.fulfilled]: (state, { payload }) => {
+      console.log("33333333-+-+-EEEEEEEE")
+      console.log("updating sequence")
+      console.log("payload")
+      console.log(payload.card)
+      const cardIndex = state.cards.findIndex(card => card.id === payload.card.id);
+      console.log("cardIndex")
+      console.log(cardIndex)
+      if (cardIndex !== -1) {
+        state.cards[cardIndex].sequence = payload.card.sequence;
+        state.cards[cardIndex].column_id = payload.card.column_id;
+      }
+
       state.status = 'success';
       state.isRequested = false;
       state.loading = false;

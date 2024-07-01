@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getDataSSR } from '@/utils/fetchData';
 import store from '@/redux/store';
@@ -15,7 +15,10 @@ import Spinner from '@/components/Spinner';
 const Board = ({ initialState }) => {
   const dispatch = useDispatch();
   const { board } = useSelector(state => state.board);
+  const { cards } = useSelector(state => state.card);
+  const [buttonText, setButtonText] = useState("Save");
   const [hasMounted, setHasMounted] = useState(false);
+  const isInitialMount = useRef(true);
 
   useEffect(() => {
     console.log("this use effect is active")
@@ -24,11 +27,24 @@ const Board = ({ initialState }) => {
     dispatch(boardRehydrate(initialState.board));
     dispatch(columnRehydrate(initialState.column));
     dispatch(cardRehydrate(initialState.card));
+    setHasMounted(true);
   }, [dispatch, initialState]);
 
+  
+  // useEffect(() => {
+  //   setHasMounted(true);
+  // }, []);
+
   useEffect(() => {
-    setHasMounted(true);
-  }, []);
+    // if (cards) {
+    if (hasMounted) {
+      if (isInitialMount.current) {
+        isInitialMount.current = false;
+      } else {
+        setButtonText('Unsaved');
+      }
+    }
+  }, [cards, hasMounted]);
 
   if (!hasMounted) return null;
 
@@ -36,8 +52,8 @@ const Board = ({ initialState }) => {
     {/* <h1> */}
       {/* Board */}
     {/* </h1> */}
-    <BoardNav />
-    <section className="board__container">
+    <BoardNav buttonText={buttonText} setButtonText={setButtonText} />
+    <section  className="board__container">
       <Columns />
     </section>
   </>)
