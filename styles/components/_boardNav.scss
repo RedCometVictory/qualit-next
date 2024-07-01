@@ -1,0 +1,44 @@
+.boardNav {
+  background-color: var(--bg-primary-a-6);
+  -webkit-box-shadow: 0px 3px 6px 1px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 0px 3px 6px 1px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 3px 6px 1px rgba(0, 0, 0, 0.25);
+  width: 100%;
+  height: 70px;
+  // height: 5rem;
+  padding: 1rem;
+  // padding: 1rem 0;
+  @include flex(row, space-between, center);
+  .icon-rotate {
+    // margin: 0 0 0 6px;
+    // transition: transform 1s;
+    margin: 0 0 0 1rem;
+    transform: rotate(180deg);
+  }
+  &__pathname {
+    // background-color: green;
+    // margin: 0 0 0 1.1225rem;
+  }
+  &__btn {
+    margin: 0 1rem 0 0;
+    
+    &.chev-icon {
+      margin: 0 0 0 1rem;
+      transition: transform 1s;
+      font-size: 1.375rem;
+      display: flex;
+      justify-self: center;
+      align-self: center;
+    }
+  }
+
+  &__header {
+    // display: flex;
+    @include flex(row, flex-start, center);
+  }
+
+  &__btn {
+    cursor: pointer;
+    margin: 0 1rem 0 0;
+  }
+}

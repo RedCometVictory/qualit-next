@@ -6,8 +6,9 @@ import { clearAuth, logout } from '@/redux/features/auth/authSlice';
 import { getBoard, rehydrate as boardRehydrate } from '@/redux/features/board/boardSlice';
 import { fetchColumns, rehydrate as columnRehydrate } from '@/redux/features/column/columnSlice';
 import { fetchCards, rehydrate as cardRehydrate } from '@/redux/features/card/cardSlice';
-import BoardLayout from "@/components/layouts/BoardLayout";
+import BoardNav from '@/components/nav/BoardNav';
 import Columns from "@/components/columns/Columns";
+import BoardLayout from "@/components/layouts/BoardLayout";
 import Spinner from '@/components/Spinner';
 // import board detail and columns belonginng to board from redux
 
@@ -31,16 +32,15 @@ const Board = ({ initialState }) => {
 
   if (!hasMounted) return null;
 
-  return (
-    <>
-      {/* <h1> */}
-        {/* Board */}
-      {/* </h1> */}
-      <div className="board__container">
-        <Columns />
-      </div>
-    </>
-  )
+  return (<>
+    {/* <h1> */}
+      {/* Board */}
+    {/* </h1> */}
+    <BoardNav />
+    <section className="board__container">
+      <Columns />
+    </section>
+  </>)
 };
 export default Board;
 export const getServerSideProps = async (context) => {

@@ -92,7 +92,10 @@ body {
   }
 }
 
-
+.ql-toolbar.ql-snow {
+  // background-color: var(--quill-toolbar) !important;
+  background-color: var(--body-text) !important;
+}
 
 // ##############################
 // ##############################

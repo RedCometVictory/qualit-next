@@ -4,7 +4,7 @@ import { verifAuth, authRoleDev } from '@/utils/verifAuth';
 import { pool } from '@/config/db';
 
 export const config = {
-  api: { bodyParser: false }
+  api: { bodyParser: true }
 };
 
 const handler = nc({onError, onNoMatch});
@@ -28,15 +28,24 @@ handler.get(async (req, res) => {
 // update card data (not sequence) for column & board
 handler.put(async (req, res) => {
   // const { id } = req.user;
+  console.log("TTTTTTTTTTTTTTTTTTTTTTTTTT")
+  console.log("TTTTTTTTTTTTTTTTTTTTTTTTTT")
+  console.log("req.query")
+  console.log(req.query)
+  console.log("TTTTTTTTTTTTTTTTTTTTTTTTTT")
+  console.log("req.body")
+  console.log(req.body)
   const { boardId, cardId } = req.query;
-  const { title, description, priority, type, sequence } = req.body;
-
+  const { title, description, priority, type } = req.body;
+  
   let updatedByTimeStamp = new Date();
-  let updatedCard = await pool.query('UPDATE cards SET title = $1, description = $2, priority = $3, type = $4, sequence = $5, updated_at = $6 WHERE id = $7 AND board_id = $8;', [title, description, priority, type, sequence,  updatedByTimeStamp, cardId, boardId]);
-
+  let updatedCard = await pool.query('UPDATE cards SET title = $1, description = $2, priority = $3, type = $4, updated_at = $5 WHERE id = $6 AND board_id = $7;', [title, description, priority, type, updatedByTimeStamp, cardId, boardId]);
+  
   if (updatedCard.rowCount === 0 || updatedCard === null) {
     throw new Error('Failed to update card.');
   }
+  console.log("TTTTTTTTTTTTTTTTTTTTTTTTTT")
+  console.log("TTTTTTTTTTTT END TTTTTTTTTTTTTT")
   return res.status(201).json({
     status: "Success! Updated card.",
     data: {
@@ -45,7 +54,7 @@ handler.put(async (req, res) => {
   });
 });
 
-// slug = board_id - delete card
+// slug = board_id - delete single card  belonging to column
 // TODO: set admin to delete any board and user to only delete user owned boards and content
 handler.delete(async (req, res) => {
   const { id } = req.user;

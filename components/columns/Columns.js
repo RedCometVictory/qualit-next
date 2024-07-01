@@ -25,16 +25,30 @@ const Columns = () => {
   const { columns } = useSelector((state) => state.column);
   const cards = useSelector((state) => state.card.cards);
   const [isModalOpen, setModalOpen] = useState(false);
-  const [cardDetail, setCardDetail] = useState(initialCardState);
+  const [cardDetail, setCardDetail] = useState(null);
 
   const showCardDetail = (cardId) => {
-    const card = cards.filter(card => card.id === cardId);
-    setCardDetail(card[0]);
+    console.log("##### showCardDetail #####")
+    // const card = cards.filter(card => card.id === cardId);
+    const card = cards.find(card => card.id === cardId);
+    console.log("card")
+    console.log(card)
+    console.log("card.id")
+    console.log(card.id)
+    console.log("0-0-0-0-0-0-0")
+    // todo 0 - dispatch a call to ssearch for card details by simply pushing card id to the backend
+    // console.log(card[0])
+    // if (card) setCardDetail(card.id);
+    if (card) setCardDetail(cardDetail => cardDetail = card);
+    // setCardDetail(card[0]);
+    // setCardDetail((state) => ({ ...state, ...card[0]}));
+    console.log("cardDetail")
+    console.log(cardDetail)
+    console.log("##### showCardDetail end #####")
     setModalOpen(true); // ? card modal
   };
 
   const addColumnToBoard = async (e) => {
-    const columnId = uuidv4();
     let totalColumnsArr = columns ?? [];
     let sequence = 1;
 
@@ -57,58 +71,110 @@ const Columns = () => {
   };
 
   const saveCardSequence = async (destinationIndex, destinationColId, cardId) => {
+    console.log("XLXLXLXLXLXLXLXLXLXLXLXLXLXLXL")
+    console.log("XLXLXLXLXLXLXLXLXLXLXLXLXLXLXL")
+    console.log("XLXLXLXLXLXLXLXLXLXLXLXLXLXLXL")
+
+    console.log("total cards from state")
+    console.log(cards)
+
+    console.log("-=-=-=-=-=-=-=-=-=-=-=-")
+    console.log("-=-=-=-=-=-=-=-=-=-=-=-")
+    console.log("destinationIndex")
+    console.log(destinationIndex)
+    console.log(".......................")
+    console.log("destinationColId")
+    console.log(destinationColId)
+    console.log(".......................")
+    console.log("cardId")
+    console.log(cardId)
+    console.log("-=-=-=-=-=-=-=-=-=-=-=-")
+    console.log("-=-=-=-=-=-=-=-=-=-=-=-")
     const cardsFromColumn = cards.filter(
-      card => card.columnId === destinationColId && card.id !== cardId
+      card => card.column_id === destinationColId && card.id !== cardId
     );
+
+    console.log("cardsFromColumn")
+    console.log(cardsFromColumn)
+
     const sortedCards = cardsFromColumn.sort((a, b) => a.sequence - b.sequence);
+    console.log("sortedCards")
+    console.log(sortedCards)
     let sequence = destinationIndex === 0 ? 1 : sortedCards[destinationIndex - 1].sequence + 1;
-    const patchCard = {
-      id: cardId,
-      sequence,
-      columnId: destinationColId
-    };
+    // const formData = {
+    //   id: cardId,
+    //   sequence,
+    //   columnId: destinationColId
+    // };
+
+    console.log("sequence")
+    console.log(sequence)
+
     
     // Update local state to avoid lag when changing sequence and saving change
-    // await dispatch(updateCardSequenceToLocalState(patchCard));
-    // await dispatch(updateCardSequence(patchCard));
-    await dispatch(updateCardSequence(patchCard));
-    // await dispatch(updateCard(patchCard));
+    // await dispatch(updateCardSequence({boardId, cardId: cardId, formData}));
     for (let i = destinationIndex; i < sortedCards.length; i++) {
       const card = sortedCards[i];
       sequence += 1;
-  
-      const patchCard = {
+      
+      const formData = {
         id: card.id,
         sequence,
         columnId: destinationColId
       };
-      // await dispatch(updateCardSequenceToLocalState(patchCard));
-      // await dispatch(updateCardSequence(patchCard));
-      await dispatch(updateCardSequence({boardId: boardId, cardId: card.id, patchCard}));
-      // await dispatch(updateCard(patchCard));
+      console.log("formData")
+      console.log(formData)
+      await dispatch(updateCardSequence({boardId: boardId, cardId: card.id, formData}));
     };
-    // return console.log('savingCardSequence')
+    console.log("XLXLXLXLXLXLXLXLXLXLXLXLXLXLXL")
+    console.log("XLXLXLXLXLXLXLXLXLXLXLXLXLXLXL")
+    // -------------------------------------------------
+    // find the dragged column
+    // const draggedColumn = columns.find(column => column.id === columnId);    
+    // remove column dragged from list
+    // const remainingColumns = columns.filter(column => column.id !== columnId);
+    // insert the dragged column into the destination index
+    // remainingColumns.splice(destinationIndex, 0, draggedColumn);
+    // update the sequence for each column
+    // const updatedColumns = remainingColumns.map((column, index) => ({
+      // ...column,
+      // sequence: index + 1
+    // }));
+    // dispatch the update for each column
+    // TODO: need to create a localStorage mamory of the column sequence for more faster update wiothout backend delay. Also i need to develop a saving data method to finalize all changes to the backend. This save method needs to be prompted to the user when they are about to refresh or leave the page.
+    // for (const column of updatedColumns) {
+    // for (let i = 0; i < updatedColumns.length; i++) {
+      // console.log("___ for loop ___")
+      // const column = updatedColumns[i];
+      // console.log("column")
+      // console.log(column)
+
+      // console.log("boardId")
+      // console.log(boardId)
+    
+      // await dispatch(updateColumnSequence({
+        // boardId: boardId, columnId: column.id, formData: { sequence: column.sequence }
+      // }));
+      // console.log("___ for loop end ___")
+    // }
   };
 
   const saveColumnSequence = async (destinationIndex, columnId) => {
-    console.log("XLXLXLXLXLXLXLXLXLXLXLXLXLXLXL")
-    console.log("XLXLXLXLXLXLXLXLXLXLXLXLXLXLXL")
-    console.log("XLXLXLXLXLXLXLXLXLXLXLXLXLXLXL")
     // find the dragged column
     const draggedColumn = columns.find(column => column.id === columnId);
 
-    console.log("draggedColumn")
-    console.log(draggedColumn)
+    // console.log("draggedColumn")
+    // console.log(draggedColumn)
     
     // remove column dragged from list
     const remainingColumns = columns.filter(column => column.id !== columnId);
     
-    console.log("remainingColumns - filtered")
-    console.log(remainingColumns)
+    // console.log("remainingColumns - filtered")
+    // console.log(remainingColumns)
     // insert the dragged column into the destination index
     remainingColumns.splice(destinationIndex, 0, draggedColumn);
-    console.log("remainingColumns - after splice")
-    console.log(remainingColumns)
+    // console.log("remainingColumns - after splice")
+    // console.log(remainingColumns)
     
     // update the sequence for each column
     const updatedColumns = remainingColumns.map((column, index) => ({
@@ -116,28 +182,28 @@ const Columns = () => {
       sequence: index + 1
     }));
 
-    console.log("updatedColumns")
-    console.log(updatedColumns)
+    // console.log("updatedColumns")
+    // console.log(updatedColumns)
     
     // dispatch the update for each column
-    // TODO: dispatch the update for each column (may move this to the backend, tghe switching of the column sequences that is, so the api does not have to fire off mmultiple times... saving time and money)
+    // TODO: need to create a localStorage mamory of the column sequence for more faster update wiothout backend delay. Also i need to develop a saving data method to finalize all changes to the backend. This save method needs to be prompted to the user when they are about to refresh or leave the page.
     // for (const column of updatedColumns) {
     for (let i = 0; i < updatedColumns.length; i++) {
-      console.log("___ for loop ___")
+      // console.log("___ for loop ___")
       const column = updatedColumns[i];
-      console.log("column")
-      console.log(column)
+      // console.log("column")
+      // console.log(column)
 
-      console.log("boardId")
-      console.log(boardId)
-      console.log("columnId")
-      console.log(column.id)
-      console.log("formData - aka - column.sequence")
-      console.log(column.sequence)
+      // console.log("boardId")
+      // console.log(boardId)
+      // console.log("columnId")
+      // console.log(column.id)
+      // console.log("formData - aka - column.sequence")
+      // console.log(column.sequence)
       await dispatch(updateColumnSequence({
         boardId: boardId, columnId: column.id, formData: { sequence: column.sequence }
       }));
-      console.log("___ for loop end ___")
+      // console.log("___ for loop end ___")
     }
       
     // const sortedColumns = filteredColumns.sort((a, b) => a.sequence - b.sequence);
@@ -164,8 +230,8 @@ const Columns = () => {
       //   await dispatch(updateColumnSequence({boardId: id, columnId, patchColumn}));
     // };
             
-    console.log("XLXLXLXLXLXLXLXLXLXLXLXLXLXLXL")
-    console.log("XLXLXLXLXLXLXLXLXLXLXLXLXLXLXL")
+    // console.log("XLXLXLXLXLXLXLXLXLXLXLXLXLXLXL")
+    // console.log("XLXLXLXLXLXLXLXLXLXLXLXLXLXLXL")
     await dispatch(fetchColumns({ boardId: boardId }));
   };
 
@@ -264,3 +330,41 @@ const Columns = () => {
   )
 };
 export default Columns;
+
+
+
+/*
+const saveCardSequence = async (destinationIndex, destinationColId, cardId) => {
+    const cardsFromColumn = cards.filter(
+      card => card.columnId === destinationColId && card.id !== cardId
+    );
+    const sortedCards = cardsFromColumn.sort((a, b) => a.sequence - b.sequence);
+    let sequence = destinationIndex === 0 ? 1 : sortedCards[destinationIndex - 1].sequence + 1;
+    const patchCard = {
+      id: cardId,
+      sequence,
+      columnId: destinationColId
+    };
+    
+    // Update local state to avoid lag when changing sequence and saving change
+    // await dispatch(updateCardSequenceToLocalState(patchCard));
+    // await dispatch(updateCardSequence(patchCard));
+    await dispatch(updateCardSequence(patchCard));
+    // await dispatch(updateCard(patchCard));
+    for (let i = destinationIndex; i < sortedCards.length; i++) {
+      const card = sortedCards[i];
+      sequence += 1;
+  
+      const patchCard = {
+        id: card.id,
+        sequence,
+        columnId: destinationColId
+      };
+      // await dispatch(updateCardSequenceToLocalState(patchCard));
+      // await dispatch(updateCardSequence(patchCard));
+      await dispatch(updateCardSequence({boardId: boardId, cardId: card.id, patchCard}));
+      // await dispatch(updateCard(patchCard));
+    };
+    // return console.log('savingCardSequence')
+  };
+*/

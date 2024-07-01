@@ -4,12 +4,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchCards, updateCard, deleteCard } from '@/redux/features/card/cardSlice';
 import { Box, Input, Menu, MenuItem, Modal, Divider, TextareaAutosize, TextField, Typography, FormControl, FormLabel, FormControlLabel, Radio, RadioGroup } from '@mui/material';
 import { AiOutlineDelete, AiOutlineClose, AiOutlineDown, AiOutlineLaptop } from 'react-icons/ai';
+import { HiPencilAlt } from 'react-icons/hi';
+// import { LuPencil } from "react-icons/lu";
 import { MdOutlineTextsms } from 'react-icons/md';
 import { GrTextAlignFull } from 'react-icons/gr';
 import ButtonUI from '../UI/ButtonUI';
+import PaperUI from '../UI/PaperUI';
 // import CardLabel from '/modals';
 import QuillEditor from '../QuillEditor';
-import PaperUI from '../UI/PaperUI';
 
 
 // this modal allows us to update a cards content
@@ -37,21 +39,37 @@ const CardDetailModal = ({ setModalOpen, card }) => {
   const { card: cardDetails, loading, isRequesting: cardRequest } = useSelector(state => state.card);
   // const users = useSelector(state => state.users.users);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [hasMounted, setHasMounted] = useState(false);
   const [formData, setFormData] = useState(initialState);
   
   useEffect(() => {
     setFormData({
-      id: loading || !cardDetails ? '' : cardDetails.id,
-      title: loading || !cardDetails ? '' : cardDetails.title,
-      description: loading || !cardDetails ? '' : cardDetails.description,
-      priority: loading || !cardDetails ? '' : cardDetails.priority,
-      type: loading || !cardDetails ? '' : cardDetails.type,
-      // boardId: loading || !cardDetails ? '' : cardDetails.boardId,
-      // columnId: loading || !cardDetails ? '' : cardDetails.columnId,
-      // userId: loading || !cardDetails ? '' : cardDetails.userId
+      id: card ? card.id : '',
+      title: card ? card.title : '',
+      description: card ? card.description : '',
+      priority: card ? card.priority : '',
+      type: card ? card.type : '',
+      // boardId: loading || !card ? '' : card.boardId,
+      // columnId: loading || !card ? '' : card.columnId,
+      // userId: loading || !card ? '' : card.userId
     })
   }, [dispatch, loading]);
-    
+
+  useEffect(() => {
+    setHasMounted(true)
+  }, []);
+
+  if (!hasMounted) {
+    return null;
+  }
+
+  console.log("card edit modal")
+  console.log("card")
+  console.log(card)
+  console.log("-=-=-=-=-=-=-=-=-=-=-")
+  console.log("formData")
+  console.log(formData)
+  console.log("card edit modal end")
   // const { cardId, title, description, priority, type, boardId, columnId, userId } = formData;
   const { title, description, priority, type } = formData;
 
@@ -73,7 +91,12 @@ const CardDetailModal = ({ setModalOpen, card }) => {
 
   const modalSubmitHandler = async (e) => {
     e.preventDefault();
-    await dispatch(updateCard({boardId, cardId: cardDetails.id, formData}));
+    console.log("-=-=-=-=-=-=-=-=-=-=-=-=-")
+    console.log("-=-=-=-=-=-=-=-=-=-=-=-=-")
+    console.log(card)
+    console.log("-=-=-=-=-=-=-=-=-=-=-=-=-")
+    console.log("-=-=-=-=-=-=-=-=-=-=-=-=-")
+    await dispatch(updateCard({boardId, cardId: card.id, formData}));
     await dispatch(fetchCards({boardId}));
     setModalOpen(false);
   };
@@ -81,18 +104,6 @@ const CardDetailModal = ({ setModalOpen, card }) => {
   const closeModalHandler = () => {
     setModalOpen(false);
   };
-
-  // const handleClick = async (userId) => {
-    // setAssignedUser(userId);
-    // const data = {
-    //   id: card.id,
-    //   title,
-    //   description,
-    //   columnId: card.columnId,
-    //   assignedUser: userId
-    // };
-    // await dispatchEvent(updateCard(data));
-  // };
 
   // ##################################
   // for the menu & menu items
@@ -106,22 +117,20 @@ const CardDetailModal = ({ setModalOpen, card }) => {
   // ##################################
   // ##################################
   // for the modal
-  const styleModal = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-    pt: 2,
-    px: 4,
-    pb: 3,
-  };
-  // const handleModalOpen = () => setOpenModal(true);
-  // const handleModalClose = () => setOpenModal(false);
+  // const styleModal = {
+  //   position: 'absolute',
+  //   top: '50%',
+  //   left: '50%',
+  //   transform: 'translate(-50%, -50%)',
+  //   width: 400,
+  //   bgcolor: 'background.paper',
+  //   border: '2px solid #000',
+  //   boxShadow: 24,
+  //   p: 4,
+  //   pt: 2,
+  //   px: 4,
+  //   pb: 3,
+  // };
 
   // ##################################
   // const assignToMenu = () => {
@@ -159,6 +168,8 @@ const CardDetailModal = ({ setModalOpen, card }) => {
   //     </div>
   //   );
   // };
+  console.log("card --- modL DETAIL")
+  console.log(card)
 
   return (
     <PaperUI className="modal paper card">
@@ -170,35 +181,32 @@ const CardDetailModal = ({ setModalOpen, card }) => {
       <div className="modal__content">
         <form onSubmit={e => modalSubmitHandler(e)}>
           <FormControl style={{width: `100%`}}>
-            <div className="">
-              <AiOutlineLaptop />
-              <TextField
-                className=""
-                variant='outlined'
-                label="Card Title"
-                name='title'
-                value={title}
-                onChange={onChange}
-                required
-              />
-            </div>
-            <div className="">
-              <GrTextAlignFull />
-              <div className="">Card Description</div>
-              {/* <TextareaAutosize
-                className='text-area'
-                placeholder="Card description."
-                maxRows={6}
-                mminRows={3}
-                name='description'
-                value={description}
-                maxLength={1000}
-                onChange={onChange}
-                style={{ resize: `none`, padding: `0.75rem 0.75rem`, outline: `none`, backgroundColor: `var(--primary-color)` }}
-                required
-              /> */}
-              <div className="">
-                <QuillEditor name={description} value={description} onChange={onChange} />
+            <div className="modal__card">
+              <div>
+                <div className="modal__card input-line">
+                  <HiPencilAlt className="card-icon" />
+                  <TextField
+                    className=""
+                    variant='outlined'
+                    label="Card Title"
+                    name='title'
+                    value={title}
+                    onChange={onChange}
+                    required
+                  />
+                </div>
+              </div>
+              <div className="modal__card quill-editor-section">
+                {/* <GrTextAlignFull /> */}
+                <div className="quill-header">Card Description</div>
+                <div className="quill-editor-box">
+                  <QuillEditor
+                    name="description"
+                    // name={'description'} 
+                    value={description} 
+                    onChange={onChange}
+                  />
+                </div>
               </div>
             </div>
             <div className="modal__radio-group priority">
@@ -270,7 +278,7 @@ const CardDetailModal = ({ setModalOpen, card }) => {
                 sx={{ color: 'primary.main' }}
                 onClick={() => closeModalHandler()}
               >
-                <AiOutlineClose />Cancel
+                Cancel
               </ButtonUI>
             </div>
           </FormControl>
