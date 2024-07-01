@@ -29,7 +29,7 @@ const CardItem = ({ className, variant, raised, card, cardIndex, showCardDetail,
   };
 
   const deleteCardHandler = async () => {
-    await dispatch(deleteCard(card.id));
+    await dispatch(deleteCard({boardId, cardId: card.id}));
     await dispatch(fetchCards({boardId}));
     setModalOpen(false);
   };
@@ -127,6 +127,13 @@ const CardItem = ({ className, variant, raised, card, cardIndex, showCardDetail,
       <CardContent
         className="card__content"
       >
+        <Typography
+          variant="body2"
+          component='div'
+          // color="text.secondary"
+        >
+          sequence: {card.sequence}
+        </Typography>
         <Typography
           variant="body2"
           component='div'

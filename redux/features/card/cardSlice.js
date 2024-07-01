@@ -65,6 +65,13 @@ export const updateCard = createAsyncThunk(
   'cards/put/update-Card',
   async ({boardId, cardId, formData}, thunkAPI) => {
     try {
+
+      console.log("T&T&T&T&T&T&T&T&T&T&T")
+      console.log("cardId")
+      console.log(cardId)
+      console.log("boardId")
+      console.log(boardId)
+      console.log("T&T&T&T&T&T&T&T&T&T&T")
       return await cardService.updateCard(boardId, cardId, formData, thunkAPI);
     } catch (err) {
       const message =
@@ -100,9 +107,9 @@ export const updateCardSequence = createAsyncThunk(
 export const deleteCard = createAsyncThunk(
   'cards/delete',
   // async (formData, thunkAPI) => {
-  async (cardId, thunkAPI) => {
+  async ({boardId ,cardId}, thunkAPI) => {
     try {
-      return await cardService.deleteCard(cardId, thunkAPI);
+      return await cardService.deleteCard(boardId, cardId, thunkAPI);
     } catch (err) {
       const message =
         (err.response &&

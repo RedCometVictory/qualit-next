@@ -40,7 +40,7 @@ clip-path: polygon(0 6%, 11% 6%, 19% 0, 44% 0, 49% 5%, 79% 5%, 83% 0, 100% 0, 10
   --navbar-title: rgb(221, 221, 221);
   --navbar-logo: rgb(245, 238, 238);
 
-  // Backgrounds
+  // Backgrounds`
   --primary-color: rgb(227, 248, 255);
   // --secondary-color: rgb(234, 176, 51);
   --secondary-color: rgb(255, 152, 0);
@@ -119,8 +119,8 @@ clip-path: polygon(0 6%, 11% 6%, 19% 0, 44% 0, 49% 5%, 79% 5%, 83% 0, 100% 0, 10
   --light-disabled-color: #6c757d;
   --dark-disabled-color: #242121;
 
-
-  // --color: #ffc107;
+  --quill-toolbar: rgb(227, 248, 255);
+  // --color: #ffc107; // primary color for dark button
   // --color: #434343;
   // --color: #c5c1c1;
   // --color: #fcf8f8;
@@ -169,6 +169,7 @@ clip-path: polygon(0 6%, 11% 6%, 19% 0, 44% 0, 49% 5%, 79% 5%, 83% 0, 100% 0, 10
   // Backgrounds
   // --primary-color: rgb(161, 51, 234);
   --primary-color: rgb(57, 54, 58);
+  // --quill-toolbar: rgb(57, 54, 58);
   // --secondary-color: rgb(51, 94, 234); // orig may rdelete
   --secondary-color: rgb(51, 94, 234); // orig may rdelete
   --primary-color-a: rgba(161, 51, 234, 0.8);
@@ -250,6 +251,8 @@ clip-path: polygon(0 6%, 11% 6%, 19% 0, 44% 0, 49% 5%, 79% 5%, 83% 0, 100% 0, 10
   --danger-color: #dc3545;
   --input-disabled-color: rgb(101, 101, 101);
   --dark-disabled-color: #4a4a4b;
+
+  --quill-toolbar: rgb(57, 54, 58);
 }
 /*
 :root.light {

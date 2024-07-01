@@ -112,6 +112,40 @@
     height: 2rem;
     width: 100%;
   }
+  &__card {
+    &--container {
+      @include flex(row, space-between, center);
+    }
+    .input-line {
+      @include flex(row, flex-start, center);
+    }
+    .card-icon {
+      margin: 0 1rem 0 0;
+    }
+    .quill-editor-section {
+      margin: 1.275rem 0;
+    }
+    .quill-header {
+      margin: 0 0 1rem;
+    }
+    .quill-editor-box {
+      margin: 0 0 12rem 0;
+    }
+    .card-paper {
+      background-color: var(--primary-color);
+      width: 100%;
+      &.box {
+        padding: 2px 6px 2px 6px;
+        @include flex(column, space-between, center);
+      }
+      .sub-box {
+        &.one {
+          margin: 0 0 2rem 0;
+          width: 100%;
+        }
+      }
+    }
+  }
   &__ticket {
     width: 100%;
     // margin: 0.875rem 0 0 0;
@@ -265,13 +299,45 @@
     }
   }
 }
+@media (min-width: 280px) {
+  .modal {
+    &__card {
+      .quill-editor-box {
+        margin: 0 0 10rem 0;
+      }
+    }
+  }
+}
+@media (min-width: 320px) {
+  .modal {
+    &__card {
+      .quill-editor-box {
+        margin: 0 0 8rem 0;
+      }
+    }
+  }
+}
+@media (min-width: 440px) {
+  .modal {
+    &__card {
+      .quill-editor-box {
+        margin: 0 0 6rem 0;
+      }
+    }
+  }
+}
 @media (min-width: 560px) {
   .modal {
     // position: absolute;
+    left: 62px;
     &.ticket {
       left: 62px;
     }
-    left: 62px;
+    &__card {
+      .quill-editor-box {
+        margin: 0 0 5rem 0;
+      }
+    }
     // width: 92%;
     // left: 50%;
     // transform: translateX(-50%);
@@ -290,6 +356,15 @@
         .btn-unassign {
           margin: initial
         }
+      }
+    }
+  }
+}
+@media (min-width: 660px) {
+  .modal {
+    &__card {
+      .quill-editor-box {
+        margin: 0 0 4rem 0;
       }
     }
   }

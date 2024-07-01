@@ -56,6 +56,14 @@ const addCard = async (boardId, columnId, formData) => {
 };
 
 const updateCard = async (boardId, cardId, formData) => {
+  console.log("TYTYTYTYTYTYTYTYTY")
+  console.log("boardId")
+  console.log(boardId)
+  console.log("cardId")
+  console.log(cardId)
+  console.log("formData")
+  console.log(formData)
+  console.log("TYTYTYTYTYTYTYTYTY")
   const res = await putData(`/boards/${boardId}/cards/${cardId}`, formData);
   const result = res.data;
   // localStorage.setItem("qual__project", JSON.stringify(result.project));
@@ -77,8 +85,8 @@ const updateCardSequence = async (boardId, cardId, formData) => {
   return result;
 };
 
-const deleteCard = async (boardId, cardId, formData) => {
-  const res = await putData(`/boards/${boardId}/cards/${cardId}`, formData); 
+const deleteCard = async (boardId, cardId) => {
+  const res = await deleteData(`/boards/${boardId}/cards/${cardId}`); 
   const result = res.data;
   // localStorage.setItem("qual__project", JSON.stringify(result.project));
   // TODO: place updated project data into project {} and save new state into LS qual__project

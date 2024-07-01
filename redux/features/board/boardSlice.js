@@ -189,7 +189,7 @@ const boardSlice = createSlice({
       state.loading = true;
     },
     [getBoard.fulfilled]: (state, { payload }) => {
-      state.board = payload;
+      state.board = payload.board;
       state.status = 'success';
       state.loading = false;
     },
