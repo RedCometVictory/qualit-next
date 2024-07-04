@@ -14,7 +14,7 @@ handler.use(verifAuth, authRoleDev);
 handler.put(async (req, res) => {
   // const { id } = req.user;
   const { boardId, cardId } = req.query;
-  const { id: unusedPatchedCardId , sequence, columnId } = req.body;
+  const { id: unusedPatchedCardId , sequence, column_id } = req.body;
 
   console.log("0101010101010101010101010")
   console.log("0101010101010101010101010")
@@ -23,7 +23,7 @@ handler.put(async (req, res) => {
   console.log(req.body)
   
   let updatedByTimeStamp = new Date();
-  let updatedCardSeq = await pool.query('UPDATE cards SET sequence = $1, column_id = $2, updated_at = $3 WHERE id = $4 AND board_id = $5 RETURNING *;', [sequence, columnId, updatedByTimeStamp, cardId, boardId]);
+  let updatedCardSeq = await pool.query('UPDATE cards SET sequence = $1, column_id = $2, updated_at = $3 WHERE id = $4 AND board_id = $5 RETURNING *;', [sequence, column_id, updatedByTimeStamp, cardId, boardId]);
   
   if (updatedCardSeq.rowCount === 0 || updatedCardSeq === null) {
     throw new Error('Failed to update card.');
