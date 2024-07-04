@@ -37,6 +37,7 @@ export const getDashboardInfo = createAsyncThunk(
     }
   }
 );
+
 // my projects - gssp
 export const getProjects = createAsyncThunk(
   'project/get/All-Projects',
@@ -55,6 +56,7 @@ export const getProjects = createAsyncThunk(
     }
   }
 );
+
 // my tickets - gssp
 export const getTickets = createAsyncThunk(
   'project/get/All-Tickets',
@@ -236,27 +238,6 @@ export const paginateTicketComments = createAsyncThunk(
   }
 );
 
-/*
-TODO: this action is not used (instead create ticket comment does the desired operation); consider deleting.
-export const createTicketUpload = createAsyncThunk(
-  'project/post/Ticket-Upload',
-  async ({ticket_id, formData}, thunkAPI) => {
-    try {
-      return await projectService.createTicketUpload(ticket_id, formData);
-    } catch (err) {
-      const message =
-        (err.response &&
-          err.response.data &&
-          err.response.data.message) ||
-        err.message ||
-        err.toString()
-      toast.error("Failed to create ticket upload.", {theme: "colored", toastId: "TicketUploadError"});
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
-*/
-
 export const updateProject = createAsyncThunk(
   'project/put/Project-Update',
   async ({formData, projectId, router}, thunkAPI) => {
@@ -387,6 +368,7 @@ export const deleteProject = createAsyncThunk(
   }
 );
 
+// deleteTicketNote is used instead
 export const deleteTicket = createAsyncThunk(
   'project/delete/Ticket-Delete',
   async (ticket_id, thunkAPI) => {
@@ -441,7 +423,7 @@ export const deleteTicketUpload = createAsyncThunk(
   }
 );
   
-  
+// may implement later
 export const deleteUser = createAsyncThunk(
   'project/delete/User-Delete',
   async (user_id, thunkAPI) => {
@@ -483,23 +465,12 @@ const projectSlice = createSlice({
       state = initialState
     },
     clearProject: (state) => {
-      // localStorage.removeItem("qual__project")
       state.project = {}
     },
     clearTickets: (state) => {
-      // localStorage.removeItem("qual__tickets")
-      // may save tickets [] to qual__projects, thus structure will be: {projects: [], tickets: []}
       state.tickets = []
     },
     clearTicket: (state) => {
-      // localStorage.removeItem("qual__ticket")
-      // structure of qual__ticket:
-      // {
-      //   ticket: {},
-      //   comments: [],
-      //   uploads: [],
-      //   upload: {}
-      // }
       state.ticket = {}
       state.comments = []
       state.uploads = []
