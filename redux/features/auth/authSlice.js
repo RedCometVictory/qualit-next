@@ -26,12 +26,12 @@ export const demoUser = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to login (DEMO).", {theme: "colored", toastId: "LoginError"});
+      toast.error("Failed to login (DEMO).", {theme: "colored", toastId: "DemoLoginError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
 );
-
+  
 export const loadUser = createAsyncThunk(
   'auth/loadUser',
   async (_, thunkAPI) => {
@@ -44,6 +44,7 @@ export const loadUser = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
+      toast.error("Failed to load user.", {theme: "colored", toastId: "UserLoadError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -61,7 +62,7 @@ export const registerUser = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to register.", {theme: "colored", toastId: "RegError"});
+      toast.error("Failed to register.", {theme: "colored", toastId: "RegUserError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -97,6 +98,7 @@ export const logout = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
+      toast.error("Failed to logout.", {theme: "colored", toastId: "LogoutError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -131,7 +133,7 @@ export const deleteUser = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to delete account.", {theme: "colored", toastId: "DelError"});
+      toast.error("Failed to delete account.", {theme: "colored", toastId: "DelAccountError"});
       return thunkAPI.rejectWithValue(message);
     }
   }

@@ -35,7 +35,7 @@ export const getUsersAdmin = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to list users.", {theme: "colored", toastId: "getUsersToastId"});
+      toast.error("Failed to list all users for admin.", {theme: "colored", toastId: "getUsersAdmin"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -53,7 +53,7 @@ export const getUsersListAdmin = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to list users.", {theme: "colored", toastId: "getUsersToastId"});
+      toast.error("Failed to list users for admin.", {theme: "colored", toastId: "getUsersListAdmin"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -71,7 +71,7 @@ export const getUserAccount = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to get user account.", {theme: "colored", toastId: "getUserToastId"});
+      toast.error("Failed to get user account.", {theme: "colored", toastId: "getUserAccount"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -88,7 +88,7 @@ export const getUserProfile = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to get user profile.", {theme: "colored", toastId: "getUserToastId"});
+      toast.error("Failed to get user profile.", {theme: "colored", toastId: "getUserProfile"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -98,11 +98,6 @@ export const updateAndSaveProjectPersonnelList = createAsyncThunk(
   'user/update/Project-Personnel/user-assignments',
   async ({projectId, assignedUsers, unassignedUsers}, thunkAPI) => {
     try {
-      console.log("UPDATE-USER SERVICE");
-      console.log(projectId)
-      console.log("- - - - -")
-      // console.log(cookie)
-      console.log("UPDATE-USER SERVICE END");
       return await userService.updateAndSaveProjectPersonnelList(projectId, assignedUsers, unassignedUsers);
     } catch (err) {
       const message =
@@ -111,7 +106,7 @@ export const updateAndSaveProjectPersonnelList = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to update project personnel list regarding users assigned to project.", {theme: "update-personnel", toastId: "UpdateProjectPersonnelError"});
+      toast.error("Failed to update project personnel list regarding users assigned to project.", {theme: "colored", toastId: "UpdateProjectPersonnelError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -129,12 +124,11 @@ export const updateUserProfile = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to update user information.", {theme: "colored", toastId: "updateUserToastId"});
+      toast.error("Failed to update user information.", {theme: "colored", toastId: "updateUserProfileId"});
       return thunkAPI.rejectWithValue(message);
     }
   }
 );
-
 
 // export const updateAssignmentListsAdmin = createAsyncThunk(
 //   'user/update/Assign-Lists-Admin',
@@ -154,14 +148,6 @@ export const updateUserProfile = createAsyncThunk(
 //   }
 // );
 
-
-
-// ******************************
-// ******************************
-// ******************************
-// none of the below actions are currently being used:
-
-
 export const getUserProfileAdmin = createAsyncThunk(
   'user/get/profile-admin',
   async (user_id, thunkAPI) => {
@@ -174,7 +160,7 @@ export const getUserProfileAdmin = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to get user profile.", {theme: "colored", toastId: "getUserToastId"});
+      toast.error("Failed to get user profile.", {theme: "colored", toastId: "getUserProfileId"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -194,7 +180,7 @@ export const updateUserInfo = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to update user information.", {theme: "colored", toastId: "updateUserToastId"});
+      toast.error("Failed to update user information.", {theme: "colored", toastId: "updateUserInfoId"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -212,7 +198,7 @@ export const createUserProfile = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to create user profile.", {theme: "colored", toastId: "createUserToastId"});
+      toast.error("Failed to create user profile.", {theme: "colored", toastId: "createUserError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -230,7 +216,7 @@ export const updateUserAdmin = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Admin failed to update user profile.", {theme: "colored", toastId: "updateUserToastId"});
+      toast.error("Admin failed to update user profile.", {theme: "colored", toastId: "updateUserAdminError"});
       return thunkAPI.rejectWithValue(message);
     }
   }

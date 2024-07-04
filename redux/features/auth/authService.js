@@ -1,27 +1,6 @@
-// import api from "../../../utils/api";
-// import { addCardToUser, stripeReset } from "../stripe/stripeSlice";
+
 import { getData, postData, putData, deleteData } from '@/utils/fetchData';
 import { userReset } from "../user/userSlice";
-// import { clearCartLogout } from "../cart/cartSlice";
-// import { orderReset } from "../order/orderSlice";
-/*
-let currentTheme;
-currentTheme = typeof window !== "undefined" && localStorage.getItem('qual__theme');
-
-if(typeof window !== "undefined" && !currentTheme) {
-  localStorage.setItem('qual__theme', 'light');
-  currentTheme = localStorage.getItem('qual__theme');
-}
-
-const initialState = {
-  // theme: 'light',
-  theme: currentTheme ? currentTheme : false,
-  drawer: false,
-  backgroundImage: '',
-  error: ''
-};
-
-*/
 import { loadUser as loadUserSlice, clearAuth } from "./authSlice";
 
 
@@ -60,36 +39,13 @@ const loginUser = async (formData, router, thunkAPI) => {
 };
 
 const logout = async (_, thunkAPI) => {
-  console.log("55555555555555")
-  console.log("55555555555555")
-  console.log("logging out")
-  console.log("55555555555555")
-  console.log("55555555555555")
-  // thunkAPI.dispatch(userReset());
-  // if (localStorage.getItem('qual__user')) localStorage.removeItem('qual__user');
-  // if (localStorage.getItem('qual__user')) localStorage.removeItem('qual__user');
   await postData('/auth/signout', _);
-  console.log("88888888888888888888")
-  console.log("clearin auth - logout")
-  console.log("88888888888888888888")
   thunkAPI.dispatch(clearAuth());
   return; 
 };
 
 const expiredTokenLogout = async (_, thunkAPI) => {
-  console.log("55555555555555")
-  console.log("55555555555555")
-  console.log("expired log out")
-  console.log("55555555555555")
-  console.log("55555555555555")
-  // thunkAPI.dispatch(userReset());
-  // if (localStorage.getItem('qual__user')) localStorage.removeItem('qual__user');
-  // if (localStorage.getItem('qual__user')) localStorage.removeItem('qual__user');
-  // await postData('/auth/expiredSignout', _);
   thunkAPI.dispatch(clearAuth());
-  console.log("88888888888888888888")
-  console.log("clearin auth - expiredauth")
-  console.log("88888888888888888888")
   return; 
 };
 

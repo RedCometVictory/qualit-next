@@ -27,14 +27,6 @@ export const getAllBoards = createAsyncThunk(
   'boards/get/All-Boards',
   async (cookie, thunkAPI) => {
     try {
-      console.log("DDDDDDDDDDDDDDDDDDDDDD")
-      console.log("DDDDDDDDDDDDDDDDDDDDDD")
-      console.log("DDDDDDDDDDDDDDDDDDDDDD")
-      console.log("cookie")
-      console.log(cookie)
-      console.log("DDDDDDDDDDDDDDDDDDDDDD")
-      console.log("DDDDDDDDDDDDDDDDDDDDDD")
-      console.log("DDDDDDDDDDDDDDDDDDDDDD")
       return await boardService.getAllBoards(cookie, thunkAPI);
     } catch (err) {
       const message =
@@ -43,6 +35,7 @@ export const getAllBoards = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
+      toast.error("Failed to fetch all boards.", {theme: "colored", toastId: "FetchBoardsError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -60,6 +53,7 @@ export const createBoard = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
+      toast.error("Failed to create new board.", {theme: "colored", toastId: "CreateBoardError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -79,6 +73,7 @@ export const saveBoard = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
+      toast.error("Failed to save board.", {theme: "colored", toastId: "SaveProjectError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -96,6 +91,7 @@ export const getBoard = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
+      toast.error("Failed to get board details.", {theme: "colored", toastId: "GetProjectError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -113,6 +109,7 @@ export const deleteBoard = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
+      toast.error("Failed to delete board.", {theme: "colored", toastId: "DeleteBoardError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -148,8 +145,6 @@ const boardSlice = createSlice({
       state.loading = true;
     },
     [getAllBoards.fulfilled]: (state, { payload }) => {
-      // state.boards = [...payload.boards];
-      // state.boards = [state.boards, ...payload.boards];
       state.boards = payload.boards;
       state.status = 'success';
       state.loading = false;

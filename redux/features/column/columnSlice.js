@@ -30,7 +30,7 @@ export const fetchColumns = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to set theme.", {theme: "colored", toastId: "ThemeError"});
+      toast.error("Failed to fetch columns.", {theme: "colored", toastId: "ColFetchError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -38,7 +38,6 @@ export const fetchColumns = createAsyncThunk(
 
 export const addColumn = createAsyncThunk(
   'columns/post/column-add',
-  // async ({boardId, formData}, thunkAPI) => {
   async ({boardId, formData}, thunkAPI) => {
     try {
       return await columnService.addColumn(boardId, formData, thunkAPI);
@@ -49,7 +48,7 @@ export const addColumn = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to set theme.", {theme: "colored", toastId: "ThemeError"});
+      toast.error("Failed to add column.", {theme: "colored", toastId: "AddColError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -67,7 +66,7 @@ export const updateColumn = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to set theme.", {theme: "colored", toastId: "ThemeError"});
+      toast.error("Failed to update column details.", {theme: "colored", toastId: "ColUpdateError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -85,7 +84,7 @@ export const updateColumnSequence = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to set theme.", {theme: "colored", toastId: "ThemeError"});
+      toast.error("Failed to update column sequence via api.", {theme: "colored", toastId: "ColSeqAPIError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -95,15 +94,6 @@ export const deleteColumn = createAsyncThunk(
   'columns/delete',
   async ({boardId, columnId}, thunkAPI) => {
     try {
-      console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-      console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-      console.log("columnSlice")
-      console.log("boardId")
-      console.log(boardId)
-      console.log("columnId")
-      console.log(columnId)
-      console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-      console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
       return await columnService.deleteColumn(boardId, columnId, thunkAPI);
     } catch (err) {
       const message =
@@ -112,7 +102,7 @@ export const deleteColumn = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to set theme.", {theme: "colored", toastId: "ThemeError"});
+      toast.error("Failed to delete column.", {theme: "colored", toastId: "DeleteColumnError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -132,18 +122,9 @@ const columnSlice = createSlice({
     },
     resetColumns: () => initialState,
     updateColumnSequenceInLocalState: (state, { payload }) => {
-      // const columnIndex = state.columns.findIndex(column => column.id === payload.id);
-      // state.columns[columnIndex].sequence = payload.sequence;
-      console.log("33333333-+-+-EEEEEEEE")
-      console.log("updating sequence")
-      console.log("payload")
-      console.log(payload)
       const columnIndex = state.columns.findIndex(column => column.id === payload.column_id);
-      console.log("columnIndex")
-      console.log(columnIndex)
       // if (columnIndex !== -1) {
         state.columns[columnIndex].sequence = payload.sequence;
-        // state.columns[cardIndex].column_id = payload.column_id;
       // }
       state.columns.sort((a, b) => a.sequence - b.sequence);
     }
@@ -163,17 +144,10 @@ const columnSlice = createSlice({
       state.loading = true;
     },
     [fetchColumns.fulfilled]: (state, { payload }) => {
-      // state.columns = payload;
-      // const sortedColumns = payload.sort((a, b) => a.sequence - b.sequence);
-      // state.columns = sortedColumns;
-
       if (Array.isArray(payload) && payload.length > 1) {
-        // state.columns = payload.sort((a, b) => a.sequence - b.sequence);
         state.columns = payload.columns.sort((a, b) => a.sequence - b.sequence);
-        // state.columns = payload.columns;
-        // state.columns = payload.columns;
       } else {
-        state.columns = payload.columns; // Either an empty array or a single item array
+        state.columns = payload.columns; 
       }
       state.status = 'success';
       state.isRequested = false;
@@ -220,16 +194,9 @@ const columnSlice = createSlice({
       state.loading = true;
     },
     [updateColumnSequence.fulfilled]: (state, { payload }) => {
-      // console.log("33333333-+-+-EEEEEEEE")
-      // console.log("updating sequence")
-      // console.log("payload")
-      // console.log(payload)
       // const columnIndex = state.columns.findIndex(column => column.id === payload.column.id);
-      // console.log("columnIndex")
-      // console.log(columnIndex)
       // if (columnIndex !== -1) {
       //   state.columns[columnIndex].sequence = payload.column.sequence;
-      //   // state.columns[cardIndex].column_id = payload.column_id;
       // }
       // state.columns.sort((a, b) => a.sequence - b.sequence);
 
@@ -262,171 +229,3 @@ const columnSlice = createSlice({
 });
 export const { rehydrate, resetColumns, updateColumnSequenceInLocalState } = columnSlice.actions;
 export default columnSlice.reducer;
-
-/**
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
-
-const cardSlice = createSlice({
-  name: 'card',
-  initialState,
-  reducers: {
-    rehydrate(state, action) {
-      state.cards = action.payload.cards;
-      state.card = action.payload.card;
-      state.status = action.payload.status;
-      state.isRequested = action.payload.isRequested;
-      state.loading = action.payload.loading;
-      state.error = action.payload.error;
-    },
-    resetCards: () => initialState,
-    updateCardSequenceInLocalState: (state, { payload }) => {
-      console.log("33333333-+-+-EEEEEEEE")
-      console.log("updating sequence")
-      console.log("payload")
-      console.log(payload)
-      const cardIndex = state.cards.findIndex(card => card.id === payload.id);
-      console.log("cardIndex")
-      console.log(cardIndex)
-      if (cardIndex !== -1) {
-        state.cards[cardIndex].sequence = payload.sequence;
-        state.cards[cardIndex].column_id = payload.column_id;
-      }
-      state.cards.sort((a, b) => a.sequence - b.sequence);
-    }
-  },
-  extraReducers: {
-    // [HYDRATE]: (state, action) => {
-    //   console.log("HYDRATE", action.payload);
-    //   return {
-    //     ...state,
-    //     ...action.payload.card
-    //   }
-    // },
-    [fetchCards.pending]: (state) => {
-      state.status = 'pending';
-      state.isRequested = true;
-      state.loading = true;
-    },
-    [fetchCards.fulfilled]: (state, { payload }) => {
-      state.cards = payload.cards;
-      state.status = 'success';
-      state.isRequested = false;
-      state.loading = false;
-    },
-    [fetchCards.rejected]: (state) => {
-      state.status = 'failed';
-      state.isRequested = false;
-      state.loading = false;
-    },
-    [addCard.pending]: (state) => {
-      state.status = 'pending';
-      state.isRequested = true;
-      state.loading = true;
-    },
-    [addCard.fulfilled]: (state) => {
-      state.status = 'success';
-      state.isRequested = false;
-      state.loading = false;
-    },
-    [addCard.rejected]: (state) => {
-      state.status = 'failed';
-      state.isRequested = false;
-      state.loading = false;
-    },
-    [updateCard.pending]: (state) => {
-      state.status = 'pending';
-      state.isRequested = true;
-      state.loading = true;
-    },
-    [updateCard.fulfilled]: (state) => {
-      state.status = 'success';
-      state.isRequested = false;
-      state.loading = false;
-    },
-    [updateCard.rejected]: (state) => {
-      state.status = 'failed';
-      state.isRequested = false;
-      state.loading = false;
-    },
-    [updateCardSequence.pending]: (state) => {
-      state.status = 'pending';
-      state.isRequested = true;
-      state.loading = true;
-    },
-    // [updateCardSequence.fulfilled]: (state, { payload }) => {
-    [updateCardSequence.fulfilled]: (state) => {
-      // console.log("33333333-+-+-EEEEEEEE")
-      // console.log("updating sequence")
-      // console.log("payload")
-      // console.log(payload.card)
-      // const cardIndex = state.cards.findIndex(card => card.id === payload.card.id);
-      // console.log("cardIndex")
-      // console.log(cardIndex)
-      // if (cardIndex !== -1) {
-      //   state.cards[cardIndex].sequence = payload.card.sequence;
-      //   state.cards[cardIndex].column_id = payload.card.column_id;
-      // }
-
-      state.status = 'success';
-      state.isRequested = false;
-      state.loading = false;
-    },
-    [updateCardSequence.rejected]: (state) => {
-      state.status = 'failed';
-      state.isRequested = false;
-      state.loading = false;
-    },
-    [deleteCard.pending]: (state) => {
-      state.status = 'pending';
-      state.isRequested = true;
-      state.loading = true;
-    },
-    [deleteCard.fulfilled]: (state) => {
-      state.status = 'success';
-      state.isRequested = false;
-      state.loading = false;
-    },
-    [deleteCard.rejected]: (state) => {
-      state.status = 'failed';
-      state.isRequested = false;
-      state.loading = false;
-    },
-  }
-});
-
-export const { rehydrate, resetCards, updateCardSequenceInLocalState } = cardSlice.actions;
-export default cardSlice.reducer;
-
-
-
-
-
-
-
-
-
-
-
-
-
- */

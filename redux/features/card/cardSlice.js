@@ -36,7 +36,7 @@ export const fetchCards = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to set theme.", {theme: "colored", toastId: "ThemeError"});
+      toast.error("Failed to fetch cards.", {theme: "colored", toastId: "FetchCardsError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -45,7 +45,6 @@ export const fetchCards = createAsyncThunk(
 export const addCard = createAsyncThunk(
   'cards/post/add-card',
   async ({boardId, columnId, formData}, thunkAPI) => {
-  // async ({boardId, columnId}, thunkAPI) => {
     try {
       return await cardService.addCard(boardId, columnId, formData, thunkAPI);
     } catch (err) {
@@ -55,7 +54,7 @@ export const addCard = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to set theme.", {theme: "colored", toastId: "ThemeError"});
+      toast.error("Failed to set theme.", {theme: "colored", toastId: "AddCardError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -65,13 +64,6 @@ export const updateCard = createAsyncThunk(
   'cards/put/update-Card',
   async ({boardId, cardId, formData}, thunkAPI) => {
     try {
-
-      console.log("T&T&T&T&T&T&T&T&T&T&T")
-      console.log("cardId")
-      console.log(cardId)
-      console.log("boardId")
-      console.log(boardId)
-      console.log("T&T&T&T&T&T&T&T&T&T&T")
       return await cardService.updateCard(boardId, cardId, formData, thunkAPI);
     } catch (err) {
       const message =
@@ -80,7 +72,7 @@ export const updateCard = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to set theme.", {theme: "colored", toastId: "ThemeError"});
+      toast.error("Failed to update card.", {theme: "colored", toastId: "CardUpdateError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -98,7 +90,7 @@ export const updateCardSequence = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to set theme.", {theme: "colored", toastId: "ThemeError"});
+      toast.error("Failed to update card sequence via api.", {theme: "colored", toastId: "updateCardSeqError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -106,7 +98,6 @@ export const updateCardSequence = createAsyncThunk(
 
 export const deleteCard = createAsyncThunk(
   'cards/delete',
-  // async (formData, thunkAPI) => {
   async ({boardId ,cardId}, thunkAPI) => {
     try {
       return await cardService.deleteCard(boardId, cardId, thunkAPI);
@@ -117,7 +108,7 @@ export const deleteCard = createAsyncThunk(
           err.response.data.message) ||
         err.message ||
         err.toString()
-      toast.error("Failed to set theme.", {theme: "colored", toastId: "ThemeError"});
+      toast.error("Failed to delete card.", {theme: "colored", toastId: "CardDeleteError"});
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -137,18 +128,11 @@ const cardSlice = createSlice({
     },
     resetCards: () => initialState,
     updateCardSequenceInLocalState: (state, { payload }) => {
-      console.log("33333333-+-+-EEEEEEEE")
-      console.log("updating sequence")
-      console.log("payload")
-      console.log(payload)
       const cardIndex = state.cards.findIndex(card => card.id === payload.id);
-      console.log("cardIndex")
-      console.log(cardIndex)
       if (cardIndex !== -1) {
         state.cards[cardIndex].sequence = payload.sequence;
         state.cards[cardIndex].column_id = payload.column_id;
       }
-      // state.cards.sort((a, b) => a.sequence - b.sequence);
     }
   },
   extraReducers: {
@@ -211,13 +195,7 @@ const cardSlice = createSlice({
       state.loading = true;
     },
     [updateCardSequence.fulfilled]: (state, { payload }) => {
-      console.log("33333333-+-+-EEEEEEEE")
-      console.log("updating sequence")
-      console.log("payload")
-      console.log(payload.card)
       const cardIndex = state.cards.findIndex(card => card.id === payload.card.id);
-      console.log("cardIndex")
-      console.log(cardIndex)
       if (cardIndex !== -1) {
         state.cards[cardIndex].sequence = payload.card.sequence;
         state.cards[cardIndex].column_id = payload.card.column_id;
