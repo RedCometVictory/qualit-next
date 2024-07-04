@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useCallback, useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getDataSSR } from '@/utils/fetchData';
 import store from '@/redux/store';
@@ -16,6 +16,7 @@ const Board = ({ initialState }) => {
   const dispatch = useDispatch();
   const { board } = useSelector(state => state.board);
   const { cards } = useSelector(state => state.card);
+  const { columns } = useSelector(state => state.column);
   const [buttonText, setButtonText] = useState("Save");
   const [hasMounted, setHasMounted] = useState(false);
   const isInitialMount = useRef(true);
@@ -30,21 +31,41 @@ const Board = ({ initialState }) => {
     setHasMounted(true);
   }, [dispatch, initialState]);
 
-  
   // useEffect(() => {
-  //   setHasMounted(true);
-  // }, []);
+  //   // if (cards) {
+  //   if (hasMounted) {
+  //     if (isInitialMount.current) {
+  //       isInitialMount.current = false;
+  //     } else {
+  //       setButtonText('Unsaved');
+  //     }
+  //     console.log("*****reloading page*****")
+  //     console.log("*****reloading page*****")
+  //     console.log("*****reloading page*****")
+  //   }
+  // }, [cards, columns, hasMounted]);
+
+  // const updateButtonText = useCallback(() => {
+  //   // if (cards) {
+  //   if (hasMounted) {
+  //     if (isInitialMount.current) {
+  //       isInitialMount.current = false;
+  //     } else {
+  //       setButtonText('Unsaved');
+  //     }
+  //     console.log("*****reloading page*****")
+  //     console.log("*****reloading page*****")
+  //     console.log("*****reloading page*****")
+  //   }
+  // }, [cards, columns, hasMounted]);
+
+  // useEffect(() => {
+  //   updateButtonText();
+  // }, [updateButtonText]);
 
   useEffect(() => {
-    // if (cards) {
-    if (hasMounted) {
-      if (isInitialMount.current) {
-        isInitialMount.current = false;
-      } else {
-        setButtonText('Unsaved');
-      }
-    }
-  }, [cards, hasMounted]);
+    setHasMounted(true);
+  }, []);
 
   if (!hasMounted) return null;
 

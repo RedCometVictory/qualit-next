@@ -137,9 +137,18 @@ const cardSlice = createSlice({
     },
     resetCards: () => initialState,
     updateCardSequenceInLocalState: (state, { payload }) => {
+      console.log("33333333-+-+-EEEEEEEE")
+      console.log("updating sequence")
+      console.log("payload")
+      console.log(payload)
       const cardIndex = state.cards.findIndex(card => card.id === payload.id);
-      state.cards[cardIndex].sequence = payload.sequence;
-      state.cards[cardIndex].columnId = payload.columnId;
+      console.log("cardIndex")
+      console.log(cardIndex)
+      if (cardIndex !== -1) {
+        state.cards[cardIndex].sequence = payload.sequence;
+        state.cards[cardIndex].column_id = payload.column_id;
+      }
+      // state.cards.sort((a, b) => a.sequence - b.sequence);
     }
   },
   extraReducers: {

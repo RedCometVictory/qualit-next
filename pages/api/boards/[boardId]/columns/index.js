@@ -20,7 +20,7 @@ handler.get(async (req, res) => {
   console.log(boardId)
   console.log("888888888888888888888888888")
   console.log("888888888888888888888888888")
-  const columns = await pool.query('SELECT * FROM columns WHERE board_id = $1;', [boardId]);
+  const columns = await pool.query('SELECT * FROM columns WHERE board_id = $1 ORDER BY sequence ASC;', [boardId]);
   // if (columns.rowCount === 0 || columns === null) {
     // throw new Error("Failed to get all columns belonging to this board.");
   // }

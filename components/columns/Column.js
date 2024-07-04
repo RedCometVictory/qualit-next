@@ -165,7 +165,7 @@ const Column = ({ showCardDetail, setModalOpen, column, index, id, cards }) => {
     return (
       <h6 {...draggableProps}>
         <div>
-          <GrDrag className="column__drag-icon"/> {columnName}
+          <GrDrag className="column__drag-icon"/> {columnName + column.sequence}
         </div>
       </h6>
     );
