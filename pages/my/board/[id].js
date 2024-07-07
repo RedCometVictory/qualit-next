@@ -10,7 +10,6 @@ import BoardNav from '@/components/nav/BoardNav';
 import Columns from "@/components/columns/Columns";
 import BoardLayout from "@/components/layouts/BoardLayout";
 import Spinner from '@/components/Spinner';
-// import board detail and columns belonginng to board from redux
 
 const Board = ({ initialState }) => {
   const dispatch = useDispatch();
@@ -22,46 +21,11 @@ const Board = ({ initialState }) => {
   const isInitialMount = useRef(true);
 
   useEffect(() => {
-    console.log("this use effect is active")
-    console.log("this use effect is active")
-    console.log("this use effect is active")
     dispatch(boardRehydrate(initialState.board));
     dispatch(columnRehydrate(initialState.column));
     dispatch(cardRehydrate(initialState.card));
     setHasMounted(true);
   }, [dispatch, initialState]);
-
-  // useEffect(() => {
-  //   // if (cards) {
-  //   if (hasMounted) {
-  //     if (isInitialMount.current) {
-  //       isInitialMount.current = false;
-  //     } else {
-  //       setButtonText('Unsaved');
-  //     }
-  //     console.log("*****reloading page*****")
-  //     console.log("*****reloading page*****")
-  //     console.log("*****reloading page*****")
-  //   }
-  // }, [cards, columns, hasMounted]);
-
-  // const updateButtonText = useCallback(() => {
-  //   // if (cards) {
-  //   if (hasMounted) {
-  //     if (isInitialMount.current) {
-  //       isInitialMount.current = false;
-  //     } else {
-  //       setButtonText('Unsaved');
-  //     }
-  //     console.log("*****reloading page*****")
-  //     console.log("*****reloading page*****")
-  //     console.log("*****reloading page*****")
-  //   }
-  // }, [cards, columns, hasMounted]);
-
-  // useEffect(() => {
-  //   updateButtonText();
-  // }, [updateButtonText]);
 
   useEffect(() => {
     setHasMounted(true);
@@ -70,9 +34,6 @@ const Board = ({ initialState }) => {
   if (!hasMounted) return null;
 
   return (<>
-    {/* <h1> */}
-      {/* Board */}
-    {/* </h1> */}
     <BoardNav buttonText={buttonText} setButtonText={setButtonText} />
     <section  className="board__container">
       <Columns />
@@ -83,9 +44,6 @@ export default Board;
 export const getServerSideProps = async (context) => {
   try {
     let token = context.req.cookies.qual__token || null;
-
-    // TODO: if token auth expires, then auth.isAuthenticated needs to be changes to false so that the maain menu reverts to not logged in state, thus in gssp, call auth.clearAuth redux action for auth to reset auth state, additionally to reset the isAuthenticated value in LocalStorage - this action needs to be placed in each page gssp
-    // todo: isLoggedin cooke expires value read "session" needs to be changed to expired is true or the date in which it is set to expire (not sesion)
     if (!token) {
       return {
         redirect: {

@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 // import { useLocation } from "react-router-dom";
 import { useRouter } from 'next/router';
 import { FaChevronCircleLeft } from 'react-icons/fa';
-// import { IconButton, styled } from "@mui/material";
 import ButtonUI from "../UI/ButtonUI";
 import SideMenu from '../SideMenu';
 import { unsplashTheme } from '@/redux/features/theme/themeSlice';
@@ -24,27 +23,7 @@ const BoardNav = ({buttonText, setButtonText}) => {
 
   const [expanded, setExpanded] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
-  // const [sequenceChange, setSequenceChange] = useState(true);
 
-  // useEffect(() => {
-  //   setHasMounted(true);
-  // }, []);
-  
-  // if (!hasMounted) {
-  //   return null;
-  // }
-  const saveSequenceToBE = (e) => {
-    // if (!buttonText) {
-    if (buttonText === "Unsaved") {
-      // TODO: there is an unsaved change in card or column state. Things are saved locally in memory, but changed need to be saved in the BackEnd
-      //  TODO - dispatch BE api to save changes too cards and columns
-      // todo - then set button text to true so save biutton says "Save" again
-      // setButtonText(true);
-      setButtonText("Save");
-    }
-    // setAddBoardModal(true);
-    // setSequenceChange(false); // only if success saved
-  };
   // this is to expand the unsplash side menu used for selecting new background themes
   const toggleDrawer = (value) => {
     setExpanded(!expanded);
@@ -67,10 +46,8 @@ const BoardNav = ({buttonText, setButtonText}) => {
           className='boardNav__btn'
           // href={`${paramPath === 'boards' ? '/my/boards/new-board' : '/m/profile'}`}
           variant='contained'
-          onClick={(e) => saveSequenceToBE(e)}
         >
-          {/* {buttonText ? `Save` : `Unsaved`} */}
-          {buttonText}
+          {'Save'}
         </ButtonUI>
         <FaChevronCircleLeft
           aria-expanded={expanded}
@@ -83,42 +60,3 @@ const BoardNav = ({buttonText, setButtonText}) => {
   </>)
 };
 export default BoardNav;
-
-/* ORIGINAL MINI NAVBAR
-return (
-    <section className="miniNav">
-      <div className="miniNav__pathname">
-        <h2>{`${splitPath}`} {`${board?.name} ? ${board.name} : 'unkown title of board'`}</h2>
-      </div>
-      <header className="miniNav__header">
-        {/* <ButtonUI
-          className='miniNav__btn'
-          href={`${paramPath === 'profile' ? '/' : '/m/profile'}`}
-          variant='contained'
-        >
-          {paramPath === 'profile' ? 'Home' : 'Profile'}
-        </ButtonUI> *}
-        <ButtonUI
-          className='miniNav__btn'
-          href={`${paramPath === 'boards' ? '/my/boards/new-board' : '/m/profile'}`}
-          variant='contained'
-        >
-          {paramPath === 'boards' ? 'Create Board' : 'Profile'}
-        </ButtonUI>
-        <ButtonUI
-          className='miniNav__btn'
-          href={`${paramPath === 'boards' ? '/' : '/my/boards'}`}
-          variant='contained'
-        >
-          {paramPath === "boards" ? 'Dashboard' : 'Boards'}
-        </ButtonUI>
-        <FaChevronCircleLeft
-          aria-expanded={expanded}
-          aria-label="show-more"
-          onClick={() => toggleDrawer(true)}
-          className="miniNav__btn chev-icon"
-        />
-      </header>
-    </section>
-  )
-*/

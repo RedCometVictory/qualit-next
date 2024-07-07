@@ -17,7 +17,6 @@ const Account = ({initialState, token, roleResult}) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { user, loading: userLoading } = useSelector(state => state.user);
-  // const { detail, tickets, projects } = user;
   const [hasMounted, setHasMounted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 

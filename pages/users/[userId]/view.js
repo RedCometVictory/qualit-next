@@ -72,10 +72,8 @@ const UserView = ({initialState, token, roleResult}) => {
           <div className="proj-box">
             <Typography variant="body1">{status ? status : "N/A"}</Typography>
             <Typography variant="body1">{"N/A"}</Typography>
-            {/* <Typography variant="body1">{owner ? owner : "N/A"}</Typography> */}
           </div>
           <div className="proj-box">
-            {/* <Typography variant="body1">{status ? status : "N/A"}</Typography> */}
             <Typography variant="body1">Owner: </Typography>
             <Typography variant="body1">{owner ? owner : "N/A"}</Typography>
           </div>
@@ -84,9 +82,6 @@ const UserView = ({initialState, token, roleResult}) => {
     )
   };
 
-  // return (
-  //   <section className="ticket detail detail__container">User Details</section>
-  // )
   return (
     <section className="ticket detail detail__container">
       <div className="detail__header">
@@ -151,11 +146,6 @@ const UserView = ({initialState, token, roleResult}) => {
       </div>
       <div className="detail__content detail-page ticket-page">
         <section className="left">
-          {/* <PaperUI
-            className="detail__description user-detail paper"
-          >
-            {"description us weo wecinwpei eowepcion piecn woeicnwoeic ecinoweic oiiecn owjecnowien oicnoc a s oapc"}
-          </PaperUI> */}
           <div className="detail__status-container">
             <div className="status-group one">
               <UserStatsBox title={"FullName:"} value={`${detail.f_name} ${detail.l_name}`}/>

@@ -12,20 +12,6 @@ const handler = nc({onError, onNoMatch});
 // handler.use(verifAuth, authRoleDev);
 handler.use(verifAuth);
 
-/*
-CREATE TABLE members(
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  -- active BOOLEAN DEFAULT true NOT NULL,
-  -- ['assigned','reassigned','removed']
-  status VARCHAR(120),
-  user_id UUID,
-  project_id UUID,
-  FOREIGN KEY(user_id) REFERENCES users(id),
-  FOREIGN KEY(project_id) REFERENCES projects(id),
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT NULL
-);
-*/
 // * get list of tickets for dashboard and get project details
 handler.get(async (req, res) => {
   const { projectId } = req.query;
@@ -36,9 +22,6 @@ handler.get(async (req, res) => {
   let totalTickets;
   let count;
 
-  console.log("999999999")
-  console.log("finding project info")
-  console.log(projectId)
   const queryPromise = (query, ...values) => {
     return new Promise((resolve, reject) => {
       pool.query(query, values, (err, res) => {
@@ -52,16 +35,6 @@ handler.get(async (req, res) => {
   };
 
   projectDetails = await pool.query("SELECT * FROM projects WHERE id = $1;", [projectId]);
-
-  // convert created_at
-  // if (projectDetails.rowCount > 0) {
-  //   let created_at = projectDetails.rows[0].created_at;
-  //   let newDate = singleISODate(created_at);
-  //   projectDetails.rows[0].created_at = newDate;
-  // };
-
-  console.log("oprojectDetails")
-  console.log(projectDetails.rows[0])
 
   // TODO this converts updated_at, however this value may be null, if so, take into account that this value is non existent and should maybe only exist whan updating the project data via a put request
   if (projectDetails.rowCount > 0) {
@@ -89,19 +62,7 @@ handler.get(async (req, res) => {
       projectTickets.rows[i].created_at = newDate;
     };
   };
-  // for (let i = 0; i < ticketComments.rowCount; i++) {
-  //   ticketUploadQuery = "SELECT * FROM uploads WHERE message_id = $1;";
-  //   // combine upload with respective message
-  //   const ticketUploadsPromise = await queryPromise(ticketUploadQuery, [ticketComments.rows[i].id]);
-  //   ticketComments.rows[i] = {...ticketComments.rows[i], ...ticketUploadsPromise.rows[0]}
-  // };
-    
-  // console.log("$$$$$$$$$$$$$$$$$$$$$$$")
-  // console.log("final results")
-  // console.log(projectDetails.rows)
-  // console.log("$$$$$$$$$$$$$$$$$$$$$$$")
-  // console.log(projectTickets.rows)
-  // console.log("$$$$$$$$$$$$$$$$$$$$$$$")
+
   return res.status(200).json({
     status: "Retrieved dashboard information.",
     data: {

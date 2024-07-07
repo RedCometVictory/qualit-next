@@ -44,7 +44,7 @@ handler.put(async (req, res) => {
   });
 });
 
-// slug = board_id | delete board
+// delete board
 // TODO: set admin to delete any board and user to only delete user owned boards and content
 handler.delete(async (req, res) => {
   const { id } = req.user;

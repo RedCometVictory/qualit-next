@@ -28,13 +28,6 @@ handler.get(async (req, res) => {
 // update card data (not sequence) for column & board
 handler.put(async (req, res) => {
   // const { id } = req.user;
-  console.log("TTTTTTTTTTTTTTTTTTTTTTTTTT")
-  console.log("TTTTTTTTTTTTTTTTTTTTTTTTTT")
-  console.log("req.query")
-  console.log(req.query)
-  console.log("TTTTTTTTTTTTTTTTTTTTTTTTTT")
-  console.log("req.body")
-  console.log(req.body)
   const { boardId, cardId } = req.query;
   const { title, description, priority, type } = req.body;
   
@@ -44,8 +37,7 @@ handler.put(async (req, res) => {
   if (updatedCard.rowCount === 0 || updatedCard === null) {
     throw new Error('Failed to update card.');
   }
-  console.log("TTTTTTTTTTTTTTTTTTTTTTTTTT")
-  console.log("TTTTTTTTTTTT END TTTTTTTTTTTTTT")
+
   return res.status(201).json({
     status: "Success! Updated card.",
     data: {

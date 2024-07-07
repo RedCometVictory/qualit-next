@@ -158,14 +158,14 @@ const deleteTicket = async (ticket_id) => {
   return result;
 };
 
-// * not yet implemented
 const deleteTicketComment = async (ticket_id, comment_id) => {
-  const res = await deleteData(`/projects/${ticket_id}/comment/${comment_id}/delete`);
-
+  const res = await deleteData(`/tickets/${ticket_id}/comment/${comment_id}`);
+  
   const result = res.data;
   return result;
 };
 
+// * not yet implemented
 const deleteTicketUpload = async (ticket_id, upload_id) => {
   const res = await deleteData(`/projects/${ticket_id}/upload/${upload_id}/delete`);
 

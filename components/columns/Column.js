@@ -11,7 +11,7 @@ import { fetchColumns, updateColumn, deleteColumn } from '@/redux/features/colum
 import { fetchCards, addCard } from '@/redux/features/card/cardSlice';
 import ButtonUI from '../UI/ButtonUI';
 import Cards from '../cards/Cards';
-// from slice: delete, fetch and update columns
+
 
 // column is all details of column, id is the id of the column
 const Column = ({ showCardDetail, setModalOpen, column, index, id, cards }) => {
@@ -50,25 +50,13 @@ const Column = ({ showCardDetail, setModalOpen, column, index, id, cards }) => {
 
   const addCardHandler = async (columnIdValue) => {
     // check via column id if any cards have a matching column id
-    console.log("00000000000000000000000000000")
-    console.log("00000000000000000000000000000")
-    console.log("adding card to column")
-    console.log("cards from card slice")
-    console.log(cardsFromCardSlice)
     const filteredCards = cardsFromCardSlice.filter((card) => card.column_id === columnIdValue);
-    console.log("filteredCards")
-    console.log(filteredCards)
     
     let sequence = 1;
     
     // if cards match id, they belong to this column. Thus if any exist... change value of the sequence
     if (filteredCards.length > 0) {
-      console.log("--- for loop ---")
-      // so if length is 9 (then the max / last value is index [8]), the index is length of 9 - 1 = [8] as the first value is the index of 0 the last is 8 in this instance
-      // each value in the array is a card object, one of the values that each object shares is "sequence". thus [].value syntax accesses the sequence property value of the object in the indicated index
-      // * if there is one value in the array the max value is [0], thus length - 1 = 0. set the current sequence value (current value + 1). Here we are always editing the sequence value of the last value in the array.
       sequence = filteredCards[filteredCards.length - 1].sequence + 1;
-      console.log("--- for loop end ---")
     }
     
     let formData = {
@@ -79,19 +67,12 @@ const Column = ({ showCardDetail, setModalOpen, column, index, id, cards }) => {
       sequence
     };
 
-    console.log("formData")
-    console.log(formData)
-    
-    console.log("000000000000000*END*00000000000000")
-    console.log("000000000000000*END*00009000000000")
     await dispatch(addCard({boardId, columnId: column.id, formData}));
     await dispatch(fetchCards({boardId}));
   };
 
   const updateColumnTitleHandler = (e) => {
     setColumnName(e.target.value);
-    // only use this func if ssaving to localstorage
-    // updateColumnHandler(e.target.value);
   };
 
   const deleteColumnHandler = async () => {
@@ -106,22 +87,13 @@ const Column = ({ showCardDetail, setModalOpen, column, index, id, cards }) => {
   // );
 
   const updateColumnNameHandler = async (value) => {
-    const formData = {
-      // columnName: value,
-      // columnId: column._id
-      // columnId: column._id,
-      name: columnName
-      // name: value
-    };
-
-
+    const formData = { name: columnName };
     await dispatch(updateColumn({boardId, columnId: id,formData}));
   };
 
   const openColEditHandler = () => {
     // open input to edit col name and close the options menu
     setEditArea(true);
-    // setShowColMenu(false);
     menuCloseHandler();
   };
 
@@ -173,7 +145,6 @@ const Column = ({ showCardDetail, setModalOpen, column, index, id, cards }) => {
 
   const columnHeader = (dragHandleProps = null) => {
     return (<>
-      {/* <h2 className="column__title">{loadColumnTitle(dragHandleProps)}</h2> */}
       <div className="column__menu">
         <ButtonUI
           variant={"contained"}
@@ -184,46 +155,22 @@ const Column = ({ showCardDetail, setModalOpen, column, index, id, cards }) => {
         </ButtonUI>
         <Menu
           className={'column__options-menu'}
-          // anchorEl={showColMenu}
           anchorEl={anchorEl}
-          // open={showColMenu}
           open={Boolean(anchorEl)}
-          // onClose={closeColMenuHandler}
           onClose={menuCloseHandler}
         >
           <MenuList>
             <MenuItem
-              // onClick={() => setEditArea(!editArea)}
               onClick={openColEditHandler}
             >
               <FaRegEdit />
               <ListItemText inset>Edit</ListItemText>
             </MenuItem>
-            {/* <MenuItem>
-              <ListItemText inset>1.15</ListItemText>
-            </MenuItem>
-            <MenuItem>
-              <ListItemText inset>Double</ListItemText>
-            </MenuItem>
-            <MenuItem>
-              <ListItemIcon>
-                <Check />
-              </ListItemIcon>
-              Custom: 1.2
-            </MenuItem> */}
             <Divider />
             <MenuItem onClick={deleteColumnHandler}>
               <AiOutlineDelete />
               <ListItemText inset>Delete</ListItemText>
             </MenuItem>
-            {/* edit for more options in the future */}
-            {/* <MenuItem>
-              <ListItemText>Add space after paragraph</ListItemText>
-            </MenuItem>
-            <Divider />
-            <MenuItem>
-              <ListItemText>Custom spacing...</ListItemText>
-            </MenuItem> */}
           </MenuList>
         </Menu>
       </div>
@@ -236,12 +183,10 @@ const Column = ({ showCardDetail, setModalOpen, column, index, id, cards }) => {
         <div className="column__container"
           ref={provided.innerRef}
           {...provided.draggableProps}
-          // {...provided.dragHandleProps}
         >
           <div
             className="column__header"
           >
-            {/* <h3></h3> */}
             <div className="column__header-menu">
               <h2 className="column__title">{loadColumnTitle(provided.dragHandleProps)}</h2>
               {columnHeader()}
@@ -254,7 +199,6 @@ const Column = ({ showCardDetail, setModalOpen, column, index, id, cards }) => {
                   className="column__lane-scroll"
                   ref={provided.innerRef}
                   {...provided.droppableProps}
-                  // {...provided.dragHandleProps}
                 >
                   <Cards
                     key={index}
@@ -274,9 +218,7 @@ const Column = ({ showCardDetail, setModalOpen, column, index, id, cards }) => {
               <ButtonUI
                 className={"column__add-card-btn"}
                 color="primary"
-                // color="secondary"
                 variant="outlined"
-                // variant="contained"
                 disabled={cardRequest}
                 isLoading={cardRequest}
                 onClick={() => addCardHandler(column.id)}

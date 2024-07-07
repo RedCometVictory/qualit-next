@@ -1,7 +1,7 @@
 import { v2 as cloudinary } from 'cloudinary';
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
 
-cloudinary.config({
+ cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET
@@ -37,26 +37,32 @@ export const storage = new CloudinaryStorage({
   }
 });
 
-// const storageImage = new CloudinaryStorage({
-//   cloudinary,
-//   params: {
-//     folder: 'qualit-bug-tracker', // cloud folder
-//     allowed_formats: 'jpeg, jpg, gif, png'
-//   }
-// });
-
-// const storagePDF = new CloudinaryStorage({
-//   cloudinary,
-//   params: {
-//     folder: 'qualit-bug-tracker', // cloud folder
-//     allowed_formats: 'pdf'
-//   }
-// });
-
 export const removeOnErr = async (filename) => {
   await cloudinary.uploader.destroy(filename);
 };
 
+export { cloudinary };
+//  -----------------------------
+//  -----------------------------
+// // Function to upload a PDF to Cloudinary
+// export const uploadPDFToCloudinary = (file) => {
+//   return cloudinary.uploader.upload(file, {
+//     resource_type: "raw",
+//   }, function (error, result) {
+//     console.log(result, error);
+//   });
+// };
+
+// // This "acts" as multer setup via multer-storage-cloudinary
+// export const storage = new CloudinaryStorage({
+//   cloudinary,
+//   params: {
+//     folder: 'qualit-bug-tracker', // cloud folder
+//     allowed_formats: ['jpeg', 'jpg', 'gif', 'png', 'pdf']
+//   }
+// });
+//  -----------------------------
+//  -----------------------------
 // cloudinary.v2.uploader
 // .upload("sample_spreadsheet.xls", 
 //   { resource_type: "raw" })

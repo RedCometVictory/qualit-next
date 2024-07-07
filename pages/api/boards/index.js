@@ -13,14 +13,6 @@ handler.use(verifAuth, authRoleDev);
 // Get all boards created by a user by their id
 handler.get(async (req, res) => {
   const { id } = req.user;
-  console.log("FFFFFFFFFFFFFFFFFFFFF")
-  console.log("FFFFFFFFFFFFFFFFFFFFF")
-  console.log("FFFFFFFFFFFFFFFFFFFFF")
-  console.log("Fetching all boards.")
-  console.log("FFFFFFFFFFFFFFFFFFFFF")
-  console.log("FFFFFFFFFFFFFFFFFFFFF")
-  console.log("FFFFFFFFFFFFFFFFFFFFF")
-  // const { userid } = req.query;
   // perhaps set a limit of 30 boards or so at a time
   const boards = await pool.query('SELECT * FROM boards WHERE user_id = $1 ORDER BY created_at DESC;', [id]);
   if (boards.rowCount === 0 || boards === null) {
@@ -41,10 +33,6 @@ handler.post(async (req, res) => {
   if (!id) {
     throw new Error('Unauthorized. Log in to create a board');
   }
-  console.log("000000000000")
-  console.log("req.body")
-  console.log(req.body)
-  console.log("000000000000")
   // TODO: consider assigning a random unsplash photo as the background image
   // const { name, backgroundImage } = req.body;
   const { name } = req.body;
@@ -58,12 +46,6 @@ handler.post(async (req, res) => {
   
   if (newBoard.rowCount === 0 || newBoard === null) throw new Error('Failed to create a board.');
 
-  console.log("-----------------")
-  console.log("-----------------")
-  console.log("board added")
-  console.log(newBoard.rows)
-  console.log("-----------------")
-  console.log("-----------------")
   return res.status(201).json({
     status: "Success! Created a new board.",
     data: {

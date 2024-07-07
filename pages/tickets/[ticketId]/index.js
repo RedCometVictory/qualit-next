@@ -130,9 +130,6 @@ const Ticket = ({initialState, token, roleResult}) => {
         <span className="title">{ticket.title}</span>
         <div className="stats-container">
           <span>{ticket.id}</span>
-          {/* <span className="stats">Priority</span>
-          <span className=""> | </span>
-          <span className="stats">Status</span> */}
         </div>
         <span className="date">
           Created On: {ticket.created_at}
@@ -220,6 +217,7 @@ const Ticket = ({initialState, token, roleResult}) => {
                 loading={projectLoading}
                 page={page}
                 pages={pages}
+                userRole={roleResult}
               />
             ) : (
               <PaperUI className="detail__description paper">
@@ -236,92 +234,7 @@ export default Ticket;
 export const getServerSideProps = async (context) => {
   try {
     let token = context.req.cookies.qual__token || null;
-    /*
-    res.setHeader(
-    "Set-Cookie",
-    [
-      cookie.serialize("qual__token", '', {
-        sameSite: "strict",
-        secure: process.env.NODE_ENV !== 'development',
-        maxAge: -1,
-        path: '/',
-        httpOnly: true,
-        expires: new Date(0)
-      }),
-      cookie.serialize("qual__isLoggedIn", '', {
-        sameSite: "strict",
-        secure: process.env.NODE_ENV !== 'development',
-        maxAge: -1,
-        path: '/',
-        httpOnly: true,
-        expires: new Date(0)
-      }),
-      
-    ]
-    // cookie.serialize("ual__token", null, { expires: new Date(1), maxAge: 0, path: '/', httpOnly: false })
-  );
-    */
     if (!token) {
-      console.log("^^^^^^^^^^^^^^^^^^^^^^^^^")
-      console.log("^^^^^^^^^^^^^^^^^^^^^^^^^")
-      console.log("looks like token is expired")
-      console.log("^^^^^^^^^^^^^^^^^^^^^^^^^")
-      // context.res.setHeader(
-      //   "Set-Cookie", [
-      //     `qual__isLoggedIn=deleted; Max-Age=-1; Expires: new Date(0)`,
-      //     // `qual__isLoggedIn=deleted; Max-Age=0; Expires: new Date(0)`,
-      //     // `qual__isLoggedIn=deleted; Max-Age=0`,
-      //     // `qual__user=deleted; Max-Age=0`
-      //   ]
-      // )
-      // context.res.setHeader(
-      //   "Set-Cookie",
-      //   `qual__token=deleted; Max-Age=0; Expires=${new Date(0).toUTCString()}; Path=/;HttpOnly; Secure`
-      // );
-
-      // serialize("qual__token", "", {
-      //   sameSite: "strict",
-      //   // secure: process.env.NODE_ENV !== 'development',
-      //   maxAge: -1,
-      //   path: '/',
-      //   httpOnly: true,
-      //   expires: new Date(0)
-      // })
-      
-      // await store.dispatch(expiredTokenLogout({router}));
-      // await store.dispatch(logout());
-      // context.
-      // cookie.serialize("qual__token", '', {
-      //   sameSite: "strict",
-      //   secure: process.env.NODE_ENV !== 'development',
-      //   maxAge: -1,
-      //   path: '/',
-      //   httpOnly: true,
-      //   expires: new Date(0)
-      // })
-
-      // !TODO! - interesting, current set up still redirects, but lacks initialstate, thus add to props? also it does remove localstorage and isLoggedIn cooke
-      // return {
-      //   // redirect: {
-      //     // destination: `/signin?session_expired=true`,
-      //     // permanent: false,
-      //   // },
-      //   // props: {},
-      //   props: {
-      //     initialState: store.getState(),
-      //     token: "",
-      //     roleResult: ''
-      //   },
-      // };
-      // await store.dispatch(expiredTokenLogout());
-      console.log("Logging out")
-      // return {
-      //   props: {
-      //     initialState: store.getState(),
-      //     token: null,
-      //     roleResult: ''
-      //   }
-      // };
       return {
         redirect: {
           destination: `/signin?session_expired=true`,
@@ -331,11 +244,6 @@ export const getServerSideProps = async (context) => {
       };
     };
 
-    console.log("******************************")
-    console.log("******************************")
-    console.log("token is legit")
-    console.log("******************************")
-    
     // let userInfo = context.req.cookies.qual__user;
     let ticketID = context.params.ticketId;
     let validCookieAuth = context.req ? { cookie: context.req.headers.cookie } : undefined;
@@ -344,12 +252,6 @@ export const getServerSideProps = async (context) => {
 
     await store.dispatch(getTicket({ticket_id: ticketID, cookie: validCookieAuth}));
 
-    console.log("{{{initialState}}}")
-    // console.log(initialState)
-    console.log("{{{token}}}")
-    console.log(token)
-    console.log("{{{roleResult}}}")
-    console.log(roleResult)
     return {
       props: {
         initialState: store.getState(),
@@ -373,119 +275,3 @@ export const getServerSideProps = async (context) => {
 Ticket.getLayout = function getLayout(Ticket) {
   return <DetailLayout>{Ticket}</DetailLayout>
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-res.setHeader(
-"Set-Cookie",
-[
-  cookie.serialize("qual__token", '', {
-    sameSite: "strict",
-    secure: process.env.NODE_ENV !== 'development',
-    maxAge: -1,
-    path: '/',
-    httpOnly: true,
-    expires: new Date(0)
-  }),
-  cookie.serialize("qual__isLoggedIn", '', {
-    sameSite: "strict",
-    secure: process.env.NODE_ENV !== 'development',
-    maxAge: -1,
-    path: '/',
-    httpOnly: true,
-    expires: new Date(0)
-  }),
-  
-]
-// cookie.serialize("ual__token", null, { expires: new Date(1), maxAge: 0, path: '/', httpOnly: false })
-);
-*/
-
-// await store.dispatch(logout());
-/*
-export const getServerSideProps = async (context) => {
-  try {
-    let token = context.req.cookies.qual__token;
-    token ? token : null;
-    if (!token) { // token expired - thus remove cookie and redirect
-      context.res.setHeader(
-        "Set-Cookie", [
-          `qual__token=deleted; Max-Age=-1; Expires: new Date(0)`,
-          // `qual__isLoggedIn=deleted; Max-Age=-1; Expires: new Date(0)`,
-          // `qual__isLoggedIn=deleted; Max-Age=0; Expires: new Date(0)`,
-          // `qual__isLoggedIn=deleted; Max-Age=0`,
-          // `qual__user=deleted; Max-Age=0`
-        ]
-      )
-      
-      return {
-        redirect: {
-          destination: `/signin?session_expired=true`,
-          permanent: false,
-        },
-        props: {},
-      };
-    };
-    
-    // let userInfo = context.req.cookies.qual__user;
-    let ticketID = context.params.ticketId;
-    let validCookieAuth = context.req ? { cookie: context.req.headers.cookie } : undefined;
-    let userRole = await getDataSSR(`/auth/checkAuth`, validCookieAuth);
-    let roleResult = userRole?.data?.role;
-
-    await store.dispatch(getTicket({ticket_id: ticketID, cookie: validCookieAuth}));
-
-    return {
-      props: {
-        initialState: store.getState(),
-        token,
-        roleResult
-      }
-    }
-  } catch (err) {
-    console.error(err);
-    return {
-      redirect: {
-        destination: "/signin",
-        permanent: false
-      },
-      props: {
-        token: ""
-      }
-    }
-  }
-};
-*/

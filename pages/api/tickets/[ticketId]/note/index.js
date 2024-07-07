@@ -92,31 +92,17 @@ handler.get(async (req, res) => {
 });
 */
 
-// TODO: move this code block to correct api route, this is the route only for getting and creating new tickets
 // create ticket note
 handler.post(async (req, res) => {
-// handler.post(async (req, res) => {
   const { id, role } = req.user;
   const { ticketId } = req.query;
-  // const { ticketId } = req.params;
 
-  console.log("=========CREATING NOTE==========")
-  console.log("=========USER==========")
-  console.log(req.user)
-  console.log("===========TICKET========")
-  console.log(ticketId)
-  console.log("==========BODY=========")
-  console.log(req.body)
   let { note } = req.body;
-  console.log(note.length)
   if (note.length === 0) {
     throw new Error("Note must have content!"); 
   };
-  console.log("inserting note into table")
+
   const newNote = await pool.query('INSERT INTO ticket_notes (note, user_id, ticket_id) VALUES ($1, $2, $3) RETURNING *;', [note, id, ticketId]);
-  console.log("result")
-  console.log(newNote.rows)
-  console.log("result - end")
   if (newNote.rowCount === 0 || newNote === null) {
     throw new Error('Failed to create new note.');
   }

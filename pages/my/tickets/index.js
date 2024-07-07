@@ -1,13 +1,10 @@
 import { useRouter } from 'next/router';
-import Cookies from 'js-cookie';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
 import { BsSearch } from "react-icons/bs";
 import store from '@/redux/store';
 import { getDataSSR } from '@/utils/fetchData';
-import { logout } from "@/redux/features/auth/authSlice";
 import { getTickets, paginateMyTickets, rehydrate } from '@/redux/features/project/projectSlice';
 import DetailLayout from "@/components/layouts/DetailLayout";
 import { Typography, FormControl, TextField, InputLabel, Select, MenuItem } from '@mui/material';
@@ -18,13 +15,11 @@ import Paginate from '@/components/nav/Paginate';
 const MyTickets = ({initialState, token, roleResult}) => {
   const router = useRouter();
   const dispatch = useDispatch();
-  // const { user } = useSelector(state => state.auth); // ---
   const { tickets, page, pages, loading: projectLoading } = useSelector(state => state.project); // ---
   const [keyword, setKeyword] = useState(initialState.keyword || '');
   const [status, setStatus] = useState(initialState.status || '');
   const [priority, setPriority] = useState(initialState.priority || '');
   const [type, setType] = useState(initialState.type || '');
-  // const [submitter, setSubmitter] = useState(initialState.submitter || '');  // disable for now
   const [orderChoice, setOrderChoice] = useState(initialState.orderChoice || 'date');
   let [orderBy, setOrderBy] = useState(true);
   let [currentPage, setCurrentPage] = useState(page || 1);
@@ -32,14 +27,6 @@ const MyTickets = ({initialState, token, roleResult}) => {
   const [hasMounted, setHasMounted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  // useEffect(() => {
-  //   if (!token || !Cookies.get("qual__isLoggedIn")) {
-  //     dispatch(logout());
-  //     toast.success("Token or authorization expired.")
-  //     return router.push("/");
-  //   }
-  // }, []);
-  
   useEffect(() => {
     dispatch(rehydrate(initialState.project))
   }, [dispatch, initialState])
@@ -102,13 +89,11 @@ const MyTickets = ({initialState, token, roleResult}) => {
   };
 
   const orderChoiceChange = (e) => {
-    // setIsLoading(true);
     setOrderChoice(orderChoice = e.target.value);
     paginatingTickets();
   };
 
   const itemCountChange = (e) => {
-    // setIsLoading(true);
     if (e.target.value > itemsPerPage) {
       setCurrentPage(currentPage = 1);
     }

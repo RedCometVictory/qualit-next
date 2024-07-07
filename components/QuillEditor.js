@@ -32,10 +32,7 @@ const QuillEditor = ({value, name, onChange}) => {
       <ReactQuill
         theme="snow"
         style={{ height: '120px' }}
-        // name={name}
-        // name='name'
         value={value}
-        // onChange={e => onChange(e)}
         onChange={(content) => onChange({target: {name, value: content} })}
         modules={modules}
         formats={formats}

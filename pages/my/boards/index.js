@@ -1,18 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { getDataSSR } from '@/utils/fetchData';
 import store from '@/redux/store';
-// import { rehydrate } from '@/redux/features/theme/themeSlice';
 import { getAllBoards, createBoard, saveBoard, resetBoard, rehydrate } from '@/redux/features/board/boardSlice';
 import { Card, CardContent, Typography } from "@mui/material";
 import MiniNav from '@/components/nav/MiniNav';
 import BoardLayout from "@/components/layouts/BoardLayout";
 import MainLayout from "@/components/layouts/MainLayout";
-import Spinner from '@/components/Spinner';
-import PaperUI from "@/components/UI/PaperUI";
-import ButtonUI from '@/components/UI/ButtonUI';
 import AddBoardModal from '@/components/modals/AddBoardModal';
 
 const Boards = ({initialState, token, roleResult}) => {
@@ -41,10 +36,8 @@ const Boards = ({initialState, token, roleResult}) => {
     
   };
   
-  return (
-    <>
+  return (<>
     <MiniNav setAddBoardModal={setAddBoardModal}/>
-    {/* <section className="boards"> */}
     <section className="">
       {addBoardModal ? (
         <AddBoardModal setAddBoardModal={setAddBoardModal}/>
@@ -97,8 +90,7 @@ const Boards = ({initialState, token, roleResult}) => {
         </div>
       </div>
     </section>
-    </>
-  )
+  </>)
 };
 export default Boards;
 export const getServerSideProps = async (context) => {
@@ -116,12 +108,8 @@ export const getServerSideProps = async (context) => {
 
     let validCookieAuth = context.req ? { cookie: context.req.headers.cookie } : undefined;
     let userRole = await getDataSSR(`/auth/checkAuth`, validCookieAuth);
-    console.log("***USER ROLE***")
-    console.log(userRole)
-    console.log("***USER ROLE END***")
     let roleResult = userRole?.data?.role;
 
-    // await store.dispatch(getAllBoards({cookie: validCookieAuth}));
     await store.dispatch(getAllBoards(validCookieAuth));
 
     return {
@@ -144,7 +132,6 @@ export const getServerSideProps = async (context) => {
     }
   }
 };
-// return <MainLayout>{Boards}</MainLayout>
 Boards.getLayout = function getLayout(Boards) {
   return <BoardLayout>{Boards}</BoardLayout>
 };
