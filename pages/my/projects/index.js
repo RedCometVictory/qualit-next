@@ -1,14 +1,11 @@
 import { useRouter } from 'next/router';
-import Cookies from 'js-cookie';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
 import { FaGithub } from 'react-icons/fa';
 import { BsSearch } from "react-icons/bs";
 import store from '@/redux/store';
 import { getDataSSR } from '@/utils/fetchData';
-import { logout } from "@/redux/features/auth/authSlice";
 import { getProjects, rehydrate } from '@/redux/features/project/projectSlice';
 import DetailLayout from "@/components/layouts/DetailLayout";
 import { Typography, TextField, Select, MenuItem } from '@mui/material';
@@ -19,7 +16,6 @@ import Paginate from '@/components/nav/Paginate';
 const MyProjects = ({initialState, token, roleResult}) => {
   const router = useRouter();
   const dispatch = useDispatch();
-  // const { user } = useSelector(state => state.auth); // ---
   const { projects, page, pages, loading: projectLoading } = useSelector(state => state.project); // ---
   const [keyword, setKeyword] = useState(initialState.keyword || '');
   let [orderBy, setOrderBy] = useState(true);
@@ -27,14 +23,6 @@ const MyProjects = ({initialState, token, roleResult}) => {
   const [itemsPerPage, setItemsPerPage] = useState(20);
   const [hasMounted, setHasMounted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
-  // useEffect(() => {
-  //   if (!token || !Cookies.get("qual__isLoggedIn")) {
-  //     dispatch(logout());
-  //     toast.success("Token or authorization expired.")
-  //     return router.push("/");
-  //   }
-  // }, []);
 
   useEffect(() => {
     dispatch(rehydrate(initialState.project))
@@ -52,7 +40,6 @@ const MyProjects = ({initialState, token, roleResult}) => {
 
   const updateText = (e) => {
     setKeyword(e.target.value);
-    console.log(keyword)
   };
 
   const resetInput = (e) => {
@@ -187,7 +174,6 @@ const MyProjects = ({initialState, token, roleResult}) => {
                   type="text"
                   className="search-input"
                   label="search title..."
-                  // placeholder="search title..."
                   value={keyword}
                   onChange={e => updateText(e)}
                   onKeyDown={e => keywordSearchHandler(e)}
@@ -215,14 +201,12 @@ const MyProjects = ({initialState, token, roleResult}) => {
               currentPage={currentPage}
               totalCount={pages}
               itemsPerPageCount={itemsPerPage}
-              // pageSizeCount={5}
             />
           </div>
         </div>
         <div className="detail__roster-slide">
           <section className="detail__roster-header my-ticket">
             <h4>Title</h4>
-            {/* <h4>Description</h4> */}
             <h4>Github</h4>
             <h4>Owner</h4>
             <h4>Website</h4>

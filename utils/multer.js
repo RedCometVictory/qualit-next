@@ -23,11 +23,11 @@ const storageLocal = multer.diskStorage({
 //   fileFilter: fileFilter
 // })
 
+// ! strictly upload to local storage folder
 const uploadLocal = multer({
   storageLocal,
-  // limits: { fieldSize: 3 * 1024 * 1024 },
   limits: { fileSize: 3 * 1024 * 1024 },
-  async fileFilter(req,file, cb) {
+  async fileFilter(req, file, cb) {
     if (!file.originalname.match(/\.(gif|jpe?g|png|pdf)$/i)) {
       return cb(new Error("Only .gif, .jpg, .jpeg, .png, or .pdf files can be uploaded."));
     }
@@ -35,19 +35,15 @@ const uploadLocal = multer({
 }); //3MB
 
 // const isValidPdf = async (fileToUpload) => {
-//   console.log("filetyoe")
 //   let fileType = await fileTypeFromFile(fileToUpload);
-//   console.log("filetyoe - end")
-//   console.log(fileType)
+
 //   if (fileType.ext === 'pdf' && fileType.mime === 'application/pdf') {
 //     return true;
 //   };
 //   return false;
 //   // returns: {ext: 'png', mime: 'image/'png'}
-//   // check if returned string matches condition
 // };
 
-// TODO: set mimetype to allow for pdf
 const fileFilter = (req, file, cb) => {
   if (file.mimetype === 'image/gif' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
     cb(null, true)
@@ -57,20 +53,13 @@ const fileFilter = (req, file, cb) => {
   }
 }
 
+// ! upload to cloudinary
 export const upload = multer({
   storage,
-  // limits: { fieldSize: 3 * 1024 * 1024 },
   limits: { fileSize: 3 * 1024 * 1024 },
   async fileFilter(req,file, cb) {
-    console.log("UPLOADING multer FILE")
-    console.log(file)
-    console.log("^?^?^?^?^?^?^?^?^?^")
-    // alternate method fo validation:
+    // check to see if pdf is a valid file
     if (file.mimetype === 'application/pdf') {
-      // check to see if pdf is a valid file:
-      console.log("^^^^^^^^^^")
-      console.log("file is a pdf")
-      console.log(file.mimetype)
       return cb(null, true);
       /*
       error - unhandledRejection: {

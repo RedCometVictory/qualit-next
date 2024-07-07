@@ -17,11 +17,7 @@ import Upload from "@/components/details/Upload";
 import DetailLayout from "@/components/layouts/DetailLayout";
 
 const initialTicketState = {title: "", description: "", notes: [], status: "", priority: "", type: "", submitter: "", deadline: ""};
-/*
-  NOTE: declare initialState outside of component
-  so that it doesn't trigger a useEffect
-  we can then safely use this to construct our profileData
-*/
+
 const EditTicket = ({initialState, token}) => {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -64,16 +60,12 @@ const EditTicket = ({initialState, token}) => {
   
   if (!hasMounted) return null;
 
-  // const dateChangeHandler = (newValue) => {
-  //   setValue(newValue);
-  // };
   const dateChangeHandler = (newValue) => {
     setFormData(formData = {...formData, deadline: newValue.$d.toISOString()});
     console.log(formData);
   };
   
   const onChange = e => setFormData({...formData, [e.target.name]: e.target.value})
-  // console.log(formData);
   
   const textFieldHandler = (e) => {
     if (e.key === "Enter") {
@@ -86,10 +78,6 @@ const EditTicket = ({initialState, token}) => {
   const submitEditTicketHandler = (e) => {
     e.preventDefault();
     const ticketId = ticket.id;
-    // console.log("submitting info for new project")
-    // setFormData(formData.owner = id);
-    // owner = id // use state may need to be let not const
-    // return console.log(formData);
     dispatch(updateTicket({formData, ticketId, router}));
   };
 
@@ -141,10 +129,6 @@ const EditTicket = ({initialState, token}) => {
                       <TextField
                         className='ticket-title'
                         variant="standard"
-                        // label="Ticket Title"
-
-
-                        // className="search-input"
                         type="text"
                         label="Title"
                         name="title"
@@ -157,11 +141,6 @@ const EditTicket = ({initialState, token}) => {
                       />
                       <TextareaAutosize
                         className='ticket-description'
-                        // maxRows={6}
-                        // minRows={3}
-                        // placeholder="Ticket description."
-
-                        // className="project-description"
                         minRows={3}
                         maxRows={18}
                         maxLength={720}
@@ -189,8 +168,6 @@ const EditTicket = ({initialState, token}) => {
                       value={status}
                       // defaultValue={status}
                       // defaultValue="New"
-
-
                       // label="Github Url"
                       onChange={e => onChange(e)}
                       // onKeyDown={e => textFieldHandler(e)}
@@ -220,8 +197,6 @@ const EditTicket = ({initialState, token}) => {
                       name="priority"
                       value={priority}
                       // defaultValue={priority}
-
-
                       // label="Github Url"
                       onChange={e => onChange(e)}
                       // onKeyDown={e => textFieldHandler(e)}
@@ -250,8 +225,6 @@ const EditTicket = ({initialState, token}) => {
                       name="type"
                       value={type}
                       // defaultValue={type}
-
-
                       // label="Github Url"
                       onChange={e => onChange(e)}
                       // onKeyDown={e => textFieldHandler(e)}
@@ -280,7 +253,6 @@ const EditTicket = ({initialState, token}) => {
                     <MobileDatePicker
                       label="Date Deadline"
                       inputFormat="MM/DD/YYYY"
-                      // value={value}
                       name='deadline'
                       value={deadline}
                       onChange={dateChangeHandler}

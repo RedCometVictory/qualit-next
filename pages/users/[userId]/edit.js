@@ -71,9 +71,6 @@ const EditUserAccount = ({initialState, token, roleResult}) => {
   const submitProfileUpdateHandler = (e) => {
     e.preventDefault();
     const userId = user?.detail?.id;
-    console.log("submitting info for user profile update")
-    console.log(formData);
-    // return console.log(formData);
     dispatch(updateUserProfile({formData, userId, router}));
   };
 
@@ -162,8 +159,6 @@ const EditUserAccount = ({initialState, token, roleResult}) => {
                       name="role"
                       value={role}
                       // defaultValue={priority}
-
-
                       // label="Github Url"
                       onChange={e => onChange(e)}
                       // onKeyDown={e => textFieldHandler(e)}

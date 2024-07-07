@@ -5,12 +5,10 @@ import Cookies from 'js-cookie';
 import store from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { getDataSSR } from "@/utils/fetchData";
-import { logout } from "@/redux/features/auth/authSlice";
 import { getProject, updateProject, rehydrate } from "@/redux/features/project/projectSlice";
-import { Divider, FormControl, FormControlLabel, FormLabel, InputLabel, Radio, RadioGroup, TextareaAutosize, TextField, Typography } from "@mui/material";
+import { FormControl, TextareaAutosize, TextField, Typography } from "@mui/material";
 import PaperUI from "@/components/UI/PaperUI";
 import ButtonUI from "@/components/UI/ButtonUI";
-import Upload from "@/components/details/Upload";
 import DetailLayout from "@/components/layouts/DetailLayout";
 
 const initialProjectState = {title: "", description: "", github_url: "", site_url: "", owner: ""};
@@ -18,20 +16,11 @@ const initialProjectState = {title: "", description: "", github_url: "", site_ur
 const EditProject = ({initialState, token}) => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { user } = useSelector(state => state.auth);
   const { project } = useSelector(state => state.project);
   let [formData, setFormData] = useState(initialProjectState);
   const [hasMounted, setHasMounted] = useState(false);
 
   let { title, description, github_url, site_url, owner } = formData;
-  
-  // useEffect(() => {
-  //   if (!token || !Cookies.get("qual__isLoggedIn")) {
-  //     dispatch(logout());
-  //     toast.success("Token or authorization expired.")
-  //     return router.push("/");
-  //   }
-  // }, []);
   
   useEffect(() => {
     dispatch(rehydrate(initialState.project))
@@ -69,12 +58,6 @@ const EditProject = ({initialState, token}) => {
   const submitProjectHandler = (e) => {
     e.preventDefault();
     const projectId = project.id;
-    console.log("submitting info for new project")
-    // setFormData(formData.owner = id);
-
-    // owner = id; // use state may need to be let not const
-    console.log(formData);
-    // return console.log(formData);
     dispatch(updateProject({formData, projectId, router}));
   };
 
@@ -155,7 +138,6 @@ const EditProject = ({initialState, token}) => {
                   label="Github Url"
                   name="github_url"
                   value={github_url}
-                  // value={project.github_url}
                   onChange={e => onChange(e)}
                   onKeyDown={e => textFieldHandler(e)}
                   size="small"
@@ -167,7 +149,6 @@ const EditProject = ({initialState, token}) => {
                   label="Website Url"
                   name="site_url"
                   value={site_url}
-                  // value={project.site_url}
                   onChange={e => onChange(e)}
                   onKeyDown={e => textFieldHandler(e)}
                   size="small"

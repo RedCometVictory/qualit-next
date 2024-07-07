@@ -13,13 +13,7 @@ handler.use(verifAuth);
 
 // get a list of tickets for dashboard
 handler.get(async (req, res) => {
-  console.log("########## BACKEND ##########");
-  console.log("dasboard backend");
   const { id, role } = req.user;
-  console.log("|/\/\/\/\/\/\/\/\/\/\|")
-  console.log("req.user")
-  console.log(req.user)
-  console.log("|\/\/\/\/\/\/\/\/\/\/|")
   let dashboardInfo;
   let myTickets;
   let myProjects;
@@ -42,7 +36,6 @@ handler.get(async (req, res) => {
     // get all tickets assigned to && tickets belong to projects dev is working for
     // = pool.query('SELECT P.id, P.title, P.owner, P.created_at, T.id, T.title, T.type, T.created_at FROM projects AS P JOIN tickets AS T WHERE P.id = T.id LIMIT 25;', [slug]);
     // *** consider using COUNT() to get the values of how many times a value is set (per bar and pie chart information to be formed)
-    console.log("developer bloack")
     myTickets = await pool.query('SELECT id, title, status, priority, type, created_at FROM tickets WHERE user_id = $1 ORDER BY created_at DESC LIMIT 25;', [id]);
     myProjects = await pool.query("SELECT P.id, P.title, P.owner, P.created_at, M.status FROM projects AS P JOIN members AS M ON P.id = M.project_id WHERE M.user_id = $1 AND M.status = 'assigned' LIMIT 25;", [id]);
     // dashboardInfo = await pool.query(
@@ -65,7 +58,6 @@ handler.get(async (req, res) => {
 
   };
   if (role === 'Project Manager') {
-    console.log("Project Manager Block")
     // ** Project Manager gets project info that they are a member (as a manager) of and all of the tickets (from any developers) that belong to the projects they manage
     // dashboardInfo = await pool.query(
     //   "SELECT P.id AS project_id, P.title AS project_title, P.owner AS project_owner, P.created_at AS project_created_at, M.user_id AS member_user_id, M.project_id AS member_project_id, M.status AS member_status, T.id AS ticket_id, T.title AS ticket_title, T.type AS ticket_type, T.priority AS ticket_priority, T.status AS ticket_status, T.created_at AS ticket_created_at FROM projects AS P JOIN members AS M ON P.id = M.project_id JOIN tickets AS T ON T.project_id = P.id WHERE M.user_id = $1;", [id]
@@ -77,76 +69,30 @@ handler.get(async (req, res) => {
       "SELECT P.id, P.title, P.owner, P.created_at FROM projects AS P JOIN members AS M ON P.id = M.project_id WHERE M.user_id = $1 AND M.status = 'assigned' ORDER BY created_at DESC LIMIT 25;", [id]
     );
     
-    console.log("POMPOMPOMPOMPOMPOMPOMPOMPOMPOMPOMPOMPOM")
-    console.log("myProjects")
-    console.log(myProjects)
-    console.log("<<<<<<<<<<<<<<<<<<")
-    console.log(myProjects.rows)
-
     let myTicketsQuery = "SELECT id, title, type, priority, status, created_at FROM tickets WHERE project_id = $1 LIMIT 25;";
 
     // queryPromise, find tickets based in T.project_id
-    console.log("*** searching for tickets assigned under PM")
     for (let i = 0; i < myProjects.rows.length; i++) {
-      console.log(`FOR LOOP ${i}`)
-      console.log(myProjects.rows[i])
       const myTicketsPromise = await queryPromise(myTicketsQuery, myProjects.rows[i].id);
-      console.log("^^^^^ myTicketsPromise ^^^^^")
-      console.log(myTicketsPromise)
-      console.log("^^^^^ myTicketsPromise.rows[0] ^^^^^")
-      console.log(myTicketsPromise.rows)
-      console.log("ccdcdcdcdcdcdcdcdcdcdcdcdcdc")
-      console.log("^^^^^ myTicketsPromise.rowCount ^^^^^")
-      console.log(myTicketsPromise.rowCount)
       // myTickets[i] = {...myTickets[i], ...myTicketsPromise.rows[0]}
       let ticketsAssignedToProjects;
       if (myTicketsPromise.rowCount === 0) {
-        console.log("no info on tickets found")
         ticketsAssignedToProjects = [];
         myTickets = {};
         myTickets['rows'] = [];
-        // myTickets.rows = [{}];
-        // myTickets: { rows: []};
-        console.log("_-_-__--__-_-_")
-        console.log("myTickets")
-        console.log(myTickets)
-        console.log("..............")
-        console.log("end of setting 0 ticket results")
-        // myTickets['rows'] = myTicketsPromise.rows;
       }
       if (myTicketsPromise.rowCount > 0) {
         ticketsAssignedToProjects = myTicketsPromise.rows[0];
         myTickets[i] = {...myTickets[i], ...ticketsAssignedToProjects}
       }
-      console.log("setting ticket information")
-          
-      // let ticketsAssignedToProjects = myTicketsPromise.rows[0] ?? [];
-      console.log(`FOR END LOOP ${i}`)
     };
-
-    console.log("PMPMPMPMPMPMPMPMPMPMPMMPMP")
-    console.log("myTickets")
-    // console.log(myTickets)
-    console.log("- - - - - - - - - - - - -")
-    // console.log(myTickets.rows)
-    // myTickets = await pool.query(
-    //   "SELECT T.id, T.title, T.type, T.priority, T.status, T.created_at FROM tickets AS T", [id]
-    // );
   };
+
   if (role === 'Admin') {
-    console.log("Admin Block")
-    // ** original queries
     myProjects = await pool.query("SELECT id, title, owner, created_at FROM projects ORDER BY created_at DESC LIMIT 25;");
     myTickets = await pool.query('SELECT id, title, status, priority, type, created_at FROM tickets LIMIT 25;');
-    // dashboardInfo = await pool.query(
-      // "SELECT "
-    // );
   };
 
-  console.log("final results")
-  console.log(myTickets)
-  console.log("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPp")
-  console.log(myProjects)
   return res.status(200).json({
     status: "Retrieved dashboard information.",
     data: {

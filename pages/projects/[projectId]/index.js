@@ -28,14 +28,6 @@ const Project = ({initialState, token, roleResult}) => {
   const [ticketModal, setTicketModal] = useState(false);
   const [managePersonnelModal, setManagePersonnelModal] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
-
-  // useEffect(() => {
-  //   if (!token || !Cookies.get("qual__isLoggedIn")) {
-  //     dispatch(logout());
-  //     toast.success("Token or authorization expired.")
-  //     return router.push("/");
-  //   }
-  // }, []);
   
   useEffect(() => {
     dispatch(rehydrate(initialState.project))
@@ -57,10 +49,6 @@ const Project = ({initialState, token, roleResult}) => {
   const openManagePersonnelModal = () => {
     setManagePersonnelModal(managePersonnelModal => managePersonnelModal = true);
   };
-
-  // const openDescriptionModal = () => {
-  //   console.log("editing description of porject")
-  // }
 
   return (
     <section className="detail detail__container">
@@ -123,12 +111,6 @@ const Project = ({initialState, token, roleResult}) => {
         <section className="left">
           <Description description={project.description} />
           <div className="detail__actions">
-            {/* <ButtonUI
-              variant='contained'
-              onClick={() => openDescriptionModal()}
-            >
-              <FaRegEdit className='btn-icon'/> Edit Description
-            </ButtonUI> */}
             {roleResult === "Admin" || roleResult === "Project Manager" ? (
               <ButtonUI
                 variant='contained'

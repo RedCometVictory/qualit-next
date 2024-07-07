@@ -25,25 +25,10 @@ const Home = () => {
     if (isAuthenticated) {
       dispatch(getDashboardInfo());
     }
-    console.log("****projData****")
-    console.log(tickets)
-    console.log(projects)
-    console.log("-=-=-=-=-=-=-=-=-=-")
-    // console.log(authLoading)
-    console.log(projectLoading)
-    console.log("-=-=-=-=-=-=-=-=-=-")
-
-    console.log("****projData**END**")
     // if (effectRan.current === true || process.env.NEXT_PUBLIC_NODE_ENV !== 'development') {
-    // //   console.log('effectRan-inner')
-    // //   console.log(effectRan)
-    // // };
-    // // return () => {
-    // //   console.log('unmounted')
-    // //   effectRan.current = true;
-    // //   console.log('effectRan-02')
-    // //   console.log(effectRan)
-    // // };
+      // return () => {
+      //   effectRan.current = true;
+      // };
     // }
   }, [dispatch]);
 
@@ -54,8 +39,7 @@ const Home = () => {
   if (!hasMounted) {
     return null;
   }
-  
-  // TODO: filter through tickets array for values of the diff status types and priority types, split the resulting values into priorityStats and typeStats and push the ticket array itself into the "My tickets comp"
+
   let ticketStatusCount = {
     statusNew: 0,
     statusOpen: 0,
@@ -84,10 +68,6 @@ const Home = () => {
     ticketPriorityCount.priorityLow = tickets.filter(indx => indx.priority === "Low").length;
     ticketPriorityCount.priorityNone = tickets.filter(indx => indx.priority === "None").length;
   };
-  console.log("*****TICKET STATUS COUNT*****")
-  console.log(ticketStatusCount)
-  console.log("*****TICKET PRIORITY COUNT*****")
-  console.log(ticketPriorityCount)
 
   return !isAuthenticated ? (
     <section className="dash unauth">
@@ -223,10 +203,6 @@ export const getServerSideProps = async (context) => {
     };
 
     let validCookieAuth = context.req ? { cookie: context.req.headers.cookie } : undefined;
-    // console.log("~|~|~|~|~|~|~|~|~|~|~|~|~|~|~|~|~|~|~")
-    // console.log("validCookieAuth")
-    // console.log(validCookieAuth)
-    // console.log("~|~|~|~|~|~|~|~|~|~|~|~|~|~|~|~|~|~|~")
 
     return {
       props: {

@@ -34,8 +34,7 @@ const CardDetailModal = ({ setModalOpen, card }) => {
   const dispatch = useDispatch();
   const { id: boardId } = router.query;
   // isrequest can track card deletion
-  // TODO: need to confirm a method of setting card details to card.card in getState. Perhaps this can be done via Card component menu. When clicking the edit option on the menu, fetch the details of the card via its card id. Likely cardDetails will not be set, i need to set via a method derived from Card component and the proper fetchCard data in cardSlice
-  // ! Another thing to consider and to confirm is that showCardDetail has already sorted out cards by their id. Try not to use showCardDetail
+  // TODO: need to confirm a method of setting card details to card.card in getState. Perhaps this can be done via Card component menu. When clicking the edit option on the menu, fetch the details of the card via its card id. Likely cardDetails will not be set,
   const { card: cardDetails, loading, isRequesting: cardRequest } = useSelector(state => state.card);
   // const users = useSelector(state => state.users.users);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -49,9 +48,6 @@ const CardDetailModal = ({ setModalOpen, card }) => {
       description: card ? card.description : '',
       priority: card ? card.priority : '',
       type: card ? card.type : '',
-      // boardId: loading || !card ? '' : card.boardId,
-      // columnId: loading || !card ? '' : card.columnId,
-      // userId: loading || !card ? '' : card.userId
     })
   }, [dispatch, loading]);
 
@@ -63,13 +59,6 @@ const CardDetailModal = ({ setModalOpen, card }) => {
     return null;
   }
 
-  console.log("card edit modal")
-  console.log("card")
-  console.log(card)
-  console.log("-=-=-=-=-=-=-=-=-=-=-")
-  console.log("formData")
-  console.log(formData)
-  console.log("card edit modal end")
   // const { cardId, title, description, priority, type, boardId, columnId, userId } = formData;
   const { title, description, priority, type } = formData;
 

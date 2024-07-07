@@ -43,10 +43,6 @@ handler.get(async (req, res) => {
   ticketDetails = await pool.query("SELECT * FROM tickets WHERE id = $1;", [ticketId]);
 
   ticketNotes = await pool.query("SELECT * FROM ticket_notes WHERE ticket_id = $1 ORDER BY created_at DESC;", [ticketId]);
-
-  console.log("7777777777777777777777777777777777777")
-  console.log(ticketDetails.rows[0])
-  console.log("7777777777777777777777777777777777777")
   
   // TODO: test this code using jest
   if (ticketDetails.rowCount > 0) {
@@ -59,22 +55,12 @@ handler.get(async (req, res) => {
     // ticketDetails.rows[0].updated_at = singleISODate(ticketDetails.rows[0].updated_at);
   };
 
-  console.log("-------------------------------------")
-  console.log(ticketDetails.rows[0])
-  console.log("-------------------------------------")
-
   if (ticketDetails.rows[0].updated_at) {
     ticketDetails.rows[0].updated_at = singleISODate(ticketDetails.rows[0].updated_at);
   } else {
     ticketDetails.rows[0].updated_at = new Date();
     ticketDetails.rows[0].updated_at = singleISODate(ticketDetails.rows[0].updated_at);
   };
-
-  
-  console.log("=====================================")
-  console.log(ticketDetails.rows[0])
-  console.log("=====================================")
-  console.log("Looking is assigned developer exists")
 
   if (ticketDetails.rows[0].user_id) {
     ticketAssignedDev = await pool.query("SELECT f_name, l_name FROM users WHERE id = $1;", [ticketDetails.rows[0].user_id]);
@@ -120,18 +106,6 @@ handler.get(async (req, res) => {
     };
     ticketComments.rows[i] = { ...ticketComments.rows[i], ...uploadInfo };
   }
-  console.log("8989898989898989898989898")
-  console.log("FINALE TIKCET DETAILS")
-  console.log(ticketDetails.rows[0])
-  console.log("-----------START-----------")
-  console.log(ticketAssignedDev)
-  console.log("----------FIINNISH------------")
-  console.log(ticketNotes.rows[0])
-  console.log("----------commentu------------")
-  console.log(ticketComments.rows[0])
-  console.log("-----------historyu-----------")
-  console.log(ticketHistory.rows[0])
-  console.log("----------------------")
 
   return res.status(200).json({
     status: "Retrieved ticket information.",
@@ -155,11 +129,8 @@ handler.put(async (req, res) => {
   let updatedTicket;
   let updatedByTimeStamp = new Date();
 
-  console.log("22222222222222222222222222")
-  console.log(deadline)
   if (deadline) console.log("true")
   if (!deadline) console.log("false")
-  console.log("22222222222222222222222222")
   
   if (deadline) {
     updatedTicket = await pool.query('UPDATE tickets SET title = $1, description = $2, status = $3, priority = $4, type = $5, deadline = $6, updated_at = $7 WHERE id = $8;', [title, description, status, priority, type, deadline, updatedByTimeStamp, ticketId]);

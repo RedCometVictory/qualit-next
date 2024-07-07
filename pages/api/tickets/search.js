@@ -19,11 +19,6 @@ handler.use(verifAuth);
 handler.get(async (req, res) => {
   const { id, role } = req.user;
 
-  console.log("########## BACKEND ##########");
-  console.log("|/\/\/\/\/\/\/\/\/\/\|")
-  console.log("fetching my tickets")
-  console.log(req.query)
-  console.log("|\/\/\/\/\/\/\/\/\/\/|")
   // If orderBy is true then the order of comments is newest first, thus psql DESC
   let {
     keyword, // title, or submitter
@@ -49,20 +44,9 @@ handler.get(async (req, res) => {
   let keywordTrimmed;
   let myTickets;
   // submitter = '';
-  console.log("+_+_+_+_+_+_+_+_+_+")
-  console.log("page")
-  console.log(page)
-  console.log("limit")
-  console.log(limit)
-  console.log("order")
-  console.log(order)
-  console.log("orderChoice")
-  console.log(orderChoice)
 
   if (keyword && keyword.length > 0) keywordTrimmed = keyword.trim();
   // DESC is newest first
-  // TODO: status, prioroty, type are all select menus with their own appripriate options
-  // TODO: can switch order of tickets by deadline, to see which tickets need to be finished in order of first or last addistionally you can fllip a switch for the search bar in order to search for submitter instead of keyword in title
   let mainSearchQuery, keywordQuery, orderQuery, statusQuery, priorityQuery, typeQuery, submittedQuery, deadlineQuery;
   
   const queryPromise = (query, ...values) => {
@@ -77,10 +61,8 @@ handler.get(async (req, res) => {
     })
   };
 
-  console.log("beginning queries")
   if (role === "Developer" || role === "Project Manager") {
     parametersUsed.push(id);
-    console.log("developer or PM")
     if (keyword === '' || keyword.length === 0 || !keyword) keywordQuery = ""
     if (keyword && keyword.length > 0) {
       keywordQuery = "AND title ILIKE $X ";
@@ -114,8 +96,6 @@ handler.get(async (req, res) => {
     parametersUsed.push(limit);
     parametersUsed.push(offset);
 
-    // console.log(mainSearchQuery);
-    console.log(parametersUsed);
     // if searching by order of ticket creation date
     // orderchoice date = true
     if (orderChoice === 'date') {
@@ -134,22 +114,15 @@ handler.get(async (req, res) => {
     //   mainSearchQuery = mainSearchQuery.replace('$X', `$${i}`);
     // };
     // myTickets = await pool.query(mainSearchQuery, parametersUsed);
-    console.log("mainSearchQuery");
-    console.log(mainSearchQuery);
-    // console.log("parametersUsed");
-    // console.log(parametersUsed);
   };
 
   if (role === "Admin") {
-    console.log("role is admin")
-    console.log("checking keyword")
     if (keyword === '' || keyword.length === 0 || !keyword) keywordQuery = ""
     if (keyword && keyword.length > 0) {
       keywordQuery = "title ILIKE $X ";
       parametersUsed.push('%' + keywordTrimmed + '%');
     };
 
-    console.log("checking status")
     if (status.length === 0 || !status) statusQuery = ""
     if (status) {
       if (parametersUsed.length > 0) {
@@ -160,7 +133,6 @@ handler.get(async (req, res) => {
       parametersUsed.push(status);
     };
 
-    console.log("checking priority")
     if (status.length === 0 || !priority) priorityQuery = ""
     if (priority) {
       if (parametersUsed.length > 0) {
@@ -171,7 +143,6 @@ handler.get(async (req, res) => {
       parametersUsed.push(priority);
     };
 
-    console.log("checking type")
     if (status.length === 0 || !type) typeQuery = ""
     if (type) {
       if (parametersUsed.length > 0) {
@@ -182,7 +153,6 @@ handler.get(async (req, res) => {
       parametersUsed.push(type);
     };
 
-    console.log("checking aubmitter")
     if (status.length === 0 || !submitter) submittedQuery = ""
     if (submitter) {
       if (parametersUsed.length > 0) {
@@ -195,13 +165,8 @@ handler.get(async (req, res) => {
 
     parametersUsed.push(limit);
     parametersUsed.push(offset);
-    
-    // console.log("typeof order")
-    // console.log(typeof order)
+
     // if searching by order of ticket creation date
-    // orderchoice date = true
-    console.log("mainSearchQuery - before orderChoice");
-    console.log(mainSearchQuery);
     if (orderChoice === 'date') {
       if (order) orderQuery = "ORDER BY created_at DESC LIMIT $X OFFSET $X;"
       if (!order) orderQuery = "ORDER BY created_at ASC LIMIT $X OFFSET $X;"
@@ -229,36 +194,12 @@ handler.get(async (req, res) => {
     // console.log(mainSearchQuery);
     // console.log(parametersUsed);
   };
-  
-  console.log("mainSearchQuery - before LOOP");
-  console.log(mainSearchQuery);
+
   for (let i = 1; i <= parametersUsed.length; i++) {
     mainSearchQuery = mainSearchQuery.replace('$X', `$${i}`);
   };
-  console.log("keywordQuery");
-  console.log(keywordQuery);
-  console.log("statusQuery");
-  console.log(statusQuery);
-  console.log("priorityQuery");
-  console.log(priorityQuery);
-  console.log("typeQuery");
-  console.log(typeQuery);
-  console.log("submittedQuery");
-  console.log(submittedQuery);
-  console.log("orderQuery");
-  console.log(orderQuery);
-  console.log("deadlineQuery");
-  console.log(deadlineQuery);
-  console.log("mainSearchQuery - after");
-  console.log(mainSearchQuery);
-  console.log("parametersUsed");
-  console.log(parametersUsed);
   
   myTickets = await pool.query(mainSearchQuery, parametersUsed);
-  console.log("my found tickets")
-  // console.log(myTickets.rows[0])
-  console.log(myTickets.rows)
-  console.log(myTickets.rows.length)
 
   for (let i = 0; i < myTickets.rows.length; i++) {
     if (myTickets.rows[i].deadline) myTickets.rows[i].deadline = singleISODate(myTickets.rows[i].deadline);

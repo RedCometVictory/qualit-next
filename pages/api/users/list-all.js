@@ -37,10 +37,7 @@ handler.get(async (req, res) => {
     throw new Error("You must be an administrator to manage users / project personnel.");
   };
 
-  // totalUsers = await pool.query("SELECT COUNT(id) FROM users;");
   if (order) {
-    // allUsers = await pool.query("SELECT * FROM users ORDER BY created_at DESC LIMIT $1 OFFSET $2;", [limit, offset]);
-    // TODO: need to fix query to search via a keyword for a matching first name, last name, or username
     if (keyword.length > 0 && keyword) {
       totalUsers = await pool.query("SELECT COUNT(id) FROM users WHERE f_name || l_name || username || email ILIKE $1;", ['%' + keywordTrimmed + '%']);
       allUsers = await pool.query("SELECT * FROM users WHERE f_name || l_name || username || email ILIKE $1 ORDER BY created_at DESC LIMIT $2 OFFSET $3;", ['%' + keywordTrimmed + '%', limit, offset]);
@@ -51,9 +48,7 @@ handler.get(async (req, res) => {
     };
   };
 
-  // TODO: need to fix query to search via a keyword for a matching first name, last name, or username
   if (!order) {
-    // allUsers = await pool.query("SELECT * FROM users ORDER BY created_at ASC LIMIT $1 OFFSET $2;", [limit, offset]);
     if (keyword.length > 0 && keyword) {
       totalUsers = await pool.query("SELECT COUNT(id) FROM users WHERE f_name || l_name || username || email ILIKE $1;", ['%' + keywordTrimmed + '%']);
       allUsers = await pool.query("SELECT * FROM users WHERE f_name || l_name || username || email ILIKE $1 ORDER BY created_at ASC LIMIT $2 OFFSET $3;", ['%' + keywordTrimmed + '%', limit, offset]);
@@ -71,7 +66,6 @@ handler.get(async (req, res) => {
   for (let i = 0; i < allUsers.rows.length; i++) {
     allUsers.rows[i].created_at = singleISODate(allUsers.rows[i].created_at);
   };
-
 
   count = totalUsers.rows[0].count;
   Number(count);

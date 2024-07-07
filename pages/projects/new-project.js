@@ -11,10 +11,6 @@ import DetailLayout from "@/components/layouts/DetailLayout";
 const initialState = {title: "", description: "", github_url: "", site_url: ""};
 
 const NewProject = () => {
-  // create new project
-  // title, description (limit 360 characters), github_url, site_url, owner (auto created as the person who creates the project, via their own user id), created_at
-
-  // ability to read from a list of employees, select one PM (and multiple devs to be assigned to this project)
   const router = useRouter();
   const dispatch = useDispatch();
   const { id } = useSelector(state => state.auth);
@@ -42,9 +38,6 @@ const NewProject = () => {
   };
   const submitProjectHandler = (e) => {
     e.preventDefault();
-    console.log("submitting info for new project")
-    console.log("formData")
-    console.log(formData);
     dispatch(createProject({formData, router}));
   };
 

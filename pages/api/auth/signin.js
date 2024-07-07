@@ -13,11 +13,6 @@ const handler = nc({onError, onNoMatch});
 // POST /api/auth/login
 // jwt secret placed inside of cookie
 handler.post(async (req, res) => {
-  console.log("signin")
-  console.log(req.body)
-  // req.body = JSON.parse(req.body)
-  // console.log(email)
-  // console.log(password)
   const { email, password } = req.body;
   if (!email || !password) {
     throw new Error('All fields are required.');
@@ -36,7 +31,7 @@ handler.post(async (req, res) => {
   }
 
   let isMatch = true;
-  // TODO: remove conditon unitl testing accounts are tobe removed:
+  // TODO: remove conditon unitl testing accounts are to be removed:
   if (password !== '123456') {
     // TODO: keep this bcrypt compare, but delete the if statement
     isMatch = await bcrypt.compare(

@@ -1,18 +1,19 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { paginateTicketComments } from '@/redux/features/project/projectSlice';
 import { Grid, Typography, List, ListItem, ListItemIcon, ListItemText, Select, MenuItem } from "@mui/material";
-import { FaComment } from 'react-icons/fa';
+import { FaComment, FaRegWindowClose } from 'react-icons/fa';
 import ButtonUI from '../UI/ButtonUI';
 import PaperUI from '../UI/PaperUI';
 import Paginate from '../nav/Paginate';
 
-const CommentsList = ({comments, loading, page, pages}) => {
+const CommentsList = ({comments, loading, page, pages, userRole}) => {
   const dispatch = useDispatch();
   const router = useRouter();
   let ticketId = router.query.ticketId;
+  const { user } = useSelector(state => state.auth);
   let [orderBy, setOrderBy] = useState(true);
   let [currentPage, setCurrentPage] = useState(page || 1);
   const [itemsPerPage, setItemsPerPage] = useState(20);
@@ -57,6 +58,10 @@ const CommentsList = ({comments, loading, page, pages}) => {
     </>)
   };
 
+  const deleteTicketCommentHandler = (ticketId, commentId) => {
+    dispatch(deleteTicketComment({ticketId, commentId}));
+  };
+
   const CommentList = () => {
     return (
       <Grid className="catalog__list-container" item xs={12} md={6}>
@@ -84,6 +89,12 @@ const CommentsList = ({comments, loading, page, pages}) => {
                         secondary={<ListItemDetail comment={comment}/>}
                       />
                     </div>
+                    {user?.id === comment.user_id || userRole === "Admin" ? (
+                      <FaRegWindowClose 
+                        className='item-icon'
+                        onClick={() => deleteTicketCommentHandler(ticketId, comment.id)}
+                      />
+                    ) : (null)}
                   </div>
                   {comment.file_name.length === 0 ? (
                     null

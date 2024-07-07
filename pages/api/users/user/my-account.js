@@ -23,9 +23,6 @@ handler.get(async (req, res) => {
 
   userDetail.rows[0].created_at = singleISODate(userDetail.rows[0].created_at);
 
-  console.log(userDetail.rows[0])
-  console.log("555555555")
-
   return res.status(200).json({
     status: "Retrieved user information.",
     data: {

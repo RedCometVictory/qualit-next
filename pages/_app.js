@@ -10,7 +10,6 @@ import '../styles/main.scss';
 function MyApp({ Component, pageProps }) {
   const getLayout = Component.getLayout || (page => page);
 
-  // return getLayout(<Component {...pageProps}/>)
   return (
     <Provider store={store}>
       <ThemeColor>
@@ -28,22 +27,3 @@ function MyApp({ Component, pageProps }) {
   )
 };
 export default MyApp;
-
-// ORIGINAL
-// function MyApp({ Component, pageProps }) {
-//   return (
-//     <Provider store={store} >
-//       <Meta />
-//       <MainLayout>
-//         <Component {...pageProps} />
-//         <ToastContainer
-//           position='top-center'
-//           newestOnTop={true}
-//           autoClose={5000}
-//           closeOnClick
-//           pauseOnHover
-//         />
-//       </MainLayout>
-//     </Provider>
-//   )
-// };

@@ -1,5 +1,4 @@
 import nc from 'next-connect';
-import { removeOnErr } from '@/utils/cloudinary';
 import { onError, onNoMatch } from '@/utils/ncOptions';
 import { verifAuth, authRoleDev } from '@/utils/verifAuth';
 import { pool } from '@/config/db';
@@ -20,11 +19,6 @@ handler.use(verifAuth);
 handler.get(async (req, res) => {
   const { id, role } = req.query;
 
-  console.log("########## BACKEND ##########");
-  console.log("|/\/\/\/\/\/\/\/\/\/\|")
-  console.log("fetching my projects")
-  console.log(req.query)
-  console.log("|\/\/\/\/\/\/\/\/\/\/|")
   // If orderBy is true then the order of comments is newest first, thus psql DESC
   const {
     pageNumber,
