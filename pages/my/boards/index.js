@@ -1,13 +1,18 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { getDataSSR } from '@/utils/fetchData';
 import store from '@/redux/store';
+// import { rehydrate } from '@/redux/features/theme/themeSlice';
 import { getAllBoards, createBoard, saveBoard, resetBoard, rehydrate } from '@/redux/features/board/boardSlice';
 import { Card, CardContent, Typography } from "@mui/material";
 import MiniNav from '@/components/nav/MiniNav';
 import BoardLayout from "@/components/layouts/BoardLayout";
 import MainLayout from "@/components/layouts/MainLayout";
+import Spinner from '@/components/Spinner';
+import PaperUI from "@/components/UI/PaperUI";
+import ButtonUI from '@/components/UI/ButtonUI';
 import AddBoardModal from '@/components/modals/AddBoardModal';
 
 const Boards = ({initialState, token, roleResult}) => {
@@ -32,10 +37,6 @@ const Boards = ({initialState, token, roleResult}) => {
     setAddBoardModal(true)
   };
 
-  const updateBoard = () => {
-    
-  };
-  
   return (<>
     <MiniNav setAddBoardModal={setAddBoardModal}/>
     <section className="">

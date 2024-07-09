@@ -12,7 +12,6 @@ import { fetchCards, addCard } from '@/redux/features/card/cardSlice';
 import ButtonUI from '../UI/ButtonUI';
 import Cards from '../cards/Cards';
 
-
 // column is all details of column, id is the id of the column
 const Column = ({ showCardDetail, setModalOpen, column, index, id, cards }) => {
   const router = useRouter();
@@ -43,8 +42,8 @@ const Column = ({ showCardDetail, setModalOpen, column, index, id, cards }) => {
     if (e.keyCode === 13) {
       e.preventDefault();
       setEditArea(false);
-      // updateColumnNameHandler(e.target.value);
-      updateColumnNameHandler();
+      updateColumnNameHandler(e.target.value);
+      // updateColumnHandler();
     }
   };
 
@@ -80,15 +79,15 @@ const Column = ({ showCardDetail, setModalOpen, column, index, id, cards }) => {
     await dispatch(fetchColumns({boardId}));
   };
 
-  // use this function only if saving column name value to localstorage. I saving to backend, then disable this func
-  // const updateColumnHandler = useCallback(
-  //   debounce((value) => updateColumnNameHandler(value), 800),
-  //   []
-  // );
+  const updateColumnHandler = useCallback(
+    debounce((value) => updateColumnNameHandler(value), 800),
+    []
+  );
 
   const updateColumnNameHandler = async (value) => {
-    const formData = { name: columnName };
-    await dispatch(updateColumn({boardId, columnId: id,formData}));
+    // const formData = { name: columnName };
+    const formData = { name: value };
+    await dispatch(updateColumn({boardId, columnId: id, formData}));
   };
 
   const openColEditHandler = () => {
@@ -137,7 +136,8 @@ const Column = ({ showCardDetail, setModalOpen, column, index, id, cards }) => {
     return (
       <h6 {...draggableProps}>
         <div>
-          <GrDrag className="column__drag-icon"/> {columnName + column.sequence}
+          {/* <GrDrag className="column__drag-icon"/> {columnName + column.sequence} */}
+          <GrDrag className="column__drag-icon"/> {columnName}
         </div>
       </h6>
     );
@@ -202,7 +202,7 @@ const Column = ({ showCardDetail, setModalOpen, column, index, id, cards }) => {
                 >
                   <Cards
                     key={index}
-                    className="card"
+                    // className="card"
                     variant=''
                     raised='true'
                     cards={sortedCards}
