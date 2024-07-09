@@ -8,7 +8,8 @@
     @include flex(column, flex-start, center);
   }
   &__container {
-    width: 100%;
+    // width: 100%;
+    width: calc(100vw - 198px);
     // height: 100vh;
     height: calc(100vh - 70px);
     // padding: 16px 0 0 16px;
