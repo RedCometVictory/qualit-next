@@ -115,6 +115,13 @@ const Column = ({ showCardDetail, setModalOpen, column, index, id, cards }) => {
   //   setShowColMenu(false);
   // };
 
+//   what can i do with this card, will the description text still go out of bounds?
+
+
+// some how the horizontal scroll only works when inspector is active
+
+// <p>what can i do with this card, will the description text still go out of bounds?</p><p><br></p><p>some how the horizontal scroll only works when inspector is active</p>
+
   const loadColumnTitle = (draggableProps) => {
     if (editArea) {
       return (

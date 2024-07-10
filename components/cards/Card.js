@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
+import parse from 'html-react-parser';
 // import { Draggable } from 'react-beautiful-dnd';
 import { Draggable } from '@hello-pangea/dnd';
 import { Card, CardHeader, CardMedia, CardContent, CardActions, Collapse, Divider, Avatar, Menu, MenuItem, MenuList, ListItemText, IconButton, Typography, styled } from '@mui/material';
@@ -9,6 +10,18 @@ import { AiOutlineDelete } from 'react-icons/ai';
 import { HiDotsVertical } from 'react-icons/hi';
 import { updateCard, deleteCard, fetchCards } from '@/redux/features/card/cardSlice';
 import useDraggableInPortal from '../hooks/useDraggableInPortal';
+
+import 'react-quill/dist/quill.bubble.css'
+const ReactQuill = typeof window === 'object' ? require('react-quill') : () => false;
+/**
+import 'react-quill/dist/quill.bubble.css'
+const ReactQuill = typeof window === 'object' ? require('react-quill') : () => false;
+    <ReactQuill
+      value={card?.description ??"Description goes here."}
+      readOnly={true}
+      theme={'bubble'}
+    />
+*/
 
 const CardItem = ({ className, variant, raised, card, cardIndex, showCardDetail, setModalOpen }) => {
   const router = useRouter();
@@ -157,8 +170,14 @@ const CardItem = ({ className, variant, raised, card, cardIndex, showCardDetail,
           <Typography component='div'>
             Type: {card.type}
           </Typography> */}
-          <Typography component='div'>
-            {card.description ?? "Description goes here."}
+          <Typography component='div' className='card__description'>
+            {/* {parse(card?.description ?? "Description goes here.")} */}
+            {/* {card?.description ?? "Description goes here."} */}
+            <ReactQuill
+              value={card?.description ??"Description goes here."}
+              readOnly={true}
+              theme={'bubble'}
+            />
           </Typography>
         </CardContent>
       </Collapse>

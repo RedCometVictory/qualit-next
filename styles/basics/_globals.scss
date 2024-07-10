@@ -97,6 +97,19 @@ body {
   background-color: var(--body-text) !important;
 }
 
+.ql-editor strong{
+  font-weight: bold;
+}
+
+.ql-editor em {
+  font-style: italic;
+}
+
+.ql-editor strong em {
+  font-weight: bold;
+  font-style: italic;
+}
+
 // ##############################
 // ##############################
 // ##############################
