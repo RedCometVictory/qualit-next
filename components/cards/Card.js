@@ -50,7 +50,6 @@ const CardItem = ({ className, variant, raised, card, cardIndex, showCardDetail,
   };
 
   const menuClickHandler = (e) => {
-    // setShowCardMenu(!showCardMenu);
     setShowCardMenu(true)
     setAnchorEl(e.currentTarget);
   };
@@ -123,18 +122,12 @@ const CardItem = ({ className, variant, raised, card, cardIndex, showCardDetail,
       <CardContent
         className="card__content"
       >
-        {/* <Typography
-          variant="body2"
-          component='div'
-          // color="text.secondary"
-        >
-          sequence: {card.sequence}
-        </Typography> */}
         <Typography
           variant="body2"
           component='div'
           // color="text.secondary"
         >
+          {/* sequence: {card.sequence} */}
           Type: {card.type ?? "No type listed."}
         </Typography>
         <Typography
@@ -172,9 +165,8 @@ const CardItem = ({ className, variant, raised, card, cardIndex, showCardDetail,
           </Typography> */}
           <Typography component='div' className='card__description'>
             {/* {parse(card?.description ?? "Description goes here.")} */}
-            {/* {card?.description ?? "Description goes here."} */}
             <ReactQuill
-              value={card?.description ??"Description goes here."}
+              value={card.description ??"Description goes here."}
               readOnly={true}
               theme={'bubble'}
             />

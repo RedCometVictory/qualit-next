@@ -134,6 +134,7 @@ const Column = ({ showCardDetail, setModalOpen, column, index, id, cards }) => {
           sx={{
             alignContent: `center`
           }}
+          inputProps={{ maxLength: 18 }}
           variant="outlined"
           required
         />

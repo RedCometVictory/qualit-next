@@ -4,11 +4,12 @@ import { userReset } from "../user/userSlice";
 import { loadUser as loadUserSlice, clearAuth } from "./authSlice";
 
 
-const demoUser = async () => {
-  const res = await api.get('/auth/demo');
-  let result = res.data.data;
-  localStorage.setItem("token", JSON.stringify(result.token));
-  localStorage.setItem("__userInfo", JSON.stringify(result.userInfo));
+const demoUser = async (router) => {
+  const res = await getData('/auth/demo/admin');
+  let result = res.data;
+  localStorage.setItem("qual__user", JSON.stringify(result.user));
+  router.push('/');
+  // localStorage.setItem("__userInfo", JSON.stringify(result.userInfo));
   return result;
 };
 

@@ -33,8 +33,6 @@ const CardDetailModal = ({ setModalOpen, card }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { id: boardId } = router.query;
-  // isrequest can track card deletion
-  // TODO: need to confirm a method of setting card details to card.card in getState. Perhaps this can be done via Card component menu. When clicking the edit option on the menu, fetch the details of the card via its card id. Likely cardDetails will not be set,
   const { card: cardDetails, loading, isRequesting: cardRequest } = useSelector(state => state.card);
   // const users = useSelector(state => state.users.users);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -59,7 +57,6 @@ const CardDetailModal = ({ setModalOpen, card }) => {
     return null;
   }
 
-  // const { cardId, title, description, priority, type, boardId, columnId, userId } = formData;
   const { title, description, priority, type } = formData;
 
   const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -80,11 +77,6 @@ const CardDetailModal = ({ setModalOpen, card }) => {
 
   const modalSubmitHandler = async (e) => {
     e.preventDefault();
-    console.log("-=-=-=-=-=-=-=-=-=-=-=-=-")
-    console.log("-=-=-=-=-=-=-=-=-=-=-=-=-")
-    console.log(card)
-    console.log("-=-=-=-=-=-=-=-=-=-=-=-=-")
-    console.log("-=-=-=-=-=-=-=-=-=-=-=-=-")
     await dispatch(updateCard({boardId, cardId: card.id, formData}));
     await dispatch(fetchCards({boardId}));
     setModalOpen(false);
@@ -103,62 +95,6 @@ const CardDetailModal = ({ setModalOpen, card }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  // ##################################
-  // ##################################
-  // for the modal
-  // const styleModal = {
-  //   position: 'absolute',
-  //   top: '50%',
-  //   left: '50%',
-  //   transform: 'translate(-50%, -50%)',
-  //   width: 400,
-  //   bgcolor: 'background.paper',
-  //   border: '2px solid #000',
-  //   boxShadow: 24,
-  //   p: 4,
-  //   pt: 2,
-  //   px: 4,
-  //   pb: 3,
-  // };
-
-  // ##################################
-  // const assignToMenu = () => {
-  //   return (
-  //     <div>
-  //       <ButtonUI
-  //         id="basic-button"
-  //         aria-controls={open ? 'basic-menu' : undefined}
-  //         aria-haspopup="true"
-  //         aria-expanded={open ? 'true' : undefined}
-  //         onClick={handleClick}
-  //       >
-  //         <AiOutlineClose />{" "}Assign User
-  //       </ButtonUI>
-  //       <Menu
-  //         id="basic-menu"
-  //         anchorEl={anchorEl}
-  //         open={open}
-  //         onClose={handleClose}
-  //         MenuListProps={{
-  //           'aria-labelledby': 'basic-button',
-  //         }}
-  //       >
-  //         {/* list all users assigned to project */}
-  //         {/* {users.map((user, index) => (
-  //           <MenuItem key={index} onClick={() => handleClick(user.id)}>
-  //             {user.firstName}
-  //           </MenuItem>
-  //         ))} */}
-  //         <MenuItem onClick={() => handleClick('')} >Unassign</MenuItem>
-  //         <MenuItem onClick={handleClose}>Profile</MenuItem>
-  //         <MenuItem onClick={handleClose}>My account</MenuItem>
-  //         <MenuItem onClick={handleClose}>Logout</MenuItem>
-  //       </Menu>
-  //     </div>
-  //   );
-  // };
-  console.log("card --- modL DETAIL")
-  console.log(card)
 
   return (
     <PaperUI className="modal paper card">
@@ -277,50 +213,3 @@ const CardDetailModal = ({ setModalOpen, card }) => {
   )
 };
 export default CardDetailModal;
-
-
-{/* <div> */}
-    //   {/* <ButtonUI onClick={handleModalOpen}>Open modal</ButtonUI> */}
-    //   <Modal
-    //     // open={isOpen}
-    //     open={setModalOpen}
-    //     onClose={(e) => modalSubmitHandler(e)}
-    //     aria-labelledby="modal-modal-title"
-    //     aria-describedby="modal-modal-description"
-    //   >
-    //     <Box sx={styleModal}>
-    //       <div className="modal__title">
-    //         <AiOutlineLaptop />
-    //         <Typography id="modal-modal-title" variant="h6" component="h2">
-    //           Card Title
-    //         </Typography>
-    //         {/* <TextField id='outlined-basic' label='Outlined' variant='outlined' defaultValue='Title' /> */}
-    //         <Input id='outlined-basic' label='Outlined' variant='outlined' defaultValue='Card Title' />
-    //       </div>
-    //       <div className="modal__description">
-    //         <div className="modal__description-title">
-    //           <MdOutlineTextsms />
-    //           <Typography id="modal-modal-title" variant="h6" component="h2">
-    //             Description
-    //           </Typography>
-    //         </div>
-    //         <div className="modal__text-editor">
-    //           <Typography
-    //             id="modal-modal-description"
-    //             sx={{ mt: 2 }}
-    //             component='div'
-    //           >
-    //             {/* <QuillEditor value={description} onChange={setDescription} /> */}
-    //             Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-    //           </Typography>
-    //         </div>
-    //       </div>
-    //       <div className="modal__assignment">
-    //         <Typography sx={{ fontSize: 14 }} color="text.secondary" component='div' gutterBottom>
-    //           Card ID: {"card.id"} Board ID: {"card.boardID"}
-    //         </Typography>
-    //         {assignToMenu()}
-    //       </div>
-    //     </Box>
-    //   </Modal>
-    // </div>

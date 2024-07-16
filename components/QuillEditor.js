@@ -4,15 +4,6 @@ const ReactQuill = typeof window === 'object' ? require('react-quill') : () => f
 
 const QuillEditor = ({value, name, onChange}) => {
   const quillRef = useRef(null);
-  // const modules = {
-  //   toolbar: [
-  //     [{ header: [1,2,false] }],
-  //     ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-  //     [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
-  //     // ['link', 'image'],
-  //     ['clean']
-  //   ]
-  // };
   const modules = {
     toolbar: [
       [{ 'header': [1, 2, false] }],

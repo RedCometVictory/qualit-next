@@ -1,5 +1,4 @@
 // import MainNav from '../nav/MainNav';
-// import MiniNav from '../nav/MiniNav';
 
 // const BoardLayout = ({children}) => {
 //   return (

@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import Cookies from 'js-cookie';
 import store from '@/redux/store';
 import { toast } from 'react-toastify';
-import { loginUser, logout, expiredTokenLogout, rehydrate } from '@/redux/features/auth/authSlice';
+import { loginUser, demoUser, expiredTokenLogout, rehydrate } from '@/redux/features/auth/authSlice';
 import MainLayout from "@/components/layouts/MainLayout";
 import ButtonUI from '@/components/UI/ButtonUI';
 import { Card, Input, InputLabel, FormGroup, CardContent, Typography } from "@mui/material";
@@ -62,6 +62,10 @@ const SignIn = ({initialState}) => {
       console.error(err);
       toast?.error("Failed to register. Check if email or password are valid.", {toastId: "signinErr"});
     }
+  };
+
+  const runDemoHandler = () => {
+    dispatch(demoUser(router));
   };
 
   return (
@@ -144,6 +148,14 @@ const SignIn = ({initialState}) => {
             </Link>
           </div>
         </CardContent>
+        <CardContent>
+          <div className="">
+            Run Demo Account? {" "}
+            <ButtonUI className="" variant="" onClick={() => runDemoHandler()}>
+              Try Demo
+            </ButtonUI>
+          </div>
+        </CardContent>
       </Card>
     </section>
   )
@@ -152,8 +164,6 @@ export default SignIn;
 export const getServerSideProps = async (context) => {
   try {
     let token = context.req.cookies.qual__token || null;
-    console.log("signin page -- token value")
-    console.log(token)
     let { query } = context;
     let hasQueryParams = Object.keys(query).length > 0;
     if (hasQueryParams) {
@@ -205,12 +215,6 @@ export const getServerSideProps = async (context) => {
       }
 
     };
-    
-    console.log("++++++++++++++++++++++++++++")
-    console.log("this da query")
-    console.log(query)
-    console.log("++++++++++++++++++++++++++++")
-    console.log("++++++++++++++++++++++++++++")
     /*
     res.setHeader(
     "Set-Cookie",
@@ -238,12 +242,6 @@ export const getServerSideProps = async (context) => {
     */
     // if (token && Object.keys(query).length === 0) {
     if (token) {
-      console.log("00000000000000000000")
-      console.log("00000000000000000000")
-      console.log("token")
-      console.log(token)
-      console.log("00000000000000000000")
-      console.log("00000000000000000000")
       // token = JSON.stringify(token);
       // context.res.setHeader(
       //   "Set-Cookie", [
