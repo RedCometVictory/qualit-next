@@ -16,6 +16,8 @@ handler.put(async (req, res) => {
   const { boardId, columnId } = req.query;
   const { name } = req.body;
 
+  if (name.length > 18) throw new Error('Error, column name must be 18 characters or less.');
+  
   let updatedByTimeStamp = new Date();
   let updatedColumn;
   

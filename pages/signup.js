@@ -3,7 +3,7 @@ import { useEffect, useState } from  'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from "next/router";
 import { toast } from 'react-toastify';
-import { registerUser } from '@/redux/features/auth/authSlice';
+import { registerUser, demoUser } from '@/redux/features/auth/authSlice';
 import MainLayout from "@/components/layouts/MainLayout";
 import ButtonUI from '@/components/UI/ButtonUI';
 import { Card, Input, InputLabel, FormGroup, CardContent, Typography } from "@mui/material";
@@ -59,6 +59,10 @@ const SignUp = () => {
     }
   };
 
+  const runDemoHandler = () => {
+    dispatch(demoUser(router));
+  };
+
   return (
     <section className={`login login__background--${theme}`}>
       <Card
@@ -92,7 +96,7 @@ const SignUp = () => {
                   label='Outlined'
                   variant='outlined'
                   value={firstName}
-                  maxLength={22}
+                  maxLength={12}
                   onChange={onChange}
                   sx={{ color: `var(--body-text)` }}
                   required
@@ -149,7 +153,7 @@ const SignUp = () => {
                   label='Outlined'
                   variant='outlined'
                   value={username}
-                  maxLength={22}
+                  maxLength={20}
                   onChange={onChange}
                   sx={{ color: `var(--body-text)` }}
                   required
@@ -212,6 +216,14 @@ const SignUp = () => {
             >
               Sign In
             </Link>
+          </div>
+        </CardContent>
+        <CardContent>
+          <div className="">
+            Run Demo Account? {" "}
+            <ButtonUI className="" variant="" onClick={() => runDemoHandler()}>
+              Try Demo
+            </ButtonUI>
           </div>
         </CardContent>
       </Card>

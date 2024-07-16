@@ -493,3 +493,543 @@
     }
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ##################################################
+// ##################################################
+// original Main Menu No Delete!
+// ##################################################
+// ##################################################
+
+// .nav {
+//   @include flex(column, flex-start, flex-start);
+//   position: absolute;
+//   top: 0;
+//   bottom: 48px;
+//   left: -100%;
+//   opacity: 0;
+//   background-color: var(--navbar-color);
+//   // color: var(--navbar-text);
+//   padding: 0 1rem 0 1rem;
+//   z-index: 400;
+//   transition: all 0.5s ease-in-out;
+//   &.active {
+//     left: 0;
+//     opacity: 1;
+//   }
+//   &__mobile {
+//     position: absolute;
+//     bottom: 0;
+//     left: 0;
+//     right: 0;
+//     background-color: var(--navbar-color);
+//     // color: var(--navbar-text);
+//     padding: 16px 0;
+//     width: 100%;
+//     height: 48px;
+//     @include flex (row, space-evenly, center);
+//     transition: 0.3s ease-in-out;
+//     .mobile-btn {
+//       cursor: pointer;
+//       &.hidden {
+//         visibility: hidden;
+//       }
+//       .chevron-btn {
+//         transition: all 0.35s ease-in-out;
+//         &.active {
+//           transform: rotateZ(-180deg);
+//         }
+//         &:hover {
+//           color: var(--body-text-hover);
+//         }
+//       }
+//     }
+//   }
+//   &__content-group {
+//     &.upper {
+//       margin: 1rem 0 0 0;
+//       pointer-events: none;
+//       &.desktop {
+//         display: none;
+//       }
+//       .theme-info {
+//         opacity: 0;
+//         transition: 0.3s ease-in;
+//         &.active {
+//           pointer-events: initial;
+//           cursor: pointer;
+//           opacity: 1;
+//         }
+//       }
+//       .logo-full {
+//         opacity: 0;
+//         transition: 0.22s ease-in;
+//         &.active {
+//           cursor: pointer;
+//           pointer-events: initial;
+//           opacity: 1;
+//         }
+//       }
+//       .logo-letter {
+//         opacity: 0;
+//         transition: all 0.15s ease-in-out;
+//         &.active {
+//           pointer-events: none;
+//         }
+//       }
+//     }
+//     &.lower {
+//       .nav__link {
+//         width: 0;
+//       }
+//       &.active {
+//         .nav__link {
+//           pointer-events: initial;
+//           cursor: pointer;
+//           opacity: 1;
+//           width: initial;
+//         }
+//       }
+//     }
+//   }
+//   &__user {
+//     @include flex(column, center, flex-start);
+//     text-align: start;
+//     margin: 1rem 0 0;
+//     cursor: initial;
+//     span {
+//       &:nth-child(2) {
+//         margin: 8px 0 0 0;
+//       }
+//     }
+//   }
+//   &__theme-container {
+//     border-radius: 6px;
+//     // background-color: var(--btn-primary);
+//     cursor: pointer;
+//     height: 2rem;
+//     width: 2rem;
+//     @include flex(row, center, center);
+//   }
+//   &__menu {
+//     margin: 5.575rem 0 0 0;
+//     @include flex(column, center, center);
+//   }
+//   // ########## LOGO #############
+//   &__logo-container {
+//     margin: 3.275rem 0 3.275rem 0;
+//     cursor: pointer;
+//   }
+//   &__logo {
+//     font-weight: 800;
+//     font-size: 21px;
+//     &.small {
+//       transition: all 0.35s ease-in-out;
+//     }
+//     a {
+//       color: var(--body-text);
+//       text-decoration: none;
+//     }
+//   }
+//   &__logo-icon {
+//     text-decoration: none;
+//     cursor: pointer;
+//     span {
+//       text-transform: lowercase;
+//     }
+//   }
+//   &__line {
+//     border-radius: 6px;
+//     width: 100%;
+//     height: 6px;
+//     background-color: var(--body-text);
+//     margin: 0.575rem 0 0 0;
+//   }
+//   // ########## Links #############
+//   &__links {
+//     width: 100%;
+//     font-size: 18px;
+//     .nav__link-icon {
+//       &:hover {
+//         .right {
+//           visibility: visible;
+//           opacity: 1;
+//         }
+//       }
+//     }
+//     &.active {
+//       .nav__link-icon {
+//         &:hover {
+//           .right {
+//             visibility: hidden;
+//             opacity: 0;
+//           }
+//         }
+//       }
+//     }
+//   }
+//   &__link-item {
+//     margin: 1.275rem 0;
+//     &:first-child {
+//       margin: 0 0 1.275rem 0;
+//     }
+//   }
+//   &__link-group {
+//     @include flex(row, flex-start, center);
+//     &:hover {
+//       .nav__link, .nav__link-icon {
+//         transition: 0.3s ease-in;
+//         color: var(--body-text-hover);
+//       }
+//     }
+//   }
+//   &__link-icon {
+//     margin: 0 0.75rem 0 0;
+//     padding: 0.435rem;
+//     cursor: pointer;
+//     .tooltip {
+//       display:inline-block;
+//       position:relative;
+//       border-bottom:1px dotted #666;
+//       text-align:left;
+//       width: max-content;
+//       .right {
+//         min-width:200px;
+//         max-width:400px;
+//         top:-8px;
+//         left:100%;
+//         margin-left:20px;
+//         transform:translate(0, -50%);
+//         padding:0;
+//         // color:#EEEEEE;
+//         background-color:#444444;
+//         font-weight:normal;
+//         font-size:13px;
+//         border-radius:8px;
+//         position:absolute;
+//         z-index:99999999;
+//         box-sizing:border-box;
+//         box-shadow:0 1px 8px rgba(0,0,0,0.5);
+//         visibility:hidden;
+//         opacity:0;
+//         transition:opacity 0.8s;
+//         width: max-content;
+//         .text-content {
+//           padding: 0px 10px;
+//           h3 {
+//             margin: 12px 0;
+//           }  
+//         }
+//       }
+//     }
+//   }
+//   &__link {
+//     // width: 0; // * may delete
+//     transition: 0.3s ease-in-out;
+//     text-decoration: none;
+//     font-weight: 600;
+//     // color: var(--navbar-text);
+//     // color: \\ use for exampels on deciding secondary and primary colors for buttons in white theme
+    
+//     cursor: default;
+//     pointer-events: none;
+//     opacity: 0;
+//     white-space: nowrap;
+//   }
+//   &__menu-toggle {
+//     svg {
+//       cursor: pointer;
+//     }
+//     display: none;
+//   }
+// }
+// // --------------------
+// // --------------------
+// // --------------------
+// @media (min-width: 560px) {
+//   .nav {
+//     left: initial;
+//     bottom: 0;
+//     opacity: 1;
+//     width: 62px;
+//     transition: ease-in-out 0.5s;
+//     &.active {
+//       width: 175px;
+//       max-width: 12.375rem;
+//     }
+//     // phone screens only
+//     &__mobile {
+//       bottom: -50px;
+//       opacity: 0;
+//     }
+//     &__content-group {
+//       width: initial; // ---
+//       &.upper {
+//         margin: 1rem 0 0 0;
+//         .theme-info {
+//           pointer-events: none;
+//         }
+//         .logo-full {
+//           opacity: 0;
+//           pointer-events: none;
+//         }
+//         .logo-letter {
+//           opacity: 1;
+//           transition: all 0.2s ease-in;
+//           &.active {
+//             opacity: 0;
+//           }
+//         }
+//       }
+//       &.lower {
+//         &.active {
+//           .nav__link {
+//             opacity: 1;
+//           }
+//         }
+//       }
+//     }
+//     &__theme-container {
+//       pointer-events: initial;
+//     }
+//     &__link-group {
+//       pointer-events: none;
+//     }
+//     &__link-icon {
+//       pointer-events: initial;
+//     }
+//     &__link {
+//       // pointer-events: initial;
+//       opacity: 0; // ---
+//       // color: #1975d2;
+//     }
+//     &__menu-toggle {
+//       display: initial;
+//       position: absolute;
+//       border-radius: 50%;
+//       bottom: 24px;
+//       left: 8px;
+//       height: 45px;
+//       width: 45px;
+//       .chevron-btn {
+//         position: absolute;
+//         bottom: 15px;
+//         left: 15px;
+//         transition: all 0.35s ease-in;
+//         &.active {
+//           transform: rotateZ(-180deg);
+//         }
+//         &:hover {
+//           color: var(--body-text-hover);
+//         }
+//       }
+//     }
+//   }
+// }
+// @media (min-width: 566px) {
+//   .nav {
+//     &__mobile {
+//       display: none;
+//     }
+//   }
+// }
+// @media (min-width: 1080px) {
+//   .nav {
+//     position: relative;
+//     width: initial;
+//     max-width: 12.375rem;
+//     &__content-group {
+//       width: initial;
+//       &.upper {
+//         &.mobile {
+//           display: none;
+//         }
+//         &.desktop {
+//           display: initial;
+//         }
+//       }
+//       &.lower {
+//         .nav__link {
+//           width: initial;
+//         }
+//       }
+//     }
+//     &__link-group {
+//       pointer-events: initial;
+//     }
+//     // &__link-icon {}
+//     &__link {
+//       // width: 100%;
+//       pointer-events: initial;
+//       opacity: 1;
+//       cursor: pointer;
+//     }
+//     &__links {
+//       width: 100%;
+//       font-size: 18px;
+//       .nav__link-icon {
+//         &:hover {
+//           .right {
+//             visibility: hidden;
+//             opacity: 0;
+//           }
+//         }
+//       }
+//       &.active {
+//         .nav__link-icon {
+//           &:hover {
+//             .right {
+//               visibility: hidden;
+//               opacity: 0;
+//             }
+//           }
+//         }
+//       }
+//     }
+//     &__menu-toggle {
+//       display: none;
+//     }
+//     &__mobile {
+//       display: none;
+//     }
+//   }
+// }
+// // ####################
+// // TABLET SCREENS - BEGIN
+// // ####################
+// @media (max-height: 500px) and (max-width: 1079px) {
+//   .nav.active {
+//     overflow-x: hidden;
+//     overflow-y: scroll;
+//   }
+// }
+
+// @media (max-height: 586px) and (max-width: 1079px) {
+//   .nav {
+//     overflow-x: hidden;
+//     overflow-y: scroll;
+//     &.active {
+//       .nav__content-group {
+//         &.upper {
+//           position: initial;
+//         }
+//         &.lower {
+//           position: initial;
+//         }
+//       }
+//       .nav__logo-container {
+//         margin: 0.75rem 0 0 0;
+//       }
+//     }
+//     &__content-group {
+//       &.upper {
+//         position: absolute;
+//         top: -128px;
+//       }
+//       &.lower {
+//         position: absolute;
+//         top: 92px;
+//       }
+//     }
+//   }
+// }
+
+// @media (max-height: 650px) and (max-width: 1079px) {
+//   .nav {
+//     &__logo-container {
+//       margin: 1.575rem 0 0 0;
+//     }
+//   }
+// }
+
+// @media (max-height: 690px) and (max-width: 1079px) {
+//   .nav {
+//     &__menu {
+//       margin: 1.575rem 0 0 0;
+//     }
+//   }
+// }
+
+// @media (max-height: 724px) and (max-width: 1079px) {
+//   .nav {
+//     padding: 0 1rem 1.75rem 1rem;
+//     &.active {
+//       .nav__menu-toggle {
+//         top: 10px;
+//         left: 106px;
+//       }
+//     }
+//     .nav__menu-toggle {
+//       transition: 0.5s ease-in-out;
+//       // background-color: var(--navbar-color);
+//       top: 10px;
+//     }
+//     &__links {
+//       .nav__link-icon {
+//         &:hover {
+//           .right {
+//             // visibility: hidden;
+//           }
+//         }
+//       }
+//     }
+//   }
+// }
+// // ####################
+// // TABLET SCREENS - END
+// // ####################
+// @media (max-height: 540px) and (min-width: 1080px) {
+//   .nav {
+//     &__content-group.lower {
+//       overflow-x: hidden;
+//       overflow-y: scroll;
+//     }
+//     &__logo-container {
+//       margin: 0.75rem 0 0 0;
+//     }
+//   }
+// }
+// @media (max-height: 600px) and (min-width: 1080px) {
+//   .nav {
+//     &__menu {
+//       margin: 1.575rem 0 0 0;
+//     }
+//   }
+// }

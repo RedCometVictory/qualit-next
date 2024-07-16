@@ -47,7 +47,7 @@ handler.post(async (req, res) => {
     throw new Error('Error. First name must be less than 12 characters.');
   }
   
-  if (lastName.length > 20) {
+  if (lastName.length > 22) {
     throw new Error('Error. Last name must be less than 20 characters.');
     // return res.status(400).json({ errors: [{ msg: 'Error. Last name must be less than 20 characters.' }] });
   }
