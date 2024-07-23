@@ -170,23 +170,7 @@ export const getServerSideProps = async (context) => {
       let { session_expired } = query;
       
       if (session_expired === 'true') {
-        // context.res.setHeader(
-        //   "Set-Cookie",
-        //   [
-        //     `qual__token=deleted; Max-Age=0; Expires=${new Date(0).toUTCString()}; Path=/; HttpOnly; Secure`,
-        //     `qual__isLoggedIn=deleted; Max-Age=0; Expires=${new Date(0).toUTCString()}; Path=/; HttpOnly; Secure`
-        //   ].join('; ')
-        // );
-        // context.res.setHeader(
-        //   "Set-Cookie",
-        //   [
-        //     `qual__token=deleted; Max-Age=0; Path=/; HttpOnly; Secure`,
-        //     `qual__isLoggedIn=deleted; Max-Age=0; Path=/; HttpOnly; Secure`
-        //   ]
-        // );
-
         await store.dispatch(expiredTokenLogout());
-        // await store.dispatch(logout());
         
         context.res.setHeader(
           "Set-Cookie",
@@ -197,61 +181,11 @@ export const getServerSideProps = async (context) => {
           "Set-Cookie",
           `qual__isLoggedIn=deleted; Max-Age=0; Path=/; HttpOnly; Secure`  
         );
-
-        // let cookiesToDelete = [
-        //   `qual__token=deleted; Max-Age=0; Path=/; HttpOnly; Secure`,
-        //   `qual__isLoggedIn=deleted; Max-Age=0; Path=/; HttpOnly; Secure`
-        // ];
-        // context.res.setHeader("Set-Cookie", cookiesToDelete);
-
-        // context.res.setHeader(
-        //   "Set-Cookie",
-        //   `qual__token=deleted; Max-Age=0; Expires=${new Date(0).toUTCString()}; Path=/; HttpOnly; Secure`
-        // );
-        // context.res.setHeader(
-        //   "Set-Cookie",
-        //   `qual__isLoggedIn=deleted; Max-Age=0; Expires=${new Date(0).toUTCString()}; Path=/; HttpOnly; Secure`  
-        // );
       }
 
     };
-    /*
-    res.setHeader(
-    "Set-Cookie",
-    [
-      cookie.serialize("qual__token", '', {
-        sameSite: "strict",
-        secure: process.env.NODE_ENV !== 'development',
-        maxAge: -1,
-        path: '/',
-        httpOnly: true,
-        expires: new Date(0)
-      }),
-      cookie.serialize("qual__isLoggedIn", '', {
-        sameSite: "strict",
-        secure: process.env.NODE_ENV !== 'development',
-        maxAge: -1,
-        path: '/',
-        httpOnly: true,
-        expires: new Date(0)
-      }),
-      
-    ]
-    // cookie.serialize("ual__token", null, { expires: new Date(1), maxAge: 0, path: '/', httpOnly: false })
-  );
-    */
     // if (token && Object.keys(query).length === 0) {
     if (token) {
-      // token = JSON.stringify(token);
-      // context.res.setHeader(
-      //   "Set-Cookie", [
-      //     `qual__isLoggedIn=deleted; Max-Age=-1; Expires: new Date(0)`,
-      //     // `qual__isLoggedIn=deleted; Max-Age=0; Expires: new Date(0)`,
-      //     // `qual__isLoggedIn=deleted; Max-Age=0`,
-      //     // `qual__user=deleted; Max-Age=0`
-      //   ]
-      // )
-      // await store.dispatch(logout());
       return {
         redirect: {
           initialState: store.getState(),
@@ -261,20 +195,10 @@ export const getServerSideProps = async (context) => {
         props: {},
       };
     };
-    
-    // let userInfo = context.req.cookies.qual__user;
-    // let ticketID = context.params.ticketId;
-    // let validCookieAuth = context.req ? { cookie: context.req.headers.cookie } : undefined;
-    // let userRole = await getDataSSR(`/auth/checkAuth`, validCookieAuth);
-    // let roleResult = userRole?.data?.role;
-
-    // await store.dispatch(getTicket({ticket_id: ticketID, cookie: validCookieAuth}));
 
     return {
       props: {
-        initialState: store.getState(),
-        // token,
-        // roleResult
+        initialState: store.getState()
       }
     }
   } catch (err) {

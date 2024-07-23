@@ -21,8 +21,6 @@ const Column = ({ showCardDetail, setModalOpen, column, index, id, cards }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [showColMenu, setShowColMenu] = useState(false);
   const [columnName, setColumnName] = useState(column.name);
-  const { board } = useSelector(state => state.board);
-  const { user } = useSelector(state => state.user);
   const { cards: cardsFromCardSlice, isRequested: cardRequest } = useSelector(state => state.card);
 
   const sortedCards = cards.sort(
@@ -85,7 +83,6 @@ const Column = ({ showCardDetail, setModalOpen, column, index, id, cards }) => {
   );
 
   const updateColumnNameHandler = async (value) => {
-    // const formData = { name: columnName };
     const formData = { name: value };
     await dispatch(updateColumn({boardId, columnId: id, formData}));
   };
@@ -114,13 +111,6 @@ const Column = ({ showCardDetail, setModalOpen, column, index, id, cards }) => {
   // const closeColMenuHandler = () => {
   //   setShowColMenu(false);
   // };
-
-//   what can i do with this card, will the description text still go out of bounds?
-
-
-// some how the horizontal scroll only works when inspector is active
-
-// <p>what can i do with this card, will the description text still go out of bounds?</p><p><br></p><p>some how the horizontal scroll only works when inspector is active</p>
 
   const loadColumnTitle = (draggableProps) => {
     if (editArea) {
@@ -210,7 +200,6 @@ const Column = ({ showCardDetail, setModalOpen, column, index, id, cards }) => {
                 >
                   <Cards
                     key={index}
-                    // className="card"
                     variant=''
                     raised='true'
                     cards={sortedCards}

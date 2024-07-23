@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 // import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { DragDropContext, Droppable } from '@hello-pangea/dnd';
@@ -124,7 +124,6 @@ const Columns = () => {
 
   const onDragEnd = async (placement) => {
     const { destination, source, draggableId, type } = placement;
-    // console.log('Drag End:', { destination, source, draggableId, type });
     // Do nothing if placement is not determinable destination.
     if (!destination) return;
     // Do nothing if card is put back into current place.

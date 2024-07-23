@@ -32,23 +32,23 @@ export const demoUser = createAsyncThunk(
   }
 );
   
-export const loadUser = createAsyncThunk(
-  'auth/loadUser',
-  async (_, thunkAPI) => {
-    try {
-      return await authService.loadUser(thunkAPI);
-    } catch (err) {
-      const message =
-        (err.response &&
-          err.response.data &&
-          err.response.data.message) ||
-        err.message ||
-        err.toString()
-      toast.error("Failed to load user.", {theme: "colored", toastId: "UserLoadError"});
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
+// export const loadUser = createAsyncThunk(
+//   'auth/loadUser',
+//   async (_, thunkAPI) => {
+//     try {
+//       return await authService.loadUser(thunkAPI);
+//     } catch (err) {
+//       const message =
+//         (err.response &&
+//           err.response.data &&
+//           err.response.data.message) ||
+//         err.message ||
+//         err.toString()
+//       toast.error("Failed to load user.", {theme: "colored", toastId: "UserLoadError"});
+//       return thunkAPI.rejectWithValue(message);
+//     }
+//   }
+// );
 
 export const registerUser = createAsyncThunk(
   'auth/register',

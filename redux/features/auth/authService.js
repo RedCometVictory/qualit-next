@@ -13,16 +13,16 @@ const demoUser = async (router) => {
   return result;
 };
 
-const loadUser = async (thunkAPI) => {
-  const res = await api.get('/auth');
-  let result = res.data.data;
-  if (result.userInfo.stripe_cust_id) {
-    thunkAPI.dispatch(addCardToUser(result.userInfo.stripe_cust_id));
-  }
+// const loadUser = async (thunkAPI) => {
+//   const res = await api.get('/auth');
+//   let result = res.data.data;
+//   if (result.userInfo.stripe_cust_id) {
+//     thunkAPI.dispatch(addCardToUser(result.userInfo.stripe_cust_id));
+//   }
 
-  localStorage.setItem("__userInfo", JSON.stringify(result.userInfo));
-  return result;
-};
+//   localStorage.setItem("__userInfo", JSON.stringify(result.userInfo));
+//   return result;
+// };
 
 const registerUser = async (formRegData, thunkAPI) => {
   const res = await postData(`/auth/signup`, formRegData);

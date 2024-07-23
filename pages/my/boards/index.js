@@ -1,24 +1,18 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { getDataSSR } from '@/utils/fetchData';
 import store from '@/redux/store';
 // import { rehydrate } from '@/redux/features/theme/themeSlice';
-import { getAllBoards, createBoard, saveBoard, resetBoard, rehydrate } from '@/redux/features/board/boardSlice';
+import { getAllBoards, rehydrate } from '@/redux/features/board/boardSlice';
 import { Card, CardContent, Typography } from "@mui/material";
 import MiniNav from '@/components/nav/MiniNav';
 import BoardLayout from "@/components/layouts/BoardLayout";
-import MainLayout from "@/components/layouts/MainLayout";
-import Spinner from '@/components/Spinner';
-import PaperUI from "@/components/UI/PaperUI";
 import ButtonUI from '@/components/UI/ButtonUI';
 import AddBoardModal from '@/components/modals/AddBoardModal';
 
 const Boards = ({initialState, token, roleResult}) => {
-  const router = useRouter();
   const dispatch = useDispatch();
-  const { boards: allBoards, board: currentBoard, status: boardStatus, requestingNew: newBoardReqStatus } = useSelector(state => state.board);
+  const { boards: allBoards } = useSelector(state => state.board);
   const [addBoardModal, setAddBoardModal] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

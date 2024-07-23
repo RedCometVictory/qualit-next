@@ -8,20 +8,11 @@ import { Card, CardHeader, CardMedia, CardContent, CardActions, Collapse, Divide
 import { FaChevronCircleDown, FaRegHeart, FaRegEdit, FaShare } from 'react-icons/fa';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { HiDotsVertical } from 'react-icons/hi';
-import { updateCard, deleteCard, fetchCards } from '@/redux/features/card/cardSlice';
+import { deleteCard, fetchCards } from '@/redux/features/card/cardSlice';
 import useDraggableInPortal from '../hooks/useDraggableInPortal';
 
 import 'react-quill/dist/quill.bubble.css'
 const ReactQuill = typeof window === 'object' ? require('react-quill') : () => false;
-/**
-import 'react-quill/dist/quill.bubble.css'
-const ReactQuill = typeof window === 'object' ? require('react-quill') : () => false;
-    <ReactQuill
-      value={card?.description ??"Description goes here."}
-      readOnly={true}
-      theme={'bubble'}
-    />
-*/
 
 const CardItem = ({ className, variant, raised, card, cardIndex, showCardDetail, setModalOpen }) => {
   const router = useRouter();
