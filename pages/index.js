@@ -11,7 +11,6 @@ import MyProjectsList from '@/components/lists/MyProjectsList';
 import MyTicketsList from '@/components/lists/MyTicketsList';
 import PaperUI from '@/components/UI/PaperUI';
 import ButtonUI from '@/components/UI/ButtonUI';
-import authIsExpired from '@/utils/verifAuth';
 
 const Home = () => {
   const router = useRouter();
@@ -25,11 +24,6 @@ const Home = () => {
     if (isAuthenticated) {
       dispatch(getDashboardInfo());
     }
-    // if (effectRan.current === true || process.env.NEXT_PUBLIC_NODE_ENV !== 'development') {
-      // return () => {
-      //   effectRan.current = true;
-      // };
-    // }
   }, [dispatch]);
 
   useEffect(() => {
@@ -202,11 +196,8 @@ export const getServerSideProps = async (context) => {
       };
     };
 
-    let validCookieAuth = context.req ? { cookie: context.req.headers.cookie } : undefined;
-
     return {
       props: {
-        // initialState: store.getState(),
         token
       }
     }

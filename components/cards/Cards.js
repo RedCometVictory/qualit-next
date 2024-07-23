@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import CardItem from './Card';
 
 const Cards = ({ showCardDetail, setModalOpen, cards }) => {
@@ -6,7 +5,6 @@ const Cards = ({ showCardDetail, setModalOpen, cards }) => {
     {cards?.map((card, index) => (
       <CardItem
         key={index}
-        // className={''}
         variant=''
         raised='true'
         card={card}

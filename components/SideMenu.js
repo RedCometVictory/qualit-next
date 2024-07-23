@@ -29,12 +29,6 @@ const SideMenu = () => {
     dispatch(unsplashTheme(value));
   };
 
-  // <
-  //   className="drawer"
-  //   sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
-  //   role="presentation"
-  //   // onKeyDown={(e) => toggleDrawer(e, false)}
-  // >
   const drawerList = (anchor) => (
     <>
       {/* <List>

@@ -27,13 +27,6 @@ const SignUp = () => {
 
   const { firstName, lastName, username, email, password, password2 } = formData;
 
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //     console.log("redirecting signup")
-  //     router.push('/');
-  //   }
-  // }, [router, isAuthenticated]);
-
   useEffect(() => {
     setHasMounted(true);
     const selectTheme = cssSelectedTheme();
