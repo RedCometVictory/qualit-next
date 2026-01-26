@@ -1,7 +1,8 @@
 
 import { getData, postData, putData, deleteData } from '@/utils/fetchData';
 import { userReset } from "../user/userSlice";
-import { loadUser as loadUserSlice, clearAuth } from "./authSlice";
+// import { loadUser as loadUserSlice, clearAuth } from "./authSlice";
+// import { loadUser, clearAuth } from "./authSlice";
 
 
 const demoUser = async (router) => {
@@ -84,7 +85,7 @@ const refreshAccessToken = async (newAccessToken, tokenExample) => {
 
 const authService = {
   demoUser,
-  loadUser,
+  // loadUser,
   registerUser,
   loginUser,
   logout,

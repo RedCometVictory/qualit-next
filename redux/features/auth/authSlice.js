@@ -32,6 +32,7 @@ export const demoUser = createAsyncThunk(
   }
 );
   
+// TODO: so apparently i had this commented out, dont know why but i should comment out again later
 // export const loadUser = createAsyncThunk(
 //   'auth/loadUser',
 //   async (_, thunkAPI) => {
@@ -261,20 +262,20 @@ export const authSlice = createSlice({
       state.user = null;
       state.error = true;
     },
-    [loadUser.pending]: (state) => {
-      state.loading = true;
-    },
-    [loadUser.fulfilled]: (state, { payload }) => {
-      state.loading = false;
-      state.isAuthenticated = true;
-      state.user = payload.user;
-    },
-    [loadUser.rejected]: (state) => {
-      state.loading = false;
-      state.isAuthenticated = false;
-      state.user = null;
-      state.error = true;
-    },
+    // [loadUser.pending]: (state) => {
+    //   state.loading = true;
+    // },
+    // [loadUser.fulfilled]: (state, { payload }) => {
+    //   state.loading = false;
+    //   state.isAuthenticated = true;
+    //   state.user = payload.user;
+    // },
+    // [loadUser.rejected]: (state) => {
+    //   state.loading = false;
+    //   state.isAuthenticated = false;
+    //   state.user = null;
+    //   state.error = true;
+    // },
     [registerUser.pending]: (state) => {
       state.loading = true;
     },
